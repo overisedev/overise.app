@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OVERISE | Official Catalog</title>
     <style>
-        /* --- OVERISE DARK SYSTEM --- */
+        /* --- DESIGN SYSTEM OVERISE (PRETO & VERDE NEON) --- */
         body {
             background-color: #050505;
             color: #fff;
@@ -21,7 +21,7 @@
         .brand-header { margin-top: 40px; text-align: center; margin-bottom: 40px; }
         h1 { font-weight: 900; font-size: 3rem; letter-spacing: -2px; margin: 0; text-transform: uppercase; }
 
-        /* BUSCA */
+        /* BARRA DE BUSCA */
         .search-container { width: 90%; max-width: 800px; position: relative; z-index: 10; margin-bottom: 20px; }
         .input-group { display: flex; box-shadow: 0 0 50px rgba(0, 255, 65, 0.1); border-radius: 8px; overflow: hidden; }
         input { width: 100%; padding: 20px; background: #111; border: 1px solid #333; border-right: none; color: #00FF41; font-family: monospace; font-size: 18px; text-transform: uppercase; outline: none; }
@@ -31,7 +31,7 @@
         .btn-search { padding: 0 40px; background: #00FF41; border: none; color: #000; font-weight: 900; font-size: 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
         .btn-search:hover { background: #fff; }
 
-        /* GRID ESTILO STEAM/NETFLIX */
+        /* GRID (VISUAL NETFLIX / GAME PASS) */
         #results-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
@@ -56,7 +56,7 @@
         
         .game-card:hover { transform: translateY(-8px); border-color: #00FF41; box-shadow: 0 10px 30px rgba(0, 255, 65, 0.15); }
 
-        /* FORMATO DE BANNER (16:9) */
+        /* IMAGEM WIDESCREEN (16:9 - Perfeita para Banners) */
         .card-img-container {
             width: 100%;
             aspect-ratio: 16 / 9;
@@ -103,7 +103,7 @@
 
     <div class="brand-header">
         <h1>OVER<span style="color:#00FF41">ISE</span></h1>
-        <div style="font-size: 12px; letter-spacing: 6px; color:#666; margin-top: 5px;">// CATALOGO OFICIAL V2.0</div>
+        <div style="font-size: 12px; letter-spacing: 6px; color:#666; margin-top: 5px;">// CATALOGO GLOBAL (741 TÍTULOS)</div>
     </div>
 
     <div class="search-container">
@@ -120,41 +120,23 @@
     const API_KEY = "166a136d63f949b1bedca82b43cd50c7"; 
     const FALLBACK_IMG = "https://media.istockphoto.com/id/1329433253/photo/abstract-digital-background-with-technology-circuit-board-texture-electronic-motherboard.jpg?s=612x612&w=0&k=20&c=f7S_qg2aK5qQO7q7z_X_5X_6X_7X_8X_9X_0X=";
 
-    // --- MAPA DE IMAGENS OFICIAIS DA STEAM (BANNERS COM LOGO) ---
-    // Isso garante que os jogos mais famosos tenham a imagem perfeita de marketing.
+    // --- MAPA VIP (IDS STEAM) PARA FOTOS PERFEITAS ---
     const STEAM_IDS = {
-        "GRAND THEFT AUTO V": "271590",
-        "GRAND THEFT AUTO V LEGACY": "271590",
-        "GRAND THEFT AUTO IV": "12210",
-        "GRAND THEFT AUTO: SAN ANDREAS": "1547000",
-        "GRAND THEFT AUTO: VICE CITY": "1546990",
-        "EA SPORTS FC 24": "2344520",
-        "CALL OF DUTY: BLACK OPS III": "311210",
-        "CALL OF DUTY: BLACK OPS II": "202970",
-        "GOD OF WAR": "1593500",
-        "GOD OF WAR RAGNARÖK": "2322010",
-        "RESIDENT EVIL 4": "2050650",
-        "RED DEAD REDEMPTION 2": "1174180",
-        "CYBERPUNK 2077": "1091500",
-        "FORZA HORIZON 5": "1551360",
-        "ELDEN RING": "1245620",
-        "HOLLOW KNIGHT": "367520",
-        "TERRARIA": "105600",
-        "STARDEW VALLEY": "413150",
-        "EURO TRUCK SIMULATOR 2": "227300",
-        "MINECRAFT DUNGEONS": "1672970",
-        "LEFT 4 DEAD 2": "550",
-        "THE WITCHER 3: WILD HUNT": "292030",
-        "MORTAL KOMBAT 11": "976310",
-        "SPIDER-MAN REMASTERED": "1817070",
-        "SPIDER-MAN: MILES MORALES": "1817190",
-        "SEKIRO: SHADOWS DIE TWICE": "814380",
-        "DARK SOULS III": "374320"
+        "GRAND THEFT AUTO V": "271590", "GRAND THEFT AUTO V LEGACY": "271590", "GRAND THEFT AUTO IV": "12210",
+        "GRAND THEFT AUTO: SAN ANDREAS": "1547000", "GRAND THEFT AUTO: VICE CITY": "1546990",
+        "EA SPORTS FC 24": "2344520", "CALL OF DUTY: BLACK OPS III": "311210", "CALL OF DUTY: BLACK OPS II": "202970",
+        "GOD OF WAR": "1593500", "GOD OF WAR RAGNARÖK": "2322010", "RESIDENT EVIL 4": "2050650", "RESIDENT EVIL 4 (2005)": "254700",
+        "RED DEAD REDEMPTION 2": "1174180", "CYBERPUNK 2077": "1091500", "FORZA HORIZON 5": "1551360",
+        "ELDEN RING": "1245620", "HOLLOW KNIGHT": "367520", "TERRARIA": "105600", "STARDEW VALLEY": "413150",
+        "EURO TRUCK SIMULATOR 2": "227300", "MINECRAFT DUNGEONS": "1672970", "LEFT 4 DEAD 2": "550",
+        "THE WITCHER 3: WILD HUNT": "292030", "MORTAL KOMBAT 11": "976310", "SPIDER-MAN REMASTERED": "1817070",
+        "SEKIRO: SHADOWS DIE TWICE": "814380", "DARK SOULS III": "374320", "THE LAST OF US PART I": "1888930"
     };
 
-    // SUA LISTA DE 741 JOGOS
+    // --- SUA LISTA DE 741 JOGOS (OFICIAL DO PDF) ---
+    [cite_start]// [cite: 18] Lista completa extraída do catalogo-padrao.pdf
     const CATALOGO = [
-        "6 Seasons And A Game", "7 Days to Die", "9 Kings", "Abyssus", "ACE COMBAT™7: SKIES UNKNOWN", "Alan Wake", "Alan Wake's American Nightmare", 
+        "171", "6 Seasons And A Game", "7 Days to Die", "9 Kings", "Abyssus", "ACE COMBAT™7: SKIES UNKNOWN", "Alan Wake", "Alan Wake's American Nightmare", 
         "All-In-One Sports VR", "The Alters", "American Truck Simulator", "Ancestors: The Humankind Odyssey", "Angry Birds Space", "Animalia Survival", 
         "Anonymous Hacker Simulator", "ARK: Survival Ascended", "ARK: Survival Evolved", "Arma 2: DayZ Mod", "Ascendant", "Assassin's Creed® III", 
         "Assassin's Creed III Remastered", "Assassin's Creed IV Black Flag", "Assassin's Creed Unity", "Assassin's Creed Syndicate", "Assassin's Creed Origins", 
@@ -284,7 +266,7 @@
 
         if(input.length < 2) return;
 
-        // --- TRADUTOR DE APELIDOS ---
+        // --- APELIDOS ---
         if(input === "GTA") input = "GRAND THEFT AUTO";
         if(input === "GTA 5") input = "GRAND THEFT AUTO V";
         if(input === "COD") input = "CALL OF DUTY";
@@ -295,15 +277,14 @@
         if(input === "FORZA") input = "FORZA";
 
         grid.innerHTML = "";
-        status.innerHTML = "<span style='color:#00FF41'>VERIFICANDO LISTA OFICIAL...</span>";
+        status.innerHTML = "<span style='color:#00FF41'>VERIFICANDO LISTA...</span>";
 
-        // 1. FILTRA PELA SUA LISTA
         const jogosEncontrados = CATALOGO.filter(jogo => jogo.toUpperCase().includes(input));
 
         if (jogosEncontrados.length > 0) {
-            status.innerHTML = `<span style='color:#fff'>${jogosEncontrados.length} JOGOS ENCONTRADOS NO ACERVO.</span>`;
+            status.innerHTML = `<span style='color:#fff'>${jogosEncontrados.length} JOGOS DISPONÍVEIS NO ACERVO.</span>`;
             
-            // Limita a 12 jogos
+            // Limita a exibição para os 12 primeiros
             const jogosParaExibir = jogosEncontrados.slice(0, 12);
 
             for (const nomeJogo of jogosParaExibir) {
@@ -320,14 +301,11 @@
         let bgImage = FALLBACK_IMG;
         let rating = "VIP";
 
-        // TENTA PEGAR A IMAGEM DA STEAM (MUITO MELHOR) SE TIVER MAPEADA
+        // 1. TENTA STEAM HEADER (IMAGEM OFICIAL)
         let steamImage = null;
         const nomeUpper = nomeOficial.toUpperCase();
-        
-        // Verifica se o nome do jogo contém alguma chave do nosso mapa STEAM_IDS
         for (const [key, steamId] of Object.entries(STEAM_IDS)) {
             if (nomeUpper.includes(key)) {
-                // USA A IMAGEM DE CABEÇALHO DA STEAM (16:9 PERFEITA COM LOGO)
                 steamImage = `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${steamId}/header.jpg`;
                 break;
             }
@@ -337,21 +315,16 @@
             bgImage = steamImage;
             rating = "⭐ 5.0 (OFFICIAL)";
         } else {
-            // SE NÃO TIVER NA STEAM LIST, TENTA A API RAWG
+            // 2. SE NÃO TIVER MAPA STEAM, TENTA RAWG
             try {
                 const url = `https://api.rawg.io/api/games?key=${API_KEY}&search=${encodeURIComponent(nomeOficial)}&page_size=1`;
                 const response = await fetch(url);
                 const data = await response.json();
-
-                if (data.results && data.results.length > 0) {
-                    if (data.results[0].background_image) {
-                        bgImage = data.results[0].background_image;
-                        if(data.results[0].rating) rating = `⭐ ${data.results[0].rating}`;
-                    }
+                if (data.results && data.results.length > 0 && data.results[0].background_image) {
+                    bgImage = data.results[0].background_image;
+                    if(data.results[0].rating) rating = `⭐ ${data.results[0].rating}`;
                 }
-            } catch (e) {
-                console.log("Erro RAWG");
-            }
+            } catch (e) { console.log("Erro RAWG"); }
         }
 
         const card = `
@@ -365,8 +338,8 @@
                         <span class="tag-check">✓ DISPONÍVEL</span>
                         <span class="tag-check">${rating}</span>
                     </div>
-                    <button class="btn-action" onclick="alert('Produto Validado. Iniciando Checkout para: ${nomeOficial}')">
-                        [ LIBERAR ACESSO ]
+                    <button class="btn-action" onclick="alert('Iniciando Checkout para: ${nomeOficial}')">
+                        [ DESBLOQUEAR ]
                     </button>
                 </div>
             </div>
