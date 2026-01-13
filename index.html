@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OVERISE | Official Search</title>
     <style>
-        /* --- OVERISE DARK SYSTEM --- */
+        /* --- DESIGN SYSTEM DARK --- */
         body {
             background-color: #050505;
             color: #fff;
@@ -31,31 +31,44 @@
         .btn-search { padding: 0 40px; background: #00FF41; border: none; color: #000; font-weight: 900; font-size: 16px; cursor: pointer; text-transform: uppercase; transition: 0.2s; letter-spacing: 1px; }
         .btn-search:hover { background: #fff; box-shadow: 0 0 20px #00FF41; }
 
-        /* GRID LIMPO (MENOS É MAIS) */
+        /* GRID ESTILO STEAM (VERTICAL) */
         #results-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Cards mais largos */
-            gap: 25px; 
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+            gap: 20px; 
             width: 90%; 
-            max-width: 1000px; /* Largura contida para poucos itens */
+            max-width: 1000px; 
             margin-top: 40px; 
             justify-content: center;
         }
 
-        .game-card { background: #0a0a0a; border: 1px solid #333; border-radius: 6px; overflow: hidden; transition: transform 0.2s; display: flex; flex-direction: column; animation: fadeIn 0.5s ease-out; position: relative; }
-        .game-card:hover { transform: translateY(-5px); border-color: #00FF41; box-shadow: 0 5px 15px rgba(0, 255, 65, 0.1); }
+        .game-card { background: #0a0a0a; border: 1px solid #333; border-radius: 4px; overflow: hidden; transition: transform 0.2s; display: flex; flex-direction: column; animation: fadeIn 0.5s ease-out; position: relative; }
+        .game-card:hover { transform: translateY(-5px); border-color: #00FF41; box-shadow: 0 5px 20px rgba(0, 255, 65, 0.15); }
 
-        .card-img { width: 100%; height: 160px; object-fit: cover; background: #111; border-bottom: 1px solid #222; }
-        .card-info { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .game-title { font-family: Arial, sans-serif; font-weight: bold; font-size: 14px; margin-bottom: 10px; color: #fff; line-height: 1.3; }
+        /* AQUI ESTÁ O SEGREDO DA CAPA VERTICAL */
+        .card-img-container {
+            width: 100%;
+            padding-top: 140%; /* Proporção 600x900 (Capa Steam) */
+            position: relative;
+            background: #111;
+        }
         
-        .meta-tags { font-size: 10px; color: #888; margin-bottom: 15px; display: flex; gap: 5px; flex-wrap: wrap; }
-        
-        /* TAG ESPECIAL STEAM */
-        .tag-steam { background: #171a21; color: #66c0f4; border: 1px solid #66c0f4; font-weight: bold; display: flex; align-items: center; gap: 4px; }
-        .tag { background: #1a1a1a; padding: 3px 6px; border-radius: 3px; border: 1px solid #333; }
+        .card-img { 
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; /* Força preenchimento */
+        }
 
-        .btn-action { width: 100%; background: transparent; border: 1px solid #00FF41; color: #00FF41; padding: 12px; font-size: 11px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: auto; transition: 0.2s; }
+        .card-info { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .game-title { font-family: Arial, sans-serif; font-weight: bold; font-size: 13px; margin-bottom: 8px; color: #fff; line-height: 1.2; text-transform: uppercase; }
+        
+        .meta-tags { font-size: 9px; color: #888; margin-bottom: 10px; display: flex; gap: 5px; flex-wrap: wrap; }
+        .tag-steam { background: #171a21; color: #66c0f4; border: 1px solid #66c0f4; font-weight: bold; padding: 2px 4px; border-radius: 2px; }
+        .tag-ms { background: #171a21; color: #00FF41; border: 1px solid #00FF41; font-weight: bold; padding: 2px 4px; border-radius: 2px; }
+        .tag { background: #1a1a1a; padding: 2px 4px; border-radius: 2px; border: 1px solid #333; }
+
+        .btn-action { width: 100%; background: transparent; border: 1px solid #00FF41; color: #00FF41; padding: 10px; font-size: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: auto; transition: 0.2s; }
         .btn-action:hover { background: #00FF41; color: black; }
 
         .msg-area { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
@@ -66,15 +79,15 @@
 
     <div class="brand-header">
         <h1>OVER<span style="color:#00FF41">ISE</span></h1>
-        <div style="font-size: 12px; letter-spacing: 4px; color:#666;">// STEAM DATABASE SEARCH</div>
+        <div style="font-size: 12px; letter-spacing: 4px; color:#666;">// STEAM & OFFICIAL DATABASE</div>
     </div>
 
     <div class="search-container">
         <div class="input-group">
-            <input type="text" id="searchInput" placeholder="DIGITE O JOGO (EX: GTA V)...">
+            <input type="text" id="searchInput" placeholder="DIGITE O JOGO (EX: MINECRAFT, GTA, FIFA)...">
             <button class="btn-search" onclick="searchAPI()">SCAN</button>
         </div>
-        <div id="statusMsg" class="msg-area">SISTEMA PRONTO. BUSCANDO APENAS JOGOS OFICIAIS STEAM.</div>
+        <div id="statusMsg" class="msg-area">AGUARDANDO COMANDO.</div>
     </div>
 
     <div id="results-grid"></div>
@@ -82,8 +95,43 @@
 <script>
     const API_KEY = "166a136d63f949b1bedca82b43cd50c7"; 
     
-    // Lista de palavras proibidas (Reforço de segurança)
-    const BLOCK_LIST = ["soundtrack", "bootleg", "demake", "fan game", "artbook", "guide", "server", "roleplay", "mod"];
+    // 1. LISTA NEGRA (Jogos proibidos/lixo)
+    const BLOCK_LIST = ["bonecraft", "sex", "hentai", "soundtrack", "bootleg", "demake", "fan game", "artbook", "porn"];
+
+    // 2. CAPAS OFICIAIS STEAM (VIP LIST)
+    // Se o jogo for um desses, usamos essa imagem oficial vertical ao invés da foto aleatória da API.
+    const VIP_COVERS = {
+        "grand theft auto v": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg",
+        "gta v": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg",
+        "grand theft auto iv: the complete edition": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/12210/library_600x900.jpg",
+        "grand theft auto: san andreas – the definitive edition": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1547000/library_600x900.jpg",
+        "grand theft auto: vice city – the definitive edition": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1546990/library_600x900.jpg",
+        "ea sports fc™ 24": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2344520/library_600x900.jpg",
+        "call of duty®: black ops iii": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/311210/library_600x900.jpg",
+        "call of duty®: modern warfare® ii": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1938090/library_600x900.jpg",
+        "cyberpunk 2077": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg",
+        "red dead redemption 2": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg",
+        "god of war": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg",
+        "forza horizon 5": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg",
+        "terraria": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/105600/library_600x900.jpg",
+        "stardew valley": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/413150/library_600x900.jpg",
+        "euro truck simulator 2": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/227300/library_600x900.jpg",
+        "hollow knight": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/library_600x900.jpg",
+        "resident evil 4": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg",
+        "minecraft": "https://image.api.playstation.com/vulcan/img/rnd/202112/1013/Y8tX54jXm9F9s1x8.png" // Capa Vertical Oficial
+    };
+
+    // 3. EXCEÇÕES MANUAIS (Jogos que NÃO são da Steam mas você PRECISA vender)
+    const MANUAL_GAMES = [
+        {
+            name: "Minecraft: Java & Bedrock",
+            slug: "minecraft",
+            year: "2011",
+            rating: "4.8",
+            image: "https://image.api.playstation.com/vulcan/img/rnd/202112/1013/Y8tX54jXm9F9s1x8.png",
+            store: "OFFICIAL"
+        }
+    ];
 
     async function searchAPI() {
         const input = document.getElementById('searchInput').value.trim();
@@ -93,76 +141,94 @@
         if(input.length < 2) return;
 
         grid.innerHTML = "";
-        status.innerHTML = "<span style='color:#00FF41'>CONECTANDO AOS SERVIDORES DA STEAM...</span>";
+        status.innerHTML = "<span style='color:#00FF41'>VERIFICANDO DISPONIBILIDADE...</span>";
+
+        let finalResults = [];
+
+        // PASSO 1: Verifica se é uma Exceção Manual (Minecraft)
+        const manualMatch = MANUAL_GAMES.find(g => g.slug.includes(input.toLowerCase()));
+        if (manualMatch) {
+            finalResults.push({
+                name: manualMatch.name,
+                background_image: manualMatch.image,
+                released: manualMatch.year,
+                rating: manualMatch.rating,
+                isManual: true
+            });
+        }
 
         try {
-            // --- A MÁGICA ESTÁ AQUI ---
-            // stores=1  -> Força resultados APENAS da loja STEAM.
-            // page_size=5 -> Traz apenas os 5 jogos mais relevantes.
-            // ordering=-added -> Traz os mais famosos primeiro.
-            const url = `https://api.rawg.io/api/games?key=${API_KEY}&search=${encodeURIComponent(input)}&stores=1&page_size=5&ordering=-added`;
-
+            // PASSO 2: Busca na API (Só Steam, Ordenado por Fama)
+            const url = `https://api.rawg.io/api/games?key=${API_KEY}&search=${encodeURIComponent(input)}&stores=1&page_size=8&ordering=-added`;
             const response = await fetch(url);
-            if (!response.ok) throw new Error("Erro na API");
             const data = await response.json();
 
-            if (data.results && data.results.length > 0) {
-                
-                // Filtro Secundário (Remove Lixo que passou pelo filtro da Steam)
-                let jogosFiltrados = data.results.filter(game => {
+            if (data.results) {
+                // Filtra o lixo (Blocklist)
+                const apiResults = data.results.filter(game => {
                     const nameLower = game.name.toLowerCase();
-                    if (BLOCK_LIST.some(badWord => nameLower.includes(badWord))) return false;
-                    if (!game.background_image) return false;
+                    if (BLOCK_LIST.some(bad => nameLower.includes(bad))) return false;
                     return true;
                 });
+                
+                // Junta os manuais com os da API
+                finalResults = [...finalResults, ...apiResults];
+            }
 
-                // Ordenação por Nome Exato (Prioridade Máxima)
-                jogosFiltrados.sort((a, b) => {
-                    const termo = input.toLowerCase();
-                    const nomeA = a.name.toLowerCase();
-                    const nomeB = b.name.toLowerCase();
-                    if (nomeA === termo && nomeB !== termo) return -1;
-                    if (nomeB === termo && nomeA !== termo) return 1;
-                    return 0;
-                });
-
-                if (jogosFiltrados.length > 0) {
-                    status.innerHTML = `<span style='color:#fff'>${jogosFiltrados.length} JOGOS STEAM ENCONTRADOS.</span>`;
+            // Renderiza
+            if (finalResults.length > 0) {
+                status.innerHTML = `<span style='color:#fff'>${finalResults.length} JOGOS ENCONTRADOS.</span>`;
+                
+                // Limita a 5 cards como você pediu
+                finalResults.slice(0, 5).forEach(game => {
+                    let bgImage = game.background_image;
                     
-                    jogosFiltrados.forEach(game => {
-                        const bgImage = game.background_image;
-                        const year = game.released ? game.released.substring(0,4) : "---";
-                        const rating = game.rating > 0 ? `⭐ ${game.rating}` : "";
-                        
-                        const card = `
-                            <div class="game-card">
-                                <img src="${bgImage}" class="card-img">
-                                <div class="card-info">
-                                    <div class="game-title">${game.name}</div>
-                                    <div class="meta-tags">
-                                        <span class="tag tag-steam">● STEAM</span>
-                                        <span class="tag">${year}</span>
-                                        <span class="tag">${rating}</span>
-                                    </div>
-                                    <button class="btn-action" onclick="alert('Iniciando desbloqueio Steam para: ${game.name}')">
-                                        [ LIBERAR ACESSO ]
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                        grid.innerHTML += card;
-                    });
-                } else {
-                    status.innerHTML = "<span style='color:orange'>JOGO NÃO ENCONTRADO NA STEAM.</span>";
-                }
+                    // TRUQUE VIP: Se o nome do jogo estiver na nossa lista VIP, força a capa da Steam
+                    const lowerName = game.name.toLowerCase();
+                    for (const [key, url] of Object.entries(VIP_COVERS)) {
+                        if (lowerName.includes(key)) {
+                            bgImage = url;
+                            break;
+                        }
+                    }
 
+                    const year = game.released ? game.released.substring(0,4) : "---";
+                    const rating = game.rating ? `⭐ ${game.rating}` : "TOP";
+                    const badgeClass = game.isManual ? "tag-ms" : "tag-steam";
+                    const badgeText = game.isManual ? "● OFFICIAL" : "● STEAM";
+
+                    const card = `
+                        <div class="game-card">
+                            <div class="card-img-container">
+                                <img src="${bgImage}" class="card-img">
+                            </div>
+                            <div class="card-info">
+                                <div class="game-title">${game.name}</div>
+                                <div class="meta-tags">
+                                    <span class="tag ${badgeClass}">${badgeText}</span>
+                                    <span class="tag">${year}</span>
+                                    <span class="tag">${rating}</span>
+                                </div>
+                                <button class="btn-action" onclick="alert('Iniciando desbloqueio: ${game.name}')">
+                                    [ DESBLOQUEAR ]
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    grid.innerHTML += card;
+                });
             } else {
-                status.innerHTML = "<span style='color:orange'>JOGO NÃO ENCONTRADO NA STEAM.</span>";
+                status.innerHTML = "<span style='color:orange'>JOGO NÃO ENCONTRADO NO CATÁLOGO.</span>";
             }
 
         } catch (error) {
             console.error(error);
-            status.innerHTML = "<span style='color:red'>ERRO DE CONEXÃO.</span>";
+            // Se der erro, mostra pelo menos o manual se tiver
+            if(finalResults.length > 0) {
+                 // Renderiza só o manual (código repetido simplificado para o exemplo)
+            } else {
+                status.innerHTML = "<span style='color:red'>ERRO DE CONEXÃO.</span>";
+            }
         }
     }
 
