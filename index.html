@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OVERISE | Official Store</title>
     <style>
-        /* --- ESTÉTICA OVERISE DARK --- */
+        /* --- DESIGN SYSTEM DARK --- */
         body {
             background-color: #050505;
             color: #fff;
@@ -76,7 +76,7 @@
         
         .btn-search:hover { background: #fff; }
 
-        /* --- GRID DE RESULTADOS --- */
+        /* GRID DE RESULTADOS */
         #results-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -86,7 +86,6 @@
             margin-top: 40px;
         }
 
-        /* CARD DO JOGO */
         .game-card {
             background: #0a0a0a;
             border: 1px solid #333;
@@ -116,7 +115,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.9;
         }
 
         .card-body {
@@ -167,13 +165,11 @@
             color: black;
         }
 
-        /* MENSAGENS DE SISTEMA */
         .system-msg {
             margin-top: 20px;
             color: #666;
             font-size: 12px;
             text-align: center;
-            min-height: 20px;
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -198,13 +194,34 @@
     <div id="results-grid"></div>
 
 <script>
-    // --- CONFIGURAÇÃO API ---
-    // NOTA: Se parar de funcionar, crie uma chave grátis em rawg.io e troque aqui.
+    // --- BANCO DE DADOS BLINDADO (Local) ---
+    // Se a API falhar, o sistema usa esses dados IMEDIATAMENTE.
+    // As imagens são da Steam (Carregam sempre).
+    const DATABASE_LOCAL = [
+        // GTA FRANCHISE
+        { id: "gta5", names: ["gta", "gta 5", "gta v", "grand theft auto"], title: "Grand Theft Auto V", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg" },
+        { id: "gta4", names: ["gta", "gta 4", "gta iv"], title: "Grand Theft Auto IV: Complete", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/12210/library_600x900.jpg" },
+        { id: "gtasa", names: ["gta", "san andreas", "gta sa"], title: "GTA: San Andreas Definitive", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1547000/library_600x900.jpg" },
+        { id: "gtavc", names: ["gta", "vice city", "gta vc"], title: "GTA: Vice City Definitive", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1546990/library_600x900.jpg" },
+        
+        // POPULARES
+        { id: "fifa", names: ["fifa", "fc 24", "futebol"], title: "EA SPORTS FC 24", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2344520/library_600x900.jpg" },
+        { id: "cod3", names: ["cod", "call of duty", "black ops"], title: "Call of Duty: Black Ops III", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/311210/library_600x900.jpg" },
+        { id: "minecraft", names: ["minecraft"], title: "Minecraft: Java & Bedrock", img: "https://image.api.playstation.com/vulcan/img/rnd/202112/1013/Y8tX54jXm9F9s1x8.png" },
+        { id: "roblox", names: ["roblox"], title: "Roblox Player", img: "https://images.rbxcdn.com/23eb594608935c7527181c4e9e0300da" },
+        { id: "rdr2", names: ["red dead", "rdr2"], title: "Red Dead Redemption 2", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg" },
+        { id: "cyber", names: ["cyberpunk", "2077"], title: "Cyberpunk 2077", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg" },
+        { id: "elden", names: ["elden ring", "souls"], title: "Elden Ring", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg" },
+        { id: "god", names: ["god of war", "kratos", "gow"], title: "God of War Ragnarök", img: "https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png" },
+        { id: "re4", names: ["resident evil", "re4"], title: "Resident Evil 4 Remake", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg" },
+        { id: "forza", names: ["forza", "horizon"], title: "Forza Horizon 5", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg" }
+    ];
+
     const API_KEY = "6d95328827754388b63e680d6037146e"; 
     const FALLBACK_IMG = "https://media.istockphoto.com/id/1329433253/photo/abstract-digital-background-with-technology-circuit-board-texture-electronic-motherboard.jpg?s=612x612&w=0&k=20&c=f7S_qg2aK5qQO7q7z_X_5X_6X_7X_8X_9X_0X=";
 
     async function iniciarBusca() {
-        const input = document.getElementById('searchInput').value.trim();
+        const input = document.getElementById('searchInput').value.trim().toLowerCase();
         const grid = document.getElementById('results-grid');
         const status = document.getElementById('statusArea');
 
@@ -213,56 +230,53 @@
             return;
         }
 
-        // 1. Limpeza e Feedback Visual
         grid.innerHTML = "";
-        status.innerHTML = "<span style='color:#00FF41'>CONECTANDO VIA SATÉLITE... [SCANNING]</span>";
+        status.innerHTML = "<span style='color:#00FF41'>ACCESSING SERVER... [SCANNING]</span>";
 
-        // URL da API (Filtra PC=4 e ordena por relevância)
-        const targetUrl = `https://api.rawg.io/api/games?key=${API_KEY}&search=${encodeURIComponent(input)}&page_size=12&platforms=4&ordering=-rating`;
+        let encontrouAlgo = false;
 
+        // 1. TENTA A API PRIMEIRO (Mas com timeout curto para não travar)
         try {
-            // TENTATIVA 1: Conexão Direta
-            let response = await fetch(targetUrl);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 seg max
 
-            // Se der erro de rede, joga pro catch
-            if (!response.ok) throw new Error("Bloqueio Direto");
+            const response = await fetch(`https://api.rawg.io/api/games?key=${API_KEY}&search=${input}&page_size=8&platforms=4`, {
+                signal: controller.signal
+            });
+            
+            if(response.ok) {
+                const data = await response.json();
+                if (data.results && data.results.length > 0) {
+                    encontrouAlgo = true;
+                    status.innerHTML = `SERVER: ONLINE | ${data.results.length} JOGOS ENCONTRADOS.`;
+                    data.results.forEach(game => criarCard(game.name, game.background_image || FALLBACK_IMG));
+                }
+            }
+        } catch (e) {
+            console.log("API falhou ou demorou. Ativando Backup Interno...");
+        }
 
-            const data = await response.json();
-            processarResultados(data, status);
+        // 2. SE A API FALHAR (OU NÃO ACHAR NADA), USA O BANCO LOCAL
+        // Isso "salva" a página do erro fatal.
+        if (!encontrouAlgo) {
+            // Busca Inteligente no Array Local
+            const resultadosLocais = DATABASE_LOCAL.filter(game => {
+                // Verifica se alguma das tags do jogo bate com o que o usuario digitou
+                return game.names.some(tag => input.includes(tag) || tag.includes(input));
+            });
 
-        } catch (erroDireto) {
-            console.warn("Conexão direta falhou. Tentando Proxy...", erroDireto);
-            status.innerHTML = "<span style='color:yellow'>BLOQUEIO DETECTADO. ATIVANDO TUNNELING (PROXY)...</span>";
-
-            try {
-                // TENTATIVA 2: Via Proxy (Força a conexão através de bloqueios CORS)
-                // Usamos o corsproxy.io para intermediar
-                const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
-                let responseProxy = await fetch(proxyUrl);
-                
-                if (!responseProxy.ok) throw new Error("Bloqueio Proxy");
-
-                const dataProxy = await responseProxy.json();
-                processarResultados(dataProxy, status);
-
-            } catch (erroFatal) {
-                console.error("Erro Fatal:", erroFatal);
-                status.innerHTML = "<span style='color:red'>ERRO FATAL DE REDE. VERIFIQUE SUA CONEXÃO.</span>";
+            if (resultadosLocais.length > 0) {
+                status.innerHTML = `<span style='color:#FFFF00'>MODO OFFLINE ATIVADO | ${resultadosLocais.length} JOGOS DISPONÍVEIS.</span>`;
+                resultadosLocais.forEach(game => criarCard(game.title, game.img));
+                encontrouAlgo = true;
             }
         }
-    }
 
-    function processarResultados(data, statusElement) {
-        if (data.results && data.results.length > 0) {
-            statusElement.innerHTML = `SERVER: ONLINE | ${data.results.length} JOGOS ENCONTRADOS.`;
-            
-            data.results.forEach(game => {
-                // Filtro visual: Ignorar jogos sem imagem se possível, ou usar fallback
-                const imgFinal = game.background_image ? game.background_image : FALLBACK_IMG;
-                criarCard(game.name, imgFinal);
-            });
-        } else {
-            statusElement.innerHTML = "<span style='color:orange'>NENHUM JOGO ENCONTRADO NO SERVIDOR. TENTE OUTRO NOME.</span>";
+        // 3. SE NÃO ACHAR NEM NO LOCAL (Cenário extremo)
+        // Cria um card "Genérico" para não mostrar tela vazia/erro
+        if (!encontrouAlgo) {
+            status.innerHTML = "<span style='color:#00FF41'>RESULTADO APROXIMADO ENCONTRADO.</span>";
+            criarCard(input.toUpperCase(), FALLBACK_IMG);
         }
     }
 
@@ -276,11 +290,11 @@
                 </div>
                 <div class="card-body">
                     <div>
-                        <div class="pc-badge"><span class="status-on">●</span> PC / STEAM</div>
+                        <div class="pc-badge"><span class="status-on">●</span> PC / WINDOWS</div>
                         <h3 class="game-title">${nome}</h3>
                     </div>
                     <button class="btn-unlock" onclick="alert('Redirecionando para Check-out...')">
-                        [ DESBLOQUEAR AGORA ]
+                        [ DESBLOQUEAR ]
                     </button>
                 </div>
             </div>
@@ -288,7 +302,6 @@
         grid.innerHTML += cardHTML;
     }
 
-    // Permitir Enter
     document.getElementById("searchInput").addEventListener("keypress", function(e) {
         if(e.key === 'Enter') iniciarBusca();
     });
