@@ -92,7 +92,6 @@
       border:1px solid rgba(0,255,65,0.6); color:var(--neon);
       background: rgba(0,255,65,0.08);
     }
-    .row{display:flex; gap:8px}
     .btn-action{
       width:100%; background:var(--neon); border:0; color:#000;
       padding:10px; font-size:11px; font-weight:900; cursor:pointer;
@@ -124,9 +123,9 @@
       <div class="cats" id="cats"></div>
 
       <div style="margin-top:12px" class="muted">
-        • Capas: Steam (automático)<br/>
-        • Cache: appid salvo no navegador<br/>
-        • Carregamento: imagens lazy + fila com limite
+        • Capas: Steam (via JSON)<br/>
+        • Carregamento: lazy + paginação<br/>
+        • Dica: Ctrl + F5 se não atualizar
       </div>
     </aside>
 
@@ -137,53 +136,19 @@
 
 <script>
 /** =========================
- *  CONFIG / PERFORMANCE
+ *  CONFIG
  *  ========================= */
-const FALLBACK_IMG = "https://media.istockphoto.com/id/1329433253/photo/abstract-digital-background-with-technology-circuit-board-texture-electronic-motherboard.jpg?s=612x612&w=0&k=20&c=f7S_qg2aK5qQO7q7z_X_5X_6X_7X_8X_9X_0X=";
 
-// Steam Store Search (sem API key) — pega o primeiro resultado e usa o appid.
-// Referência: endpoint de busca da loja Steam (storesearch).
-const STEAM_SEARCH = (term) => `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(term)}&l=portuguese&cc=BR`;
+// Fallback local (NUNCA falha)
+const FALLBACK_IMG =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(`
+  <svg xmlns='http://www.w3.org/2000/svg' width='1280' height='720'>
+    <rect width='100%' height='100%' fill='#000'/>
+    <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+      fill='#00FF41' font-family='monospace' font-size='44'>OVERISE</text>
+  </svg>`);
 
-// Header oficial:
-const STEAM_HEADER = (appid) => `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg`;
-
-// Cache no navegador: nome -> appid
-const CACHE_KEY = "overise_appid_cache_v1";
-let appidCache = {};
-try { appidCache = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}"); } catch(e){ appidCache = {}; }
-
-function saveCache(){
-  try{ localStorage.setItem(CACHE_KEY, JSON.stringify(appidCache)); } catch(e){}
-}
-
-// Fila com limite de concorrência (evita travar o navegador / bater rate-limit)
-class FetchQueue {
-  constructor(limit=6){
-    this.limit = limit;
-    this.active = 0;
-    this.q = [];
-  }
-  push(task){
-    return new Promise((resolve,reject)=>{
-      this.q.push({task,resolve,reject});
-      this._next();
-    });
-  }
-  _next(){
-    while(this.active < this.limit && this.q.length){
-      const {task,resolve,reject} = this.q.shift();
-      this.active++;
-      Promise.resolve().then(task).then(resolve).catch(reject).finally(()=>{
-        this.active--;
-        this._next();
-      });
-    }
-  }
-}
-const coverQueue = new FetchQueue(6);
-
-// Debounce para busca
 function debounce(fn, ms=180){
   let t;
   return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); };
@@ -195,6 +160,7 @@ function debounce(fn, ms=180){
 let GAMES = [];
 let FILTERED = [];
 let ACTIVE_CATEGORY = "TODOS";
+let page = 0;
 
 const statusMsg = document.getElementById("statusMsg");
 const grid = document.getElementById("results-grid");
@@ -202,43 +168,20 @@ const catsEl = document.getElementById("cats");
 const totalCount = document.getElementById("totalCount");
 const inputEl = document.getElementById("searchInput");
 
-/** =========================
- *  CATEGORIAS
- *  ========================= */
-function buildCategories(games){
-  const counts = new Map();
-  for(const g of games){
-    for(const c of g.categories || ["OUTROS"]){
-      counts.set(c, (counts.get(c)||0)+1);
-    }
-  }
-  const sorted = [...counts.entries()].sort((a,b)=>b[1]-a[1]).map(([c,n])=>({c,n}));
-  return [{c:"TODOS",n:games.length}, ...sorted];
-}
-
-function renderCategories(){
-  const cats = buildCategories(GAMES);
-  catsEl.innerHTML = cats.map(({c,n})=>{
-    const active = (c===ACTIVE_CATEGORY) ? "active" : "";
-    return `<div class="cat-btn ${active}" data-cat="${c}">${c} <small>(${n})</small></div>`;
-  }).join("");
-  totalCount.textContent = String(GAMES.length);
-  catsEl.querySelectorAll(".cat-btn").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      ACTIVE_CATEGORY = btn.getAttribute("data-cat");
-      renderCategories();
-      applyFilters();
-    });
-  });
-}
+const PER_PAGE = 48;
 
 /** =========================
- *  BUSCA + FILTRO
+ *  HELPERS
  *  ========================= */
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+  }[m]));
+}
+function escapeAttr(s){ return String(s).replace(/'/g,"\\'"); }
+
 function normalizeQuery(q){
   q = (q||"").trim().toUpperCase();
-
-  // Apelidos comuns
   if(q === "GTA") q = "GRAND THEFT AUTO";
   if(q === "GTA 5") q = "GRAND THEFT AUTO V";
   if(q === "COD") q = "CALL OF DUTY";
@@ -250,157 +193,119 @@ function normalizeQuery(q){
   return q;
 }
 
-function applyFilters(){
+/** =========================
+ *  CATEGORIAS
+ *  ========================= */
+function buildCategories(games){
+  const counts = new Map();
+  for(const g of games){
+    const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
+    for(const c of cats){
+      counts.set(c, (counts.get(c)||0)+1);
+    }
+  }
+  const sorted = [...counts.entries()]
+    .sort((a,b)=>b[1]-a[1])
+    .map(([c,n])=>({c,n}));
+
+  return [{c:"TODOS", n: games.length}, ...sorted];
+}
+
+function renderCategories(){
+  const cats = buildCategories(GAMES);
+  catsEl.innerHTML = cats.map(({c,n})=>{
+    const active = (c===ACTIVE_CATEGORY) ? "active" : "";
+    return `<div class="cat-btn ${active}" data-cat="${escapeHtml(c)}">${escapeHtml(c)} <small>(${n})</small></div>`;
+  }).join("");
+
+  totalCount.textContent = String(GAMES.length);
+
+  catsEl.querySelectorAll(".cat-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      ACTIVE_CATEGORY = btn.getAttribute("data-cat");
+      renderCategories();
+      applyFilters(true);
+    });
+  });
+}
+
+/** =========================
+ *  RENDER
+ *  ========================= */
+function cardHtml(g){
+  const cats = ((g.categories && g.categories.length) ? g.categories : ["OUTROS"]).slice(0,3);
+
+  // o JSON deve ter "cover". Se não tiver, usa fallback.
+  const cover = g.cover || FALLBACK_IMG;
+
+  return `
+    <div class="game-card">
+      <div class="imgbox">
+        <img
+          loading="lazy"
+          src="${escapeHtml(cover)}"
+          alt="${escapeHtml(g.name)}"
+          referrerpolicy="no-referrer"
+          onerror="this.onerror=null; this.src='${FALLBACK_IMG}';"
+        />
+      </div>
+      <div class="info">
+        <div class="title">${escapeHtml(g.name)}</div>
+        <div class="tags">
+          <span class="tag">✓ DISPONÍVEL</span>
+          ${cats.map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join("")}
+        </div>
+        <button class="btn-action" onclick="alert('Iniciando Checkout para: ${escapeAttr(g.name)}')">[ DESBLOQUEAR ]</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderGridFirstPage(){
+  page = 0;
+  const first = FILTERED.slice(0, PER_PAGE);
+  grid.innerHTML = first.map(cardHtml).join("");
+}
+
+function renderMore(){
+  const start = (page + 1) * PER_PAGE;
+  const next = FILTERED.slice(start, start + PER_PAGE);
+  if(!next.length) return;
+  page++;
+  const tmp = document.createElement("div");
+  tmp.innerHTML = next.map(cardHtml).join("");
+  while(tmp.firstElementChild){
+    grid.appendChild(tmp.firstElementChild);
+  }
+}
+
+/** =========================
+ *  FILTRO
+ *  ========================= */
+function applyFilters(resetPage){
   const q = normalizeQuery(inputEl.value);
   const qOk = q.length >= 2;
 
   FILTERED = GAMES.filter(g=>{
-    const inCat = (ACTIVE_CATEGORY==="TODOS") ? true : (g.categories||[]).includes(ACTIVE_CATEGORY);
+    const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
+    const inCat = (ACTIVE_CATEGORY==="TODOS") ? true : cats.includes(ACTIVE_CATEGORY);
     if(!inCat) return false;
     if(!qOk) return true;
     return g.name.toUpperCase().includes(q);
   });
 
   statusMsg.innerHTML = `<span style="color:#fff">${FILTERED.length} JOGOS DISPONÍVEIS NO ACERVO.</span>`;
-  renderGrid(FILTERED.slice(0, 48)); // primeira página (performance)
-}
 
-const applyFiltersDebounced = debounce(applyFilters, 180);
-
-/** =========================
- *  CAPA STEAM (AUTO)
- *  ========================= */
-async function resolveSteamAppId(gameName){
-  // Se já tem cache:
-  if(appidCache[gameName]) return appidCache[gameName];
-
-  // Consulta Steam
-  const url = STEAM_SEARCH(gameName);
-  const r = await fetch(url, {mode:"cors"});
-  const data = await r.json();
-
-  // Heurística: primeiro item "game"
-  if(data && data.items && data.items.length){
-    const item = data.items[0];
-    const appid = item.id;
-    if(appid){
-      appidCache[gameName] = appid;
-      saveCache();
-      return appid;
-    }
-  }
-  // Se não encontrou:
-  appidCache[gameName] = null;
-  saveCache();
-  return null;
-}
-
-async function loadCoverInto(imgEl, gameName){
-  // Evita duplicar
-  if(imgEl.dataset.loaded === "1") return;
-  imgEl.dataset.loaded = "1";
-
-  try{
-    const appid = await resolveSteamAppId(gameName);
-    if(appid){
-      imgEl.src = STEAM_HEADER(appid);
-      imgEl.alt = gameName;
-      imgEl.dataset.appid = appid;
-    } else {
-      imgEl.src = FALLBACK_IMG;
-      imgEl.alt = gameName;
-      imgEl.dataset.appid = "";
-    }
-  }catch(e){
-    imgEl.src = FALLBACK_IMG;
-    imgEl.alt = gameName;
-    imgEl.dataset.appid = "";
+  if(resetPage){
+    renderGridFirstPage();
   }
 }
 
-/** =========================
- *  LAZY LOAD COM INTERSECTION OBSERVER
- *  ========================= */
-const io = new IntersectionObserver((entries)=>{
-  for(const e of entries){
-    if(e.isIntersecting){
-      const img = e.target;
-      const name = img.dataset.name;
-      io.unobserve(img);
-      coverQueue.push(()=>loadCoverInto(img, name));
-    }
-  }
-}, {rootMargin:"250px"});
+const applyFiltersDebounced = debounce(()=>applyFilters(true), 180);
 
 /** =========================
- *  RENDER
+ *  SCROLL (PAGINAÇÃO)
  *  ========================= */
-function renderGrid(list){
-  grid.innerHTML = list.map(g=>{
-    const cats = (g.categories||["OUTROS"]).slice(0,3); // não poluir
-    return `
-      <div class="game-card">
-        <div class="imgbox">
-          <img loading="lazy" data-name="${escapeHtml(g.name)}" src="${FALLBACK_IMG}" alt="${escapeHtml(g.name)}"/>
-        </div>
-        <div class="info">
-          <div class="title">${escapeHtml(g.name)}</div>
-          <div class="tags">
-            <span class="tag">✓ DISPONÍVEL</span>
-            ${cats.map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join("")}
-          </div>
-          <button class="btn-action" onclick="alert('Iniciando Checkout para: ${escapeAttr(g.name)}')">[ DESBLOQUEAR ]</button>
-        </div>
-      </div>
-    `;
-  }).join("");
-
-  // conectar lazy loader
-  grid.querySelectorAll("img[data-name]").forEach(img=>io.observe(img));
-}
-
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m]));
-}
-function escapeAttr(s){ return String(s).replace(/'/g,"\\'"); }
-
-/** =========================
- *  PAGINAÇÃO SIMPLES (mais performance)
- *  ========================= */
-let page = 1;
-function renderMore(){
-  const perPage = 48;
-  const start = page*perPage;
-  const next = FILTERED.slice(start, start+perPage);
-  if(!next.length) return;
-  page++;
-  const tmp = document.createElement("div");
-  tmp.innerHTML = next.map(g=>{
-    const cats = (g.categories||["OUTROS"]).slice(0,3);
-    return `
-      <div class="game-card">
-        <div class="imgbox">
-          <img loading="lazy" data-name="${escapeHtml(g.name)}" src="${FALLBACK_IMG}" alt="${escapeHtml(g.name)}"/>
-        </div>
-        <div class="info">
-          <div class="title">${escapeHtml(g.name)}</div>
-          <div class="tags">
-            <span class="tag">✓ DISPONÍVEL</span>
-            ${cats.map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join("")}
-          </div>
-          <button class="btn-action" onclick="alert('Iniciando Checkout para: ${escapeAttr(g.name)}')">[ DESBLOQUEAR ]</button>
-        </div>
-      </div>
-    `;
-  }).join("");
-  const cards = [...tmp.children];
-  for(const c of cards){
-    grid.appendChild(c);
-    const img = c.querySelector("img[data-name]");
-    if(img) io.observe(img);
-  }
-}
-
 window.addEventListener("scroll", debounce(()=>{
   const nearBottom = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 900);
   if(nearBottom) renderMore();
@@ -411,35 +316,35 @@ window.addEventListener("scroll", debounce(()=>{
  *  ========================= */
 async function init(){
   try{
-    // Carrega games.json (741)
-    const r = await fetch("./games_741_steam.json");
-    GAMES = await r.json();
+    // IMPORTANTE: esse arquivo deve estar no mesmo diretório do index.html no GitHub
+    const r = await fetch("./games_741_steam.json", { cache: "no-store" });
+    if(!r.ok) throw new Error("HTTP " + r.status);
+    const data = await r.json();
+
+    // Aceita tanto array direto quanto {games:[...]}
+    GAMES = Array.isArray(data) ? data : (data.games || []);
+    if(!Array.isArray(GAMES) || !GAMES.length) throw new Error("JSON vazio/fora do formato");
 
     statusMsg.textContent = "SISTEMA ONLINE. AGUARDANDO COMANDO.";
     renderCategories();
 
     FILTERED = GAMES.slice();
-    page = 1;
-    renderGrid(FILTERED.slice(0, 48));
+    renderGridFirstPage();
   }catch(e){
-    statusMsg.innerHTML = "<span style='color:orange'>ERRO AO CARREGAR games_741.json</span>";
+    console.error(e);
+    statusMsg.innerHTML = "<span style='color:orange'>ERRO AO CARREGAR games_741_steam.json</span>";
   }
 }
 
 document.getElementById("scanBtn").addEventListener("click", ()=>{
-  page = 1;
-  applyFilters();
+  applyFilters(true);
 });
-inputEl.addEventListener("input", ()=>{
-  page = 1;
-  applyFiltersDebounced();
-});
+inputEl.addEventListener("input", applyFiltersDebounced);
 inputEl.addEventListener("keypress", (e)=>{
-  if(e.key === "Enter"){ page=1; applyFilters(); }
+  if(e.key === "Enter"){ applyFilters(true); }
 });
 
 init();
 </script>
 </body>
 </html>
-
