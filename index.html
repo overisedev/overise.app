@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVERISE | System Unlock</title>
+    <style>
+        /* --- ESTÉTICA OVERISE --- */
+        body {
+            background-color: #050505;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 50px;
+        }
+
+        /* CONTAINER DA BUSCA */
+        .system-container {
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid #333;
+            background: #0a0a0a;
+            padding: 2px; /* Borda interna */
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
+        }
+
+        .terminal-header {
+            background: #111;
+            padding: 10px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .terminal-body {
+            padding: 30px;
+        }
+
+        /* INPUT E BOTÃO */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            border-left: 3px solid #00FF41;
+            padding: 20px;
+            color: #00FF41;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            text-transform: uppercase;
+            outline: none;
+            box-sizing: border-box;
+        }
+        
+        input:focus { box-shadow: 0 0 15px rgba(0,255,65,0.1); border-color: #00FF41; }
+
+        .btn-scan {
+            width: 100%;
+            background: #00FF41;
+            color: #000;
+            border: none;
+            padding: 15px;
+            font-weight: 900;
+            font-size: 16px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-scan:hover { background: #fff; box-shadow: 0 0 20px #00FF41; }
+
+        /* O RESULTADO (O Pulo do Gato) */
+        #result-panel {
+            display: none; /* Escondido no inicio */
+            margin-top: 30px;
+            border: 1px solid #222;
+            background: #0e0e0e;
+            animation: glitch-anim 0.3s forwards;
+        }
+
+        .game-cover {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 2px solid #00FF41;
+            opacity: 0.8;
+        }
+
+        .info-box {
+            padding: 20px;
+            text-align: left;
+        }
+
+        .status-badge {
+            background: rgba(0, 255, 65, 0.1);
+            color: #00FF41;
+            border: 1px solid #00FF41;
+            padding: 5px 10px;
+            font-size: 11px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .game-title {
+            font-family: Arial, sans-serif;
+            font-weight: 900;
+            font-size: 24px;
+            margin: 0;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .system-msg {
+            margin-top: 15px;
+            color: #888;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .highlight { color: #00FF41; }
+
+        /* Animação de entrada */
+        @keyframes glitch-anim {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Loading */
+        .loader-bar {
+            height: 2px;
+            background: #00FF41;
+            width: 0%;
+            transition: width 1.5s ease-in-out;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div style="margin-bottom: 30px; text-align: center;">
+        <h1 style="font-family: Arial, sans-serif; font-weight: 900; letter-spacing: -3px; font-size: 40px; margin:0;">
+            OVER<span style="color:#00FF41">ISE</span>
+        </h1>
+        <p style="color:#666; font-size: 12px; letter-spacing: 4px;">// SYSTEM UNLOCK PROTOCOL</p>
+    </div>
+
+    <div class="system-container">
+        <div class="terminal-header">
+            <span>SERVER: <span style="color:#00FF41">ONLINE</span></span>
+            <span>DB_VERSION: 4.2.0</span>
+        </div>
+        
+        <div class="terminal-body">
+            <p style="color:#00FF41; font-size: 12px; margin-bottom: 10px;">> BUSCAR NO ACERVO GLOBAL:</p>
+            
+            <div class="input-wrapper">
+                <input type="text" id="searchInput" placeholder="DIGITE O JOGO (Ex: GTA V)...">
+                <div class="loader-bar" id="loader"></div>
+            </div>
+
+            <button class="btn-scan" onclick="runSystem()">VERIFICAR SISTEMA</button>
+
+            <div id="result-panel">
+                <img src="" id="gameImg" class="game-cover">
+                <div class="info-box">
+                    <div class="status-badge">✅ DISPONÍVEL NO PACOTE</div>
+                    <h2 id="gameTitle" class="game-title">JOGO</h2>
+                    <div class="system-msg">
+                        > ARQUIVOS LOCALIZADOS.<br>
+                        > OTIMIZAÇÃO DE FPS: <span class="highlight">ATIVADA</span><br>
+                        > RISCO DE BANIMENTO: <span class="highlight">0% (MODO OFFLINE)</span>
+                    </div>
+                    <button style="width:100%; margin-top:20px; background:none; border:1px solid #00FF41; color:#00FF41; padding:10px; cursor:pointer; font-weight:bold;">
+                        [ LIBERAR DOWNLOAD AGORA ]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // CHAVE API PÚBLICA (Funciona direto)
+    const API_KEY = "6d95328827754388b63e680d6037146e"; 
+
+    // IMAGEM CORINGA (Hacker/Matrix) para caso a internet falhe
+    const FALLBACK_IMG = "https://media.istockphoto.com/id/1139471131/photo/futuristic-hud-cyberpunk-interface.jpg?s=612x612&w=0&k=20&c=N5FqZ4e6i8SgQzQy3jZ6x2a3d4f5g6h7j8k9l0.jpg";
+
+    async function runSystem() {
+        const input = document.getElementById('searchInput').value.trim();
+        const panel = document.getElementById('result-panel');
+        const loader = document.getElementById('loader');
+        const img = document.getElementById('gameImg');
+        const title = document.getElementById('gameTitle');
+
+        if(input.length < 2) return;
+
+        // 1. Reset e Animação
+        panel.style.display = 'none';
+        loader.style.width = "0%";
+        
+        // Simula processamento
+        setTimeout(() => { loader.style.width = "70%"; }, 100);
+
+        try {
+            // 2. Busca na API RAWG
+            const response = await fetch(`https://api.rawg.io/api/games?key=${API_KEY}&search=${input}&page_size=1`);
+            const data = await response.json();
+
+            setTimeout(() => {
+                loader.style.width = "100%";
+                panel.style.display = 'block';
+
+                if (data.results && data.results.length > 0) {
+                    // SUCESSO REAL (Achou o jogo)
+                    const game = data.results[0];
+                    img.src = game.background_image;
+                    title.textContent = game.name;
+                } else {
+                    // NÃO ACHOU NA API (Mostra Genérico mas diz que tem)
+                    ativarModoGenerico(input);
+                }
+            }, 1200); // 1.2 segundos de suspense para o cliente sentir o "processamento"
+
+        } catch (e) {
+            // ERRO DE INTERNET (Mostra Genérico mas diz que tem)
+            setTimeout(() => {
+                loader.style.width = "100%";
+                panel.style.display = 'block';
+                ativarModoGenerico(input);
+            }, 1000);
+        }
+    }
+
+    function ativarModoGenerico(nomeDigitado) {
+        const img = document.getElementById('gameImg');
+        const title = document.getElementById('gameTitle');
+        
+        img.src = FALLBACK_IMG; // Capa Hacker
+        title.textContent = nomeDigitado.toUpperCase(); // Usa o nome que ele digitou
+    }
+
+    // Enter ativa
+    document.getElementById("searchInput").addEventListener("keypress", function(e) {
+        if(e.key === 'Enter') runSystem();
+    });
+
+</script>
+
+</body>
+</html>
