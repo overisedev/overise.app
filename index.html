@@ -412,7 +412,7 @@ window.addEventListener("scroll", debounce(()=>{
 async function init(){
   try{
     // Carrega games.json (741)
-    const r = await fetch("./games_741.json");
+    const r = await fetch("./games_741_steam.json");
     GAMES = await r.json();
 
     statusMsg.textContent = "SISTEMA ONLINE. AGUARDANDO COMANDO.";
@@ -442,3 +442,4 @@ init();
 </script>
 </body>
 </html>
+
