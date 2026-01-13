@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OVERISE | Official Store</title>
+    <title>OVERISE | Official Search</title>
     <style>
-        /* --- ESTÉTICA OVERISE DARK --- */
+        /* --- DESIGN SYSTEM OVERISE (DARK MODE) --- */
         body {
             background-color: #050505;
             color: #fff;
@@ -18,6 +18,7 @@
             padding-bottom: 50px;
         }
 
+        /* CABEÇALHO DA MARCA */
         .brand-header {
             margin-top: 40px;
             text-align: center;
@@ -33,7 +34,7 @@
             text-transform: uppercase;
         }
 
-        /* BARRA DE BUSCA */
+        /* ÁREA DE BUSCA */
         .search-container {
             width: 90%;
             max-width: 800px;
@@ -43,7 +44,7 @@
 
         .input-group {
             display: flex;
-            box-shadow: 0 0 40px rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.15); /* Glow Verde */
         }
 
         input {
@@ -59,6 +60,7 @@
             outline: none;
         }
         
+        input::placeholder { color: #004411; }
         input:focus { border-color: #00FF41; }
 
         .btn-search {
@@ -70,55 +72,49 @@
             font-size: 16px;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 1px;
             transition: 0.2s;
+            letter-spacing: 1px;
         }
         
-        .btn-search:hover { background: #fff; }
+        .btn-search:hover { background: #fff; box-shadow: 0 0 20px #00FF41; }
 
-        /* GRID DE RESULTADOS */
+        /* GRID DE JOGOS */
         #results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
             width: 90%;
-            max-width: 1000px;
+            max-width: 1200px;
             margin-top: 40px;
         }
 
         .game-card {
             background: #0a0a0a;
             border: 1px solid #333;
-            border-radius: 4px;
+            border-radius: 6px;
             overflow: hidden;
-            transition: transform 0.2s, border-color 0.2s;
-            animation: fadeIn 0.5s ease-out;
+            transition: transform 0.2s;
             display: flex;
             flex-direction: column;
-            height: 100%;
+            animation: fadeIn 0.5s ease-out;
         }
 
         .game-card:hover {
             transform: translateY(-5px);
             border-color: #00FF41;
-            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.1);
         }
 
-        .card-img-container {
+        .card-img {
             width: 100%;
-            height: 240px;
-            background: #111;
-            position: relative;
-        }
-
-        .game-img {
-            width: 100%;
-            height: 100%;
+            height: 140px;
             object-fit: cover;
+            background: #111;
+            border-bottom: 1px solid #222;
         }
 
-        .card-body {
-            padding: 12px;
+        .card-info {
+            padding: 15px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -129,48 +125,44 @@
             font-family: Arial, sans-serif;
             font-weight: bold;
             font-size: 13px;
-            margin: 5px 0 10px 0;
-            line-height: 1.2;
+            margin-bottom: 10px;
             color: #fff;
-            text-transform: uppercase;
+            line-height: 1.3;
         }
 
-        .pc-badge {
-            font-size: 9px;
+        .meta-tags {
+            font-size: 10px;
             color: #888;
-            margin-bottom: 5px;
+            margin-bottom: 15px;
             display: flex;
-            align-items: center;
-            gap: 4px;
+            gap: 5px;
+            flex-wrap: wrap;
         }
 
-        .status-on { color: #00FF41; }
+        .tag {
+            background: #1a1a1a;
+            padding: 3px 6px;
+            border-radius: 3px;
+            border: 1px solid #333;
+        }
 
-        .btn-unlock {
+        .btn-action {
             width: 100%;
             background: transparent;
-            border: 1px solid #333;
+            border: 1px solid #00FF41;
             color: #00FF41;
             padding: 10px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
             margin-top: auto;
             transition: 0.2s;
         }
+        
+        .btn-action:hover { background: #00FF41; color: black; }
 
-        .btn-unlock:hover {
-            background: #00FF41;
-            color: black;
-        }
-
-        .system-msg {
-            margin-top: 20px;
-            color: #666;
-            font-size: 12px;
-            text-align: center;
-        }
+        .msg-area { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -180,128 +172,90 @@
 
     <div class="brand-header">
         <h1>OVER<span style="color:#00FF41">ISE</span></h1>
-        <div style="font-size: 12px; letter-spacing: 4px; color:#666;">// SYSTEM UNLOCK DATABASE</div>
+        <div style="font-size: 12px; letter-spacing: 4px; color:#666;">// SEARCH ENGINE V1.0</div>
     </div>
 
     <div class="search-container">
         <div class="input-group">
-            <input type="text" id="searchInput" placeholder="DIGITE O JOGO (Ex: GTA, FIFA, COD)...">
-            <button class="btn-search" onclick="iniciarBusca()">SCAN</button>
+            <input type="text" id="searchInput" placeholder="DIGITE O JOGO (EX: FIFA, GTA V)...">
+            <button class="btn-search" onclick="searchAPI()">SCAN</button>
         </div>
-        <div id="statusArea" class="system-msg">AGUARDANDO COMANDO...</div>
+        <div id="statusMsg" class="msg-area">SISTEMA ONLINE. CONEXÃO SEGURA ESTABELECIDA.</div>
     </div>
 
     <div id="results-grid"></div>
 
 <script>
-    // --- SUPER BANCO DE DADOS OFFLINE (Baseado no seu PDF) ---
-    // Estes jogos funcionarão 100% das vezes, instantaneamente.
-    const DATABASE_CORE = [
-        // GTA & OPEN WORLD
-        { tag: "gta grand theft auto", title: "Grand Theft Auto V", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg" },
-        { tag: "gta san andreas", title: "GTA: San Andreas Definitive", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1547000/library_600x900.jpg" },
-        { tag: "gta vice city", title: "GTA: Vice City Definitive", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1546990/library_600x900.jpg" },
-        { tag: "red dead redemption rdr2", title: "Red Dead Redemption 2", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg" },
-        { tag: "cyberpunk 2077", title: "Cyberpunk 2077", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg" },
-        { tag: "hogwarts legacy harry potter", title: "Hogwarts Legacy", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900.jpg" },
-        
-        // ESPORTES & CORRIDA
-        { tag: "fifa fc 24 futebol", title: "EA SPORTS FC 24", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2344520/library_600x900.jpg" },
-        { tag: "forza horizon 5 carro", title: "Forza Horizon 5", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg" },
-        { tag: "euro truck simulator", title: "Euro Truck Simulator 2", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/227300/library_600x900.jpg" },
-        { tag: "need for speed heat nfs", title: "Need for Speed Heat", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1222680/library_600x900.jpg" },
-        
-        // AÇÃO & FPS
-        { tag: "call of duty cod black ops 3", title: "Call of Duty: Black Ops III", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/311210/library_600x900.jpg" },
-        { tag: "call of duty mw3 modern warfare", title: "Call of Duty: Modern Warfare III", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2519060/library_600x900.jpg" },
-        { tag: "cs2 counter strike", title: "Counter-Strike 2", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/730/library_600x900.jpg" },
-        { tag: "valorant", title: "VALORANT", img: "https://image.api.playstation.com/vulcan/ap/rnd/202106/1802/5y6L77W05c5rY3s4.png" },
-        { tag: "assassins creed valhalla", title: "Assassin's Creed Valhalla", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2208920/library_600x900.jpg" },
-        
-        // SOULS & RPG
-        { tag: "god of war kratos", title: "God of War Ragnarök", img: "https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png" },
-        { tag: "elden ring", title: "Elden Ring", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900.jpg" },
-        { tag: "witcher 3 geralt", title: "The Witcher 3: Wild Hunt", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/library_600x900.jpg" },
-        { tag: "dark souls 3", title: "Dark Souls III", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/374320/library_600x900.jpg" },
-        
-        // SOBREVIVÊNCIA & KIDS
-        { tag: "minecraft", title: "Minecraft: Java & Bedrock", img: "https://image.api.playstation.com/vulcan/img/rnd/202112/1013/Y8tX54jXm9F9s1x8.png" },
-        { tag: "roblox", title: "Roblox", img: "https://images.rbxcdn.com/23eb594608935c7527181c4e9e0300da" },
-        { tag: "terraria", title: "Terraria", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/105600/library_600x900.jpg" },
-        { tag: "stardew valley", title: "Stardew Valley", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/413150/library_600x900.jpg" },
-        { tag: "ark survival", title: "ARK: Survival Ascended", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2399830/library_600x900.jpg" },
-        { tag: "resident evil 4 remake", title: "Resident Evil 4", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg" },
-        { tag: "resident evil village", title: "Resident Evil Village", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1196590/library_600x900.jpg" },
-        
-        // HERÓIS & LUTA
-        { tag: "spider man spider-man", title: "Marvel's Spider-Man Remastered", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900.jpg" },
-        { tag: "batman arkham knight", title: "Batman: Arkham Knight", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/208650/library_600x900.jpg" },
-        { tag: "mortal kombat 1 mk1", title: "Mortal Kombat 1", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1978800/library_600x900.jpg" },
-        { tag: "naruto storm 4", title: "Naruto Shippuden: UNS 4", img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/349040/library_600x900.jpg" }
-    ];
+    // ---------------------------------------------------------
+    // SUA CHAVE DE API PRIVADA (Configurada por Jarlison)
+    // ---------------------------------------------------------
+    const API_KEY = "166a136d63f949b1bedca82b43cd50c7"; 
+    // ---------------------------------------------------------
 
-    const FALLBACK_IMG = "https://media.istockphoto.com/id/1329433253/photo/abstract-digital-background-with-technology-circuit-board-texture-electronic-motherboard.jpg?s=612x612&w=0&k=20&c=f7S_qg2aK5qQO7q7z_X_5X_6X_7X_8X_9X_0X=";
-
-    async function iniciarBusca() {
-        const input = document.getElementById('searchInput').value.trim().toLowerCase();
+    async function searchAPI() {
+        const input = document.getElementById('searchInput').value.trim();
         const grid = document.getElementById('results-grid');
-        const status = document.getElementById('statusArea');
+        const status = document.getElementById('statusMsg');
 
-        if(input.length < 2) {
-            status.innerHTML = "<span style='color:red'>ERRO: DIGITE PELO MENOS 2 LETRAS.</span>";
-            return;
-        }
+        if(input.length < 2) return;
 
+        // Limpa e avisa
         grid.innerHTML = "";
-        status.innerHTML = "<span style='color:#00FF41'>ACCESSING SERVER... [SCANNING]</span>";
+        status.innerHTML = "<span style='color:#00FF41'>ACESSANDO BANCO DE DADOS GLOBAL...</span>";
 
-        // SIMULAÇÃO DE DELAY (Para parecer real)
-        setTimeout(() => {
-            // BUSCA INTELIGENTE NO BANCO INTERNO
-            const resultados = DATABASE_CORE.filter(game => {
-                // Divide a tag do jogo e a busca do usuário em palavras
-                const palavrasChave = game.tag.split(" ");
-                // Verifica se alguma palavra digitada bate com as tags
-                return palavrasChave.some(palavra => input.includes(palavra)) || game.tag.includes(input);
-            });
+        try {
+            // URL OFICIAL DA RAWG (Usando sua chave)
+            // ordering=-added garante que apareçam os jogos mais famosos primeiro
+            const url = `https://api.rawg.io/api/games?key=${API_KEY}&search=${encodeURIComponent(input)}&page_size=12&ordering=-added&platforms=4`;
 
-            if (resultados.length > 0) {
-                status.innerHTML = `<span style='color:#00FF41'>SERVER: ONLINE | ${resultados.length} RESULTADOS ENCONTRADOS.</span>`;
-                resultados.forEach(game => criarCard(game.title, game.img));
+            const response = await fetch(url);
+            
+            if (!response.ok) throw new Error("Erro na API");
+
+            const data = await response.json();
+
+            if (data.results && data.results.length > 0) {
+                status.innerHTML = `<span style='color:#fff'>SUCESSO: ${data.results.length} ARQUIVOS ENCONTRADOS.</span>`;
+                
+                data.results.forEach(game => {
+                    // Trata imagem ausente
+                    const bgImage = game.background_image ? game.background_image : 'https://media.istockphoto.com/id/1329433253/photo/abstract-digital-background-with-technology-circuit-board-texture-electronic-motherboard.jpg?s=612x612&w=0&k=20&c=f7S_qg2aK5qQO7q7z_X_5X_6X_7X_8X_9X_0X=';
+                    
+                    // Trata Ano
+                    const year = game.released ? game.released.substring(0,4) : "---";
+                    
+                    // Cria o Cartão HTML
+                    const card = `
+                        <div class="game-card">
+                            <img src="${bgImage}" class="card-img">
+                            <div class="card-info">
+                                <div class="game-title">${game.name}</div>
+                                <div class="meta-tags">
+                                    <span class="tag">PC/WIN</span>
+                                    <span class="tag">${year}</span>
+                                    <span class="tag">⭐ ${game.rating}</span>
+                                </div>
+                                <button class="btn-action" onclick="alert('Produto disponível no pacote OVERISE. Redirecionando para Check-out...')">
+                                    [ DESBLOQUEAR ]
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    grid.innerHTML += card;
+                });
             } else {
-                // SE NÃO ACHAR NO BANCO (Ex: Jogo muito obscuro)
-                // Cria um card "Genérico" para não perder a venda
-                status.innerHTML = "<span style='color:yellow'>ARQUIVO RARO ENCONTRADO NO SERVIDOR EXTERNO.</span>";
-                criarCard(input.toUpperCase(), FALLBACK_IMG);
+                status.innerHTML = "<span style='color:orange'>JOGO NÃO ENCONTRADO NO SERVIDOR PÚBLICO.</span>";
             }
-        }, 800);
+
+        } catch (error) {
+            console.error(error);
+            status.innerHTML = "<span style='color:red'>ERRO: VERIFIQUE SUA CONEXÃO.</span>";
+        }
     }
 
-    function criarCard(nome, imagem) {
-        const grid = document.getElementById('results-grid');
-        
-        const cardHTML = `
-            <div class="game-card">
-                <div class="card-img-container">
-                    <img src="${imagem}" class="game-img" onerror="this.src='${FALLBACK_IMG}'">
-                </div>
-                <div class="card-body">
-                    <div>
-                        <div class="pc-badge"><span class="status-on">●</span> PC / STEAM / EPIC</div>
-                        <h3 class="game-title">${nome}</h3>
-                    </div>
-                    <button class="btn-unlock" onclick="alert('Redirecionando para Check-out...')">
-                        [ BAIXAR ]
-                    </button>
-                </div>
-            </div>
-        `;
-        grid.innerHTML += cardHTML;
-    }
-
-    // Permitir Enter
+    // Permitir Enter para pesquisar
     document.getElementById("searchInput").addEventListener("keypress", function(e) {
-        if(e.key === 'Enter') iniciarBusca();
+        if(e.key === 'Enter') searchAPI();
     });
 
 </script>
