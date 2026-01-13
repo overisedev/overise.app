@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OVERISE | Official Store</title>
     <style>
-        /* --- CORE STYLES --- */
+        /* --- ESTÉTICA OVERISE DARK --- */
         body {
             background-color: #050505;
             color: #fff;
@@ -18,7 +18,6 @@
             padding-bottom: 50px;
         }
 
-        /* HEADER */
         .brand-header {
             margin-top: 40px;
             text-align: center;
@@ -34,7 +33,7 @@
             text-transform: uppercase;
         }
 
-        /* MÓDULO DE BUSCA */
+        /* BARRA DE BUSCA */
         .search-container {
             width: 90%;
             max-width: 800px;
@@ -44,7 +43,7 @@
 
         .input-group {
             display: flex;
-            box-shadow: 0 0 30px rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.1);
         }
 
         input {
@@ -77,11 +76,11 @@
         
         .btn-search:hover { background: #fff; }
 
-        /* --- O GRID DE RESULTADOS (A MÁGICA) --- */
+        /* --- GRID DE RESULTADOS --- */
         #results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
             width: 90%;
             max-width: 1000px;
             margin-top: 40px;
@@ -97,6 +96,7 @@
             animation: fadeIn 0.5s ease-out;
             display: flex;
             flex-direction: column;
+            height: 100%;
         }
 
         .game-card:hover {
@@ -107,9 +107,8 @@
 
         .card-img-container {
             width: 100%;
-            height: 120px;
+            height: 240px;
             background: #111;
-            overflow: hidden;
             position: relative;
         }
 
@@ -117,10 +116,11 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            opacity: 0.9;
         }
 
         .card-body {
-            padding: 15px;
+            padding: 12px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -130,19 +130,20 @@
         .game-title {
             font-family: Arial, sans-serif;
             font-weight: bold;
-            font-size: 14px;
-            margin: 0 0 10px 0;
+            font-size: 13px;
+            margin: 5px 0 10px 0;
             line-height: 1.2;
-            color: #ddd;
+            color: #fff;
+            text-transform: uppercase;
         }
 
         .pc-badge {
-            font-size: 10px;
-            color: #666;
-            margin-bottom: 10px;
+            font-size: 9px;
+            color: #888;
+            margin-bottom: 5px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .status-on { color: #00FF41; }
@@ -152,12 +153,13 @@
             background: transparent;
             border: 1px solid #333;
             color: #00FF41;
-            padding: 8px;
+            padding: 10px;
             font-size: 11px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
             margin-top: auto;
+            transition: 0.2s;
         }
 
         .btn-unlock:hover {
@@ -165,12 +167,13 @@
             color: black;
         }
 
-        /* LOADERS & MESSAGES */
+        /* MENSAGENS DE SISTEMA */
         .system-msg {
             margin-top: 20px;
             color: #666;
             font-size: 12px;
             text-align: center;
+            min-height: 20px;
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -181,13 +184,13 @@
 
     <div class="brand-header">
         <h1>OVER<span style="color:#00FF41">ISE</span></h1>
-        <div style="font-size: 12px; letter-spacing: 4px; color:#666;">// OFFICIAL STORE DATABASE</div>
+        <div style="font-size: 12px; letter-spacing: 4px; color:#666;">// SYSTEM UNLOCK DATABASE</div>
     </div>
 
     <div class="search-container">
         <div class="input-group">
-            <input type="text" id="searchInput" placeholder="DIGITE O JOGO (EX: GTA)...">
-            <button class="btn-search" onclick="searchGames()">SCAN</button>
+            <input type="text" id="searchInput" placeholder="DIGITE O JOGO (Ex: GTA)...">
+            <button class="btn-search" onclick="iniciarBusca()">SCAN</button>
         </div>
         <div id="statusArea" class="system-msg">AGUARDANDO COMANDO...</div>
     </div>
@@ -195,13 +198,12 @@
     <div id="results-grid"></div>
 
 <script>
-    // API KEY PÚBLICA (RAWG)
+    // --- CONFIGURAÇÃO API ---
+    // NOTA: Se parar de funcionar, crie uma chave grátis em rawg.io e troque aqui.
     const API_KEY = "6d95328827754388b63e680d6037146e"; 
-
-    // IMAGEM DE SEGURANÇA (Caso a oficial falhe)
     const FALLBACK_IMG = "https://media.istockphoto.com/id/1329433253/photo/abstract-digital-background-with-technology-circuit-board-texture-electronic-motherboard.jpg?s=612x612&w=0&k=20&c=f7S_qg2aK5qQO7q7z_X_5X_6X_7X_8X_9X_0X=";
 
-    async function searchGames() {
+    async function iniciarBusca() {
         const input = document.getElementById('searchInput').value.trim();
         const grid = document.getElementById('results-grid');
         const status = document.getElementById('statusArea');
@@ -211,83 +213,74 @@
             return;
         }
 
-        // Limpa a tela e mostra loading
+        // 1. Limpeza e Feedback Visual
         grid.innerHTML = "";
-        status.innerHTML = "<span style='color:#00FF41'>ACCESSING SERVER... [SCANNING]</span>";
+        status.innerHTML = "<span style='color:#00FF41'>CONECTANDO VIA SATÉLITE... [SCANNING]</span>";
+
+        // URL da API (Filtra PC=4 e ordena por relevância)
+        const targetUrl = `https://api.rawg.io/api/games?key=${API_KEY}&search=${encodeURIComponent(input)}&page_size=12&platforms=4&ordering=-rating`;
 
         try {
-            // AQUI ESTÁ A MUDANÇA: page_size=8 (Busca 8 jogos, não 1)
-            // search_precise=true melhora a precisão para nomes exatos como GTA
-            const response = await fetch(`https://api.rawg.io/api/games?key=${API_KEY}&search=${input}&page_size=8&platforms=4`);
-            
-            if(!response.ok) throw new Error("Connection Error");
+            // TENTATIVA 1: Conexão Direta
+            let response = await fetch(targetUrl);
+
+            // Se der erro de rede, joga pro catch
+            if (!response.ok) throw new Error("Bloqueio Direto");
 
             const data = await response.json();
+            processarResultados(data, status);
 
-            // Limpa mensagem de loading
-            status.innerHTML = `SERVER: ONLINE | ${data.results.length} ARQUIVOS ENCONTRADOS.`;
+        } catch (erroDireto) {
+            console.warn("Conexão direta falhou. Tentando Proxy...", erroDireto);
+            status.innerHTML = "<span style='color:yellow'>BLOQUEIO DETECTADO. ATIVANDO TUNNELING (PROXY)...</span>";
 
-            if (data.results && data.results.length > 0) {
-                // Loop para criar cada cartão (GTA V, GTA IV, San Andreas...)
-                data.results.forEach(game => {
-                    criarCard(game);
-                });
-            } else {
-                status.innerHTML = "<span style='color:orange'>NENHUM JOGO ENCONTRADO NO SERVIDOR PÚBLICO. TENTE OUTRO NOME.</span>";
+            try {
+                // TENTATIVA 2: Via Proxy (Força a conexão através de bloqueios CORS)
+                // Usamos o corsproxy.io para intermediar
+                const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+                let responseProxy = await fetch(proxyUrl);
+                
+                if (!responseProxy.ok) throw new Error("Bloqueio Proxy");
+
+                const dataProxy = await responseProxy.json();
+                processarResultados(dataProxy, status);
+
+            } catch (erroFatal) {
+                console.error("Erro Fatal:", erroFatal);
+                status.innerHTML = "<span style='color:red'>ERRO FATAL DE REDE. VERIFIQUE SUA CONEXÃO.</span>";
             }
-
-        } catch (e) {
-            console.error(e);
-            // FALLBACK OFFLINE (Se a API falhar, mostra o "Coringa")
-            status.innerHTML = "<span style='color:yellow'>CONEXÃO EXTERNA LENTA. ATIVANDO MODO OFFLINE...</span>";
-            criarCardOffline(input);
         }
     }
 
-    // Função que cria o HTML de cada jogo
-    function criarCard(game) {
-        const grid = document.getElementById('results-grid');
-        
-        // Verifica se tem imagem, se não tiver usa a Fallback
-        const imageSrc = game.background_image ? game.background_image : FALLBACK_IMG;
-        
-        // Cria o elemento visual
-        const cardHTML = `
-            <div class="game-card">
-                <div class="card-img-container">
-                    <img src="${imageSrc}" class="game-img" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
-                </div>
-                <div class="card-body">
-                    <div>
-                        <div class="pc-badge"><span class="status-on">●</span> PC / WINDOWS</div>
-                        <h3 class="game-title">${game.name}</h3>
-                    </div>
-                    <button class="btn-unlock" onclick="alert('Redirecionando para Check-out do OVERISE...')">
-                        [ DESBLOQUEAR ]
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        grid.innerHTML += cardHTML;
+    function processarResultados(data, statusElement) {
+        if (data.results && data.results.length > 0) {
+            statusElement.innerHTML = `SERVER: ONLINE | ${data.results.length} JOGOS ENCONTRADOS.`;
+            
+            data.results.forEach(game => {
+                // Filtro visual: Ignorar jogos sem imagem se possível, ou usar fallback
+                const imgFinal = game.background_image ? game.background_image : FALLBACK_IMG;
+                criarCard(game.name, imgFinal);
+            });
+        } else {
+            statusElement.innerHTML = "<span style='color:orange'>NENHUM JOGO ENCONTRADO NO SERVIDOR. TENTE OUTRO NOME.</span>";
+        }
     }
 
-    // Função de Emergência (Offline)
-    function criarCardOffline(nomeInput) {
+    function criarCard(nome, imagem) {
         const grid = document.getElementById('results-grid');
-        // Cria um card genérico para não perder a venda
+        
         const cardHTML = `
             <div class="game-card">
                 <div class="card-img-container">
-                    <img src="${FALLBACK_IMG}" class="game-img">
+                    <img src="${imagem}" class="game-img" onerror="this.src='${FALLBACK_IMG}'">
                 </div>
                 <div class="card-body">
                     <div>
-                        <div class="pc-badge"><span class="status-on">●</span> SISTEMA INTERNO</div>
-                        <h3 class="game-title">${nomeInput.toUpperCase()}</h3>
+                        <div class="pc-badge"><span class="status-on">●</span> PC / STEAM</div>
+                        <h3 class="game-title">${nome}</h3>
                     </div>
                     <button class="btn-unlock" onclick="alert('Redirecionando para Check-out...')">
-                        [ BAIXAR AGORA ]
+                        [ DESBLOQUEAR AGORA ]
                     </button>
                 </div>
             </div>
@@ -295,9 +288,9 @@
         grid.innerHTML += cardHTML;
     }
 
-    // Enter para pesquisar
+    // Permitir Enter
     document.getElementById("searchInput").addEventListener("keypress", function(e) {
-        if(e.key === 'Enter') searchGames();
+        if(e.key === 'Enter') iniciarBusca();
     });
 
 </script>
