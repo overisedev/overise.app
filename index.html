@@ -31,10 +31,10 @@
         .btn-search { padding: 0 40px; background: #00FF41; border: none; color: #000; font-weight: 900; font-size: 16px; cursor: pointer; text-transform: uppercase; transition: 0.2s; letter-spacing: 1px; }
         .btn-search:hover { background: #fff; box-shadow: 0 0 20px #00FF41; }
 
-        /* GRID */
+        /* GRID RESPONSIVO */
         #results-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Cartões um pouco mais estreitos */
             gap: 20px; 
             width: 90%; 
             max-width: 1200px; 
@@ -45,22 +45,26 @@
         .game-card { background: #0a0a0a; border: 1px solid #333; border-radius: 6px; overflow: hidden; transition: transform 0.2s; display: flex; flex-direction: column; animation: fadeIn 0.5s ease-out; position: relative; }
         .game-card:hover { transform: translateY(-5px); border-color: #00FF41; box-shadow: 0 5px 20px rgba(0, 255, 65, 0.15); }
 
+        /* CORREÇÃO VISUAL DAS CAPAS */
         .card-img-container {
             width: 100%;
-            height: 260px; /* Capa Vertical */
+            aspect-ratio: 2 / 3; /* Proporção Áurea de Capa de Jogo (Vertical) */
             background: #111;
             position: relative;
+            overflow: hidden;
         }
         
         .card-img { 
-            width: 100%; height: 100%;
-            object-fit: cover; 
-            opacity: 0; transition: opacity 0.5s; /* Efeito Fade In */
+            width: 100%; 
+            height: 100%;
+            object-fit: cover; /* Preenche sem esticar */
+            object-position: top center; /* Foca no Rosto/Logo, nunca corta a cabeça */
+            opacity: 0; transition: opacity 0.5s;
         }
         .card-img.loaded { opacity: 1; }
 
         .card-info { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .game-title { font-family: Arial, sans-serif; font-weight: bold; font-size: 13px; margin-bottom: 8px; color: #fff; line-height: 1.2; text-transform: uppercase; }
+        .game-title { font-family: Arial, sans-serif; font-weight: bold; font-size: 12px; margin-bottom: 8px; color: #fff; line-height: 1.2; text-transform: uppercase; }
         
         .meta-tags { font-size: 9px; color: #888; margin-bottom: 10px; display: flex; gap: 5px; flex-wrap: wrap; }
         .tag-check { background: #004411; color: #00FF41; border: 1px solid #00FF41; font-weight: bold; padding: 2px 4px; border-radius: 2px; }
@@ -81,7 +85,7 @@
 
     <div class="search-container">
         <div class="input-group">
-            <input type="text" id="searchInput" placeholder="DIGITE O JOGO (EX: MINECRAFT, GTA)...">
+            <input type="text" id="searchInput" placeholder="DIGITE O JOGO (EX: MINECRAFT, GTA, FIFA)...">
             <button class="btn-search" onclick="filtrarCatalogo()">SCAN</button>
         </div>
         <div id="statusMsg" class="msg-area">AGUARDANDO COMANDO.</div>
@@ -91,8 +95,9 @@
 
 <script>
     const API_KEY = "166a136d63f949b1bedca82b43cd50c7"; 
-    
-    // --- SUA LISTA DE 741 JOGOS (LIMPA E FORMATADA) ---
+    const FALLBACK_IMG = "https://media.istockphoto.com/id/1329433253/photo/abstract-digital-background-with-technology-circuit-board-texture-electronic-motherboard.jpg?s=612x612&w=0&k=20&c=f7S_qg2aK5qQO7q7z_X_5X_6X_7X_8X_9X_0X=";
+
+    // --- SEU ACERVO REAL (COPIADO DO PDF) ---
     const CATALOGO = [
         "6 Seasons And A Game", "7 Days to Die", "9 Kings", "Abyssus", "ACE COMBAT™7: SKIES UNKNOWN", "Alan Wake", "Alan Wake's American Nightmare", 
         "All-In-One Sports VR", "The Alters", "American Truck Simulator", "Ancestors: The Humankind Odyssey", "Angry Birds Space", "Animalia Survival", 
@@ -217,29 +222,36 @@
         "Zort", "除邪 (CHUXIE)"
     ];
 
-    const FALLBACK_IMG = "https://media.istockphoto.com/id/1329433253/photo/abstract-digital-background-with-technology-circuit-board-texture-electronic-motherboard.jpg?s=612x612&w=0&k=20&c=f7S_qg2aK5qQO7q7z_X_5X_6X_7X_8X_9X_0X=";
-
     async function filtrarCatalogo() {
-        const input = document.getElementById('searchInput').value.trim().toLowerCase();
+        let input = document.getElementById('searchInput').value.trim().toUpperCase();
         const grid = document.getElementById('results-grid');
         const status = document.getElementById('statusMsg');
 
         if(input.length < 2) return;
 
+        // --- TRADUTOR DE APELIDOS (O CÉREBRO DO SISTEMA) ---
+        // Aqui mapeamos o que o cliente DIGITA para o que está na LISTA
+        if(input === "GTA") input = "GRAND THEFT AUTO";
+        if(input === "GTA 5") input = "GRAND THEFT AUTO V";
+        if(input === "COD") input = "CALL OF DUTY";
+        if(input === "RE4") input = "RESIDENT EVIL 4";
+        if(input === "RDR2") input = "RED DEAD REDEMPTION";
+        if(input === "MK") input = "MORTAL KOMBAT";
+        if(input === "ETS2") input = "EURO TRUCK";
+        if(input === "FORZA") input = "FORZA";
+
         grid.innerHTML = "";
         status.innerHTML = "<span style='color:#00FF41'>VERIFICANDO LISTA OFICIAL...</span>";
 
         // 1. FILTRA PELA SUA LISTA (Local)
-        // Só aceita se o nome estiver na lista CATALOGO
-        const jogosEncontrados = CATALOGO.filter(jogo => jogo.toLowerCase().includes(input));
+        const jogosEncontrados = CATALOGO.filter(jogo => jogo.toUpperCase().includes(input));
 
         if (jogosEncontrados.length > 0) {
             status.innerHTML = `<span style='color:#fff'>${jogosEncontrados.length} JOGOS ENCONTRADOS NO ACERVO.</span>`;
             
-            // Limita a exibição para não travar (ex: 8 jogos)
-            const jogosParaExibir = jogosEncontrados.slice(0, 8);
+            // Limita a exibição
+            const jogosParaExibir = jogosEncontrados.slice(0, 12);
 
-            // Para cada jogo encontrado na lista, buscamos a FOTO na API
             for (const nomeJogo of jogosParaExibir) {
                 await renderizarCard(nomeJogo);
             }
@@ -255,7 +267,6 @@
         let rating = "VIP";
 
         try {
-            // Chama a API apenas para pegar a FOTO do jogo específico
             const url = `https://api.rawg.io/api/games?key=${API_KEY}&search=${encodeURIComponent(nomeOficial)}&page_size=1`;
             const response = await fetch(url);
             const data = await response.json();
