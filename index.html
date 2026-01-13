@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OVERISE | Official Search</title>
+    <title>OVERISE | Official Catalog</title>
     <style>
-        /* --- DESIGN SYSTEM DARK --- */
+        /* --- OVERISE DARK SYSTEM --- */
         body {
             background-color: #050505;
             color: #fff;
@@ -31,42 +31,39 @@
         .btn-search { padding: 0 40px; background: #00FF41; border: none; color: #000; font-weight: 900; font-size: 16px; cursor: pointer; text-transform: uppercase; transition: 0.2s; letter-spacing: 1px; }
         .btn-search:hover { background: #fff; box-shadow: 0 0 20px #00FF41; }
 
-        /* GRID ESTILO STEAM (VERTICAL) */
+        /* GRID */
         #results-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
             gap: 20px; 
             width: 90%; 
-            max-width: 1000px; 
+            max-width: 1200px; 
             margin-top: 40px; 
             justify-content: center;
         }
 
-        .game-card { background: #0a0a0a; border: 1px solid #333; border-radius: 4px; overflow: hidden; transition: transform 0.2s; display: flex; flex-direction: column; animation: fadeIn 0.5s ease-out; position: relative; }
+        .game-card { background: #0a0a0a; border: 1px solid #333; border-radius: 6px; overflow: hidden; transition: transform 0.2s; display: flex; flex-direction: column; animation: fadeIn 0.5s ease-out; position: relative; }
         .game-card:hover { transform: translateY(-5px); border-color: #00FF41; box-shadow: 0 5px 20px rgba(0, 255, 65, 0.15); }
 
-        /* AQUI ESTÁ O SEGREDO DA CAPA VERTICAL */
         .card-img-container {
             width: 100%;
-            padding-top: 140%; /* Proporção 600x900 (Capa Steam) */
-            position: relative;
+            height: 260px; /* Capa Vertical */
             background: #111;
+            position: relative;
         }
         
         .card-img { 
-            position: absolute;
-            top: 0; left: 0;
             width: 100%; height: 100%;
-            object-fit: cover; /* Força preenchimento */
+            object-fit: cover; 
+            opacity: 0; transition: opacity 0.5s; /* Efeito Fade In */
         }
+        .card-img.loaded { opacity: 1; }
 
         .card-info { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .game-title { font-family: Arial, sans-serif; font-weight: bold; font-size: 13px; margin-bottom: 8px; color: #fff; line-height: 1.2; text-transform: uppercase; }
         
         .meta-tags { font-size: 9px; color: #888; margin-bottom: 10px; display: flex; gap: 5px; flex-wrap: wrap; }
-        .tag-steam { background: #171a21; color: #66c0f4; border: 1px solid #66c0f4; font-weight: bold; padding: 2px 4px; border-radius: 2px; }
-        .tag-ms { background: #171a21; color: #00FF41; border: 1px solid #00FF41; font-weight: bold; padding: 2px 4px; border-radius: 2px; }
-        .tag { background: #1a1a1a; padding: 2px 4px; border-radius: 2px; border: 1px solid #333; }
+        .tag-check { background: #004411; color: #00FF41; border: 1px solid #00FF41; font-weight: bold; padding: 2px 4px; border-radius: 2px; }
 
         .btn-action { width: 100%; background: transparent; border: 1px solid #00FF41; color: #00FF41; padding: 10px; font-size: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: auto; transition: 0.2s; }
         .btn-action:hover { background: #00FF41; color: black; }
@@ -79,13 +76,13 @@
 
     <div class="brand-header">
         <h1>OVER<span style="color:#00FF41">ISE</span></h1>
-        <div style="font-size: 12px; letter-spacing: 4px; color:#666;">// STEAM & OFFICIAL DATABASE</div>
+        <div style="font-size: 12px; letter-spacing: 4px; color:#666;">// ACERVO GLOBAL (741 JOGOS)</div>
     </div>
 
     <div class="search-container">
         <div class="input-group">
-            <input type="text" id="searchInput" placeholder="DIGITE O JOGO (EX: MINECRAFT, GTA, FIFA)...">
-            <button class="btn-search" onclick="searchAPI()">SCAN</button>
+            <input type="text" id="searchInput" placeholder="DIGITE O JOGO (EX: MINECRAFT, GTA)...">
+            <button class="btn-search" onclick="filtrarCatalogo()">SCAN</button>
         </div>
         <div id="statusMsg" class="msg-area">AGUARDANDO COMANDO.</div>
     </div>
@@ -95,145 +92,206 @@
 <script>
     const API_KEY = "166a136d63f949b1bedca82b43cd50c7"; 
     
-    // 1. LISTA NEGRA (Jogos proibidos/lixo)
-    const BLOCK_LIST = ["bonecraft", "sex", "hentai", "soundtrack", "bootleg", "demake", "fan game", "artbook", "porn"];
-
-    // 2. CAPAS OFICIAIS STEAM (VIP LIST)
-    // Se o jogo for um desses, usamos essa imagem oficial vertical ao invés da foto aleatória da API.
-    const VIP_COVERS = {
-        "grand theft auto v": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg",
-        "gta v": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg",
-        "grand theft auto iv: the complete edition": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/12210/library_600x900.jpg",
-        "grand theft auto: san andreas – the definitive edition": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1547000/library_600x900.jpg",
-        "grand theft auto: vice city – the definitive edition": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1546990/library_600x900.jpg",
-        "ea sports fc™ 24": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2344520/library_600x900.jpg",
-        "call of duty®: black ops iii": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/311210/library_600x900.jpg",
-        "call of duty®: modern warfare® ii": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1938090/library_600x900.jpg",
-        "cyberpunk 2077": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/library_600x900.jpg",
-        "red dead redemption 2": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900.jpg",
-        "god of war": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900.jpg",
-        "forza horizon 5": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900.jpg",
-        "terraria": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/105600/library_600x900.jpg",
-        "stardew valley": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/413150/library_600x900.jpg",
-        "euro truck simulator 2": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/227300/library_600x900.jpg",
-        "hollow knight": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/library_600x900.jpg",
-        "resident evil 4": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900.jpg",
-        "minecraft": "https://image.api.playstation.com/vulcan/img/rnd/202112/1013/Y8tX54jXm9F9s1x8.png" // Capa Vertical Oficial
-    };
-
-    // 3. EXCEÇÕES MANUAIS (Jogos que NÃO são da Steam mas você PRECISA vender)
-    const MANUAL_GAMES = [
-        {
-            name: "Minecraft: Java & Bedrock",
-            slug: "minecraft",
-            year: "2011",
-            rating: "4.8",
-            image: "https://image.api.playstation.com/vulcan/img/rnd/202112/1013/Y8tX54jXm9F9s1x8.png",
-            store: "OFFICIAL"
-        }
+    // --- SUA LISTA DE 741 JOGOS (LIMPA E FORMATADA) ---
+    const CATALOGO = [
+        "6 Seasons And A Game", "7 Days to Die", "9 Kings", "Abyssus", "ACE COMBAT™7: SKIES UNKNOWN", "Alan Wake", "Alan Wake's American Nightmare", 
+        "All-In-One Sports VR", "The Alters", "American Truck Simulator", "Ancestors: The Humankind Odyssey", "Angry Birds Space", "Animalia Survival", 
+        "Anonymous Hacker Simulator", "ARK: Survival Ascended", "ARK: Survival Evolved", "Arma 2: DayZ Mod", "Ascendant", "Assassin's Creed® III", 
+        "Assassin's Creed III Remastered", "Assassin's Creed IV Black Flag", "Assassin's Creed Unity", "Assassin's Creed Syndicate", "Assassin's Creed Origins", 
+        "Assassin's Creed Valhalla", "Assetto Corsa", "Assetto Corsa Competizione", "Assetto Corsa EVO", "ASTRONEER", "ATLYSS", 
+        "Attack on Titan / A.O.T. Wings of Freedom", "Attack on Titan 2 - A.O.T.2", "Automation - The Car Company Tycoon", "Automation Empire", "Aviassembly", 
+        "Avowed", "Back 4 Blood", "Back to the Dawn", "Bad Parenting 1: Mr. Red Face", "Balatro", "Baldur's Gate 3", "Barbie Project Friendship™", 
+        "Batman: Arkham Asylum GOTY Edition", "Batman: Arkham City GOTY", "Batman™: Arkham Origins", "Batman™: Arkham Knight", "Burnout Paradise: The Ultimate Box", 
+        "Bus Simulator 18", "Bus Simulator 21 Next Stop", "Call of Duty 4: Modern Warfare", "Call of Duty: Black Ops", "Call of Duty: Black Ops II", 
+        "Call of Duty: Black Ops III", "Call of Juarez: Bound in Blood", "Call of Juarez Gunslinger", "The Callisto Protocol", "Car Dealer Simulator", 
+        "Car Mechanic Simulator 2015", "Car Mechanic Simulator 2018", "Car Mechanic Simulator 2021", "CarX Drift Racing Online", "Castelo da Vania", 
+        "Castlevania Dominus Collection", "Castlevania: Lords of Shadow - Ultimate Edition", "Castlevania: Lords of Shadow 2", "Celeste", "City Car Driving", 
+        "Clair Obscur: Expedition 33", "Clamb", "Close Your Eyes [Old Version]", "The Coffin of Andy and Leyley", "Combat Master", "Conan Exiles", 
+        "Contraband Police", "Coreupt", "Counter-Strike", "Counter-Strike 2", "Counter-Strike: Source", "Crab Champions", "Craftopia", 
+        "Crash Bandicoot 4: It’s About Time", "Crash Bandicoot N. Sane Trilogy", "Creative Destruction", "Crime Scene Cleaner", "Crisis Core – Final Fantasy VII–", 
+        "Cronos: The New Dawn", "Crosshair X", "Cry of Fear", "Crysis Remastered", "Crysis 2 Maximum Edition", "Cult of the Lamb", "Cuphead", 
+        "Curse of the Dead Gods", "Cyberpunk 2077", "Daemon X Machina: Titanic Scion", "Dakar 18", "Dakar Desert Rally", "Dark Eden", "Dark Souls II", 
+        "Dark Souls II: Scholar of the First Sin", "Dark Souls III", "Dark Souls: Remastered", "Darksiders II", "Darkwood", "Dauntless", "Dave the Diver", 
+        "DDNet", "Days Gone", "Dead by Daylight", "Dead Cells", "Dead Island", "Dead Space 2", "Dead Space (2008)", "Deadlock", "Deadpool", "Deadside", 
+        "Deadzone Rogue", "Death Stranding Director’s Cut", "Deathbound", "Deathmatch Classic", "Deceit 2", "Deep Rock Galactic", "Deliver At All Costs", 
+        "Deltarune", "Demon Slayer", "Demon Slayer Shion", "Descenders", "Destiny 2", "Detroit: Become Human", "Devil May Cry 3: Special Edition", 
+        "Devil May Cry 4", "Devil May Cry 4 Special Edition", "Devil May Cry 5", "Devil May Cry HD Collection", "Devour", "Die in the Dungeon", 
+        "Die in the Dungeon Prologue", "DiRT", "DiRT 3 Complete Edition", "DiRT 4", "DiRT Rally", "DiRT Showdown", "Dishonored", "Dishonored 2", 
+        "Dishonored: Death of the Outsider", "Dishonored RHCP", "DmC Devil May Cry", "Don’t Starve", "Don’t Starve Together", "DOOM", "DOOM Eternal", 
+        "Dragon Ball: Sparking! ZERO", "Dragon Ball Xenoverse", "Dragon Ball Xenoverse 2", "Dragon Ball Z: Kakarot", "Dragon Quest XI S: Echoes of an Elusive Age", 
+        "Dragon’s Dogma: Dark Arisen", "Dread Flats", "Dreadzone", "Dredge", "Dredgers", "Driver San Francisco", "Duke Nukem Forever", "Dying Light", 
+        "Dying Light 2: Reloaded Edition", "Dynasty Warriors: Origins", "Echoes of the End", "eFootball", "Elden Ring", "The Elder Scrolls III: Morrowind", 
+        "The Elder Scrolls IV: Oblivion Game", "The Elder Scrolls IV: Oblivion Remastered", "The Elder Scrolls V: Skyrim", "The Elder Scrolls V: Skyrim Special Edition", 
+        "Ember Knights", "Enigma do Medo", "Eriksholm: The Stolen Dream", "Esquadrão Suicida: Mate a Liga da Justiça", "Euro Truck Simulator 2", 
+        "Euro Truck Simulator 2 Demo", "F1 2011", "Fable III", "Factorio", "Fallout 4", "Fallout 76", "Fantasy Life i: The Girl Who Steal Time", "Far Cry", 
+        "Far Cry 3", "Far Cry 4", "Far Cry 6", "Far Cry Primal", "Farming & Supermarket Simulator", "Farming Simulator 15", "Farming Simulator 19", 
+        "Farming Simulator 22", "Farming Simulator 25", "Fast Food Simulator", "Fatal Frame / Project Zero: Mask of the Lunar Eclipse", 
+        "Fatal Frame / Project Zero: Maiden of Black Water", "Favela Kick: The Final Goal", "FBC: Firebreak", "Final Fantasy VII", "Final Fantasy VII Rebirth", 
+        "Final Fantasy XII The Zodiac Age", "Final Fantasy XVI", "Final Fantasy X/X-2 HD Remaster", "The Fisherman – Fishing Planet", "Fishing Planet", 
+        "Fishing Sim World: Pro Tour", "Five Nights at Freddy’s", "Five Nights at Freddy’s 2", "Five Nights at Freddy’s 3", "Five Nights at Freddy’s 4", 
+        "Five Nights at Freddy’s: Help Wanted", "Five Nights at Freddy’s: Into the Pit", "Five Nights at Freddy’s: Secret of the Springtrap", 
+        "Five Nights at Freddy’s: Security Breach", "Five Nights at Freddy’s: Sister Location", "Florensia", "Fobia – St. Dinfna Hotel", "Food Delivery Simulator", 
+        "Footage Bodycam", "The Forest", "Forgive Me Father", "Forza Horizon 4", "Forza Horizon 5", "Forza Motorsport", "Frostpunk", "Frostpunk 2", 
+        "Game of Thrones – A Telltale Game Series", "Garry’s Mod", "Gears 5", "Gears Tactics", "Geometry Dash", "Get To Work", "Ghost of Tsushima: Versão do Diretor", 
+        "Gladio Mori", "Goat Simulator 3", "God of War", "God of War Ragnarök", "Gorilla Tag", "Gorilla VS 100 Men", "Grand Theft Auto", "Grand Theft Auto 2", 
+        "Grand Theft Auto III", "Grand Theft Auto III – The Definitive Edition", "Grand Theft Auto IV – The Complete Edition", "Grand Theft Auto: San Andreas", 
+        "Grand Theft Auto: San Andreas – The Definitive Edition", "Grand Theft Auto V Enhanced", "Grand Theft Auto V Legacy", "Grand Theft Auto: Vice City", 
+        "Grand Theft Auto: Vice City – The Definitive Edition", "Granny: Escape Together", "Gray Zone Warfare", "Green Hell", "GRID 2", "GRID (2019)", 
+        "GRID Autosport", "Grounded", "Grounded 2", "Guilty Gear -Strive-", "Gun", "Gungrave G.O.R.E.", "The Gunk", "Gym Simulator", "Hades", "Hades II", 
+        "Half-Life", "Half-Life 2", "Half-Life: Alyx", "Halo Infinite", "Halo: Spartan Assault", "Halo: The Master Chief Collection", "Halo Wars: Definitive Edition", 
+        "Hard Bullet", "Hell is Us", "Hello Neighbor", "Hello Neighbor 2", "The Hex", "Hi-Fi Rush", "Hitman 2", "Hitman World of Assassination", "Hogwarts Legacy", 
+        "Hollow Knight", "Hollow Knight: Silksong", "Homefront: The Revolution", "Hop Step Sing! Kisekiteki Shining", "Horizon Chase Turbo", 
+        "Horizon Forbidden West – Edição Completa", "Horizon Zero Dawn – Complete Edition", "Horizon Zero Dawn Remastered", "Hot Wheels Unleashed 2 – Turbocharged", 
+        "House Flipper", "House Flipper 2", "House Party", "Human Fall Flat", "HumanitZ", "Hyper Light Drifter", "I Am Cat", "The Incredible Adventures of Van Helsing", 
+        "Indiana Jones e o Grande Círculo", "Injustice 2", "Injustice: Gods Among Us Ultimate Edition", "The Inn-Sanity", "Inside", "Internet Café & Supermarket Simulator", 
+        "inZOI", "Isonzo", "James Bond: Blood Stone", "James Cameron’s Avatar: The Game", "JDM: Japanese Drift Master", "Job Simulator", 
+        "Judgment: Apocalypse Survival Simulation", "Jump Force", "Jumplight Odyssey", "Jurassic Park: The Game", "Just Cause 2", "Just Cause 3", "Just Cause 4", 
+        "Kane & Lynch 2: Dog Days", "Katana Zero", "Kena: Bridge of Spirits", "Kerbal Space Program", "Kerbal Space Program 2", "Killing Floor 3", 
+        "Kingdom Come: Deliverance", "Kingdom Come: Deliverance II", "Kingdom Rush", "Kingdom Rush 5: Alliance TD", "Kingdom Rush Frontiers", "Kingdom Rush Origins", 
+        "Kingdoms of Amalur: Reckoning™", "King’s Bounty II", "Kong: Survivor Instinct", "Kuboom", "The Last of Us™ Part I", "The Last of Us™ Part II Remastered", 
+        "Le Mans Ultimate", "Left 4 Dead", "Left 4 Dead 2", "Legend of Mana", "Legends of Kingdom Rush", "LEGO® 2K Drive", "LEGO® Horizon Adventures™", 
+        "LEGO® Star Wars™: The Complete Saga", "LEGO® Star Wars™: The Force Awakens", "Lethal Company", "Level Zero: Extraction", "Liar’s Bar", "Lies of P", 
+        "Life is Strange™", "Life is Strange: Before the Storm", "Life is Strange: Double Exposure", "Life is Strange: True Colors", "Like a Dragon: Pirate Yakuza in Hawaii", 
+        "Little Nightmares", "Little Nightmares II", "LIVE A LIVE", "Lonely Mountains: Snow Riders", "Lossless Scaling", "Lost Castle", "Lost Soul Aside™", 
+        "Mad Smartphone Tycoon", "MADiSON", "MADiSON VR", "Mafia", "Mafia: Definitive Edition", "Mafia II (Classic)", "Mafia II: Definitive Edition", "Mage Arena", 
+        "Marvel’s Avengers – Edição Definitiva", "Marvel’s Guardians of the Galaxy", "Marvel’s Guardians of the Galaxy: The Telltale Series", "Marvel’s Spider-Man 2", 
+        "Marvel’s Spider-Man: Miles Morales", "Marvel’s Spider-Man Remastered", "Master Detective Archives: RAIN CODE Plus", "Max Payne 3", "Medal of Honor: Airborne", 
+        "Mega Man 11", "Mega Man Battle Network Legacy Collection Vol. 1", "Mega Man Battle Network Legacy Collection Vol. 2", "Melatonin", "METAL EDEN", 
+        "METAL GEAR & METAL GEAR 2: Solid Snake", "METAL GEAR RISING: REVENGEANCE", "METAL GEAR SOLID – Master Collection Vol. 1", 
+        "METAL GEAR SOLID 2: Sons of Liberty – Master Collection", "METAL GEAR SOLID 3: Snake Eater – Master Collection", "METAL GEAR SOLID V: The Phantom Pain", 
+        "METAL GEAR SOLID Δ: Snake Eater", "METAL GEAR SURVIVE", "Metaphor: ReFantazio", "Metro Awakening", "Metro Exodus", "Microsoft Flight Simulator 2024", 
+        "Minecraft Dungeons", "Minecraft Legends", "Minecraft: Story Mode – A Telltale Game Series", "Minecraft: Story Mode – Season Two", "MiniRoyale", "MiSide", 
+        "Mobile Store Simulator", "Monster Energy Supercross – The Official Videogame", "Monster Energy Supercross – The Official Videogame 2", 
+        "Monster Energy Supercross – The Official Videogame 3", "Monster Energy Supercross – The Official Videogame 4", "Monster Energy Supercross – The Official Videogame 5", 
+        "Monster Energy Supercross – The Official Videogame 6", "MONSTER HUNTER RISE", "Monster Hunter Stories 2: Wings of Ruin", "Monster Hunter: World", 
+        "Moons of Madness", "Mortal Kombat 11", "Mortal Kombat Kollection", "Mortal Kombat Komplete Edition", "Mortal Kombat X", "Mortal Shell", "Moto Racer 4", 
+        "MotoGP™13", "MotoGP™14", "MotoGP™15", "MotoGP™17", "MotoGP™18", "MotoGP™19", "MotoGP™20", "MotoGP™21", "MotoGP™22", "MotoGP™23", "MotoGP™24", 
+        "Mr.President!", "Muck", "Muse Dash", "MX Bikes", "MX vs ATV All Out", "MX vs ATV Legends", "MX vs ATV Reflex", "MX vs ATV Supercross Encore", 
+        "MXGP 2019 – The Official Motocross Videogame", "MXGP 2020 – The Official Motocross Videogame", "MXGP 2021 – The Official Motocross Videogame", 
+        "MXGP 24: The Official Game", "MXGP PRO", "MXGP2 – The Official Motocross Videogame", "MXGP3 – The Official Motocross Videogame", "My Dream Setup", 
+        "My Friend Stalin", "My Summer Car", "Mycopunk", "NARAKA: BLADEPOINT", "NARUTO SHIPPUDEN: Ultimate Ninja Storm 3 Full Burst", 
+        "NARUTO SHIPPUDEN: Ultimate Ninja Storm 4", "NARUTO TO BORUTO: SHINOBI STRIKER", "NARUTO X BORUTO Ultimate Ninja Storm Connections", "NASCAR ’15 Victory Edition", 
+        "NASCAR 21: Ignition", "NASCAR Heat 2", "NASCAR Heat 3", "NASCAR Heat 4", "NASCAR Heat 5", "NASCAR Heat Evolution", "NBA 2K9", "NBA 2K18", "NBA 2K19", 
+        "NBA 2K20", "NBA 2K21", "NBA 2K22", "NBA 2K23", "Need for Speed: Hot Pursuit", "Need for Speed: Rivals", "Need for Speed: SHIFT", "Need for Speed: Undercover", 
+        "New Tales from the Borderlands", "NieR Replicant ver.1.22474487139…", "NieR:Automata™", "Nine Sols", "NINJA GAIDEN: Master Collection", 
+        "Nioh 2 – The Complete Edition", "Nioh: Complete Edition", "No More Room in Hell 2", "No Rest for the Wicked", "Noble Legacy", 
+        "Oceanhorn 2: Knights of the Lost Realm", "OMORI", "ONE PIECE PIRATE WARRIORS 3", "ONE PIECE: PIRATE WARRIORS 4", "Ori and the Blind Forest", 
+        "Ori and the Blind Forest: Definitive Edition", "Ori and the Will of the Wisps", "Outer Wilds", "The Outer Worlds", "Outlast", "Outlast 2", "Overcooked", 
+        "Overcooked! 2", "Overcooked! All You Can Eat", "Overwatch® 2", "PAC-MAN Championship Edition DX+", "PAC-MAN MUSEUM", "Palworld", "PATAPON 1+2 REPLAY", 
+        "Path of Exile 2", "Path of War", "PAYDAY 2", "PC Building Simulator", "PEAK", "The Persistence", "Phasmophobia", "Pixel Strike 3D", "Plague Inc: Evolved", 
+        "A Plague Tale: Innocence", "A Plague Tale: Requiem", "Plants vs. Zombies: Game of the Year Edition", "Police Simulator: Patrol Officers", "Poppy Playtime", 
+        "Portal", "Portal 2", "PowerWash Simulator", "The Precinct", "Primal Planet", "Prince of Persia: The Two Thrones", "Project CARS", "Project CARS 2", 
+        "Project CARS 3", "Project Zomboid", "Prototype", "Punch Club", "Punch Club 2: Fast Forward", "Quantum Break", "The Quarry", "Raft", "RAGE", "RAGE 2", 
+        "RAIDOU Remastered: The Mystery of Kuzunoha vs. The Soulless Army", "Rain World", "Ravenswatch", "Rayman Origins", "Re: LieF ~ Shin’ainaru Anata e~", 
+        "Ready or Not", "Real Boxing™", "ReCore: Definitive Edition", "Red Dead Redemption", "Red Dead Redemption 2", "REKA", "REMATCH BETA TEST", 
+        "Remnant: From the Ashes", "Remnant II", "R.E.P.O.", "Resident Evil", "Resident Evil 0", "Resident Evil 2", "Resident Evil 3", "Resident Evil 4", 
+        "Resident Evil 4 (2005)", "Resident Evil 5", "Resident Evil 6", "Resident Evil 7 Biohazard", "Resident Evil Resistance", "Resident Evil Re:Verse", 
+        "Resident Evil Village", "RetroArch", "Return to Castle Wolfenstein", "Returnal™", "RIDE 2", "RIDE 3", "RIDE 4", "RIDE 5", "RIDE: Game", "Riders Republic", 
+        "RimWorld", "Rise of the Ronin", "Rise of the Tomb Raider", "Rising Front", "Risk of Rain 2", "Risk of Rain (2013)", "RoadCraft", "RoboCop: Rogue City", 
+        "Romancing SaGa 2: Revenge of the Seven", "Rooftops & Alleys: The Parkour Game", "The Room", "The Room Two", "The Room Three", "The Room 4: Old Sins", 
+        "Rust", "Saints Row: Gat out of Hell", "Satisfactory", "Sayonara Wild Hearts", "SB帝国", "SCARLET NEXUS", "Schedule I", "SchoolBoy Runaway", "SCUM", 
+        "Sea of Stars", "Sekiro™: Shadows Die Twice", "Session: Skate Sim", "Shadow of the Tomb Raider", "Shenmue I & II", "Shenmue III", 
+        "Sherlock Holmes: The Devil’s Daughter", "Shining Plume", "Shining Plume 2", "Sid Meier’s Civilization VII", "SILENT HILL 2", "SMASH LEGENDS", 
+        "SMITE", "SMITE – Public Test", "Sniper Elite V2", "Sniper Elite 3", "Sniper Elite V2 Remastered", "Sniper: Ghost Warrior", "Sniper Ghost Warrior 3", 
+        "SNOW", "SnowRunner", "Sonic Adventure™ 2", "Sonic Adventure DX", "Sons Of The Forest", "SOULCALIBUR VI", "Soulmask", "Soundpad", "South of Midnight", 
+        "Spec Ops: The Line", "Split Fiction", "SpongeBob SquarePants: Battle for Bikini Bottom – Rehydrated", "Spore", "Spore: Creepy & Cute Parts Pack", 
+        "Spore: Galactic Adventures", "S.T.A.L.K.E.R. 2: Heart of Chornobyl", "S.T.A.L.K.E.R.: Call of Pripyat", "STAR WARS™ Battlefront™ II", 
+        "STAR WARS Jedi: Fallen Order™", "STAR WARS Jedi: Survivor™", "Stardew Valley", "Starfield", "Starsiege: Deadzone", "State of Decay", "State of Decay 2", 
+        "State of Decay: Year-One", "STORROR Parkour Pro", "Stray", "Streamer Life Simulator", "Streamer Life Simulator 2", "Stronghold Crusader: Definitive Edition", 
+        "Subnautica", "Subnautica: Below Zero", "SUPERHOT", "Supermarket Simulator", "The Surge", "SurrounDead", "Sweet Transit", "Sword Art Online: Fatal Bullet", 
+        "SWORD ART ONLINE Fractured Daydream", "Tails of Iron", "Taxi Life: A City Driving Simulator", "Teenage Mutant Ninja Turtles", 
+        "Teenage Mutant Ninja Turtles Arcade", "Teenage Mutant Ninja Turtles: Out of the Shadows", "Teeworlds", "TEKKEN 7", "Terraria", "TerraScape", 
+        "Test Drive Unlimited 2", "Test Drive Unlimited Solar Crown", "theHunter: Call of the Wild", "Thief Simulator", "Thief Simulator 2", "THRONE AND LIBERTY", 
+        "Thronefall", "Tiny Bookshop", "Tom Clancy’s Ghost Recon: Advanced Warfighter", "Tom Clancy’s H.A.W.X. 2", "Tom Clancy’s Rainbow Six: Vegas", 
+        "Tom Clancy’s Rainbow Six: Vegas 2", "Tomb Raider", "Tony Hawk’s Pro Skater 1 + 2", "Tony Hawk’s Pro Skater 3 + 4", "Top Racer Collection", "TopSpin 2K25", 
+        "Totally Accurate Battle Simulator", "TrackDayR", "TrackMania Nations Forever", "TrackMania United Forever", "Train Sim World 4", "Train Sim World 5", 
+        "TRANSFORMERS: Rise of the Dark Spark", "Trials of Mana", "Trove", "Ultimate Chicken Horse", "Ultra Street Fighter IV", "ULTRAKILL", 
+        "UNCHARTED: Coleção Legado dos Ladrões", "Undertale", "Until Dawn", "Untitled Goose Game", "Valheim", "A Valley Without Wind", "Vampire Survivors", 
+        "Vampyr", "Virtua Fighter 5 R.E.V.O.", "The Walking Dead", "The Walking Dead: Season Two", "The Walking Dead: Survival Instinct", 
+        "The Walking Dead: The Telltale Definitive Series", "The Wandering Village", "Warframe", "Watch Dogs: Legion", "Watch_Dogs", "Watch_Dogs 2", 
+        "Way of the Hunter", "A Way Out", "Whispers from the Star", "Wildgate", "Windblown", "The Witcher 2: Assassins of Kings Enhanced Edition", 
+        "The Witcher 3: Wild Hunt", "Wizard of Legend 2", "Wolfenstein 3D", "Wolfenstein: Cyberpilot", "Wolfenstein II: The New Colossus", 
+        "Wolfenstein: The New Order", "Wolfenstein: The Old Blood", "World Boxing Manager", "World War Z", "WorldBox – God Simulator", "Worms Blast", 
+        "Worms Crazy Golf", "Worms Reloaded", "Worms Ultimate Mayhem", "WRC 4 FIA World Rally Championship", "WRC 5", "WRC 9 FIA World Rally Championship", 
+        "Wreckfest 2", "XCOM 2", "Yakuza 0", "Yakuza 3 Remastered", "Yakuza 5 Remastered", "Yakuza Rogue: Yokohama Massage", "Youtubers Life 3 – Stream Together", 
+        "Zort", "除邪 (CHUXIE)"
     ];
 
-    async function searchAPI() {
-        const input = document.getElementById('searchInput').value.trim();
+    const FALLBACK_IMG = "https://media.istockphoto.com/id/1329433253/photo/abstract-digital-background-with-technology-circuit-board-texture-electronic-motherboard.jpg?s=612x612&w=0&k=20&c=f7S_qg2aK5qQO7q7z_X_5X_6X_7X_8X_9X_0X=";
+
+    async function filtrarCatalogo() {
+        const input = document.getElementById('searchInput').value.trim().toLowerCase();
         const grid = document.getElementById('results-grid');
         const status = document.getElementById('statusMsg');
 
         if(input.length < 2) return;
 
         grid.innerHTML = "";
-        status.innerHTML = "<span style='color:#00FF41'>VERIFICANDO DISPONIBILIDADE...</span>";
+        status.innerHTML = "<span style='color:#00FF41'>VERIFICANDO LISTA OFICIAL...</span>";
 
-        let finalResults = [];
+        // 1. FILTRA PELA SUA LISTA (Local)
+        // Só aceita se o nome estiver na lista CATALOGO
+        const jogosEncontrados = CATALOGO.filter(jogo => jogo.toLowerCase().includes(input));
 
-        // PASSO 1: Verifica se é uma Exceção Manual (Minecraft)
-        const manualMatch = MANUAL_GAMES.find(g => g.slug.includes(input.toLowerCase()));
-        if (manualMatch) {
-            finalResults.push({
-                name: manualMatch.name,
-                background_image: manualMatch.image,
-                released: manualMatch.year,
-                rating: manualMatch.rating,
-                isManual: true
-            });
-        }
+        if (jogosEncontrados.length > 0) {
+            status.innerHTML = `<span style='color:#fff'>${jogosEncontrados.length} JOGOS ENCONTRADOS NO ACERVO.</span>`;
+            
+            // Limita a exibição para não travar (ex: 8 jogos)
+            const jogosParaExibir = jogosEncontrados.slice(0, 8);
 
-        try {
-            // PASSO 2: Busca na API (Só Steam, Ordenado por Fama)
-            const url = `https://api.rawg.io/api/games?key=${API_KEY}&search=${encodeURIComponent(input)}&stores=1&page_size=8&ordering=-added`;
-            const response = await fetch(url);
-            const data = await response.json();
-
-            if (data.results) {
-                // Filtra o lixo (Blocklist)
-                const apiResults = data.results.filter(game => {
-                    const nameLower = game.name.toLowerCase();
-                    if (BLOCK_LIST.some(bad => nameLower.includes(bad))) return false;
-                    return true;
-                });
-                
-                // Junta os manuais com os da API
-                finalResults = [...finalResults, ...apiResults];
+            // Para cada jogo encontrado na lista, buscamos a FOTO na API
+            for (const nomeJogo of jogosParaExibir) {
+                await renderizarCard(nomeJogo);
             }
 
-            // Renderiza
-            if (finalResults.length > 0) {
-                status.innerHTML = `<span style='color:#fff'>${finalResults.length} JOGOS ENCONTRADOS.</span>`;
-                
-                // Limita a 5 cards como você pediu
-                finalResults.slice(0, 5).forEach(game => {
-                    let bgImage = game.background_image;
-                    
-                    // TRUQUE VIP: Se o nome do jogo estiver na nossa lista VIP, força a capa da Steam
-                    const lowerName = game.name.toLowerCase();
-                    for (const [key, url] of Object.entries(VIP_COVERS)) {
-                        if (lowerName.includes(key)) {
-                            bgImage = url;
-                            break;
-                        }
-                    }
-
-                    const year = game.released ? game.released.substring(0,4) : "---";
-                    const rating = game.rating ? `⭐ ${game.rating}` : "TOP";
-                    const badgeClass = game.isManual ? "tag-ms" : "tag-steam";
-                    const badgeText = game.isManual ? "● OFFICIAL" : "● STEAM";
-
-                    const card = `
-                        <div class="game-card">
-                            <div class="card-img-container">
-                                <img src="${bgImage}" class="card-img">
-                            </div>
-                            <div class="card-info">
-                                <div class="game-title">${game.name}</div>
-                                <div class="meta-tags">
-                                    <span class="tag ${badgeClass}">${badgeText}</span>
-                                    <span class="tag">${year}</span>
-                                    <span class="tag">${rating}</span>
-                                </div>
-                                <button class="btn-action" onclick="alert('Iniciando desbloqueio: ${game.name}')">
-                                    [ DESBLOQUEAR ]
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    grid.innerHTML += card;
-                });
-            } else {
-                status.innerHTML = "<span style='color:orange'>JOGO NÃO ENCONTRADO NO CATÁLOGO.</span>";
-            }
-
-        } catch (error) {
-            console.error(error);
-            // Se der erro, mostra pelo menos o manual se tiver
-            if(finalResults.length > 0) {
-                 // Renderiza só o manual (código repetido simplificado para o exemplo)
-            } else {
-                status.innerHTML = "<span style='color:red'>ERRO DE CONEXÃO.</span>";
-            }
+        } else {
+            status.innerHTML = "<span style='color:orange'>JOGO NÃO CONSTA NO PACOTE OVERISE.</span>";
         }
     }
 
+    async function renderizarCard(nomeOficial) {
+        const grid = document.getElementById('results-grid');
+        let bgImage = FALLBACK_IMG;
+        let rating = "VIP";
+
+        try {
+            // Chama a API apenas para pegar a FOTO do jogo específico
+            const url = `https://api.rawg.io/api/games?key=${API_KEY}&search=${encodeURIComponent(nomeOficial)}&page_size=1`;
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.results && data.results.length > 0) {
+                if (data.results[0].background_image) {
+                    bgImage = data.results[0].background_image;
+                    if(data.results[0].rating) rating = `⭐ ${data.results[0].rating}`;
+                }
+            }
+        } catch (e) {
+            console.log("Erro ao carregar imagem, usando padrão.");
+        }
+
+        const card = `
+            <div class="game-card">
+                <div class="card-img-container">
+                    <img src="${bgImage}" class="card-img" onload="this.classList.add('loaded')">
+                </div>
+                <div class="card-info">
+                    <div class="game-title">${nomeOficial}</div>
+                    <div class="meta-tags">
+                        <span class="tag-check">✓ DISPONÍVEL</span>
+                        <span class="tag-check">${rating}</span>
+                    </div>
+                    <button class="btn-action" onclick="alert('Produto Validado. Iniciando Checkout para: ${nomeOficial}')">
+                        [ DESBLOQUEAR ]
+                    </button>
+                </div>
+            </div>
+        `;
+        grid.innerHTML += card;
+    }
+
     document.getElementById("searchInput").addEventListener("keypress", function(e) {
-        if(e.key === 'Enter') searchAPI();
+        if(e.key === 'Enter') filtrarCatalogo();
     });
 
 </script>
