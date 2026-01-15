@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OVERISE | Official Software</title>
+  <title>OVERISE | Acesso Vitalício</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
 
   <style>
     :root{
-      --bg:#050505; --panel:#0f0f0f; --panel-hover:#161616;
+      --bg:#050505; --panel:#0f0f0f; 
       --border:#222; --text:#e0e0e0; --neon:#00FF41;
       --font:'Inter', sans-serif;
     }
@@ -23,10 +23,10 @@
       font-family: var(--font); overflow-x: hidden;
     }
 
-    /* --- 1. HEADER FLUTUANTE --- */
+    /* --- 1. HEADER --- */
     header {
       position: fixed; top: 0; width: 100%; z-index: 1000;
-      background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(12px);
+      background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(15px);
       border-bottom: 1px solid rgba(255,255,255,0.05);
       padding: 15px 5%;
       display: flex; justify-content: space-between; align-items: center;
@@ -39,184 +39,132 @@
       font-weight: 800; text-decoration: none; text-transform: uppercase;
       font-size: 0.85rem; border-radius: 6px; transition: 0.3s;
     }
-    .nav-btn:hover { box-shadow: 0 0 20px rgba(0, 255, 65, 0.4); transform: scale(1.02); }
+    .nav-btn:hover { box-shadow: 0 0 20px rgba(0, 255, 65, 0.4); transform: scale(1.05); }
 
-    /* --- 2. HERO SECTION (IMPACTO) --- */
+    /* --- 2. HERO SECTION (CINEMÁTICA) --- */
     .hero {
       position: relative;
-      padding: 160px 20px 80px; text-align: center;
-      background: radial-gradient(circle at top, #1a1a1a 0%, var(--bg) 60%);
+      padding: 180px 20px 100px; text-align: center;
+      background: radial-gradient(circle at top, #151515 0%, var(--bg) 70%);
       overflow: hidden;
     }
     
-    /* Efeito de grade no fundo */
-    .hero::before {
-        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-        background-size: 40px 40px; opacity: 0.5; pointer-events: none;
-    }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(0, 255, 65, 0.1); border: 1px solid var(--neon); color: var(--neon);
-      padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 700;
-      margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px;
-    }
-    
     .hero h1 {
-      font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1; margin-bottom: 20px;
+      font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1; margin-bottom: 20px;
       color: #fff; text-transform: uppercase; letter-spacing: -2px;
     }
+    .hero span { color: var(--neon); }
     
     .hero p { 
-      color: #999; font-size: 1.1rem; max-width: 700px; margin: 0 auto 40px; line-height: 1.6;
+      color: #999; font-size: 1.2rem; max-width: 700px; margin: 0 auto 40px; line-height: 1.6;
     }
 
-    /* --- 3. FEATURES (O DIFERENCIAL) --- */
-    .features-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px; max-width: 1200px; margin: 0 auto 80px; padding: 0 20px;
+    /* --- 3. MINI VITRINE (DESTAQUES) --- */
+    /* Mostra apenas os TOPS, sem poluir a tela */
+    .showcase-section {
+        max-width: 1300px; margin: 0 auto; padding: 0 20px;
     }
     
-    .feature-card {
-      background: var(--panel); border: 1px solid var(--border); padding: 30px;
-      border-radius: 12px; transition: 0.3s;
-    }
-    .feature-card:hover { border-color: var(--neon); transform: translateY(-5px); }
-    
-    .f-icon { font-size: 2rem; margin-bottom: 15px; color: var(--neon); }
-    .f-title { font-weight: 800; font-size: 1.1rem; color: #fff; margin-bottom: 10px; text-transform: uppercase; }
-    .f-desc { color: #777; font-size: 0.9rem; line-height: 1.5; }
-
-    /* --- 4. TABELA COMPARATIVA (Nós vs Eles) --- */
-    .comparison-section {
-      background: #0a0a0a; padding: 80px 20px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    }
-    
-    .comp-container { max-width: 1000px; margin: 0 auto; overflow-x: auto; }
-    
-    .comp-table {
-      width: 100%; border-collapse: collapse; min-width: 600px;
-    }
-    
-    .comp-table th, .comp-table td {
-      padding: 20px; text-align: center; border-bottom: 1px solid #222;
-    }
-    
-    .comp-table th { font-weight: 900; text-transform: uppercase; font-size: 0.9rem; color: #666; letter-spacing: 1px; }
-    .comp-table td { font-weight: 600; color: #ccc; }
-    
-    .col-steam { color: #66c0f4 !important; font-size: 1.1rem; }
-    .col-overise { color: var(--neon) !important; font-size: 1.2rem; text-shadow: 0 0 15px rgba(0,255,65,0.2); }
-    
-    .check { color: var(--neon); font-size: 1.2rem; }
-    .cross { color: #ff3333; font-size: 1.2rem; }
-
-    /* --- 5. O SOFTWARE (VITRINE) --- */
-    .catalog-section { padding: 80px 20px; max-width: 1400px; margin: 0 auto; }
-    
-    .section-header { display: flex; justify-content: space-between; align-items: end; margin-bottom: 30px; flex-wrap: wrap; gap: 20px; }
-    .sec-title { font-size: 2rem; font-weight: 900; color: #fff; text-transform: uppercase; }
-    
-    /* Barra de Busca */
-    .search-wrapper {
-      position: relative; width: 100%; max-width: 500px;
-    }
-    .search-input {
-      width: 100%; padding: 15px 20px; background: #111; border: 1px solid #333;
-      color: #fff; font-family: var(--font); font-weight: 600; font-size: 1rem;
-      border-radius: 8px; outline: none; transition: 0.3s; text-transform: uppercase;
-    }
-    .search-input:focus { border-color: var(--neon); box-shadow: 0 0 30px rgba(0,255,65,0.1); }
-
-    /* Categorias */
-    .cats-container {
-      display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap;
-    }
-    .cat-pill {
-      background: #111; border: 1px solid #333; color: #888; padding: 6px 14px;
-      border-radius: 50px; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-transform: uppercase;
-      transition: 0.2s;
-    }
-    .cat-pill:hover, .cat-pill.active { border-color: var(--neon); color: var(--neon); background: rgba(0,255,65,0.05); }
-
-    /* GRID DE JOGOS */
-    #results-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 25px;
+    .section-label {
+        font-size: 0.9rem; color: var(--neon); font-weight: 800; letter-spacing: 2px; margin-bottom: 20px; display: block;
     }
 
+    .mini-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    /* CARD DESIGN */
     .game-card {
       background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
       overflow: hidden; display: flex; flex-direction: column;
       transition: transform 0.3s, border-color 0.3s; position: relative; cursor: pointer;
     }
-    .game-card:hover { transform: translateY(-8px); border-color: var(--neon); box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+    .game-card:hover { transform: translateY(-8px); border-color: var(--neon); box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
 
     .imgbox { width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden; position: relative; }
     .imgbox img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; opacity: 0; }
     .imgbox img.loaded { opacity: 1; }
     .game-card:hover img { transform: scale(1.08); }
 
-    /* Tag Online no Card */
-    .online-tag {
+    /* Tag Online */
+    .tag-online {
         position: absolute; top: 10px; right: 10px;
-        background: rgba(0,0,0,0.8); color: var(--neon); border: 1px solid var(--neon);
+        background: rgba(0,255,65,0.2); color: var(--neon); border: 1px solid var(--neon);
         padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 800;
-        display: flex; align-items: center; gap: 5px; backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px); display: flex; align-items: center; gap: 5px;
     }
-    .online-dot { width: 6px; height: 6px; background: var(--neon); border-radius: 50%; box-shadow: 0 0 8px var(--neon); }
+    .dot-online { width: 6px; height: 6px; background: var(--neon); border-radius: 50%; box-shadow: 0 0 5px var(--neon); }
 
-    .info { padding: 18px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
-    .title { font-weight: 800; font-size: 0.95rem; color: #fff; text-transform: uppercase; line-height: 1.3; }
+    .card-info { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; border-top: 1px solid #222; }
+    .game-title { font-weight: 800; font-size: 0.95rem; color: #fff; text-transform: uppercase; margin-bottom: 5px; }
+    .steam-badge { font-size: 0.75rem; color: #66c0f4; font-weight: 700; margin-bottom: 10px; }
+
+    /* --- 4. SOBRE O SOFTWARE (O QUE É A OVERISE) --- */
+    .about-section {
+        padding: 100px 20px; background: #0a0a0a; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        margin-top: 80px;
+    }
+    .about-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto;
+    }
+    .about-text h2 { font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px; line-height: 1.1; }
+    .about-text p { color: #888; line-height: 1.6; margin-bottom: 20px; }
     
-    .meta { display: flex; gap: 8px; font-size: 0.7rem; font-weight: 700; color: #666; }
-    .meta span { background: #1a1a1a; padding: 4px 8px; border-radius: 4px; }
+    .feature-list li { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-weight: 600; color: #ccc; }
+    .feature-icon { color: var(--neon); font-size: 1.2rem; }
 
-    .btn-unlock {
-      margin-top: auto; width: 100%; background: transparent; 
-      border: 1px solid #333; color: #fff; padding: 12px;
-      font-size: 0.8rem; font-weight: 800; cursor: pointer; text-transform: uppercase;
-      transition: 0.2s; border-radius: 6px;
-    }
-    .game-card:hover .btn-unlock { background: var(--neon); color: #000; border-color: var(--neon); }
+    /* --- 5. TABELA COMPARATIVA --- */
+    .comp-section { padding: 80px 20px; max-width: 1000px; margin: 0 auto; }
+    .comp-table { width: 100%; border-collapse: collapse; margin-top: 40px; }
+    .comp-table th { text-align: center; padding: 20px; font-size: 1rem; color: #666; border-bottom: 1px solid #333; }
+    .comp-table td { text-align: center; padding: 20px; border-bottom: 1px solid #222; color: #ccc; font-weight: 600; }
+    .highlight-col { color: var(--neon); font-size: 1.2rem; text-shadow: 0 0 10px rgba(0,255,65,0.2); }
 
-    /* --- 6. CTA FINAL --- */
-    .final-cta {
-      background: linear-gradient(180deg, var(--bg) 0%, #0d0d0d 100%);
-      padding: 100px 20px; text-align: center; border-top: 1px solid #222;
+    /* --- 6. O CATÁLOGO COMPLETO (ESCONDIDO/EXPANSIVEL) --- */
+    .full-catalog-section {
+        padding: 80px 20px; text-align: center;
+        background: radial-gradient(circle at center, #111 0%, #000 80%);
     }
-    .price-big { font-size: 4rem; font-weight: 900; color: var(--neon); margin: 20px 0; letter-spacing: -2px; }
+    
+    .search-wrapper { max-width: 600px; margin: 0 auto 40px; position: relative; }
+    .search-input {
+        width: 100%; padding: 20px; background: #0a0a0a; border: 2px solid #333;
+        color: #fff; font-size: 1.1rem; border-radius: 8px; outline: none; text-transform: uppercase;
+        font-family: monospace; transition: 0.3s;
+    }
+    .search-input:focus { border-color: var(--neon); box-shadow: 0 0 30px rgba(0,255,65,0.1); }
+
+    /* O grid completo começa escondido */
+    #full-grid {
+        display: none; /* Segredo: Só aparece se pesquisar */
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px; max-width: 1200px; margin: 40px auto 0;
+    }
+    #full-grid.active { display: grid; }
+
+    /* --- 7. OFERTA FINAL --- */
+    .offer-box {
+        background: linear-gradient(180deg, #111 0%, #000 100%);
+        border: 1px solid var(--neon); border-radius: 20px;
+        padding: 60px 20px; max-width: 500px; margin: 60px auto; text-align: center;
+        box-shadow: 0 0 50px rgba(0,255,65,0.1);
+    }
+    .price { font-size: 4rem; font-weight: 900; color: var(--neon); margin: 20px 0; }
     .btn-buy {
-      background: var(--neon); color: #000; padding: 20px 50px;
-      font-size: 1.2rem; font-weight: 900; border: none; border-radius: 8px;
-      cursor: pointer; text-transform: uppercase; transition: 0.3s;
-      box-shadow: 0 0 30px rgba(0,255,65,0.2);
+        background: var(--neon); color: #000; padding: 20px 40px; width: 100%;
+        font-size: 1.2rem; font-weight: 900; border: none; border-radius: 8px;
+        cursor: pointer; text-transform: uppercase; transition: 0.3s;
     }
-    .btn-buy:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(0,255,65,0.5); background: #fff; }
+    .btn-buy:hover { transform: scale(1.02); box-shadow: 0 0 30px var(--neon); background: #fff; }
 
-    /* FOOTER */
+    /* Footer */
     footer { text-align: center; padding: 40px; color: #444; font-size: 0.8rem; border-top: 1px solid #111; }
-
-    /* Toast Notification */
-    #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 10px; }
-    .toast {
-      background: rgba(15, 15, 15, 0.95); border-left: 3px solid var(--neon);
-      padding: 15px 20px; border-radius: 6px; color: #fff; font-size: 0.85rem; font-weight: 600;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8); animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      display: flex; align-items: center; gap: 12px; width: 300px;
-    }
-    @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-    /* LOADING MSG */
-    .loading-msg { text-align: center; color: #666; margin-top: 40px; font-family: monospace; }
 
     @media(max-width: 768px) {
         .hero h1 { font-size: 2.5rem; }
-        .section-header { flex-direction: column; align-items: start; }
-        .search-wrapper { max-width: 100%; }
+        .about-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -224,321 +172,228 @@
 
   <header>
     <div class="logo">OVER<span>ISE</span></div>
-    <a href="#offer" class="nav-btn">ACESSAR SISTEMA</a>
+    <a href="#offer" class="nav-btn">LIBERAR ACESSO</a>
   </header>
 
   <section class="hero">
-    <div class="hero-badge">● MODO ONLINE: ATIVO</div>
     <h1>SUA STEAM.<br><span style="color:var(--neon)">SEM LIMITES.</span></h1>
-    <p>O primeiro gerenciador de licenças híbrido do mercado. Desbloqueie mais de 700 jogos com suporte a Multiplayer, Saves na Nuvem e Atualizações Automáticas.</p>
-    
-    <div style="margin-top: 30px;">
-        <a href="#catalogo" class="nav-btn" style="padding: 15px 40px; font-size: 1rem;">VER BIBLIOTECA</a>
+    <p>O fim dos preços altos. Tenha acesso imediato a uma biblioteca premium com os maiores lançamentos da história em um único plano vitalício.</p>
+    <a href="#offer" class="nav-btn" style="padding: 15px 40px; font-size: 1rem;">QUERO ENTRAR AGORA</a>
+  </section>
+
+  <section class="showcase-section">
+    <span class="section-label">🔥 MAIS JOGADOS DA SEMANA</span>
+    <div class="mini-grid" id="featured-grid">
+        </div>
+  </section>
+
+  <section class="about-section">
+    <div class="about-grid">
+        <div class="about-text">
+            <h2 style="color:#fff">NÃO É SÓ UMA LOJA.<br>É UM <span style="color:var(--neon)">SISTEMA.</span></h2>
+            <p>A Overise não vende chaves soltas. Somos um <b>Gerenciador de Licenças Offline</b>. Nosso software autentica os arquivos oficiais diretamente no seu hardware, permitindo rodar títulos AAA com performance nativa.</p>
+            <ul class="feature-list" style="list-style: none;">
+                <li><span class="feature-icon">🛡️</span> Sem Risco de Banimento (Modo Offline)</li>
+                <li><span class="feature-icon">☁️</span> Download Direto da Steam (Velocidade Máx)</li>
+                <li><span class="feature-icon">🎮</span> Suporte a Controles e Save Game</li>
+            </ul>
+        </div>
+        <div class="about-card" style="background:#111; border:1px solid #333; padding:30px; border-radius:12px;">
+            <h3 style="color:#fff; margin-bottom:15px">MULTIPLAYER READY 🌐</h3>
+            <p style="font-size:0.9rem">Ao contrário de métodos antigos, nossa tecnologia híbrida permite acesso a servidores online em títulos selecionados como <b>FIFA, COD e Elden Ring</b>.</p>
+            <div style="margin-top:20px; width:100%; height:150px; background:url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg'); background-size:cover; border-radius:8px; opacity:0.7"></div>
+        </div>
     </div>
   </section>
 
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="f-icon">⚡</div>
-      <div class="f-title">ONLINE ENABLED</div>
-      <div class="f-desc">Jogue com seus amigos. Nossa tecnologia Bypass permite conexão em servidores oficiais na maioria dos títulos suportados.</div>
-    </div>
-    <div class="feature-card">
-      <div class="f-icon">🛡️</div>
-      <div class="f-title">ANTI-BAN SHIELD</div>
-      <div class="f-desc">Segurança total. O software roda em uma camada paralela, sem modificar os arquivos críticos da sua conta Steam principal.</div>
-    </div>
-    <div class="feature-card">
-      <div class="f-icon">🚀</div>
-      <div class="f-title">DOWNLOAD MÁXIMO</div>
-      <div class="f-desc">Baixe diretamente dos servidores da Steam/Epic na velocidade máxima da sua internet. Sem torrents lentos.</div>
-    </div>
-  </div>
-
-  <section class="comparison-section">
-    <h2 style="text-align: center; color: #fff; margin-bottom: 40px; font-size: 1.8rem; text-transform: uppercase;">A MATEMÁTICA NÃO MENTE</h2>
-    <div class="comp-container">
-      <table class="comp-table">
+  <section class="comp-section">
+    <h2 style="text-align: center; color: #fff; margin-bottom: 20px;">POR QUE OVERISE?</h2>
+    <table class="comp-table">
         <thead>
-          <tr>
-            <th>BENEFÍCIO</th>
-            <th class="col-steam">LOJA COMUM</th>
-            <th class="col-overise">OVERISE SOFT</th>
-          </tr>
+            <tr>
+                <th>RECURSO</th>
+                <th>STEAM OFICIAL</th>
+                <th style="color:var(--neon)">OVERISE SOFT</th>
+            </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>CUSTO POR JOGO AAA</td>
-            <td>R$ 299,90</td>
-            <td style="color:#fff">R$ 0,00</td>
-          </tr>
-          <tr>
-            <td>CATÁLOGO</td>
-            <td>Compra Individual</td>
-            <td style="color:var(--neon)">+740 Jogos Liberados</td>
-          </tr>
-          <tr>
-            <td>MULTIPLAYER</td>
-            <td><span class="check">✓</span> Sim</td>
-            <td><span class="check">✓</span> Sim (Híbrido)</td>
-          </tr>
-          <tr>
-            <td>VALOR TOTAL</td>
-            <td style="text-decoration: line-through; opacity: 0.5;">R$ 15.000+</td>
-            <td style="font-weight:900; font-size: 1.3rem; color:var(--neon)">R$ 9,97</td>
-          </tr>
+            <tr>
+                <td>PREÇO MÉDIO (AAA)</td>
+                <td>R$ 299,90 / jogo</td>
+                <td class="highlight-col">R$ 9,97 (Tudo)</td>
+            </tr>
+            <tr>
+                <td>CATÁLOGO</td>
+                <td>Compra Individual</td>
+                <td class="highlight-col">+700 Jogos</td>
+            </tr>
+            <tr>
+                <td>TEMPO DE ACESSO</td>
+                <td>Vitalício</td>
+                <td class="highlight-col">Vitalício</td>
+            </tr>
+            <tr>
+                <td>INSTALAÇÃO</td>
+                <td>Automática</td>
+                <td class="highlight-col">Launcher Próprio</td>
+            </tr>
         </tbody>
-      </table>
-    </div>
+    </table>
   </section>
 
-  <section id="catalogo" class="catalog-section">
-    <div class="section-header">
-      <div class="sec-title">VITRINE GLOBAL</div>
-      <div class="search-wrapper">
-        <input id="searchInput" class="search-input" placeholder="BUSCAR JOGO (EX: GTA, COD, FIFA)..." />
-      </div>
-    </div>
-
-    <div class="cats-container" id="cats">
-      </div>
-
-    <div id="statusMsg" style="margin-bottom: 20px; font-size: 0.8rem; color: #666; font-family: monospace;"></div>
-
-    <div id="results-grid">
-        </div>
+  <section class="full-catalog-section">
+    <h2 style="color: #fff; margin-bottom: 20px; font-size: 2rem;">DATABASE GLOBAL</h2>
+    <p style="color: #888; margin-bottom: 40px;">Pesquise qualquer jogo para verificar a disponibilidade no acervo.</p>
     
-    <div id="loading" class="loading-msg" style="display:none">CARREGANDO MAIS TÍTULOS...</div>
-  </section>
+    <div class="search-wrapper">
+        <input id="searchInput" class="search-input" placeholder="DIGITE O NOME DO JOGO..." />
+    </div>
+    
+    <div id="statusMsg" style="color:var(--neon); font-weight:bold; margin-bottom:20px; display:none"></div>
 
-  <section id="offer" class="final-cta">
-    <div class="hero-badge" style="border-color: #fff; color: #fff;">OFERTA POR TEMPO LIMITADO</div>
-    <h2 style="color: #fff; font-size: 2.5rem; margin-top: 20px;">ACESSO VITALÍCIO</h2>
-    <p style="color: #888; max-width: 500px; margin: 10px auto;">Garanta sua licença Overise agora e nunca mais pague por jogos.</p>
-    <div class="price-big">R$ 9,97</div>
-    <button class="btn-buy" onclick="window.open('SEU_LINK_DE_CHECKOUT_AQUI', '_blank')">COMPRAR AGORA</button>
-    <div style="margin-top: 20px; font-size: 0.8rem; color: #555;">
-        🔒 Pagamento Processado via Stripe/Pix • Entrega Automática no E-mail
+    <div id="full-grid"></div>
+    
+    <div id="cta-ver-tudo" style="margin-top:40px; display:none">
+        <a href="#offer" class="nav-btn">LIBERAR TODOS ESSES JOGOS</a>
     </div>
   </section>
 
-  <div id="toast-container"></div>
+  <section id="offer">
+    <div class="offer-box">
+        <div style="background:var(--neon); color:#000; display:inline-block; padding:5px 15px; border-radius:50px; font-weight:bold; font-size:0.8rem; margin-bottom:15px">OFERTA DE LANÇAMENTO</div>
+        <h2 style="color:#fff; font-size:2rem; line-height:1.2">PASSE DE ACESSO<br>VITALÍCIO</h2>
+        <div class="price">R$ 9,97</div>
+        <ul style="text-align:left; color:#ccc; margin-bottom:30px; line-height:1.8; list-style:none; padding:0 20px;">
+            <li>✅ Acesso Imediato ao Software</li>
+            <li>✅ Biblioteca com +700 Jogos</li>
+            <li>✅ Garantia de 7 Dias</li>
+            <li>✅ Suporte Especializado</li>
+        </ul>
+        <button class="btn-buy" onclick="window.open('SEU_LINK_DE_CHECKOUT_AQUI', '_blank')">COMPRAR AGORA</button>
+        <p style="margin-top:15px; font-size:0.8rem; color:#555">🔒 Pagamento Seguro • Entrega via E-mail</p>
+    </div>
+  </section>
 
   <footer>
     <p>© 2025 OVERISE SOFTWARE. Todos os direitos reservados.</p>
   </footer>
 
 <script>
-/** =========================
- * CONFIG & HELPERS
- * ========================= */
-// Imagem padrão caso falhe (Estilo 'No Signal')
-const FALLBACK_IMG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='460' height='260'><rect width='100%' height='100%' fill='#0f0f0f'/><text x='50%' y='50%' fill='#333' font-family='sans-serif' font-weight='bold' text-anchor='middle'>OVERISE DB</text></svg>";
+    // --- LÓGICA DO SISTEMA ---
+    
+    // Lista VIP (Aparece no topo sem pesquisar)
+    // IDs Oficiais da Steam para garantir imagens perfeitas (Banners 16:9)
+    const VIP_GAMES = [
+        { name: "Grand Theft Auto V", id: "271590", online: true },
+        { name: "God of War Ragnarök", id: "2322010", online: false }, // Usando ID novo
+        { name: "Red Dead Redemption 2", id: "1174180", online: false },
+        { name: "Cyberpunk 2077", id: "1091500", online: false },
+        { name: "Call of Duty®", id: "1938090", online: true }, // MW2/3 Hub
+        { name: "Elden Ring", id: "1245620", online: true },
+        { name: "EA SPORTS FC™ 24", id: "2344520", online: true },
+        { name: "Sekiro™: Shadows Die Twice", id: "814380", online: false }
+    ];
 
-function debounce(fn, ms=180){
-  let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); };
-}
+    const FALLBACK_IMG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='460' height='215'><rect width='100%' height='100%' fill='#111'/></svg>";
 
-function normalizeQuery(q){
-  q = (q||"").trim().toUpperCase();
-  // Dicionário de Sinônimos
-  if(q === "GTA") return "GRAND THEFT AUTO";
-  if(q === "MINECRAFT") return "MINECRAFT";
-  if(q === "FIFA") return "EA SPORTS FC";
-  if(q === "COD") return "CALL OF DUTY";
-  if(q === "RE4") return "RESIDENT EVIL 4";
-  if(q === "CS") return "COUNTER-STRIKE";
-  return q;
-}
+    // Renderiza a Mini Vitrine (VIP)
+    const featuredGrid = document.getElementById('featured-grid');
+    
+    VIP_GAMES.forEach(game => {
+        const onlineBadge = game.online ? 
+            `<div class="tag-online"><div class="dot-online"></div> ONLINE</div>` : '';
+            
+        const card = `
+            <div class="game-card" onclick="location.href='#offer'">
+                <div class="imgbox">
+                    <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${game.id}/header.jpg" loading="lazy">
+                    ${onlineBadge}
+                </div>
+                <div class="card-info">
+                    <div class="game-title">${game.name}</div>
+                    <div class="steam-badge">PLATAFORMA STEAM</div>
+                </div>
+            </div>
+        `;
+        featuredGrid.innerHTML += card;
+    });
 
-/** =========================
- * DADOS & ESTADO
- * ========================= */
-let GAMES = [];
-let FILTERED = [];
-let ACTIVE_CATEGORY = "TODOS";
-let page = 0;
-const PER_PAGE = 24; // Mostrar 24 por vez
-
-// Elementos DOM
-const grid = document.getElementById("results-grid");
-const catsEl = document.getElementById("cats");
-const statusMsg = document.getElementById("statusMsg");
-const inputEl = document.getElementById("searchInput");
-
-/** =========================
- * LÓGICA DE RENDERIZAÇÃO
- * ========================= */
-
-// Monta o Card HTML
-function cardHtml(g){
-  const cover = g.cover || FALLBACK_IMG;
-  // Simula categorias baseadas no nome se não tiver no JSON
-  let tag = "OFFLINE";
-  if(g.name.toUpperCase().includes("DUTY") || g.name.toUpperCase().includes("FIFA") || g.name.toUpperCase().includes("STRIKE")) tag = "ONLINE";
-  
-  const onlineBadge = tag === "ONLINE" ? 
-    `<div class="online-tag"><span class="online-dot"></span> MULTIPLAYER</div>` : 
-    `<div class="online-tag" style="border-color:#666; color:#aaa"><span class="online-dot" style="background:#666; box-shadow:none"></span> CAMPAIGN</div>`;
-
-  return `
-    <div class="game-card">
-      <div class="imgbox">
-        <img loading="lazy" src="${cover}" onload="this.classList.add('loaded')" onerror="this.src='${FALLBACK_IMG}'">
-        ${onlineBadge}
-      </div>
-      <div class="info">
-        <div class="title">${g.name}</div>
-        <div class="meta">
-            <span>STEAM</span>
-            <span>VITALÍCIO</span>
-        </div>
-        <button class="btn-unlock" onclick="triggerUnlock('${g.name.replace(/'/g, "\\'")}')">
-            [ ATIVAR LICENÇA ]
-        </button>
-      </div>
-    </div>
-  `;
-}
-
-function renderGrid(reset = false){
-  if(reset) {
-    grid.innerHTML = "";
-    page = 0;
-  }
-  
-  const start = page * PER_PAGE;
-  const end = start + PER_PAGE;
-  const slice = FILTERED.slice(start, end);
-  
-  if(slice.length === 0 && page === 0) {
-    grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#555;">Nenhum jogo encontrado para "${inputEl.value}". Tente outro termo.</div>`;
-    return;
-  }
-
-  const html = slice.map(cardHtml).join("");
-  grid.insertAdjacentHTML('beforeend', html);
-}
-
-/** =========================
- * FILTROS & BUSCA
- * ========================= */
-function applyFilters(){
-  const rawQ = inputEl.value;
-  const q = normalizeQuery(rawQ);
-  
-  FILTERED = GAMES.filter(g => {
-    // Filtro por Categoria
-    const gCats = g.categories || ["OUTROS"];
-    const catMatch = ACTIVE_CATEGORY === "TODOS" || gCats.includes(ACTIVE_CATEGORY);
-    if(!catMatch) return false;
-
-    // Filtro por Texto
-    if(q.length < 2) return true;
-    return g.name.toUpperCase().includes(q);
-  });
-
-  // Ordenação: Jogos com capa aparecem primeiro (Visual melhor)
-  FILTERED.sort((a,b) => (b.cover ? 1 : 0) - (a.cover ? 1 : 0));
-
-  statusMsg.innerText = `${FILTERED.length} ARQUIVOS LOCALIZADOS.`;
-  renderGrid(true);
-}
-
-/** =========================
- * CATEGORIAS
- * ========================= */
-function renderCategories(){
-  // Extrai categorias únicas
-  const allCats = new Set();
-  GAMES.forEach(g => {
-    if(g.categories) g.categories.forEach(c => allCats.add(c));
-  });
-  
-  const sortedCats = ["TODOS", ...Array.from(allCats).sort()];
-  
-  catsEl.innerHTML = sortedCats.map(c => {
-    const activeClass = c === ACTIVE_CATEGORY ? "active" : "";
-    return `<div class="cat-pill ${activeClass}" onclick="selectCat('${c}')">${c}</div>`;
-  }).join("");
-}
-
-window.selectCat = (c) => {
-  ACTIVE_CATEGORY = c;
-  renderCategories();
-  applyFilters();
-}
-
-/** =========================
- * GAMIFICAÇÃO (TOASTS)
- * ========================= */
-const actions = ["ativou", "baixou", "desbloqueou"];
-function startGamification() {
-  setInterval(() => {
-    // Pega um jogo aleatório da lista carregada
-    if(GAMES.length > 0) {
-      const randGame = GAMES[Math.floor(Math.random() * GAMES.length)].name;
-      const randAction = actions[Math.floor(Math.random() * actions.length)];
-      const user = "Usuário " + Math.floor(Math.random() * 9000 + 1000);
-      
-      showToast(`<span style="color:var(--neon)">✓</span> ${user} ${randAction} <b>${randGame}</b>.`);
+    // --- SISTEMA DE BUSCA (A MÁGICA DO CATÁLOGO) ---
+    // Carrega o JSON apenas se o usuário interagir
+    let FULL_CATALOG = [];
+    
+    async function loadCatalog() {
+        if(FULL_CATALOG.length > 0) return;
+        try {
+            const req = await fetch('./games_741_steam.json');
+            const data = await req.json();
+            FULL_CATALOG = Array.isArray(data) ? data : data.games;
+        } catch(e) { console.log("Erro catalogo"); }
     }
-  }, 8000); // A cada 8s
-}
 
-function showToast(html) {
-  const t = document.createElement("div");
-  t.className = "toast";
-  t.innerHTML = html;
-  document.getElementById("toast-container").appendChild(t);
-  setTimeout(()=>t.remove(), 4000);
-}
+    const input = document.getElementById('searchInput');
+    const fullGrid = document.getElementById('full-grid');
+    const statusMsg = document.getElementById('statusMsg');
+    const ctaVerTudo = document.getElementById('cta-ver-tudo');
 
-window.triggerUnlock = (name) => {
-  showToast(`<span style="color:var(--neon)">⚡</span> Processando chave para <b>${name}</b>...`);
-  setTimeout(() => {
-    window.location.href = "#offer";
-  }, 1500);
-}
+    // Debounce para não travar
+    let timeout;
+    input.addEventListener('input', () => {
+        clearTimeout(timeout);
+        timeout = setTimeout(performSearch, 300);
+    });
 
-/** =========================
- * INIT (CARREGAMENTO)
- * ========================= */
-async function init(){
-  try {
-    // Fetch do JSON local que você já tem
-    const req = await fetch("./games_741_steam.json");
-    if(!req.ok) throw new Error("Erro JSON");
-    const json = await req.json();
-    
-    // Tratamento robusto (aceita array direto ou obj {games: []})
-    GAMES = Array.isArray(json) ? json : (json.games || []);
-    
-    // Inicializa interface
-    renderCategories();
-    applyFilters(); // Renderiza grid inicial
-    startGamification();
-    
-  } catch(e) {
-    console.error(e);
-    grid.innerHTML = `<div style="color:red; text-align:center; padding:50px;">ERRO CRÍTICO: Não foi possível carregar a Database. Verifique o arquivo games_741_steam.json</div>`;
-  }
-}
+    // Evento de foco (Carrega lista antes de digitar)
+    input.addEventListener('focus', loadCatalog);
 
-// Infinite Scroll
-window.addEventListener("scroll", debounce(() => {
-  if((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 800) {
-    page++;
-    renderGrid(false);
-  }
-}, 100));
+    async function performSearch() {
+        await loadCatalog(); // Garante que carregou
+        
+        const term = input.value.toUpperCase().trim();
+        const grid = document.getElementById('full-grid');
+        
+        if (term.length < 2) {
+            grid.innerHTML = "";
+            grid.classList.remove('active');
+            statusMsg.style.display = 'none';
+            ctaVerTudo.style.display = 'none';
+            return;
+        }
 
-// Input Listener
-inputEl.addEventListener("input", debounce(applyFilters, 300));
+        // Filtra
+        let results = FULL_CATALOG.filter(g => g.name.toUpperCase().includes(term));
+        
+        // Apelidos (GTA, COD) - Ajuste Fino
+        if(term === "GTA") results = FULL_CATALOG.filter(g => g.name.toUpperCase().includes("GRAND THEFT AUTO"));
+        if(term === "COD") results = FULL_CATALOG.filter(g => g.name.toUpperCase().includes("CALL OF DUTY"));
 
-// Start
-init();
+        statusMsg.style.display = 'block';
+        statusMsg.innerText = `${results.length} RESULTADOS ENCONTRADOS NA DATABASE.`;
+        
+        grid.classList.add('active');
+        grid.innerHTML = "";
+
+        // Mostra no máximo 8 resultados para não poluir
+        results.slice(0, 8).forEach(g => {
+            const cover = g.cover || FALLBACK_IMG;
+            const card = `
+                <div class="game-card" onclick="location.href='#offer'">
+                    <div class="imgbox">
+                        <img src="${cover}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'">
+                    </div>
+                    <div class="card-info">
+                        <div class="game-title">${g.name}</div>
+                        <div class="steam-badge">DISPONÍVEL</div>
+                    </div>
+                </div>
+            `;
+            grid.innerHTML += card;
+        });
+
+        if(results.length > 0) ctaVerTudo.style.display = 'block';
+    }
 
 </script>
+
 </body>
 </html>
