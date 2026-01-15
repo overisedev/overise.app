@@ -2,1633 +2,1562 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>OVERISE | Official Software</title>
 
-  <!-- SEO / Social -->
-  <meta name="description" content="OVERISE — software para organizar e acessar sua biblioteca de jogos com uma experiência premium. Interface rápida, catálogo visual e busca inteligente." />
+  <!-- SEO básico -->
+  <meta name="description" content="Overise — software premium para gerenciar e explorar uma biblioteca completa com experiência de loja moderna." />
+  <meta name="theme-color" content="#050505" />
   <meta property="og:title" content="OVERISE | Official Software" />
-  <meta property="og:description" content="Interface premium, vitrine de destaques e busca instantânea. Experiência Dark Premium." />
+  <meta property="og:description" content="Experiência premium: vitrine, catálogo e busca rápida com capas 16:9." />
   <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#00FF41" />
 
-  <!-- Fonts -->
+  <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg:#050505;
-      --panel:#0b0b0b;
-      --panel2:#0f0f0f;
-      --border:rgba(255,255,255,.08);
-      --text:#e8e8e8;
-      --muted:rgba(255,255,255,.58);
-      --muted2:rgba(255,255,255,.42);
+      --panel:#0f0f0f;
+      --panel2:#0b0b0b;
+      --border:#1f1f1f;
+      --text:#e7e7e7;
+      --muted:#9a9a9a;
+      --soft:#cfcfcf;
       --neon:#00FF41;
+      --blue:#66c0f4;
+
+      --r12:12px;
+      --r16:16px;
+      --r20:20px;
+
       --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --radius:18px;
-      --radius2:14px;
-      --max:1180px;
+      --shadow2: 0 10px 30px rgba(0,0,0,.45);
+      --glow: 0 0 30px rgba(0,255,65,.13);
+
+      --max: 1240px;
+      --font:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
-    *{box-sizing:border-box}
+
+    *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth; scroll-padding-top: 86px;}
     body{
-      margin:0;
-      background: radial-gradient(1200px 700px at 50% -10%, rgba(0,255,65,.12), transparent 60%),
-                  radial-gradient(900px 600px at 0% 30%, rgba(0,120,255,.06), transparent 60%),
-                  var(--bg);
-      color:var(--text);
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
       overflow-x:hidden;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-    a{color:inherit; text-decoration:none}
-    button{font-family:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding: 0 18px;}
-    .glow{
-      box-shadow: 0 0 0 1px rgba(0,255,65,.22), 0 0 40px rgba(0,255,65,.12);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Header */
+    /* ---------- Micro animações base ---------- */
+    @keyframes fadeUp {
+      from {opacity:0; transform: translateY(16px);}
+      to   {opacity:1; transform: translateY(0);}
+    }
+    @keyframes softPulse {
+      0%,100% {transform: scale(1);}
+      50% {transform: scale(1.02);}
+    }
+    @keyframes shimmer {
+      0% {background-position: -200% 0;}
+      100% {background-position: 200% 0;}
+    }
+
+    .reveal {opacity:0; transform: translateY(14px); transition: .6s ease;}
+    .reveal.on {opacity:1; transform: translateY(0);}
+
+    .container{width: min(var(--max), 92%); margin: 0 auto;}
+
+    /* ---------- Header ---------- */
     header{
-      position:fixed; top:0; left:0; right:0; z-index:999;
-      backdrop-filter: blur(12px);
-      background: rgba(5,5,5,.72);
+      position: fixed; top:0; left:0; right:0; z-index:1000;
+      background: rgba(5,5,5,.86);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255,255,255,.06);
     }
-    .hrow{
-      height: 68px;
+    .header-inner{
+      width: min(var(--max), 92%);
+      margin: 0 auto;
       display:flex; align-items:center; justify-content:space-between;
+      padding: 14px 0;
       gap: 16px;
     }
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      font-weight:900; letter-spacing:-.8px; text-transform:uppercase;
-      color:#fff;
+    .brand{display:flex; align-items:center; gap:12px;}
+    .logo{
+      font-weight: 900; letter-spacing: -1px;
+      text-transform: uppercase; color:#fff;
+      font-size: 1.35rem;
     }
-    .brand .dot{
-      width:10px; height:10px; border-radius:50%;
-      background: var(--neon);
-      box-shadow: 0 0 18px rgba(0,255,65,.7);
-    }
-    .brand span{color:var(--neon)}
-    .nav{
-      display:flex; align-items:center; gap: 10px;
-    }
-    .pill{
-      display:inline-flex; align-items:center; gap:10px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.80);
-      font-weight: 700;
-      font-size: 13px;
-      transition: .22s ease;
-    }
-    .pill:hover{transform: translateY(-1px); border-color: rgba(0,255,65,.45);}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color:#fff;
-      font-weight: 900;
-      letter-spacing:.6px;
-      text-transform:uppercase;
-      font-size: 12px;
-      cursor:pointer;
-      transition:.22s ease;
-      user-select:none;
-    }
-    .btn:hover{transform: translateY(-1px); border-color: rgba(0,255,65,.40);}
-    .btn-primary{
-      background: var(--neon);
-      color:#000;
-      border: 1px solid rgba(0,255,65,.9);
-      box-shadow: 0 10px 30px rgba(0,255,65,.12);
-    }
-    .btn-primary:hover{filter:brightness(1.05); box-shadow: 0 0 40px rgba(0,255,65,.28); border-color: rgba(0,255,65,1);}
-    .btn-ghost{
-      background: transparent;
-      border: 1px solid rgba(255,255,255,.18);
-      color: rgba(255,255,255,.92);
-    }
-    .hide-md{display:inline-flex}
-    @media (max-width: 720px){
-      .hide-md{display:none}
-      .pill{display:none}
+    .logo span{color: var(--neon);}
+    .status-dot{
+      width:10px;height:10px;border-radius:50%;
+      background: var(--neon); box-shadow: 0 0 18px rgba(0,255,65,.55);
+      animation: softPulse 2.2s ease-in-out infinite;
     }
 
-    /* Sections */
-    section{padding: 64px 0;}
+    .nav{
+      display:flex; align-items:center; gap:10px;
+    }
+
+    .btn{
+      position: relative;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      font-size: .85rem;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: .25s ease;
+      user-select:none;
+      overflow:hidden;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22);}
+    .btn.primary{
+      background: var(--neon);
+      border-color: transparent;
+      color:#000;
+      box-shadow: 0 0 28px rgba(0,255,65,.20);
+    }
+    .btn.primary:hover{box-shadow: 0 0 42px rgba(0,255,65,.35); transform: translateY(-2px);}
+    .btn.ghost{
+      background: transparent;
+      border-color: rgba(255,255,255,.18);
+      color: #fff;
+    }
+    /* Ripple micro */
+    .btn:active::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(255,255,255,.35), transparent 55%);
+      opacity: .9;
+      transform: scale(1.2);
+      transition: .35s ease;
+      pointer-events:none;
+    }
+
+    /* ---------- Hero ---------- */
     .hero{
-      padding-top: 118px;
-      padding-bottom: 38px;
+      padding: 120px 0 28px;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(0,255,65,.10) 0, transparent 38%),
+        radial-gradient(circle at 80% 0%, rgba(102,192,244,.10) 0, transparent 40%),
+        radial-gradient(circle at 50% 0%, #111 0%, var(--bg) 68%);
+      position: relative;
+      overflow:hidden;
     }
     .hero-grid{
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 28px;
-      align-items: center;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 26px;
+      align-items:center;
     }
     @media (max-width: 980px){
-      .hero-grid{grid-template-columns:1fr}
+      .hero-grid{grid-template-columns: 1fr; gap: 18px;}
     }
 
     .kicker{
-      display:inline-flex; align-items:center; gap:10px;
-      font-weight: 800; letter-spacing: 1.2px;
-      text-transform:uppercase;
-      color: rgba(0,255,65,.95);
-      font-size: 12px;
-      margin-bottom: 12px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(0,255,65,.10);
+      border: 1px solid rgba(0,255,65,.25);
+      color: var(--neon);
+      font-weight: 800;
+      letter-spacing:.8px;
+      margin-bottom: 14px;
+      font-size: .82rem;
     }
-    .kicker .live{
-      width:8px; height:8px; border-radius:50%;
-      background: var(--neon);
-      box-shadow: 0 0 20px rgba(0,255,65,.85);
-    }
-    h1{
-      margin:0;
-      font-size: clamp(2.2rem, 4.8vw, 4rem);
-      letter-spacing: -1.6px;
+    .hero h1{
+      font-size: clamp(2.4rem, 5.6vw, 4.2rem);
+      line-height: .98;
+      letter-spacing: -2px;
       text-transform: uppercase;
-      line-height: 1.02;
       color:#fff;
+      margin-bottom: 12px;
+      animation: fadeUp .7s ease both;
     }
-    .lead{
-      margin-top: 14px;
-      max-width: 54ch;
+    .hero h1 span{color: var(--neon);}
+    .hero p{
       color: var(--muted);
+      line-height: 1.7;
       font-size: 1.05rem;
-      line-height: 1.65;
+      max-width: 58ch;
+      margin-bottom: 18px;
+      animation: fadeUp .7s .05s ease both;
     }
     .hero-cta{
-      display:flex; gap: 12px;
-      margin-top: 22px;
-      flex-wrap: wrap;
-    }
-    .note{
-      margin-top: 12px;
-      color: rgba(255,255,255,.45);
-      font-size: 12px;
-      line-height: 1.5;
+      display:flex; flex-wrap:wrap;
+      gap: 12px;
+      margin-top: 8px;
+      animation: fadeUp .7s .10s ease both;
     }
 
-    /* Metrics */
     .metrics{
+      margin-top: 18px;
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
-      margin-top: 22px;
+      animation: fadeUp .7s .16s ease both;
     }
     @media (max-width: 520px){
-      .metrics{grid-template-columns:1fr}
+      .metrics{grid-template-columns: 1fr; }
     }
     .metric{
       background: rgba(255,255,255,.03);
       border: 1px solid rgba(255,255,255,.08);
-      border-radius: 14px;
-      padding: 14px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      border-radius: var(--r16);
+      padding: 14px 14px;
+      box-shadow: var(--shadow2);
+      transition: .25s ease;
     }
-    .metric .big{
-      font-weight: 900;
-      font-size: 20px;
-      letter-spacing:-.6px;
-      color:#fff;
-    }
-    .metric .small{
-      margin-top: 6px;
-      font-size: 12px;
-      color: rgba(255,255,255,.52);
-      line-height: 1.4;
-    }
-    .metric .big span{color:var(--neon)}
+    .metric:hover{transform: translateY(-2px); border-color: rgba(0,255,65,.22); box-shadow: var(--shadow2), var(--glow);}
+    .metric .big{font-size: 1.35rem; font-weight: 900; color:#fff; letter-spacing:-.5px;}
+    .metric .small{color: var(--muted); margin-top: 4px; font-size: .9rem;}
 
-    /* Hero right card */
-    .hero-card{
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: var(--radius);
-      padding: 18px;
+    /* ---------- Right: Vitrine (Hero Banner) ---------- */
+    .hero-banner{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r20);
+      overflow:hidden;
       box-shadow: var(--shadow);
       position: relative;
-      overflow:hidden;
+      min-height: 350px;
+      animation: fadeUp .7s .12s ease both;
     }
-    .hero-card:before{
-      content:"";
-      position:absolute; inset:-120px -180px auto auto;
-      width: 420px; height: 420px;
-      background: radial-gradient(circle at center, rgba(0,255,65,.14), transparent 62%);
-      transform: rotate(25deg);
-      pointer-events:none;
+    .banner-img{
+      position:absolute; inset:0;
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.05) contrast(1.05);
+      transform: scale(1.02);
+      transition: transform .7s ease;
     }
-    .hero-card h3{
-      margin:0;
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: rgba(255,255,255,.9);
+    .hero-banner:hover .banner-img{transform: scale(1.06);}
+    .banner-overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.42) 55%, rgba(0,0,0,.18) 100%);
     }
-    .hero-card p{
-      margin: 10px 0 0;
-      color: rgba(255,255,255,.60);
-      font-size: 13px;
-      line-height: 1.6;
-      max-width: 56ch;
-    }
-    .mini-row{
-      display:flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;
-    }
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 9px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(0,255,65,.28);
-      background: rgba(0,255,65,.08);
-      font-weight: 800;
-      font-size: 12px;
-      color: rgba(255,255,255,.90);
-      white-space: nowrap;
-    }
-    .chip .c{
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--neon);
-      box-shadow: 0 0 14px rgba(0,255,65,.7);
-    }
-
-    /* Featured shelf (Keyrush-like) */
-    .section-title{
-      display:flex; align-items:flex-end; justify-content:space-between; gap: 14px;
-      margin-bottom: 16px;
-    }
-    .section-title h2{
-      margin:0;
-      font-size: 22px;
-      letter-spacing:-.6px;
-      text-transform: uppercase;
-      color:#fff;
-    }
-    .section-title p{
-      margin:0;
-      color: var(--muted2);
-      font-size: 13px;
-      max-width: 52ch;
-      line-height: 1.5;
-    }
-    .shelf{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 12px;
-    }
-    @media (max-width: 980px){
-      .shelf{grid-template-columns: repeat(6, 1fr);}
-    }
-    @media (max-width: 560px){
-      .shelf{grid-template-columns: repeat(2, 1fr);}
-    }
-    .game{
-      grid-column: span 3;
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 16px;
-      overflow:hidden;
-      box-shadow: 0 18px 50px rgba(0,0,0,.35);
-      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-      cursor:pointer;
-    }
-    .game:hover{
-      transform: translateY(-4px);
-      border-color: rgba(0,255,65,.45);
-      box-shadow: 0 22px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(0,255,65,.12);
-    }
-    .game .img{
-      width:100%;
-      aspect-ratio: 16/9;
-      background:#000;
-      display:block;
-      object-fit: cover;
-    }
-    .ginfo{
-      padding: 12px;
-      display:flex; align-items:flex-start; justify-content:space-between;
+    .banner-content{
+      position: relative;
+      padding: 24px;
+      display:flex;
+      flex-direction:column;
+      justify-content: flex-end;
+      min-height: 350px;
       gap: 10px;
     }
-    .gname{
+    .banner-title{
+      font-size: 1.5rem;
       font-weight: 900;
-      font-size: 12px;
-      letter-spacing:.6px;
-      text-transform: uppercase;
       color:#fff;
-      line-height: 1.25;
-      flex:1;
-    }
-    .gbadge{
-      display:inline-flex; align-items:center; gap:6px;
-      font-size: 11px;
-      font-weight: 900;
-      color: rgba(255,255,255,.90);
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      border-radius: 999px;
-      padding: 6px 8px;
-      white-space: nowrap;
-    }
-    .gbadge i{
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--neon);
-      display:inline-block;
-      box-shadow: 0 0 12px rgba(0,255,65,.7);
-    }
-
-    /* App / product section */
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-    @media (max-width: 920px){
-      .grid2{grid-template-columns: 1fr;}
-    }
-    .card{
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: var(--radius);
-      padding: 22px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow:hidden;
-    }
-    .card h3{
-      margin:0;
-      font-size: 18px;
-      letter-spacing:-.4px;
-      text-transform: uppercase;
-      color:#fff;
-    }
-    .card p{
-      margin: 10px 0 0;
-      color: rgba(255,255,255,.60);
-      font-size: 13px;
-      line-height: 1.65;
-    }
-    .bullets{margin-top: 14px; display:grid; gap: 10px;}
-    .b{
-      display:flex; gap: 10px; align-items:flex-start;
-      padding: 12px;
-      border-radius: 14px;
-      background: rgba(0,0,0,.35);
-      border: 1px solid rgba(255,255,255,.08);
-    }
-    .b .ic{
-      width: 34px; height: 34px; border-radius: 12px;
-      display:flex; align-items:center; justify-content:center;
-      background: rgba(0,255,65,.10);
-      border: 1px solid rgba(0,255,65,.25);
-      color: var(--neon);
-      font-weight: 900;
-      flex-shrink:0;
-    }
-    .b .t{font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing:.6px; color:#fff;}
-    .b .s{margin-top: 4px; font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.5;}
-    .mock{
-      border-radius: var(--radius);
-      border: 1px solid rgba(0,255,65,.20);
-      background: linear-gradient(180deg, rgba(0,255,65,.10), rgba(0,0,0,.35));
-      min-height: 280px;
-      display:flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 18px;
-      position: relative;
-      overflow:hidden;
-    }
-    .mock:before{
-      content:"";
-      position:absolute; inset:-120px auto auto -150px;
-      width: 420px; height: 420px;
-      background: radial-gradient(circle at center, rgba(0,255,65,.18), transparent 60%);
-      transform: rotate(-18deg);
-      pointer-events:none;
-    }
-    .mock .top{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      position: relative;
-    }
-    .kbd{
-      font-weight: 900;
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.85);
-    }
-    .mock .screen{
-      margin-top: 12px;
-      border-radius: 16px;
-      background: rgba(0,0,0,.40);
-      border: 1px solid rgba(255,255,255,.10);
-      padding: 14px;
-      position: relative;
-    }
-    .lines{display:grid; gap:10px; margin-top: 8px;}
-    .line{
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.06);
-      overflow:hidden;
-      position:relative;
-    }
-    .line:after{
-      content:"";
-      position:absolute; left:-30%; top:0; bottom:0;
-      width: 30%;
-      background: linear-gradient(90deg, transparent, rgba(0,255,65,.25), transparent);
-      animation: shimmer 2.2s infinite linear;
-    }
-    @keyframes shimmer{
-      0%{transform: translateX(0)}
-      100%{transform: translateX(400%)}
-    }
-
-    /* How it works */
-    .steps{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 16px;
-    }
-    @media (max-width: 920px){
-      .steps{grid-template-columns:1fr}
-    }
-    .step{
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
-      position:relative;
-      overflow:hidden;
-    }
-    .step .n{
-      width: 34px; height: 34px; border-radius: 12px;
-      display:flex; align-items:center; justify-content:center;
-      background: rgba(0,255,65,.10);
-      border: 1px solid rgba(0,255,65,.25);
-      color: var(--neon);
-      font-weight: 900;
-      margin-bottom: 10px;
-    }
-    .step .t{
-      margin:0;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing:.6px;
-      color:#fff;
-      font-size: 12px;
-    }
-    .step .s{
-      margin-top: 6px;
-      color: rgba(255,255,255,.58);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    /* Catalog search */
-    .searchbox{
-      margin-top: 12px;
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
-    }
-    .searchrow{
-      display:flex; gap: 10px; align-items:center;
-      flex-wrap: wrap;
-    }
-    .input{
-      flex: 1;
-      min-width: 220px;
-      background: rgba(0,0,0,.35);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 14px;
-      padding: 14px 14px;
-      color:#fff;
-      outline:none;
-      font-weight: 800;
-      letter-spacing: .4px;
+      letter-spacing: -1px;
       text-transform: uppercase;
     }
-    .input::placeholder{color: rgba(255,255,255,.35)}
-    .input:focus{border-color: rgba(0,255,65,.45); box-shadow: 0 0 0 4px rgba(0,255,65,.08)}
-    .smallmuted{
-      margin-top: 10px;
-      font-size: 12px;
-      color: rgba(255,255,255,.50);
+    .banner-sub{
+      color: rgba(255,255,255,.72);
       line-height: 1.5;
+      max-width: 52ch;
+      font-size: .95rem;
     }
-
-    .grid{
-      margin-top: 14px;
-      display:none;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 12px;
-    }
-    .grid.active{display:grid}
-    .card2{
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 16px;
-      overflow:hidden;
-      box-shadow: 0 18px 50px rgba(0,0,0,.35);
-      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-      cursor:pointer;
-    }
-    .card2:hover{
-      transform: translateY(-3px);
-      border-color: rgba(0,255,65,.45);
-      box-shadow: 0 22px 70px rgba(0,0,0,.55);
-    }
-    .card2 img{
-      width:100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      display:block;
-      background:#000;
-    }
-    .c2info{
-      padding: 12px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      display:flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .c2name{
-      font-weight: 900;
-      text-transform: uppercase;
-      font-size: 12px;
-      letter-spacing:.6px;
-      color:#fff;
-      line-height: 1.25;
-    }
-    .tagrow{display:flex; gap: 6px; flex-wrap:wrap;}
-    .tag{
-      display:inline-flex; align-items:center; gap:6px;
-      padding: 6px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing:.4px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.86);
-    }
-    .tag i{
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--neon);
-      display:inline-block;
-    }
-
-    /* Social proofs */
-    .proofs{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 16px;
-    }
-    @media (max-width: 920px){
-      .proofs{grid-template-columns:1fr}
-    }
-    .proof{
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
-    }
-    .proof .who{display:flex; align-items:center; justify-content:space-between; gap:10px;}
-    .user{
-      display:flex; align-items:center; gap: 10px;
-    }
-    .ava{
-      width: 38px; height: 38px; border-radius: 14px;
-      display:flex; align-items:center; justify-content:center;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      font-weight: 900;
-      color:#fff;
-    }
-    .uname{
-      font-weight: 900;
-      color:#fff;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing:.6px;
-    }
-    .uinfo{
-      font-size: 12px;
-      color: rgba(255,255,255,.55);
-      margin-top: 4px;
-    }
-    .seal{
-      display:inline-flex; align-items:center; gap: 8px;
-      font-weight: 900;
-      font-size: 11px;
-      letter-spacing:.6px;
-      text-transform: uppercase;
-      color: rgba(0,255,65,.95);
-      border: 1px solid rgba(0,255,65,.30);
-      background: rgba(0,255,65,.08);
-      padding: 7px 10px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-    .proof p{
-      margin: 12px 0 0;
-      color: rgba(255,255,255,.62);
-      font-size: 13px;
-      line-height: 1.7;
-      font-style: italic;
-    }
-
-    /* FAQ */
-    .faq{
-      max-width: 860px;
-      margin: 0 auto;
-    }
-    .faq h2{margin:0; text-align:center; color:#fff; text-transform:uppercase; letter-spacing:-.6px;}
-    .acc{
-      margin-top: 18px;
-      border-radius: var(--radius);
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,.09);
-      background: rgba(255,255,255,.03);
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
-    }
-    .item{border-bottom: 1px solid rgba(255,255,255,.08);}
-    .item:last-child{border-bottom:none}
-    .q{
-      padding: 16px 16px;
-      cursor:pointer;
-      display:flex; align-items:center; justify-content:space-between; gap: 12px;
-      user-select:none;
-    }
-    .q .t{
-      font-weight: 900;
-      letter-spacing:.6px;
-      text-transform: uppercase;
-      font-size: 12px;
-      color:#fff;
-    }
-    .chev{
-      width: 36px; height: 36px;
-      border-radius: 12px;
-      display:flex; align-items:center; justify-content:center;
-      background: rgba(0,0,0,.35);
-      border: 1px solid rgba(255,255,255,.10);
-      color: var(--neon);
-      font-weight: 900;
-      transition: transform .18s ease;
-      flex-shrink:0;
-    }
-    .a{
-      max-height: 0;
-      overflow:hidden;
-      transition: max-height .26s ease;
-      padding: 0 16px;
-      color: rgba(255,255,255,.62);
-      line-height: 1.7;
-      font-size: 13px;
-    }
-    .item.open .a{max-height: 240px; padding-bottom: 16px;}
-    .item.open .chev{transform: rotate(45deg);}
-
-    /* Offer */
-    .offer{
-      padding-top: 34px;
-      padding-bottom: 80px;
-    }
-    .offerbox{
-      max-width: 720px;
-      margin: 0 auto;
-      background: linear-gradient(180deg, rgba(0,255,65,.12), rgba(255,255,255,.03) 22%, rgba(0,0,0,.30));
-      border: 1px solid rgba(0,255,65,.45);
-      border-radius: 24px;
-      padding: 26px;
-      box-shadow: 0 0 0 1px rgba(0,255,65,.08), 0 30px 120px rgba(0,0,0,.65);
-      position: relative;
-      overflow:hidden;
-    }
-    .offerbox:before{
-      content:"";
-      position:absolute; inset:-140px -120px auto auto;
-      width: 460px; height: 460px;
-      background: radial-gradient(circle at center, rgba(0,255,65,.22), transparent 60%);
-      transform: rotate(25deg);
-      pointer-events:none;
-    }
+    .banner-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top: 6px;}
     .badge{
       display:inline-flex; align-items:center; gap:8px;
-      padding: 8px 10px;
+      padding: 6px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(0,255,65,.35);
-      background: rgba(0,255,65,.10);
-      font-weight: 900;
-      letter-spacing:.8px;
-      font-size: 11px;
-      text-transform: uppercase;
-      color: rgba(0,255,65,.95);
-      position: relative;
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.88);
+      font-weight: 800;
+      font-size: .8rem;
+      width: fit-content;
     }
-    .badge .b{
-      width: 7px; height: 7px; border-radius: 50%;
+    .badge .dot{
+      width:8px; height:8px; border-radius:50%;
       background: var(--neon);
-      box-shadow: 0 0 14px rgba(0,255,65,.8);
+      box-shadow: 0 0 12px rgba(0,255,65,.55);
     }
-    .offerhead{
-      display:flex; align-items:flex-end; justify-content:space-between;
-      gap: 16px;
-      margin-top: 12px;
-      position: relative;
-    }
-    .offerhead h2{
-      margin:0;
+
+    /* ---------- Sections ---------- */
+    section{padding: 80px 0; border-top: 1px solid rgba(255,255,255,.06);}
+    .section-title{
       color:#fff;
       text-transform: uppercase;
       letter-spacing: -1px;
-      font-size: 26px;
-      line-height: 1.1;
+      font-size: 2rem;
+      margin-bottom: 10px;
     }
-    .price{
-      font-weight: 900;
-      font-size: 44px;
-      letter-spacing: -1.6px;
-      color: var(--neon);
-      white-space: nowrap;
-    }
-    @media (max-width: 520px){
-      .offerhead{flex-direction:column; align-items:flex-start}
-      .price{font-size: 40px}
-    }
-    .offerbox p{
-      margin: 10px 0 0;
-      color: rgba(255,255,255,.62);
-      font-size: 13px;
-      line-height: 1.65;
-      position: relative;
-    }
-    .list{
-      margin-top: 14px;
+    .section-sub{color: var(--muted); line-height:1.7; max-width: 70ch;}
+
+    /* ---------- Video Section ---------- */
+    .video-wrap{
+      margin-top: 24px;
       display:grid;
-      gap: 10px;
-      position: relative;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items: start;
     }
-    .li{
-      display:flex; gap:10px; align-items:flex-start;
-      padding: 12px;
-      border-radius: 16px;
+    @media (max-width: 980px){
+      .video-wrap{grid-template-columns: 1fr;}
+    }
+    .video-card{
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r20);
+      overflow:hidden;
+      box-shadow: var(--shadow2);
+      transform: translateZ(0);
+    }
+    .video-frame{
+      aspect-ratio: 16 / 9;
+      width:100%;
+      border:0;
+      display:block;
+      background:#000;
+    }
+    .video-meta{
+      padding: 16px;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      justify-content: space-between;
+      flex-wrap:wrap;
+    }
+    .video-meta strong{color:#fff;}
+    .hint{
+      font-size: .92rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .features{
+      display:grid;
+      gap: 12px;
+    }
+    .fcard{
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r16);
+      padding: 16px;
+      box-shadow: var(--shadow2);
+      transition: .25s ease;
+    }
+    .fcard:hover{transform: translateY(-2px); border-color: rgba(0,255,65,.18); box-shadow: var(--shadow2), var(--glow);}
+    .fcard .t{color:#fff; font-weight: 900; letter-spacing:-.5px; margin-bottom:6px;}
+    .fcard .d{color: var(--muted); line-height:1.65; font-size: .95rem;}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,65,.35);
+      background: rgba(0,255,65,.08);
+      color: var(--neon);
+      font-weight: 900;
+      font-size: .82rem;
+      width: fit-content;
+    }
+
+    /* ---------- Store / Catálogo estilo PDF ---------- */
+    .store{
+      padding-top: 64px;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .store-shell{
+      display:grid;
+      grid-template-columns: 280px 1fr;
+      gap: 18px;
+      align-items:start;
+      margin-top: 26px;
+    }
+    @media (max-width: 980px){
+      .store-shell{grid-template-columns: 1fr;}
+    }
+
+    .side{
+      position: sticky; top: 90px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r20);
+      padding: 14px;
+      box-shadow: var(--shadow2);
+    }
+    .side h3{
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      font-size: .95rem;
+      color:#fff;
+      margin-bottom: 10px;
+    }
+    .tabs{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-bottom: 12px;
+    }
+    .tab{
+      cursor:pointer;
+      padding: 9px 10px;
+      border-radius: 12px;
       background: rgba(0,0,0,.35);
       border: 1px solid rgba(255,255,255,.10);
-    }
-    .li .ok{
-      width: 26px; height: 26px; border-radius: 10px;
-      display:flex; align-items:center; justify-content:center;
-      background: rgba(0,255,65,.12);
-      border: 1px solid rgba(0,255,65,.30);
-      color: var(--neon);
+      color: rgba(255,255,255,.85);
       font-weight: 900;
-      flex-shrink:0;
-      margin-top: 1px;
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      transition: .2s ease;
+      user-select:none;
     }
-    .li .txt{
-      color: rgba(255,255,255,.72);
-      font-size: 13px;
-      line-height: 1.5;
+    .tab:hover{border-color: rgba(0,255,65,.18); transform: translateY(-1px);}
+    .tab.active{
+      background: var(--neon);
+      border-color: transparent;
+      color:#000;
+      box-shadow: 0 0 24px rgba(0,255,65,.20);
     }
-    .buyrow{
-      display:flex; gap: 10px; margin-top: 16px; flex-wrap: wrap;
+
+    .side .search{
+      margin-top: 8px;
+      display:flex; gap:10px;
+    }
+    .input{
+      width:100%;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 12px 12px;
+      color:#fff;
+      outline:none;
+      transition: .2s ease;
+      font-weight: 700;
+    }
+    .input:focus{border-color: rgba(0,255,65,.35); box-shadow: var(--glow);}
+    .muter{color: var(--muted); font-size:.88rem; line-height:1.5; margin-top: 10px;}
+
+    .cats{
+      margin-top: 14px;
+      display:flex; flex-wrap:wrap; gap:8px;
+    }
+    .cat{
+      cursor:pointer;
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.35);
+      font-weight: 900;
+      font-size: .82rem;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.86);
+      transition: .2s ease;
+      user-select:none;
+    }
+    .cat:hover{border-color: rgba(0,255,65,.18); transform: translateY(-1px);}
+    .cat.active{background: rgba(0,255,65,.12); border-color: rgba(0,255,65,.35); color: var(--neon);}
+
+    .main{
+      min-height: 420px;
+    }
+
+    .store-hero{
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r20);
+      overflow:hidden;
+      box-shadow: var(--shadow2);
       position: relative;
     }
-    .buy{
-      flex: 1;
-      min-width: 220px;
-      padding: 16px 18px;
+    .store-hero .img{
+      aspect-ratio: 21 / 9;
+      background:#000;
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.02);
+      transform: scale(1.02);
+      transition: transform .8s ease;
+    }
+    .store-hero:hover .img{transform: scale(1.06);}
+    .store-hero .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(90deg, rgba(0,0,0,.78), rgba(0,0,0,.22));
+    }
+    .store-hero .content{
+      position:absolute; inset:0;
+      display:flex; flex-direction:column; justify-content:flex-end;
+      padding: 18px;
+      gap: 8px;
+    }
+    .store-hero h4{
+      color:#fff; font-weight: 900;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      font-size: 1.2rem;
+    }
+    .store-hero p{color: rgba(255,255,255,.72); line-height:1.55; max-width: 70ch; font-size:.95rem;}
+    .store-hero .row{display:flex; gap:10px; flex-wrap:wrap; margin-top: 6px;}
+
+    .strip{
+      margin-top: 14px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r20);
+      padding: 14px;
+      box-shadow: var(--shadow2);
+    }
+    .strip-head{
+      display:flex; align-items:end; justify-content:space-between; gap: 10px;
+      margin-bottom: 10px;
+    }
+    .strip-head h4{color:#fff; font-weight: 900; text-transform: uppercase; letter-spacing:.6px;}
+    .strip-head small{color: var(--muted);}
+
+    .rail{
+      display:flex; gap: 12px;
+      overflow:auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 8px;
+    }
+    .rail::-webkit-scrollbar{height:8px}
+    .rail::-webkit-scrollbar-thumb{background: rgba(255,255,255,.10); border-radius: 999px;}
+    .mini{
+      flex: 0 0 220px;
+      scroll-snap-align: start;
       border-radius: 16px;
-      border: 1px solid rgba(0,255,65,.85);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.35);
+      box-shadow: var(--shadow2);
+      cursor:pointer;
+      transition:.2s ease;
+      position:relative;
+    }
+    .mini:hover{transform: translateY(-2px); border-color: rgba(0,255,65,.18); box-shadow: var(--shadow2), var(--glow);}
+    .mini .mimg{aspect-ratio: 16/9; background:#000; background-size:cover; background-position:center;}
+    .mini .mcap{
+      padding: 10px 10px 12px;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .mini strong{
+      color:#fff; font-weight: 900;
+      text-transform: uppercase;
+      font-size: .86rem;
+      letter-spacing: .2px;
+      line-height: 1.2;
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+    }
+    .mini .tagline{color: var(--muted); font-size: .85rem;}
+
+    .grid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .card{
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r20);
+      overflow:hidden;
+      box-shadow: var(--shadow2);
+      transition: .2s ease;
+      cursor:pointer;
+      transform: translateZ(0);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp .55s ease forwards;
+    }
+    .card:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.18); box-shadow: var(--shadow2), var(--glow);}
+    .card .cimg{
+      aspect-ratio: 16/9;
+      background:#000;
+      overflow:hidden;
+      position:relative;
+    }
+    .card .cimg img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      transform: scale(1.02);
+      transition: transform .6s ease;
+    }
+    .card:hover .cimg img{transform: scale(1.07);}
+    .card .cinfo{
+      padding: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 9px;
+    }
+    .card .ctitle{
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .2px;
+      color:#fff;
+      font-size: .9rem;
+      line-height: 1.2;
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+    }
+    .card .ctags{
+      display:flex; flex-wrap:wrap; gap:6px;
+      align-items:center;
+    }
+    .chip{
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: .78rem;
+      letter-spacing: .2px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.35);
+      color: rgba(255,255,255,.86);
+    }
+    .chip.ok{
+      border-color: rgba(0,255,65,.25);
+      background: rgba(0,255,65,.08);
+      color: var(--neon);
+    }
+    .chip.cat{
+      border-color: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.80);
+    }
+
+    /* Skeleton para imagens antes da capa carregar */
+    .skeleton{
+      position:absolute; inset:0;
+      background: linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.10), rgba(255,255,255,.05));
+      background-size: 200% 100%;
+      animation: shimmer 1.25s linear infinite;
+    }
+
+    .loadmore{
+      margin-top: 16px;
+      display:flex; justify-content:center;
+    }
+
+    /* ---------- Modal (ao clicar jogo) ---------- */
+    .modal{
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.70);
+      backdrop-filter: blur(10px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index: 2000;
+      padding: 18px;
+    }
+    .modal.on{display:flex;}
+    .modal-card{
+      width: min(980px, 96vw);
+      border-radius: 22px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(10,10,10,.92);
+      box-shadow: var(--shadow);
+      transform: translateY(10px);
+      animation: fadeUp .35s ease forwards;
+    }
+    .modal-top{
+      position: relative;
+      aspect-ratio: 21/9;
+      background:#000;
+    }
+    .modal-top img{
+      width:100%; height:100%;
+      object-fit: cover;
+      display:block;
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .modal-top .shade{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.78) 92%);
+    }
+    .modal-body{
+      padding: 16px;
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      .modal-body{grid-template-columns: 1fr;}
+    }
+    .m-title{
+      font-size: 1.35rem;
+      font-weight: 900;
+      color:#fff;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+    .m-desc{
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: .98rem;
+    }
+    .m-actions{
+      display:flex; flex-direction:column; gap:10px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: var(--shadow2);
+      height: fit-content;
+    }
+    .m-actions .line{
+      display:flex; justify-content:space-between; gap:10px;
+      color: rgba(255,255,255,.82);
+      font-size: .9rem;
+    }
+    .m-actions .line b{color:#fff}
+    .m-close{
+      position:absolute; top: 12px; right: 12px;
+      width:42px; height:42px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.45);
+      color:#fff;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size: 18px;
+      transition:.2s ease;
+    }
+    .m-close:hover{transform: translateY(-1px); border-color: rgba(0,255,65,.20); box-shadow: var(--glow);}
+    .offer-mini{
+      display:none;
+      margin-top: 6px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,255,65,.25);
+      background: rgba(0,255,65,.08);
+      padding: 10px;
+      color: #dfffe8;
+      line-height: 1.6;
+      font-size: .92rem;
+    }
+    .offer-mini.on{display:block;}
+
+    /* ---------- Offer Section (geral) ---------- */
+    .offer{
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,255,65,.12), transparent 38%),
+        radial-gradient(circle at 80% 10%, rgba(102,192,244,.10), transparent 42%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.0));
+    }
+    .offer-box{
+      margin-top: 26px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(0,255,65,.28);
+      border-radius: 24px;
+      box-shadow: var(--shadow2), var(--glow);
+      padding: 26px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items:center;
+    }
+    @media (max-width: 980px){
+      .offer-box{grid-template-columns:1fr;}
+    }
+    .offer-box h3{
+      color:#fff; font-weight: 900; letter-spacing:-1px;
+      text-transform: uppercase;
+      font-size: 1.6rem;
+    }
+    .price{
+      font-size: 3.1rem;
+      font-weight: 900;
+      color: var(--neon);
+      letter-spacing: -2px;
+      margin: 10px 0 6px;
+    }
+    .bullets{margin-top: 10px; display:grid; gap: 8px;}
+    .bullet{color: rgba(255,255,255,.86); font-weight: 700;}
+    .bullet span{color: var(--neon); margin-right: 8px;}
+    .buy{
       background: var(--neon);
+      border: none;
       color:#000;
       font-weight: 900;
-      letter-spacing: .7px;
       text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 16px 16px;
+      border-radius: 14px;
       cursor:pointer;
-      transition:.18s ease;
+      transition: .2s ease;
+      width:100%;
+      font-size: 1rem;
+      box-shadow: 0 0 32px rgba(0,255,65,.22);
     }
-    .buy:hover{transform: translateY(-1px); box-shadow: 0 0 40px rgba(0,255,65,.30);}
-    .safe{
-      flex: 1;
-      min-width: 220px;
-      padding: 16px 18px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.88);
-      font-weight: 900;
-      letter-spacing: .5px;
-      text-transform: uppercase;
-      cursor:pointer;
-      transition:.18s ease;
-    }
-    .safe:hover{transform: translateY(-1px); border-color: rgba(0,255,65,.35);}
+    .buy:hover{transform: translateY(-2px); box-shadow: 0 0 44px rgba(0,255,65,.35); background:#fff;}
+    .fine{color: var(--muted); font-size: .86rem; margin-top: 8px; line-height: 1.6;}
 
-    footer{
-      border-top: 1px solid rgba(255,255,255,.06);
-      padding: 28px 0;
-      color: rgba(255,255,255,.45);
-      font-size: 12px;
-      line-height: 1.6;
-      text-align:center;
-    }
-
-    /* Toasts */
+    /* ---------- Toasts ---------- */
     .toasts{
-      position: fixed;
-      right: 14px;
-      bottom: 14px;
-      z-index: 9999;
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-      pointer-events:none;
+      position: fixed; right: 14px; bottom: 14px;
+      display:grid; gap: 10px;
+      z-index: 2500;
+      pointer-events: none;
     }
     .toast{
-      width: min(360px, calc(100vw - 28px));
-      background: rgba(15,15,15,.88);
+      pointer-events:none;
+      width: min(340px, 88vw);
+      background: rgba(15,15,15,.92);
       border: 1px solid rgba(255,255,255,.10);
       border-radius: 16px;
       padding: 12px 12px;
-      box-shadow: 0 18px 70px rgba(0,0,0,.60);
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      transform: translateY(10px);
-      opacity: 0;
-      animation: toastIn .25s ease forwards;
-    }
-    @keyframes toastIn{
-      to{transform: translateY(0); opacity:1;}
+      box-shadow: var(--shadow2);
+      display:flex; gap:10px; align-items:flex-start;
+      animation: fadeUp .35s ease both;
     }
     .toast .ic{
-      width: 36px; height: 36px; border-radius: 14px;
-      display:flex; align-items:center; justify-content:center;
+      width: 36px; height: 36px; border-radius: 12px;
       background: rgba(0,255,65,.10);
-      border: 1px solid rgba(0,255,65,.25);
+      border: 1px solid rgba(0,255,65,.20);
+      display:flex; align-items:center; justify-content:center;
       color: var(--neon);
       font-weight: 900;
-      flex-shrink:0;
+      flex: 0 0 auto;
     }
-    .toast .t{
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing:.6px;
-      font-size: 11px;
-      color:#fff;
-    }
-    .toast .s{
-      margin-top: 3px;
-      color: rgba(255,255,255,.62);
-      font-size: 12px;
-      line-height: 1.45;
-    }
+    .toast strong{color:#fff;}
+    .toast p{color: var(--muted); font-size: .9rem; line-height: 1.45; margin-top: 2px;}
 
-    /* Reduce motion */
-    @media (prefers-reduced-motion: reduce){
-      *{animation:none!important; transition:none!important}
-      html{scroll-behavior:auto}
+    /* ---------- Footer ---------- */
+    footer{
+      padding: 44px 0;
+      border-top: 1px solid rgba(255,255,255,.06);
+      color: #6c6c6c;
+      text-align:center;
+      font-size: .86rem;
     }
+    a{color:inherit; text-decoration:none}
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="wrap">
-      <div class="hrow">
-        <div class="brand">
-          <span class="dot"></span>
-          OVER<span>ISE</span>
-        </div>
 
-        <div class="nav">
-          <a class="pill" href="#catalogo" title="Ver catálogo">Catálogo</a>
-          <a class="pill hide-md" href="#como-funciona" title="Como funciona">Como funciona</a>
-          <a class="btn btn-ghost" href="#catalogo">Ver lista</a>
-          <a class="btn btn-primary" href="#oferta">Liberar acesso</a>
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="status-dot" title="Sistema online"></div>
+      <div class="logo">OVER<span>ISE</span></div>
+    </div>
+
+    <nav class="nav">
+      <a class="btn ghost" href="#video">DEMONSTRAÇÃO</a>
+      <a class="btn ghost" href="#catalogo">CATÁLOGO</a>
+      <a class="btn primary" href="#oferta">LIBERAR ACESSO</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="topo">
+  <div class="container hero-grid">
+    <div>
+      <div class="kicker"><span class="status-dot" style="width:8px;height:8px;"></span> SISTEMA ONLINE • V5.0</div>
+
+      <h1>SUA BIBLIOTECA.<br><span>SEM ATRITO.</span></h1>
+      <p>
+        Uma experiência premium de vitrine + catálogo: rápida, organizada e com capas widescreen 16:9.
+        Pesquise, descubra e explore em segundos.
+      </p>
+
+      <div class="hero-cta">
+        <a class="btn primary" href="#catalogo">VER CATÁLOGO</a>
+        <a class="btn ghost" href="#video">VER VÍDEO</a>
+      </div>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="big"><span data-count="741">0</span>+</div>
+          <div class="small">títulos no catálogo</div>
+        </div>
+        <div class="metric">
+          <div class="big"><span data-count="16">0</span>:<span data-count="9">0</span></div>
+          <div class="small">capas widescreen</div>
+        </div>
+        <div class="metric">
+          <div class="big"><span data-count="1">0</span> clique</div>
+          <div class="small">para abrir detalhes</div>
         </div>
       </div>
     </div>
-  </header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap">
-      <div class="hero-grid">
-        <div>
-          <div class="kicker"><span class="live"></span> Sistema online • Interface V5</div>
-          <h1>Sua biblioteca.<br><span style="color:var(--neon)">sem fricção.</span></h1>
-          <div class="lead">
-            Um software com experiência premium para organizar, pesquisar e acessar sua coleção de jogos com velocidade e visual cinematográfico (banners 16:9).
-          </div>
-
-          <div class="hero-cta">
-            <a class="btn btn-primary" href="#oferta">Começar agora</a>
-            <a class="btn btn-ghost" href="#catalogo">Pesquisar jogos</a>
-          </div>
-
-          <div class="metrics">
-            <div class="metric">
-              <div class="big"><span id="statTotal">741</span>+</div>
-              <div class="small">Itens no catálogo local (JSON) para carregamento instantâneo.</div>
-            </div>
-            <div class="metric">
-              <div class="big"><span>16:9</span></div>
-              <div class="small">Vitrine widescreen com banners oficiais para um visual premium.</div>
-            </div>
-            <div class="metric">
-              <div class="big"><span>Busca</span> Smart</div>
-              <div class="small">Atalhos: “GTA”, “COD”, “NFS”, “RDR2”… encontra rápido.</div>
-            </div>
-          </div>
-
-          <div class="note">
-            *Este site usa <b>games_741_steam.json</b> local para performance e estabilidade.
-          </div>
-        </div>
-
-        <div class="hero-card glow">
-          <h3>Overise Software</h3>
-          <p>
-            Experiência “Dark Premium” com foco em velocidade: carregamento instantâneo, vitrine de destaques e busca com catálogo oculto (sem poluição visual).
-          </p>
-
-          <div class="mini-row">
-            <div class="chip"><span class="c"></span> Catálogo local</div>
-            <div class="chip"><span class="c"></span> Lazy-load</div>
-            <div class="chip"><span class="c"></span> UI premium</div>
-          </div>
-
-          <div class="mock" style="margin-top:14px;">
-            <div class="top">
-              <div class="brand" style="gap:8px; font-size: 14px;">
-                <span class="dot"></span> OVER<span>ISE</span>
-              </div>
-              <div class="kbd">Windows App</div>
-            </div>
-            <div class="screen">
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
-                <div style="font-weight:900; text-transform:uppercase; letter-spacing:.7px; font-size:12px; color:#fff;">
-                  Biblioteca
-                </div>
-                <div style="color: rgba(255,255,255,.55); font-size:12px;">Pesquisa rápida</div>
-              </div>
-              <div class="lines">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-              </div>
-              <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-                <span class="tag"><i></i> Disponível</span>
-                <span class="tag"><i></i> Offline-friendly</span>
-                <span class="tag"><i></i> Destaques</span>
-              </div>
-            </div>
-            <div style="position:relative; display:flex; gap:10px; flex-wrap:wrap;">
-              <button class="btn btn-primary" style="flex:1; min-width: 180px;" onclick="scrollToId('catalogo')">Abrir catálogo</button>
-              <button class="btn btn-ghost" style="flex:1; min-width: 180px;" onclick="scrollToId('oferta')">Ver oferta</button>
-            </div>
-          </div>
+    <div class="hero-banner" id="heroBanner">
+      <div class="banner-img" id="heroBannerImg"></div>
+      <div class="banner-overlay"></div>
+      <div class="banner-content">
+        <div class="badge"><span class="dot"></span> EM DESTAQUE</div>
+        <div class="banner-title" id="heroBannerTitle">Carregando…</div>
+        <div class="banner-sub" id="heroBannerSub">Vitrine premium com capas 16:9 oficiais.</div>
+        <div class="banner-actions">
+          <button class="btn ghost" id="heroBannerOpen">VER DETALHES</button>
+          <a class="btn primary" href="#catalogo">ABRIR CATÁLOGO</a>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- FEATURED -->
-  <section>
-    <div class="wrap">
-      <div class="section-title">
-        <div>
-          <h2>Destaques da semana</h2>
-          <p>Uma vitrine com o “filé” primeiro. Clique em qualquer card para ir direto à oferta.</p>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center;">
-          <button class="btn btn-ghost" onclick="scrollToId('catalogo')">Ver catálogo</button>
-          <button class="btn btn-primary" onclick="scrollToId('oferta')">Comprar</button>
+<!-- VIDEO -->
+<section id="video">
+  <div class="container reveal">
+    <h2 class="section-title">DEMONSTRAÇÃO EM VÍDEO</h2>
+    <p class="section-sub">
+      Mostre em 30–60s o produto rodando: interface, busca, catálogo e a experiência final.
+      (Troque o link do vídeo abaixo pelo seu.)
+    </p>
+
+    <div class="video-wrap">
+      <div class="video-card">
+        <!-- ✅ Troque o src por seu vídeo (YouTube/Vimeo). Exemplo YouTube: https://www.youtube.com/embed/SEU_ID -->
+        <iframe
+          class="video-frame"
+          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+          title="Demonstração Overise"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
+
+        <div class="video-meta">
+          <div>
+            <strong>Overise em ação</strong><div class="hint">Busca • Vitrine • Catálogo • Detalhes</div>
+          </div>
+          <span class="pill">FULL HD</span>
         </div>
       </div>
 
-      <div class="shelf" id="featuredShelf"></div>
+      <div class="features">
+        <div class="fcard">
+          <div class="t">UI “Store” premium</div>
+          <div class="d">Layout inspirado em loja moderna, com vitrine, trilhos e cards cinematográficos 16:9.</div>
+        </div>
+        <div class="fcard">
+          <div class="t">Rápido mesmo com 741 títulos</div>
+          <div class="d">Carregamento otimizado com lazy load + paginação incremental, sem travar o navegador.</div>
+        </div>
+        <div class="fcard">
+          <div class="t">Clique inteligente</div>
+          <div class="d">Clicar no jogo abre um modal com detalhes e botão “Ver Oferta” (sem te jogar para a seção final).</div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- APP / BENEFITS -->
-  <section id="sobre">
-    <div class="wrap">
-      <div class="grid2">
-        <div class="card">
-          <h3>Um ecossistema. Não só uma página.</h3>
-          <p>
-            A proposta é entregar uma experiência de software premium: interface rápida, vitrine cinematográfica e busca inteligente
-            com dados locais para estabilidade.
-          </p>
-          <div class="bullets">
-            <div class="b">
-              <div class="ic">⚡</div>
-              <div>
-                <div class="t">Carregamento instantâneo</div>
-                <div class="s">Catálogo via JSON local (sem depender de APIs externas instáveis).</div>
-              </div>
-            </div>
-            <div class="b">
-              <div class="ic">🧠</div>
-              <div>
-                <div class="t">Busca inteligente</div>
-                <div class="s">Atalhos e dicionário interno: encontre rápido mesmo com nomes abreviados.</div>
-              </div>
-            </div>
-            <div class="b">
-              <div class="ic">🎬</div>
-              <div>
-                <div class="t">Visual widescreen 16:9</div>
-                <div class="s">Banners cinematográficos para um layout estilo Netflix / Game Pass.</div>
-              </div>
+<!-- STORE / CATALOGO -->
+<section class="store" id="catalogo">
+  <div class="container reveal">
+    <h2 class="section-title">CATÁLOGO</h2>
+    <p class="section-sub">Pesquise, filtre por categoria e explore os destaques — no estilo “store” do seu exemplo.</p>
+
+    <div class="store-shell">
+      <!-- Sidebar -->
+      <aside class="side">
+        <h3>Navegação</h3>
+
+        <div class="tabs" id="tabs">
+          <div class="tab active" data-tab="jogos">Jogos</div>
+          <div class="tab" data-tab="colecoes">Coleções</div>
+          <div class="tab" data-tab="novidades">Novidades</div>
+        </div>
+
+        <div class="side .search">
+          <div class="search">
+            <input class="input" id="q" placeholder="Buscar jogo..." />
+            <button class="btn primary" id="btnSearch">BUSCAR</button>
+          </div>
+        </div>
+
+        <div class="muter" id="stats">
+          Carregando banco de dados…
+        </div>
+
+        <div class="cats" id="cats"></div>
+
+        <div class="muter">
+          • Capas: usando <b>g.cover</b> do seu JSON<br/>
+          • Performance: lazy load + paginação<br/>
+          • Clique no jogo: abre detalhes
+        </div>
+      </aside>
+
+      <!-- Main store -->
+      <main class="main">
+        <!-- Store hero (banner grande como no PDF) -->
+        <div class="store-hero" id="storeHero">
+          <div class="img" id="storeHeroImg"></div>
+          <div class="overlay"></div>
+          <div class="content">
+            <h4 id="storeHeroTitle">Carregando vitrine…</h4>
+            <p id="storeHeroText">Uma vitrine grande em formato widescreen, com trilho de destaques logo abaixo.</p>
+            <div class="row">
+              <button class="btn primary" id="storeHeroOpen">Ver detalhes</button>
+              <button class="btn ghost" id="storeHeroShuffle">Trocar destaque</button>
             </div>
           </div>
         </div>
 
-        <div class="card">
-          <h3>Comparativo de valor</h3>
-          <p>
-            Uma forma simples de comunicar “custo-benefício” (ajuste os textos conforme seu produto real).
-          </p>
-          <div class="bullets">
-            <div class="b">
-              <div class="ic">💸</div>
-              <div>
-                <div class="t">Compra avulsa</div>
-                <div class="s">Você paga por item/serviço isolado, sem experiência unificada.</div>
-              </div>
-            </div>
-            <div class="b">
-              <div class="ic">🧩</div>
-              <div>
-                <div class="t">Overise</div>
-                <div class="s">Um software com UI premium + organização + vitrine + busca inteligente.</div>
-              </div>
-            </div>
-            <div class="b">
-              <div class="ic">🔒</div>
-              <div>
-                <div class="t">Confiança</div>
-                <div class="s">Ajuste suas políticas/termos conforme operação, suporte e entrega real.</div>
-              </div>
-            </div>
+        <!-- Rail: Mais vendidos -->
+        <div class="strip">
+          <div class="strip-head">
+            <h4>Mais vendidos</h4>
+            <small>Arraste para o lado</small>
           </div>
-          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="btn btn-ghost" onclick="scrollToId('como-funciona')">Como funciona</button>
-            <button class="btn btn-primary" onclick="scrollToId('oferta')">Liberar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section id="como-funciona">
-    <div class="wrap">
-      <div class="section-title">
-        <div>
-          <h2>Como funciona</h2>
-          <p>3 passos, simples e claros (padrão KeyRush). Ajuste os detalhes conforme a entrega real do seu software.</p>
-        </div>
-      </div>
-
-      <div class="steps">
-        <div class="step">
-          <div class="n">1</div>
-          <p class="t">Comprar</p>
-          <div class="s">Finalize a compra e receba instruções imediatas de acesso e configuração.</div>
-        </div>
-        <div class="step">
-          <div class="n">2</div>
-          <p class="t">Instalar o app</p>
-          <div class="s">Baixe e instale o software (Windows). Interface direta e onboarding simples.</div>
-        </div>
-        <div class="step">
-          <div class="n">3</div>
-          <p class="t">Pesquisar e organizar</p>
-          <div class="s">Use a vitrine + busca inteligente para navegar e organizar sua biblioteca.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CATALOG -->
-  <section id="catalogo">
-    <div class="wrap">
-      <div class="section-title">
-        <div>
-          <h2>Catálogo (busca rápida)</h2>
-          <p>O catálogo grande fica oculto por padrão. Digite para abrir e exibir resultados sem poluir a página.</p>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-          <button class="btn btn-ghost" id="btnToggleCatalog">Mostrar catálogo</button>
-          <button class="btn btn-primary" onclick="scrollToId('oferta')">Ir para oferta</button>
-        </div>
-      </div>
-
-      <div class="searchbox">
-        <div class="searchrow">
-          <input id="q" class="input" placeholder="Digite: GTA, FIFA, MINE, COD, RDR2..." autocomplete="off" />
-          <button class="btn btn-primary" id="btnSearch">Buscar</button>
-          <button class="btn btn-ghost" id="btnClear">Limpar</button>
+          <div class="rail" id="rail"></div>
         </div>
 
-        <div class="smallmuted" id="status">
-          Carregando dados do <b>games_741_steam.json</b>…
-        </div>
-
+        <!-- Grid -->
         <div class="grid" id="grid"></div>
 
-        <div style="margin-top: 14px; display:none; gap:10px; flex-wrap:wrap;" id="moreRow">
-          <button class="btn btn-ghost" id="btnMore">Carregar mais</button>
-          <button class="btn btn-primary" onclick="scrollToId('oferta')">Continuar</button>
+        <div class="loadmore">
+          <button class="btn ghost" id="loadMore">CARREGAR MAIS</button>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- OFERTA -->
+<section class="offer" id="oferta">
+  <div class="container reveal">
+    <h2 class="section-title">OFERTA</h2>
+    <p class="section-sub">
+      Aqui fica sua proposta final. No modal do jogo, o botão “Ver Oferta” abre este bloco em miniatura
+      (sem tirar o usuário do contexto do jogo).
+    </p>
+
+    <div class="offer-box">
+      <div>
+        <span class="pill">OFERTA DE LANÇAMENTO</span>
+        <h3>PASSE VITALÍCIO</h3>
+        <div class="price">R$ 9,97</div>
+        <div class="bullets">
+          <div class="bullet"><span>✅</span> Acesso imediato ao software</div>
+          <div class="bullet"><span>✅</span> Catálogo com centenas de títulos</div>
+          <div class="bullet"><span>✅</span> Atualizações e melhorias contínuas</div>
+          <div class="bullet"><span>✅</span> Suporte e documentação</div>
+        </div>
+        <div class="fine">🔒 Pagamento seguro • Entrega automática</div>
+      </div>
+
+      <div>
+        <!-- Troque aqui -->
+        <button class="buy" id="buyBtn">COMPRAR AGORA</button>
+        <div class="fine">
+          Troque o link do checkout no JS (<code>CHECKOUT_URL</code>).<br/>
+          Dica: use um URL curto e rastreável (UTM).
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- SOCIAL PROOF -->
-  <section>
-    <div class="wrap">
-      <div class="section-title">
-        <div>
-          <h2>Prova social</h2>
-          <p>Cards estilo “comunidade/Discord”. Troque os textos por depoimentos reais da sua operação.</p>
-        </div>
-      </div>
+<footer>
+  © 2026 OVERISE SOFTWARE — Todos os direitos reservados.
+</footer>
 
-      <div class="proofs">
-        <div class="proof">
-          <div class="who">
-            <div class="user">
-              <div class="ava">R</div>
-              <div>
-                <div class="uname">Rafael M.</div>
-                <div class="uinfo">★★★★★ • verificado</div>
-              </div>
-            </div>
-            <div class="seal">✓ verificado</div>
-          </div>
-          <p>“Interface muito rápida. A busca é inteligente e a vitrine deixa tudo mais organizado.”</p>
-        </div>
-
-        <div class="proof">
-          <div class="who">
-            <div class="user">
-              <div class="ava">G</div>
-              <div>
-                <div class="uname">Gustavo L.</div>
-                <div class="uinfo">★★★★★ • verificado</div>
-              </div>
-            </div>
-            <div class="seal">✓ verificado</div>
-          </div>
-          <p>“O layout 16:9 é lindo. Dá sensação de aplicativo premium, bem estilo Game Pass.”</p>
-        </div>
-
-        <div class="proof">
-          <div class="who">
-            <div class="user">
-              <div class="ava">A</div>
-              <div>
-                <div class="uname">André S.</div>
-                <div class="uinfo">★★★★★ • verificado</div>
-              </div>
-            </div>
-            <div class="seal">✓ verificado</div>
-          </div>
-          <p>“Curti o catálogo escondido — só aparece quando eu pesquiso. Fica clean e profissional.”</p>
-        </div>
-      </div>
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="modal-top">
+      <button class="m-close" id="modalClose" aria-label="Fechar">✕</button>
+      <img id="modalImg" alt="Capa do jogo" />
+      <div class="shade"></div>
     </div>
-  </section>
 
-  <!-- FAQ -->
-  <section>
-    <div class="wrap">
-      <div class="faq">
-        <h2>Perguntas frequentes</h2>
+    <div class="modal-body">
+      <div>
+        <div class="m-title" id="modalTitle">—</div>
+        <div class="m-desc" id="modalDesc">
+          Informações do jogo e detalhes aparecem aqui. Você pode escrever um texto padrão
+          (ou futuramente puxar tags/descrição de outra fonte).
+        </div>
+      </div>
 
-        <div class="acc" id="faq">
-          <div class="item">
-            <div class="q"><div class="t">O que eu recebo?</div><div class="chev">+</div></div>
-            <div class="a">Acesso ao software e ao painel do produto, com instruções de uso e suporte conforme sua operação.</div>
-          </div>
+      <div class="m-actions">
+        <div class="line"><span>Status</span><b style="color:var(--neon)">Disponível</b></div>
+        <div class="line"><span>Categoria</span><b id="modalCat">—</b></div>
+        <div class="line"><span>Capas</span><b style="color:#fff">16:9</b></div>
 
-          <div class="item">
-            <div class="q"><div class="t">Funciona em quais sistemas?</div><div class="chev">+</div></div>
-            <div class="a">O foco é Windows (PC). Caso você ofereça outras plataformas, ajuste aqui.</div>
-          </div>
+        <button class="btn primary" id="modalOfferBtn">VER OFERTA</button>
+        <button class="btn ghost" id="modalCatalogBtn">VOLTAR AO CATÁLOGO</button>
 
-          <div class="item">
-            <div class="q"><div class="t">Como é a entrega?</div><div class="chev">+</div></div>
-            <div class="a">Entrega automática após a confirmação do pagamento, com instruções e acesso à área do cliente.</div>
-          </div>
-
-          <div class="item">
-            <div class="q"><div class="t">Existe suporte?</div><div class="chev">+</div></div>
-            <div class="a">Sim. Defina canal (Discord/WhatsApp/Email) e horário. Ajuste conforme seu suporte real.</div>
+        <div class="offer-mini" id="offerMini">
+          <b style="color:#fff">Oferta rápida</b><br/>
+          Passe vitalício por <b style="color:var(--neon)">R$ 9,97</b>.<br/>
+          <span style="color:rgba(255,255,255,.82)">Clique em “Comprar agora” na seção Oferta.</span>
+          <div style="margin-top:10px">
+            <a class="btn primary" style="display:inline-flex; width:100%; justify-content:center" href="#oferta">IR PARA OFERTA</a>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</div>
 
-  <!-- OFFER -->
-  <section class="offer" id="oferta">
-    <div class="wrap">
-      <div class="offerbox">
-        <div class="badge"><span class="b"></span> Oferta de lançamento</div>
-
-        <div class="offerhead">
-          <h2>Passe vitalício<br><span style="color:var(--neon)">Overise</span></h2>
-          <div class="price">R$ 9,97</div>
-        </div>
-
-        <p>
-          Ajuste a promessa para refletir exatamente o que você entrega. A estrutura do checkout e acesso pode ser conectada no botão abaixo.
-        </p>
-
-        <div class="list">
-          <div class="li"><div class="ok">✓</div><div class="txt"><b>Acesso imediato</b> ao software / painel do produto</div></div>
-          <div class="li"><div class="ok">✓</div><div class="txt"><b>Interface premium</b> (vitrine + busca + catálogo oculto)</div></div>
-          <div class="li"><div class="ok">✓</div><div class="txt"><b>Atualizações</b> e melhorias contínuas (conforme sua operação)</div></div>
-          <div class="li"><div class="ok">✓</div><div class="txt"><b>Suporte</b> (Discord/WhatsApp) (defina SLA real)</div></div>
-        </div>
-
-        <div class="buyrow">
-          <button class="buy" onclick="openCheckout()">Comprar agora</button>
-          <button class="safe" onclick="scrollToId('catalogo')">Ver catálogo</button>
-        </div>
-
-        <p style="margin-top:12px;">
-          🔒 Pagamento seguro • ⚡ Entrega automática • ✅ Interface premium
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    © 2026 OVERISE SOFTWARE. Todos os direitos reservados.<br/>
-    Este site é uma página de apresentação do software e do catálogo local usado para demonstração e navegação.
-  </footer>
-
-  <!-- Toast container -->
-  <div class="toasts" id="toasts"></div>
+<!-- TOASTS -->
+<div class="toasts" id="toasts"></div>
 
 <script>
-/**
- * OVERISE V5 — Single-file landing + catálogo
- * Usa: games_741_steam.json (mesma pasta)
- * Espera cada item como: { "name": "...", "cover": "...", "categories": ["..."] }
- */
+  /** =========================================================
+   * CONFIG
+   * ========================================================= */
+  const DATA_URL = "./games_741_steam.json";
+  const CHECKOUT_URL = "SEU_LINK_DE_CHECKOUT_AQUI";
 
-/* ===== Helpers ===== */
-function scrollToId(id){ document.getElementById(id)?.scrollIntoView({behavior:"smooth"}); }
-function escapeHtml(s){
-  return String(s ?? "").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m]));
-}
-function norm(s){
-  return String(s ?? "")
-    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
-    .toUpperCase();
-}
-function debounce(fn, ms=180){
-  let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); };
-}
+  const FALLBACK_IMG = "data:image/svg+xml;utf8," +
+    encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='1280' height='720'>
+      <defs>
+        <linearGradient id='g' x1='0' x2='1'>
+          <stop offset='0' stop-color='#0b0b0b'/>
+          <stop offset='0.5' stop-color='#111'/>
+          <stop offset='1' stop-color='#0b0b0b'/>
+        </linearGradient>
+      </defs>
+      <rect width='100%' height='100%' fill='url(#g)'/>
+      <text x='50%' y='50%' fill='#2a2a2a' font-family='Inter,Arial' font-size='44' font-weight='800' text-anchor='middle'>
+        SEM CAPA
+      </text>
+    </svg>`);
 
-/* ===== Config ===== */
-const JSON_PATH = "./games_741_steam.json";
-const FALLBACK_IMG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450'><rect width='100%' height='100%' fill='%230b0b0b'/><text x='50%' y='50%' fill='%23444' font-family='Inter,Arial' font-size='28' text-anchor='middle'>SEM CAPA</text></svg>";
+  const $ = (s)=>document.querySelector(s);
+  const $$ = (s)=>Array.from(document.querySelectorAll(s));
 
-const ALIASES = new Map([
-  ["GTA", "GRAND THEFT AUTO"],
-  ["GTA 5", "GRAND THEFT AUTO V"],
-  ["COD", "CALL OF DUTY"],
-  ["NFS", "NEED FOR SPEED"],
-  ["RDR2", "RED DEAD REDEMPTION 2"],
-  ["MK", "MORTAL KOMBAT"],
-  ["ETS2", "EURO TRUCK SIMULATOR 2"],
-  ["MINE", "MINECRAFT"],
-]);
+  const state = {
+    games: [],
+    filtered: [],
+    pageSize: 24,
+    page: 1,
+    activeCategory: "TODOS",
+    activeTab: "jogos",
+    heroPick: null,
+    storePick: null,
+  };
 
-/* ===== State ===== */
-let GAMES = [];
-let READY = false;
-let CATALOG_VISIBLE = false;
-
-let lastResults = [];
-let shown = 0;
-const PAGE_SIZE = 12;
-
-/* ===== DOM ===== */
-const statTotal = document.getElementById("statTotal");
-const featuredShelf = document.getElementById("featuredShelf");
-
-const q = document.getElementById("q");
-const btnSearch = document.getElementById("btnSearch");
-const btnClear = document.getElementById("btnClear");
-const btnToggleCatalog = document.getElementById("btnToggleCatalog");
-
-const status = document.getElementById("status");
-const grid = document.getElementById("grid");
-const moreRow = document.getElementById("moreRow");
-const btnMore = document.getElementById("btnMore");
-
-/* ===== Load JSON ===== */
-async function loadCatalog(){
-  if(READY) return;
-  try{
-    const r = await fetch(JSON_PATH, { cache: "no-store" });
-    const data = await r.json();
-
-    // Aceita array direto ou {games:[...]}
-    GAMES = Array.isArray(data) ? data : (Array.isArray(data.games) ? data.games : []);
-    READY = true;
-
-    statTotal.textContent = String(GAMES.length || 741);
-    status.innerHTML = `Pronto. Digite para buscar. <span style="color:rgba(255,255,255,.55)">(${GAMES.length} itens carregados)</span>`;
-
-    buildFeatured();
-    startToasts();
-  }catch(e){
-    status.innerHTML = "<span style='color:rgba(255,180,0,.95)'>Erro ao carregar o catálogo.</span> Verifique se <b>games_741_steam.json</b> está na mesma pasta do index.html.";
-    console.error(e);
-  }
-}
-
-/* ===== Featured (AAA) ===== */
-const FEATURED_KEYWORDS = [
-  "GRAND THEFT AUTO", "RED DEAD REDEMPTION", "CYBERPUNK", "ELDEN RING", "GOD OF WAR",
-  "SPIDER-MAN", "THE LAST OF US", "FORZA", "CALL OF DUTY", "FIFA", "EA SPORTS FC",
-  "RESIDENT EVIL", "MORTAL KOMBAT", "HOGWARTS", "ASSASSIN", "DARK SOULS"
-];
-
-function pickFeatured(){
-  const picked = [];
-  const used = new Set();
-
-  // primeiro: por keywords
-  for(const kw of FEATURED_KEYWORDS){
-    const item = GAMES.find(g=>{
-      const n = norm(g.name);
-      return n.includes(kw) && g.cover && !used.has(g.name);
-    });
-    if(item){
-      picked.push(item);
-      used.add(item.name);
-      if(picked.length >= 8) break;
-    }
+  /** =========================================================
+   * Micro helpers
+   * ========================================================= */
+  function escHtml(s){
+    return String(s ?? "").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m]));
   }
 
-  // fallback: qualquer com cover
-  if(picked.length < 8){
-    for(const g of GAMES){
-      if(g.cover && !used.has(g.name)){
-        picked.push(g);
-        used.add(g.name);
-        if(picked.length >= 8) break;
+  function pickRandom(arr){
+    return arr[Math.floor(Math.random()*arr.length)];
+  }
+
+  function norm(s){
+    return String(s||"").trim().toUpperCase();
+  }
+
+  function debounce(fn, ms=200){
+    let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); };
+  }
+
+  /** =========================================================
+   * Reveal on scroll
+   * ========================================================= */
+  const ioReveal = new IntersectionObserver((entries)=>{
+    for(const e of entries){
+      if(e.isIntersecting){
+        e.target.classList.add("on");
+        ioReveal.unobserve(e.target);
       }
     }
+  }, {rootMargin:"200px"});
+
+  $$(".reveal").forEach(el=>ioReveal.observe(el));
+
+  /** =========================================================
+   * Counter animation
+   * ========================================================= */
+  function animateCounters(){
+    const nodes = $$("[data-count]");
+    nodes.forEach((el)=>{
+      const target = Number(el.getAttribute("data-count")) || 0;
+      let cur = 0;
+      const step = Math.max(1, Math.floor(target / 42));
+      const tick = ()=>{
+        cur += step;
+        if(cur >= target){ el.textContent = String(target); return; }
+        el.textContent = String(cur);
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
   }
-  return picked.slice(0,8);
-}
+  animateCounters();
 
-function buildFeatured(){
-  if(!GAMES.length) return;
+  /** =========================================================
+   * Load data
+   * ========================================================= */
+  async function loadData(){
+    const res = await fetch(DATA_URL, {cache:"no-store"});
+    if(!res.ok) throw new Error("Falha ao carregar JSON");
+    const data = await res.json();
+    state.games = Array.isArray(data) ? data : (data.games || []);
+    // Normaliza categories
+    state.games = state.games.map(g=>({
+      name: g.name,
+      cover: g.cover || "",
+      categories: Array.isArray(g.categories) && g.categories.length ? g.categories : ["OUTROS"]
+    }));
+    state.filtered = state.games.slice();
+  }
 
-  const list = pickFeatured();
-  let html = "";
-  for(const g of list){
-    const img = g.cover || FALLBACK_IMG;
-    html += `
-      <div class="game" onclick="scrollToId('oferta')" title="${escapeHtml(g.name)}">
-        <img class="img" src="${img}" loading="lazy" referrerpolicy="no-referrer" onerror="this.src='${FALLBACK_IMG}'" />
-        <div class="ginfo">
-          <div class="gname">${escapeHtml(g.name)}</div>
-          <div class="gbadge"><i></i> destaque</div>
-        </div>
-      </div>
+  /** =========================================================
+   * Build categories
+   * ========================================================= */
+  function buildCategories(){
+    const map = new Map();
+    for(const g of state.games){
+      for(const c of g.categories){
+        map.set(c, (map.get(c)||0)+1);
+      }
+    }
+    const sorted = [...map.entries()]
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0, 20) // top 20 p/ não lotar
+      .map(([c,n])=>({c,n}));
+
+    return [{c:"TODOS", n: state.games.length}, ...sorted];
+  }
+
+  function renderCategories(){
+    const cats = buildCategories();
+    const el = $("#cats");
+    el.innerHTML = cats.map(({c,n})=>{
+      const active = c === state.activeCategory ? "active" : "";
+      return `<div class="cat ${active}" data-cat="${escHtml(c)}">${escHtml(c)} (${n})</div>`;
+    }).join("");
+
+    $$("#cats .cat").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        state.activeCategory = btn.getAttribute("data-cat");
+        state.page = 1;
+        applyFilters();
+        renderCategories();
+      });
+    });
+  }
+
+  /** =========================================================
+   * Tabs (somente visual no momento)
+   * ========================================================= */
+  function initTabs(){
+    $$("#tabs .tab").forEach(tab=>{
+      tab.addEventListener("click", ()=>{
+        $$("#tabs .tab").forEach(t=>t.classList.remove("active"));
+        tab.classList.add("active");
+        state.activeTab = tab.getAttribute("data-tab");
+        // Por enquanto, tabs não mudam o dataset. Se quiser, posso separar "coleções/novidades".
+        toast(`Filtro: ${state.activeTab.toUpperCase()}`, "OK");
+      });
+    });
+  }
+
+  /** =========================================================
+   * Search + filter
+   * ========================================================= */
+  function applyFilters(){
+    const q = norm($("#q").value);
+    const qOk = q.length >= 2;
+
+    state.filtered = state.games.filter(g=>{
+      const inCat = (state.activeCategory === "TODOS") ? true : g.categories.includes(state.activeCategory);
+      if(!inCat) return false;
+      if(!qOk) return true;
+      // apelidos simples
+      let qq = q;
+      if(qq==="GTA") qq = "GRAND THEFT AUTO";
+      if(qq==="COD") qq = "CALL OF DUTY";
+      if(qq==="RDR2") qq = "RED DEAD REDEMPTION 2";
+      if(qq==="RE4") qq = "RESIDENT EVIL 4";
+      return norm(g.name).includes(qq);
+    });
+
+    state.page = 1;
+    renderRail();
+    renderGrid(true);
+    updateStats();
+    updateStoreHeroAutoPick();
+  }
+
+  const applyFiltersDebounced = debounce(applyFilters, 220);
+
+  function updateStats(){
+    $("#stats").innerHTML = `
+      <b style="color:#fff">${state.filtered.length}</b> resultados •
+      <span style="color: var(--neon)">${state.games.length}</span> total
     `;
   }
-  featuredShelf.innerHTML = html;
-}
 
-/* ===== Search ===== */
-function normalizeQuery(raw){
-  let t = norm(raw).trim();
-  if(t.length < 2) return t;
-
-  // aplica aliases exatos
-  if(ALIASES.has(t)) t = ALIASES.get(t);
-
-  // alias por começo
-  if(t === "MINECRAFT") t = "MINECRAFT";
-  return t;
-}
-
-function filterGames(term){
-  if(!term || term.length < 2) return [];
-  const t = normalizeQuery(term);
-
-  // busca simples e rápida
-  return GAMES.filter(g => norm(g.name).includes(t));
-}
-
-function showCatalog(yes){
-  CATALOG_VISIBLE = !!yes;
-  if(CATALOG_VISIBLE){
-    grid.classList.add("active");
-    btnToggleCatalog.textContent = "Ocultar catálogo";
-  }else{
-    grid.classList.remove("active");
-    btnToggleCatalog.textContent = "Mostrar catálogo";
-    grid.innerHTML = "";
-    moreRow.style.display = "none";
+  /** =========================================================
+   * Hero picks
+   * ========================================================= */
+  function setHeroPick(){
+    // pega um jogo com cover
+    const withCover = state.games.filter(g=>g.cover);
+    state.heroPick = pickRandom(withCover.length ? withCover : state.games);
+    $("#heroBannerImg").style.backgroundImage = `url('${state.heroPick.cover || FALLBACK_IMG}')`;
+    $("#heroBannerTitle").textContent = state.heroPick.name;
+    $("#heroBannerSub").textContent = "Clique para ver detalhes e a proposta do produto.";
   }
-}
 
-function renderPage(){
-  const slice = lastResults.slice(shown, shown + PAGE_SIZE);
-  shown += slice.length;
+  function updateStoreHeroAutoPick(){
+    // pega um jogo dos filtrados com cover
+    const withCover = state.filtered.filter(g=>g.cover);
+    state.storePick = pickRandom(withCover.length ? withCover : state.filtered);
+    $("#storeHeroImg").style.backgroundImage = `url('${state.storePick.cover || FALLBACK_IMG}')`;
+    $("#storeHeroTitle").textContent = state.storePick.name;
+    $("#storeHeroText").textContent = "Destaque da vitrine — clique em “Ver detalhes” para abrir o modal.";
+  }
 
-  let html = "";
-  for(const g of slice){
-    const img = g.cover || FALLBACK_IMG;
-    const cats = Array.isArray(g.categories) ? g.categories.slice(0,2) : [];
-    html += `
-      <div class="card2" onclick="scrollToId('oferta')" title="${escapeHtml(g.name)}">
-        <img src="${img}" loading="lazy" referrerpolicy="no-referrer" onerror="this.src='${FALLBACK_IMG}'" />
-        <div class="c2info">
-          <div class="c2name">${escapeHtml(g.name)}</div>
-          <div class="tagrow">
-            <span class="tag"><i></i> disponível</span>
-            ${cats.map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join("")}
+  /** =========================================================
+   * Rail: Mais vendidos (ex: 10 aleatórios com capa)
+   * ========================================================= */
+  function renderRail(){
+    const rail = $("#rail");
+    const list = state.filtered.filter(g=>g.cover).slice(0);
+    // embaralha e pega 10
+    for(let i=list.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [list[i],list[j]]=[list[j],list[i]];
+    }
+    const pick = list.slice(0, 10);
+
+    rail.innerHTML = pick.map(g=>`
+      <div class="mini" data-name="${escHtml(g.name)}">
+        <div class="mimg" style="background-image:url('${g.cover || FALLBACK_IMG}')"></div>
+        <div class="mcap">
+          <strong>${escHtml(g.name)}</strong>
+          <div class="tagline">Abrir detalhes</div>
+        </div>
+      </div>
+    `).join("");
+
+    $$("#rail .mini").forEach(el=>{
+      el.addEventListener("click", ()=>{
+        const name = el.getAttribute("data-name");
+        const game = state.games.find(x=>x.name === name) || state.filtered.find(x=>x.name===name);
+        if(game) openModal(game);
+      });
+    });
+  }
+
+  /** =========================================================
+   * Grid: cards com lazy load
+   * ========================================================= */
+  const ioImg = new IntersectionObserver((entries)=>{
+    for(const e of entries){
+      if(e.isIntersecting){
+        const img = e.target;
+        const src = img.getAttribute("data-src");
+        if(src){
+          img.src = src;
+        }
+        ioImg.unobserve(img);
+      }
+    }
+  }, {rootMargin: "300px"});
+
+  function renderGrid(reset=false){
+    const grid = $("#grid");
+    if(reset) grid.innerHTML = "";
+
+    const end = state.page * state.pageSize;
+    const slice = state.filtered.slice(0, end);
+
+    const html = slice.map((g,idx)=>`
+      <div class="card" style="animation-delay:${Math.min(idx, 24)*0.02}s" data-name="${escHtml(g.name)}">
+        <div class="cimg">
+          <div class="skeleton"></div>
+          <img
+            data-src="${g.cover ? escHtml(g.cover) : FALLBACK_IMG}"
+            src="${FALLBACK_IMG}"
+            alt="${escHtml(g.name)}"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+            onload="this.parentElement.querySelector('.skeleton')?.remove()"
+            onerror="this.src='${FALLBACK_IMG}'; this.parentElement.querySelector('.skeleton')?.remove()"
+          />
+        </div>
+        <div class="cinfo">
+          <div class="ctitle">${escHtml(g.name)}</div>
+          <div class="ctags">
+            <span class="chip ok">✓ DISPONÍVEL</span>
+            <span class="chip cat">${escHtml((g.categories && g.categories[0]) ? g.categories[0] : "OUTROS")}</span>
           </div>
         </div>
       </div>
-    `;
-  }
+    `).join("");
 
-  // append sem ficar fazendo innerHTML += em loop grande
-  const tmp = document.createElement("div");
-  tmp.innerHTML = html;
-  while(tmp.firstChild) grid.appendChild(tmp.firstChild);
+    // Se reset, escreve tudo; se não, append sem += em loop
+    if(reset){
+      grid.innerHTML = html;
+    } else {
+      const tmp = document.createElement("div");
+      tmp.innerHTML = html;
+      grid.replaceChildren(...tmp.children);
+    }
 
-  // controls
-  if(lastResults.length > 0){
-    moreRow.style.display = "flex";
-    btnMore.style.display = shown < lastResults.length ? "inline-flex" : "none";
-  }else{
-    moreRow.style.display = "none";
-  }
-}
+    // Observa imagens para lazy
+    $$("#grid img[data-src]").forEach(img=>ioImg.observe(img));
 
-function doSearch(){
-  if(!READY){
-    status.textContent = "Carregando catálogo…";
-    return;
-  }
-
-  const term = q.value || "";
-  const clean = term.trim();
-
-  if(clean.length < 2){
-    status.innerHTML = "Digite pelo menos <b>2 letras</b> para pesquisar.";
-    grid.innerHTML = "";
-    moreRow.style.display = "none";
-    return;
-  }
-
-  showCatalog(true);
-
-  lastResults = filterGames(clean);
-  shown = 0;
-  grid.innerHTML = "";
-
-  status.innerHTML = `<b>${lastResults.length}</b> resultado(s) para <span style="color:rgba(0,255,65,.95)">${escapeHtml(clean.toUpperCase())}</span>.`;
-
-  renderPage();
-}
-
-const doSearchDebounced = debounce(doSearch, 160);
-
-/* ===== FAQ ===== */
-document.querySelectorAll("#faq .item .q").forEach(qEl=>{
-  qEl.addEventListener("click", ()=>{
-    const item = qEl.parentElement;
-    // um por vez (KeyRush style)
-    document.querySelectorAll("#faq .item").forEach(it=>{
-      if(it !== item) it.classList.remove("open");
+    // Click abre modal (não vai pra oferta)
+    $$("#grid .card").forEach(card=>{
+      card.addEventListener("click", ()=>{
+        const name = card.getAttribute("data-name");
+        const game = state.games.find(x=>x.name === name);
+        if(game) openModal(game);
+      });
     });
-    item.classList.toggle("open");
-  });
-});
 
-/* ===== Actions ===== */
-btnSearch.addEventListener("click", doSearch);
-q.addEventListener("input", doSearchDebounced);
-q.addEventListener("focus", loadCatalog);
-q.addEventListener("keypress", (e)=>{ if(e.key === "Enter") doSearch(); });
+    // Botão carregar mais
+    const hasMore = state.filtered.length > end;
+    $("#loadMore").style.display = hasMore ? "inline-flex" : "none";
+  }
 
-btnClear.addEventListener("click", ()=>{
-  q.value = "";
-  status.innerHTML = "Digite para buscar. Ex.: <b>GTA</b>, <b>FIFA</b>, <b>MINE</b>, <b>COD</b>…";
-  grid.innerHTML = "";
-  moreRow.style.display = "none";
-});
+  /** =========================================================
+   * Modal behavior
+   * ========================================================= */
+  function openModal(game){
+    $("#modalTitle").textContent = game.name;
+    $("#modalCat").textContent = (game.categories && game.categories.length) ? game.categories[0] : "OUTROS";
+    $("#modalImg").src = game.cover || FALLBACK_IMG;
+    $("#modalImg").onerror = ()=>$("#modalImg").src = FALLBACK_IMG;
 
-btnToggleCatalog.addEventListener("click", ()=>{
-  showCatalog(!CATALOG_VISIBLE);
-});
+    $("#offerMini").classList.remove("on");
 
-btnMore.addEventListener("click", renderPage);
+    $("#modal").classList.add("on");
+    document.body.style.overflow = "hidden";
+  }
 
-/* ===== Checkout ===== */
-function openCheckout(){
-  // Troque pelo seu link real:
-  const CHECKOUT_URL = "SEU_LINK_DE_CHECKOUT_AQUI";
-  window.open(CHECKOUT_URL, "_blank");
-}
+  function closeModal(){
+    $("#modal").classList.remove("on");
+    document.body.style.overflow = "";
+  }
 
-/* ===== Toasts (gamificação leve) ===== */
-const toastsEl = document.getElementById("toasts");
-const toastNames = ["João", "Maria", "Lucas", "Ana", "Rafael", "Gustavo", "Pedro", "Beatriz", "Felipe", "Bruna", "Tiago", "Camila"];
-let toastTimer = null;
+  /** =========================================================
+   * Toasts (micro urgência/feedback visual neutro)
+   * ========================================================= */
+  const toastNames = ["João","Maria","Pedro","Ana","Lucas","Rafa","Bia","Diego","Vini","Carol","Mateus","Gabi"];
+  function toast(title, msg){
+    const wrap = $("#toasts");
+    const el = document.createElement("div");
+    el.className = "toast";
+    el.innerHTML = `
+      <div class="ic">✓</div>
+      <div>
+        <strong>${escHtml(title)}</strong>
+        <p>${escHtml(msg)}</p>
+      </div>
+    `;
+    wrap.appendChild(el);
+    setTimeout(()=>{ el.style.opacity = "0"; el.style.transform = "translateY(10px)"; }, 3600);
+    setTimeout(()=>{ el.remove(); }, 4200);
+  }
 
-function toast(msgTitle, msgSub){
-  const el = document.createElement("div");
-  el.className = "toast";
-  el.innerHTML = `
-    <div class="ic">✓</div>
-    <div>
-      <div class="t">${escapeHtml(msgTitle)}</div>
-      <div class="s">${escapeHtml(msgSub)}</div>
-    </div>
-  `;
-  toastsEl.appendChild(el);
+  function startToasts(){
+    setInterval(()=>{
+      if(!state.games.length) return;
+      const person = pickRandom(toastNames);
+      const game = pickRandom(state.games);
+      toast(`${person} abriu detalhes`, game.name);
+    }, 11000);
+  }
 
-  setTimeout(()=>{ el.style.opacity = "0"; el.style.transform = "translateY(10px)"; }, 4200);
-  setTimeout(()=>{ el.remove(); }, 4800);
-}
+  /** =========================================================
+   * Button ripple coordinates
+   * ========================================================= */
+  function initRipples(){
+    $$(".btn, .buy").forEach(btn=>{
+      btn.addEventListener("pointerdown", (e)=>{
+        const rect = btn.getBoundingClientRect();
+        btn.style.setProperty("--x", `${(e.clientX-rect.left)}px`);
+        btn.style.setProperty("--y", `${(e.clientY-rect.top)}px`);
+      });
+    });
+  }
 
-function randomFrom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  /** =========================================================
+   * Init
+   * ========================================================= */
+  async function init(){
+    try{
+      await loadData();
+      renderCategories();
+      initTabs();
+      setHeroPick();
+      updateStats();
+      updateStoreHeroAutoPick();
+      renderRail();
+      renderGrid(true);
+      initRipples();
 
-function startToasts(){
-  if(!GAMES.length) return;
+      // Eventos
+      $("#btnSearch").addEventListener("click", applyFilters);
+      $("#q").addEventListener("input", applyFiltersDebounced);
 
-  // solta um toast depois de alguns segundos e repete
-  if(toastTimer) clearInterval(toastTimer);
+      $("#loadMore").addEventListener("click", ()=>{
+        state.page++;
+        renderGrid(true);
+      });
 
-  setTimeout(()=>{
-    const g = randomFrom(GAMES.filter(x=>x.cover)) || randomFrom(GAMES);
-    toast(`${randomFrom(toastNames)} acabou de explorar`, `${g?.name || "o catálogo"} agora mesmo.`);
-  }, 2800);
+      // Hero open details
+      $("#heroBannerOpen").addEventListener("click", ()=>{
+        if(state.heroPick) openModal(state.heroPick);
+      });
 
-  toastTimer = setInterval(()=>{
-    const g = randomFrom(GAMES.filter(x=>x.cover)) || randomFrom(GAMES);
-    toast(`${randomFrom(toastNames)} acabou de explorar`, `${g?.name || "o catálogo"} agora mesmo.`);
-  }, 9000);
-}
+      // Store hero buttons
+      $("#storeHeroOpen").addEventListener("click", ()=>{
+        if(state.storePick) openModal(state.storePick);
+      });
+      $("#storeHeroShuffle").addEventListener("click", ()=>{
+        updateStoreHeroAutoPick();
+      });
 
-/* ===== Init ===== */
-(function init(){
-  // pré-carrega após um tempo (performance)
-  setTimeout(loadCatalog, 1200);
+      // Modal actions
+      $("#modalClose").addEventListener("click", closeModal);
+      $("#modal").addEventListener("click", (e)=>{
+        if(e.target.id === "modal") closeModal();
+      });
+      document.addEventListener("keydown", (e)=>{
+        if(e.key === "Escape") closeModal();
+      });
 
-  // mensagem inicial
-  status.innerHTML = "Carregando dados do <b>games_741_steam.json</b>…";
-})();
+      $("#modalOfferBtn").addEventListener("click", ()=>{
+        $("#offerMini").classList.toggle("on");
+      });
+      $("#modalCatalogBtn").addEventListener("click", ()=>{
+        closeModal();
+        location.hash = "#catalogo";
+      });
+
+      // Buy button
+      $("#buyBtn").addEventListener("click", ()=>{
+        if(!CHECKOUT_URL || CHECKOUT_URL.includes("SEU_LINK_DE_CHECKOUT_AQUI")){
+          toast("Checkout não configurado", "Troque CHECKOUT_URL no código.");
+          return;
+        }
+        window.open(CHECKOUT_URL, "_blank");
+      });
+
+      // Pré-carrega catálogo após 1.2s (micro performance)
+      setTimeout(()=>toast("Catálogo pronto", "Use busca, filtros e clique nos jogos."), 1200);
+      startToasts();
+
+    }catch(err){
+      console.error(err);
+      $("#stats").innerHTML = `<span style="color:orange">Erro ao carregar ${escHtml(DATA_URL)}. Verifique se o arquivo está na raiz do site.</span>`;
+      toast("Erro", "Não foi possível carregar o catálogo.");
+    }
+  }
+
+  init();
 </script>
 </body>
 </html>
