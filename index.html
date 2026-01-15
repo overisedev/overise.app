@@ -1,2273 +1,1656 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>OVERISE | Software</title>
 
-  <!-- SEO / Share -->
-  <meta name="description" content="Uma experiência premium para organizar, instalar e gerenciar sua biblioteca de jogos com rapidez e praticidade." />
-  <meta property="og:title" content="OVERISE | Software" />
-  <meta property="og:description" content="Organize e gerencie sua biblioteca com uma experiência premium." />
-  <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#050505" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 
   <style>
     :root{
       --bg:#050505;
-      --panel:#0d0f12;
-      --panel2:#0b0c0e;
-      --stroke:rgba(255,255,255,0.08);
-      --stroke2:rgba(255,255,255,0.12);
-      --text:#e9e9e9;
-      --muted:rgba(233,233,233,0.70);
-      --muted2:rgba(233,233,233,0.55);
+      --panel:#0f0f0f;
+      --panel2:#101010;
+      --border:rgba(255,255,255,.08);
+      --text:#e7e7e7;
+      --muted:#a0a0a0;
+      --muted2:#7e7e7e;
       --neon:#00FF41;
-      --shadow: 0 18px 60px rgba(0,0,0,0.55);
-      --shadow2: 0 10px 30px rgba(0,0,0,0.45);
-      --radius: 18px;
-      --radius2: 14px;
+      --shadow: 0 18px 60px rgba(0,0,0,.60);
+      --shadowSoft: 0 12px 40px rgba(0,0,0,.45);
+      --r:18px;
+      --r2:26px;
       --max: 1180px;
       --font: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
-    *{ box-sizing:border-box; margin:0; padding:0; }
-    html{ scroll-behavior:smooth; scroll-padding-top: 92px; }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      margin:0;
+      font-family:var(--font);
+      background: radial-gradient(1200px 600px at 30% -10%, rgba(0,255,65,.10), transparent 55%),
+                  radial-gradient(900px 500px at 110% 10%, rgba(0,255,65,.06), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
     }
 
-    /* subtle noise */
-    body::before{
-      content:"";
-      position: fixed;
-      inset: 0;
-      pointer-events:none;
-      opacity: .06;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
-      mix-blend-mode: overlay;
+    /* ---------- Helpers ---------- */
+    .container{width:min(var(--max), calc(100% - 40px)); margin:0 auto}
+    .section{padding:110px 0}
+    .section.tight{padding:80px 0}
+    .section.top{padding-top:140px}
+    .muted{color:var(--muted)}
+    .muted2{color:var(--muted2)}
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px; border-radius:999px;
+      background: rgba(255,255,255,.05);
+      border:1px solid var(--border);
+      font-weight:700; letter-spacing:.6px; text-transform:uppercase; font-size:12px;
+      backdrop-filter: blur(10px);
     }
+    .dot{width:8px; height:8px; border-radius:50%; background:var(--neon); box-shadow: 0 0 14px rgba(0,255,65,.55)}
+
+    /* ---------- Micro Animations (global) ---------- */
+    @keyframes floatIn {
+      from {opacity:0; transform: translateY(14px)}
+      to   {opacity:1; transform: translateY(0)}
+    }
+    @keyframes fadeLeft {
+      from {opacity:0; transform: translateX(22px)}
+      to   {opacity:1; transform: translateX(0)}
+    }
+    @keyframes sheen {
+      0%{transform:translateX(-120%)}
+      60%{transform:translateX(120%)}
+      100%{transform:translateX(120%)}
+    }
+    @keyframes marquee {
+      from {transform: translateX(0)}
+      to   {transform: translateX(-50%)}
+    }
+    @keyframes slideFade {
+      0%{opacity:0; transform: translateX(26px)}
+      12%{opacity:1; transform: translateX(0)}
+      88%{opacity:1; transform: translateX(0)}
+      100%{opacity:0; transform: translateX(-26px)}
+    }
+
+    .reveal{opacity:0; transform: translateY(14px); transition: .8s ease}
+    .reveal.show{opacity:1; transform: translateY(0)}
 
     /* ---------- Header ---------- */
     header{
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      backdrop-filter: blur(12px);
-      background: rgba(5,5,5,.70);
-      border-bottom: 1px solid var(--stroke);
+      position:fixed; inset:0 0 auto 0; z-index:1000;
+      background: rgba(5,5,5,.72);
+      border-bottom:1px solid rgba(255,255,255,.06);
+      backdrop-filter: blur(14px);
     }
-    .hwrap{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 14px 18px;
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .brand{
-      display:flex; align-items:center; gap: 10px;
-      text-decoration:none; color: var(--text);
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
     }
     .logo{
-      font-weight: 900;
-      letter-spacing:-1px;
-      font-size: 18px;
-      text-transform: uppercase;
+      display:flex; align-items:center; gap:12px;
+      font-weight:900; letter-spacing:-1px; text-transform:uppercase;
+      font-size:18px; color:#fff;
     }
-    .logo span{ color: var(--neon); }
-    .badge{
-      font-size: 12px;
-      color: rgba(0,255,65,.95);
-      border: 1px solid rgba(0,255,65,.35);
-      background: rgba(0,255,65,.08);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-weight: 700;
+    .logo span{color:var(--neon)}
+    .navlinks{
+      display:flex; align-items:center; gap:14px;
+      font-weight:700; color:var(--muted2);
     }
-
-    .nav{
-      display:flex; align-items:center; gap: 10px;
+    .navlinks a{
+      color:inherit; text-decoration:none; padding:10px 12px; border-radius:12px;
+      transition:.2s ease;
     }
-
+    .navlinks a:hover{
+      color:#fff;
+      background: rgba(255,255,255,.05);
+      transform: translateY(-1px);
+    }
     .btn{
-      border: 1px solid var(--stroke2);
-      background: rgba(255,255,255,0.02);
-      color: var(--text);
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .6px;
-      font-size: 12px;
-      cursor:pointer;
-      transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
-      text-decoration:none;
-      display:inline-flex; align-items:center; gap: 8px;
-      user-select:none;
-      will-change: transform;
+      position:relative;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:12px 18px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color:#fff;
+      font-weight:900; letter-spacing:.5px; text-transform:uppercase;
+      cursor:pointer; text-decoration:none;
+      transition:.22s ease;
+      overflow:hidden;
     }
-    .btn:hover{
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,0.22);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.45);
-      background: rgba(255,255,255,0.04);
+    .btn::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,.18), transparent);
+      transform: translateX(-120%);
+      animation: sheen 4.8s ease-in-out infinite;
+      pointer-events:none;
     }
-    .btn:active{ transform: translateY(0px) scale(.99); }
-
+    .btn:hover{transform: translateY(-2px); border-color: rgba(255,255,255,.18); box-shadow: var(--shadowSoft)}
     .btn.primary{
-      border-color: rgba(0,255,65,.55);
-      background: linear-gradient(180deg, rgba(0,255,65,.95), rgba(0,255,65,.80));
+      background: linear-gradient(180deg, rgba(0,255,65,.95), rgba(0,200,55,.85));
       color:#000;
-      box-shadow: 0 10px 30px rgba(0,255,65,.12);
+      border-color: rgba(0,255,65,.55);
     }
-    .btn.primary:hover{
-      box-shadow: 0 16px 40px rgba(0,255,65,.18);
-      transform: translateY(-1px);
-      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(0,255,65,.92));
-    }
+    .btn.primary::after{display:none}
+    .btn.primary:hover{box-shadow: 0 18px 60px rgba(0,255,65,.15)}
 
-    /* ---------- Layout helpers ---------- */
-    .container{ max-width: var(--max); margin: 0 auto; padding: 0 18px; }
-    .spacer{ height: 88px; } /* header offset */
-    section{ position: relative; }
-    .section{
-      padding: 66px 0;
-    }
+    .nav-cta{display:flex; gap:10px; align-items:center}
 
-    /* Reveal micro animation */
-    .reveal{
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity .55s ease, transform .55s ease;
-      will-change: opacity, transform;
-    }
-    .reveal.on{
-      opacity: 1;
-      transform: translateY(0px);
-    }
-
-    /* ---------- Hero (KeyRush-inspired) ---------- */
+    /* ---------- Hero ---------- */
     .hero{
-      padding: 42px 0 26px;
-      background:
-        radial-gradient(900px 500px at 50% 0%, rgba(0,255,65,0.10), rgba(0,0,0,0) 70%),
-        radial-gradient(900px 500px at 10% 20%, rgba(255,255,255,0.06), rgba(0,0,0,0) 60%);
+      padding-top:120px;
     }
     .heroGrid{
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 26px;
-      align-items: center;
+      grid-template-columns: 1.15fr .85fr;
+      gap:34px;
+      align-items:center;
     }
-    @media (max-width: 980px){
-      .heroGrid{ grid-template-columns: 1fr; }
-    }
-
-    .kicker{
-      display:inline-flex; align-items:center; gap: 10px;
-      color: rgba(0,255,65,.95);
-      font-weight: 900;
-      letter-spacing: .9px;
-      text-transform: uppercase;
-      font-size: 12px;
-      margin-bottom: 14px;
-    }
-    .dot{
-      width: 9px; height: 9px; border-radius: 50%;
-      background: var(--neon);
-      box-shadow: 0 0 18px rgba(0,255,65,.55);
-      animation: pulse 1.8s ease-in-out infinite;
-    }
-    @keyframes pulse{
-      0%,100%{ transform: scale(1); opacity: .9; }
-      50%{ transform: scale(1.2); opacity: .6; }
-    }
-    .hTitle{
-      font-size: clamp(34px, 5vw, 56px);
+    .heroLeft{animation: floatIn .8s ease both}
+    .heroTitle{
+      margin:18px 0 14px;
+      font-weight:950;
+      font-size: clamp(36px, 5.2vw, 60px);
       line-height: 1.02;
-      letter-spacing: -1.6px;
-      text-transform: uppercase;
-      font-weight: 900;
-      margin-bottom: 14px;
+      letter-spacing: -2px;
+      color:#fff;
     }
-    .hTitle span{ color: var(--neon); }
-    .hSub{
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.65;
-      max-width: 54ch;
-      margin-bottom: 18px;
+    .heroTitle .accent{color:var(--neon)}
+    .heroSub{
+      max-width: 46ch;
+      font-size:16px;
+      line-height:1.7;
+      color:var(--muted);
+      margin-bottom:26px;
     }
-    .heroCtas{ display:flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-
-    .stats{
+    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:28px}
+    .heroStats{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 18px;
+      gap:12px;
+      margin-top:18px;
     }
-    @media (max-width: 520px){ .stats{ grid-template-columns: 1fr; } }
     .stat{
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-      border: 1px solid var(--stroke);
-      border-radius: 16px;
-      padding: 14px 14px;
-      box-shadow: var(--shadow2);
-      transition: transform .18s ease, border-color .18s ease;
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:14px;
+      box-shadow: var(--shadowSoft);
+      transition:.25s ease;
     }
-    .stat:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,0.16); }
-    .stat b{
-      display:block;
-      font-size: 18px;
-      letter-spacing: -0.6px;
-    }
-    .stat small{ color: var(--muted2); font-weight: 700; }
-
-    /* ---------- Featured Slider (fade-left) ---------- */
-    .sliderWrap{
-      border: 1px solid var(--stroke);
-      border-radius: 22px;
-      overflow:hidden;
+    .stat:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.25)}
+    .stat b{display:block; font-size:18px; color:#fff}
+    .stat span{font-size:12px; color:var(--muted2)}
+    .heroCard{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
       box-shadow: var(--shadow);
-      background: rgba(255,255,255,0.02);
-    }
-    .slider{
-      position: relative;
-      min-height: 360px;
-      background: #000;
-    }
-    @media (max-width: 980px){ .slider{ min-height: 310px; } }
-    @media (max-width: 520px){ .slider{ min-height: 280px; } }
-
-    .slide{
-      position:absolute; inset:0;
-      opacity: 0;
-      transform: translateX(18px);
-      transition: opacity .55s ease, transform .55s ease;
-      will-change: opacity, transform;
-    }
-    .slide.active{
-      opacity: 1;
-      transform: translateX(0px);
-    }
-    .slide.exitLeft{
-      opacity: 0;
-      transform: translateX(-18px);
-    }
-
-    .slideBg{
-      position:absolute; inset:0;
-      background: #000;
       overflow:hidden;
+      position:relative;
+      isolation:isolate;
+      animation: fadeLeft .8s ease both;
     }
-    .slideBg img{
-      width:100%; height:100%;
-      object-fit: cover;
-      display:block;
-      transform: scale(1.04);
-      filter: saturate(1.02) contrast(1.02);
-    }
-
-    /* text readability overlays (KeyRush style) */
-    .overlay{
-      position:absolute; inset:0;
-      background:
-        linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.45) 45%, rgba(0,0,0,.25) 70%, rgba(0,0,0,.55) 100%),
-        linear-gradient(180deg, rgba(0,0,0,.20) 0%, rgba(0,0,0,.55) 100%);
+    .heroCard::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(700px 240px at 20% 10%, rgba(0,255,65,.16), transparent 60%);
       pointer-events:none;
-    }
-    .slideContent{
-      position:absolute;
-      left: 22px; right: 22px;
-      bottom: 18px;
-      display:flex;
-      align-items:flex-end;
-      justify-content: space-between;
-      gap: 18px;
-    }
-    @media (max-width: 760px){
-      .slideContent{ flex-direction: column; align-items:flex-start; }
-    }
-
-    .chips{ display:flex; gap: 8px; flex-wrap: wrap; }
-    .chip{
-      display:inline-flex; align-items:center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.35);
-      color: rgba(255,255,255,0.88);
-      font-weight: 800;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      backdrop-filter: blur(8px);
-      text-shadow: 0 2px 10px rgba(0,0,0,0.85);
-    }
-    .chip.green{
-      border-color: rgba(0,255,65,0.35);
-      color: rgba(0,255,65,0.95);
-      background: rgba(0,255,65,0.08);
-    }
-
-    .slideTitle{
-      font-size: clamp(28px, 3.6vw, 44px);
-      font-weight: 900;
-      letter-spacing: -1.2px;
-      text-transform: uppercase;
-      color: #fff;
-      line-height: 1.05;
-      text-shadow: 0 10px 28px rgba(0,0,0,0.90);
-    }
-    .slideDesc{
-      margin-top: 8px;
-      color: rgba(255,255,255,0.74);
-      font-weight: 600;
-      text-shadow: 0 10px 28px rgba(0,0,0,0.90);
-      max-width: 56ch;
-      line-height: 1.55;
-    }
-    .slideActions{
-      display:flex; gap: 10px; flex-wrap: wrap;
-      align-items:center;
-    }
-
-    .navArrows{
-      position:absolute;
-      top: 50%;
-      left: 12px; right: 12px;
-      transform: translateY(-50%);
-      display:flex; justify-content: space-between;
-      pointer-events:none;
-    }
-    .arrow{
-      pointer-events:auto;
-      width: 42px; height: 42px;
-      border-radius: 999px;
-      display:grid; place-items:center;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.35);
-      backdrop-filter: blur(10px);
-      cursor:pointer;
-      transition: transform .18s ease, background .18s ease, border-color .18s ease;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.45);
-      user-select:none;
-    }
-    .arrow:hover{ transform: scale(1.04); border-color: rgba(255,255,255,0.22); background: rgba(0,0,0,0.48); }
-    .arrow svg{ width: 18px; height: 18px; fill: rgba(255,255,255,0.9); }
-
-    .dots{
-      position:absolute;
-      left: 0; right: 0;
-      bottom: 10px;
-      display:flex; gap: 8px;
-      justify-content:center;
-      align-items:center;
-      z-index: 2;
-    }
-    .dotBtn{
-      width: 7px; height: 7px; border-radius: 999px;
-      border: 0;
-      background: rgba(255,255,255,0.25);
-      cursor:pointer;
-      transition: transform .18s ease, background .18s ease;
-    }
-    .dotBtn.active{ background: rgba(0,255,65,0.95); transform: scale(1.4); }
-
-    /* ---------- Video section ---------- */
-    .videoGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      align-items: start;
-    }
-    @media (max-width: 980px){ .videoGrid{ grid-template-columns: 1fr; } }
-
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-    }
-    .cardPad{ padding: 18px; }
-    .secTitle{
-      font-size: 26px;
-      font-weight: 900;
-      letter-spacing: -0.8px;
-      text-transform: uppercase;
-      color:#fff;
-      margin-bottom: 10px;
-    }
-    .secSub{ color: var(--muted); line-height: 1.65; }
-
-    .videoBox{
-      position: relative;
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--stroke);
-      background: #000;
-      box-shadow: var(--shadow);
-    }
-    .videoBox video{
-      width: 100%;
-      height: auto;
-      display:block;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      background: #000;
-    }
-    .videoHint{
-      position:absolute;
-      left: 12px; bottom: 12px;
-      display:inline-flex; gap: 8px; align-items:center;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(0,0,0,0.40);
-      backdrop-filter: blur(10px);
-      color: rgba(255,255,255,0.86);
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .6px;
-      font-size: 12px;
-      text-shadow: 0 10px 28px rgba(0,0,0,0.90);
-    }
-
-    /* ---------- How it works ---------- */
-    .steps{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 14px;
-    }
-    @media (max-width: 860px){ .steps{ grid-template-columns: 1fr; } }
-    .step{
-      padding: 16px;
-      border-radius: 16px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,0.02);
-      transition: transform .18s ease, border-color .18s ease;
-    }
-    .step:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,0.16); }
-    .stepTop{
-      display:flex; align-items:center; gap: 10px; margin-bottom: 10px;
-    }
-    .stepNum{
-      width: 34px; height: 34px;
-      border-radius: 12px;
-      display:grid; place-items:center;
-      background: rgba(0,255,65,0.10);
-      border: 1px solid rgba(0,255,65,0.35);
-      color: rgba(0,255,65,0.95);
-      font-weight: 900;
-    }
-    .step h3{ font-size: 14px; font-weight: 900; letter-spacing: .2px; text-transform: uppercase; color:#fff; }
-    .step p{ margin-top: 8px; color: var(--muted); line-height: 1.6; font-weight: 600; }
-
-    /* ---------- Pricing (table-like) ---------- */
-    .pricingGrid{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 18px;
-      align-items: start;
-    }
-    @media (max-width: 980px){ .pricingGrid{ grid-template-columns: 1fr; } }
-
-    .compareTable{
-      width: 100%;
-      border-collapse: collapse;
-      overflow:hidden;
-      border-radius: var(--radius);
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,0.02);
-      box-shadow: var(--shadow2);
-    }
-    .compareTable th, .compareTable td{
-      padding: 14px 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      text-align: left;
-      font-weight: 700;
-      color: rgba(255,255,255,0.86);
-    }
-    .compareTable th{
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .7px;
-      color: rgba(255,255,255,0.75);
-      background: rgba(0,0,0,0.24);
-    }
-    .compareTable tr:last-child td{ border-bottom: none; }
-    .good{ color: rgba(0,255,65,.95) !important; font-weight: 900 !important; }
-    .bad{ color: rgba(255,80,80,.92) !important; font-weight: 900 !important; }
-
-    .planCard{
-      padding: 18px;
-      border-radius: var(--radius);
-      border: 1px solid rgba(0,255,65,0.35);
-      background:
-        radial-gradient(800px 240px at 50% 0%, rgba(0,255,65,0.12), rgba(0,0,0,0) 70%),
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.02));
-      box-shadow: 0 18px 60px rgba(0,255,65,0.08);
-      position: sticky;
-      top: 102px;
-    }
-    .planTop{
-      display:flex; justify-content: space-between; align-items:flex-start; gap: 12px;
-      margin-bottom: 12px;
-    }
-    .planTag{
-      display:inline-flex; align-items:center; gap: 8px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(0,255,65,0.35);
-      background: rgba(0,255,65,0.10);
-      color: rgba(0,255,65,0.95);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .6px;
-      font-size: 12px;
-    }
-    .priceLine{
-      margin-top: 8px;
-      display:flex; align-items:flex-end; gap: 10px;
-    }
-    .price{
-      font-size: 44px;
-      font-weight: 900;
-      letter-spacing: -1.8px;
-      color: rgba(0,255,65,0.95);
-      line-height: 1;
-    }
-    .price small{
-      font-size: 14px;
-      color: rgba(255,255,255,0.70);
-      font-weight: 800;
-      letter-spacing: 0px;
-    }
-    .bullets{
-      margin-top: 14px;
-      display:grid;
-      gap: 10px;
-    }
-    .bullet{
-      display:flex; gap: 10px; align-items:flex-start;
-      color: rgba(255,255,255,0.85);
-      font-weight: 700;
-    }
-    .check{
-      width: 18px; height: 18px;
-      border-radius: 6px;
-      background: rgba(0,255,65,0.12);
-      border: 1px solid rgba(0,255,65,0.35);
-      display:grid; place-items:center;
-      flex: 0 0 auto;
-      margin-top: 2px;
-    }
-    .check svg{ width: 12px; height: 12px; fill: rgba(0,255,65,0.95); }
-
-    .buyBtn{
-      width: 100%;
-      margin-top: 14px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      font-weight: 900;
-      letter-spacing: .8px;
-      text-transform: uppercase;
-      border: 0;
-      cursor:pointer;
-      background: linear-gradient(180deg, rgba(0,255,65,.95), rgba(0,255,65,.80));
-      color:#000;
-      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
-      box-shadow: 0 18px 60px rgba(0,255,65,0.12);
-    }
-    .buyBtn:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 22px 70px rgba(0,255,65,0.16);
-      filter: brightness(1.02);
-    }
-    .buyBtn:active{ transform: translateY(0px) scale(.99); }
-    .safeNote{
-      margin-top: 10px;
-      color: rgba(255,255,255,0.55);
-      font-weight: 700;
-      font-size: 12px;
-      text-align:center;
-    }
-
-    /* ---------- Social proof ---------- */
-    .proofGrid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 12px;
-    }
-    @media (max-width: 980px){ .proofGrid{ grid-template-columns: 1fr; } }
-    .review{
-      padding: 16px;
-      border-radius: 16px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,0.02);
-      transition: transform .18s ease, border-color .18s ease;
-    }
-    .review:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,0.16); }
-    .rTop{ display:flex; align-items:center; gap: 10px; }
-    .avatar{
-      width: 34px; height: 34px; border-radius: 12px;
-      display:grid; place-items:center;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      font-weight: 900;
-      color:#fff;
-    }
-    .stars{ color: #ffd166; font-weight: 900; letter-spacing: .5px; }
-    .rName{ font-weight: 900; color:#fff; }
-    .rText{ margin-top: 10px; color: var(--muted); line-height: 1.6; font-weight: 600; }
-
-    /* ---------- FAQ ---------- */
-    .faq{
-      border-radius: var(--radius);
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,0.02);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-    }
-    .faqItem{
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .faqItem:last-child{ border-bottom: none; }
-    .faqBtn{
-      width: 100%;
-      text-align:left;
-      background: transparent;
-      border:0;
-      padding: 16px 16px;
-      cursor:pointer;
-      display:flex; justify-content: space-between; align-items:center;
-      gap: 12px;
-      color:#fff;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      font-size: 13px;
-    }
-    .chev{
-      width: 26px; height: 26px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.20);
-      display:grid; place-items:center;
-      transition: transform .22s ease, border-color .22s ease;
-      flex: 0 0 auto;
-    }
-    .faqItem.open .chev{
-      transform: rotate(180deg);
-      border-color: rgba(0,255,65,0.35);
-    }
-    .chev svg{ width: 16px; height: 16px; fill: rgba(255,255,255,0.86); }
-    .faqBody{
-      max-height: 0;
-      overflow:hidden;
-      transition: max-height .28s ease;
-    }
-    .faqBody p{
-      padding: 0 16px 16px;
-      color: var(--muted);
-      line-height: 1.7;
-      font-weight: 600;
-    }
-
-    /* ---------- Catalog (KeyRush-like / collapsed) ---------- */
-    .catalogHeader{
-      display:flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-    .catalogShell{
-      display:none;
-      margin-top: 14px;
-    }
-    .catalogShell.open{ display:block; }
-
-    .storeLayout{
-      display:grid;
-      grid-template-columns: 280px 1fr;
-      gap: 14px;
-      align-items: start;
-    }
-    @media (max-width: 980px){
-      .storeLayout{ grid-template-columns: 1fr; }
-    }
-
-    .sidebar{
-      position: sticky;
-      top: 102px;
-      border-radius: var(--radius);
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,0.02);
-      box-shadow: var(--shadow2);
-      padding: 12px;
-    }
-    .sideTitle{
-      display:flex; justify-content: space-between; align-items:center;
-      margin-bottom: 10px;
-    }
-    .sideTitle b{
-      font-size: 12px;
-      letter-spacing: .7px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.82);
-    }
-    .countPill{
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.20);
-      color: rgba(255,255,255,0.82);
-      font-weight: 900;
-    }
-
-    .searchBox{
-      display:flex; gap: 10px;
-      margin-bottom: 12px;
-    }
-    .searchBox input{
-      width: 100%;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.25);
-      color:#fff;
-      font-weight: 800;
-      letter-spacing: .4px;
-      text-transform: uppercase;
-      outline:none;
-      transition: border-color .18s ease, box-shadow .18s ease;
-    }
-    .searchBox input:focus{
-      border-color: rgba(0,255,65,0.40);
-      box-shadow: 0 0 0 4px rgba(0,255,65,0.08);
-    }
-
-    .cats{
-      display:flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      max-height: 280px;
-      overflow:auto;
-      padding-right: 4px;
-    }
-    .cats::-webkit-scrollbar{ height: 10px; width: 10px; }
-    .cats::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.10); border-radius: 999px; }
-    .catBtn{
-      cursor:pointer;
-      user-select:none;
-      padding: 8px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.22);
-      color: rgba(255,255,255,0.82);
-      font-weight: 900;
-      font-size: 12px;
-      letter-spacing: .2px;
-      transition: transform .16s ease, border-color .16s ease, background .16s ease;
-      display:inline-flex; gap: 8px; align-items:center;
-      white-space: nowrap;
-    }
-    .catBtn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,0.20); }
-    .catBtn.active{
-      border-color: rgba(0,255,65,0.40);
-      background: rgba(0,255,65,0.10);
-      color: rgba(0,255,65,0.95);
-    }
-    .catBtn small{ opacity:.85; font-weight: 900; }
-
-    .storeMain{
-      border-radius: var(--radius);
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,0.02);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-    }
-
-    .storeHero{
-      position: relative;
-      padding: 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.15);
-    }
-    .storeHeroBanner{
-      border-radius: 18px;
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,0.10);
+      z-index:0;
+    }
+    .heroCardMedia{
+      position:relative;
+      height: 320px;
       background:#000;
-      position: relative;
-      height: clamp(180px, 22vw, 300px); /* automatic fix for big screens */
-      max-height: 320px;
+      overflow:hidden;
     }
-    .storeHeroBanner img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      display:block;
+    .heroCardMedia img{
+      width:100%; height:100%;
+      object-fit:cover;
+      filter:saturate(1.05) contrast(1.05);
       transform: scale(1.03);
     }
-    .storeHeroOverlay{
+    .heroCardOverlay{
       position:absolute; inset:0;
       background:
-        linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.30) 55%, rgba(0,0,0,.55) 100%),
-        linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,.55) 100%);
+        radial-gradient(800px 320px at 78% 45%, rgba(0,0,0,.15), rgba(0,0,0,.78)),
+        linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.20));
+    }
+    .heroCardInfo{
+      position:absolute; left:18px; right:18px; bottom:18px;
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+    }
+    .heroCardText{
+      max-width: 60%;
+    }
+    .badgeRow{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+      background: rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.12);
+      color:#fff;
+      text-shadow: 0 10px 30px rgba(0,0,0,.9);
+      backdrop-filter: blur(10px);
+    }
+    .chip.green{
+      border-color: rgba(0,255,65,.35);
+      box-shadow: 0 0 0 1px rgba(0,255,65,.10) inset;
+    }
+    .heroCardName{
+      margin:0;
+      font-weight:950;
+      font-size: 26px;
+      color:#fff;
+      letter-spacing:-1px;
+      text-transform:uppercase;
+      text-shadow: 0 10px 40px rgba(0,0,0,.95);
+    }
+    .heroCardDesc{
+      margin-top:6px;
+      color: rgba(255,255,255,.80);
+      font-size:13px;
+      text-shadow: 0 10px 30px rgba(0,0,0,.9);
+    }
+    .heroCardBtns{display:flex; gap:10px}
+    .btn.small{padding:10px 14px; border-radius:12px; font-size:12px}
+    .btn.ghost{background: rgba(0,0,0,.32)}
+
+    /* ---------- Infinite AAA Marquee ---------- */
+    .marqueeWrap{
+      margin-top:72px;
+      padding-top:22px;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .marqueeTitle{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; margin-bottom:14px;
+      color:var(--muted2);
+      font-weight:800; text-transform:uppercase; letter-spacing:1px; font-size:12px;
+    }
+    .marquee{
+      width:100%;
+      overflow:hidden;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      box-shadow: var(--shadowSoft);
+      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+    .marqueeTrack{
+      display:flex; gap:14px;
+      width:max-content;
+      padding:14px;
+      animation: marquee 42s linear infinite;
+    }
+    .marquee:hover .marqueeTrack{animation-play-state: paused}
+    .miniCard{
+      width: 260px;
+      border-radius: 16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background:#0b0b0b;
+      flex: 0 0 auto;
+      position:relative;
+      transform: translateZ(0);
+      transition:.25s ease;
+    }
+    .miniCard:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.25)}
+    .miniCard img{
+      width:100%;
+      aspect-ratio: 16 / 9;
+      object-fit:cover;
+      display:block;
+      transform:scale(1.03);
+      transition:.4s ease;
+      filter:saturate(1.05);
+    }
+    .miniCard:hover img{transform:scale(1.07)}
+    .miniOverlay{
+      position:absolute; inset:0;
+      background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,.05));
       pointer-events:none;
     }
-    .storeHeroText{
-      position:absolute; left: 16px; bottom: 14px; right: 16px;
-      display:flex; justify-content: space-between; align-items:flex-end;
-      gap: 12px;
-    }
-    @media (max-width: 760px){
-      .storeHeroText{ flex-direction: column; align-items:flex-start; }
-    }
-
-    .storeTitle{
-      font-weight: 900;
-      letter-spacing: -1px;
-      text-transform: uppercase;
-      color:#fff;
-      font-size: clamp(18px, 2.8vw, 34px);
-      text-shadow: 0 10px 28px rgba(0,0,0,0.90);
-      line-height: 1.05;
-    }
-    .storeSmall{
-      margin-top: 6px;
-      color: rgba(255,255,255,0.76);
-      font-weight: 700;
-      text-shadow: 0 10px 28px rgba(0,0,0,0.90);
+    .miniLabel{
+      position:absolute; left:12px; right:12px; bottom:10px;
+      color:#fff; font-weight:900; font-size:12px;
+      letter-spacing:.4px; text-transform:uppercase;
+      text-shadow: 0 10px 30px rgba(0,0,0,.95);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
 
-    .rail{
-      padding: 12px 14px;
-      display:flex;
-      gap: 10px;
-      overflow:auto;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      background: rgba(0,0,0,0.10);
+    /* ---------- Demo (video) ---------- */
+    .demoGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:18px;
+      align-items:stretch;
     }
-    .rail::-webkit-scrollbar{ height: 10px; }
-    .rail::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.10); border-radius: 999px; }
-
-    .railCard{
-      flex: 0 0 auto;
-      width: 210px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.02);
+    .card{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadowSoft);
       overflow:hidden;
-      cursor:pointer;
-      transition: transform .18s ease, border-color .18s ease;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+      position:relative;
     }
-    .railCard:hover{ transform: translateY(-2px); border-color: rgba(0,255,65,0.35); }
-    .railCard img{
-      width:100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      display:block;
+    .card.pad{padding:24px}
+    .cardTitle{font-size:22px; font-weight:950; margin:0 0 10px; color:#fff; letter-spacing:-.8px; text-transform:uppercase}
+    .cardText{color:var(--muted); line-height:1.7; font-size:14px}
+    .howGrid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .how{
+      background: rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      padding:14px;
+      transition:.25s ease;
+    }
+    .how:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.22)}
+    .how .k{font-weight:950; color:#fff; letter-spacing:-.4px}
+    .how .s{color:var(--muted2); font-size:12px; margin-top:4px; line-height:1.5}
+
+    .videoWrap{
+      height:100%;
+      min-height: 340px;
       background:#000;
     }
-    .railCard .rname{
-      padding: 10px 10px;
-      font-weight: 900;
-      font-size: 12px;
-      letter-spacing: .3px;
-      text-transform: uppercase;
-      color:#fff;
-      line-height: 1.2;
+    .videoWrap iframe,
+    .videoWrap video{
+      width:100%;
+      height:100%;
+      display:block;
+      border:0;
     }
+    .videoOverlay{
+      position:absolute; inset:0;
+      background: radial-gradient(900px 360px at 30% 20%, rgba(0,255,65,.10), transparent 55%),
+                  linear-gradient(to top, rgba(0,0,0,.75), transparent 55%);
+      pointer-events:none;
+    }
+
+    /* ---------- Catalog Preview (KeyRush-like) ---------- */
+    .catalogHeader{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:18px;
+      margin-bottom:22px;
+    }
+    .catalogHeader h2{
+      margin:0;
+      font-size:28px;
+      font-weight:950;
+      letter-spacing:-1px;
+      color:#fff;
+      text-transform:uppercase;
+    }
+    .catalogHeader p{margin:8px 0 0; color:var(--muted); max-width:52ch; line-height:1.6}
+    .catalogActions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+
+    .catalogCollapsed{
+      display:none;
+      margin-top:20px;
+      animation: floatIn .5s ease both;
+    }
+    .catalogCollapsed.show{display:block}
+
+    .catalogShell{
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap:16px;
+      align-items:start;
+    }
+    .side{
+      position:sticky; top:86px;
+      padding:16px;
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadowSoft);
+    }
+    .searchBox{
+      display:flex; gap:10px;
+    }
+    .input{
+      width:100%;
+      padding:14px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.28);
+      color:#fff;
+      outline:none;
+      font-weight:800;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      transition:.2s ease;
+    }
+    .input:focus{border-color: rgba(0,255,65,.45); box-shadow: 0 0 0 4px rgba(0,255,65,.10)}
+    .sideMeta{
+      margin-top:12px;
+      color:var(--muted2);
+      font-size:12px;
+      line-height:1.6;
+    }
+    .cats{
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-top:16px;
+    }
+    .cat{
+      cursor:pointer; user-select:none;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      font-weight:900;
+      font-size:12px;
+      letter-spacing:.4px;
+      color:#d7d7d7;
+      transition:.2s ease;
+      text-transform:uppercase;
+    }
+    .cat:hover{transform: translateY(-1px); border-color: rgba(0,255,65,.25)}
+    .cat.active{background: rgba(0,255,65,.90); color:#000; border-color: rgba(0,255,65,.55)}
+    .cat small{opacity:.85; font-weight:900}
 
     .grid{
-      padding: 14px;
       display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap:14px;
     }
-    .gCard{
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.02);
+    .game{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadowSoft);
       overflow:hidden;
       cursor:pointer;
-      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+      transform: translateZ(0);
+      transition:.25s ease;
     }
-    .gCard:hover{
-      transform: translateY(-2px);
-      border-color: rgba(0,255,65,0.35);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.45);
-    }
-    .gCard img{
-      width:100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      display:block;
+    .game:hover{transform: translateY(-4px); border-color: rgba(0,255,65,.22)}
+    .gameImg{
+      aspect-ratio:16/9;
       background:#000;
-      transform: scale(1.02);
-      transition: transform .35s ease;
+      position:relative;
+      overflow:hidden;
     }
-    .gCard:hover img{ transform: scale(1.06); }
-    .gInfo{
-      padding: 10px 10px 12px;
-      display:flex;
-      flex-direction: column;
-      gap: 8px;
+    .gameImg img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      transform: scale(1.03);
+      transition:.45s ease;
     }
-    .gName{
-      font-weight: 900;
+    .game:hover .gameImg img{transform: scale(1.07)}
+    .gameGrad{
+      position:absolute; inset:0;
+      background: linear-gradient(to top, rgba(0,0,0,.86), rgba(0,0,0,.05));
+      pointer-events:none;
+    }
+    .gameInfo{
+      padding:12px 12px 14px;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .gameName{
+      font-weight:950;
+      font-size:12px;
+      letter-spacing:.4px;
       color:#fff;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .3px;
-      line-height: 1.2;
-      min-height: 30px;
+      text-transform:uppercase;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-    .gTags{
-      display:flex; gap: 6px; flex-wrap: wrap;
-    }
+    .tagRow{display:flex; gap:8px; flex-wrap:wrap}
     .tag{
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: .6px;
-      text-transform: uppercase;
-      padding: 5px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.22);
-      color: rgba(255,255,255,0.82);
+      font-size:10px;
+      font-weight:950;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      padding:7px 9px;
+      border-radius:999px;
+      background: rgba(0,0,0,.30);
+      border:1px solid rgba(255,255,255,.10);
+      color:#fff;
+      text-shadow: 0 10px 30px rgba(0,0,0,.95);
     }
-    .tag.green{
-      border-color: rgba(0,255,65,0.35);
-      background: rgba(0,255,65,0.10);
-      color: rgba(0,255,65,0.95);
+    .tag.ok{border-color: rgba(0,255,65,.30)}
+    .gameCta{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
     }
+    .tiny{
+      font-size:11px; color:var(--muted2);
+      letter-spacing:.4px;
+    }
+    .ghostBtn{
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+      color:#fff;
+      font-weight:950;
+      text-transform:uppercase;
+      font-size:11px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .ghostBtn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
+    .greenBtn{
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(0,255,65,.45);
+      background: rgba(0,255,65,.90);
+      color:#000;
+      font-weight:950;
+      text-transform:uppercase;
+      font-size:11px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .greenBtn:hover{transform: translateY(-1px); filter: brightness(1.03)}
 
-    .moreRow{
-      padding: 0 14px 14px;
-      display:flex; justify-content:center;
+    /* ---------- Pricing Table (KeyRush-like) ---------- */
+    .pricingWrap{
+      margin-top:20px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+      align-items:stretch;
     }
+    .plan{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadowSoft);
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+      transition:.25s ease;
+    }
+    .plan:hover{transform: translateY(-4px); border-color: rgba(0,255,65,.22)}
+    .plan.featured{
+      border-color: rgba(0,255,65,.45);
+      box-shadow: 0 18px 60px rgba(0,255,65,.10);
+    }
+    .planTop{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+      margin-bottom:12px;
+    }
+    .planName{
+      font-weight:950; font-size:18px; letter-spacing:-.6px; color:#fff; text-transform:uppercase;
+    }
+    .planBadge{
+      font-size:11px; font-weight:950; letter-spacing:.5px; text-transform:uppercase;
+      padding:8px 10px; border-radius:999px;
+      background: rgba(0,255,65,.14);
+      border:1px solid rgba(0,255,65,.35);
+      color: var(--neon);
+    }
+    .priceRow{
+      display:flex; align-items:baseline; gap:10px; margin:8px 0 12px;
+    }
+    .priceNow{
+      font-weight:950;
+      font-size:44px;
+      letter-spacing:-2px;
+      color:var(--neon);
+    }
+    .priceSmall{color:var(--muted2); font-weight:800}
+    .table{
+      width:100%;
+      border-collapse: collapse;
+      margin-top:10px;
+      overflow:hidden;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
+    }
+    .table td{
+      padding:14px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      color:#d9d9d9;
+      font-weight:700;
+      font-size:13px;
+    }
+    .table tr:last-child td{border-bottom:0}
+    .table td:last-child{text-align:right; color:#fff}
+    .table .bad{color:#ff6b6b}
+    .table .good{color:var(--neon)}
+    .buyRow{margin-top:14px; display:flex; gap:10px; align-items:center}
+    .buyRow .btn{width:100%}
+    .secure{margin-top:10px; color:var(--muted2); font-size:12px; line-height:1.5}
+
+    /* ---------- Social + FAQ ---------- */
+    .socialGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      margin-top:20px;
+    }
+    .quote{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadowSoft);
+      padding:18px;
+      transition:.25s ease;
+    }
+    .quote:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.20)}
+    .who{
+      display:flex; align-items:center; gap:12px; margin-bottom:12px;
+    }
+    .av{
+      width:38px; height:38px; border-radius:50%;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      display:grid; place-items:center;
+      font-weight:950; color:#fff;
+    }
+    .stars{color:#ffd34d; font-weight:950; letter-spacing:1px; font-size:12px}
+    .txt{color:var(--muted); line-height:1.65; font-size:13px; font-style:italic}
+
+    .faq{
+      margin-top:18px;
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadowSoft);
+      overflow:hidden;
+    }
+    .qa{
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+    .qa:first-child{border-top:0}
+    .q{
+      width:100%;
+      background:transparent;
+      border:0;
+      padding:16px 18px;
+      color:#fff;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      font-weight:900; letter-spacing:.4px; text-transform:uppercase;
+    }
+    .chev{
+      width:26px; height:26px; border-radius:8px;
+      border:1px solid rgba(255,255,255,.10);
+      display:grid; place-items:center;
+      color:var(--neon);
+      transition:.25s ease;
+      background: rgba(0,0,0,.20);
+    }
+    .a{
+      max-height:0;
+      overflow:hidden;
+      transition: max-height .35s ease;
+      padding:0 18px;
+      color:var(--muted);
+      line-height:1.65;
+      font-size:14px;
+    }
+    .qa.open .a{max-height:180px; padding-bottom:16px}
+    .qa.open .chev{transform: rotate(45deg)}
+
+    /* ---------- Modal (game details) ---------- */
+    .backdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.68);
+      backdrop-filter: blur(10px);
+      display:none;
+      z-index:2000;
+      padding:18px;
+    }
+    .backdrop.show{display:grid; place-items:center}
+    .modal{
+      width:min(980px, 100%);
+      border-radius: 26px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(10,10,10,.92);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      transform: translateY(10px);
+      opacity:0;
+      transition:.25s ease;
+    }
+    .backdrop.show .modal{transform: translateY(0); opacity:1}
+    .modalTop{
+      position:relative;
+      height: 320px;
+      background:#000;
+    }
+    .modalTop img{
+      width:100%; height:100%;
+      object-fit:cover;
+      transform: scale(1.02);
+      filter:saturate(1.05) contrast(1.05);
+    }
+    .modalTop::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(900px 380px at 20% 30%, rgba(0,255,65,.10), transparent 60%),
+                  linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.12));
+    }
+    .modalBody{
+      padding:18px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:start;
+    }
+    .modalTitle{
+      font-weight:950;
+      font-size:22px;
+      letter-spacing:-.8px;
+      text-transform:uppercase;
+      color:#fff;
+      margin:0 0 8px;
+      text-shadow: 0 10px 30px rgba(0,0,0,.9);
+    }
+    .modalDesc{color:var(--muted); line-height:1.7; font-size:14px; margin:0}
+    .modalClose{
+      position:absolute; top:14px; right:14px;
+      width:42px; height:42px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+      color:#fff; cursor:pointer;
+      display:grid; place-items:center;
+      transition:.2s ease;
+      z-index:5;
+    }
+    .modalClose:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
+    .modalSide{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      padding:14px;
+    }
+    .modalSide .row{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 0;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      color:#d9d9d9;
+      font-weight:800;
+      font-size:13px;
+    }
+    .modalSide .row:last-child{border-bottom:0}
+    .modalSide .row span{color:var(--muted2); font-weight:800}
+    .modalSide .modalBtns{display:flex; gap:10px; margin-top:12px}
+    .modalSide .modalBtns .btn{width:100%}
 
     /* ---------- Toasts ---------- */
-    .toastWrap{
-      position: fixed;
-      right: 14px;
-      bottom: 14px;
-      z-index: 1500;
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
+    .toasts{
+      position:fixed; right:18px; bottom:18px; z-index:2500;
+      display:flex; flex-direction:column; gap:10px;
       pointer-events:none;
     }
     .toast{
-      pointer-events:none;
-      width: min(340px, calc(100vw - 28px));
+      width:min(340px, calc(100vw - 36px));
       border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(12px);
-      box-shadow: var(--shadow2);
-      padding: 12px 12px;
-      display:flex;
-      gap: 10px;
-      opacity: 0;
-      transform: translateY(10px);
-      animation: toastIn .35s ease forwards;
-    }
-    @keyframes toastIn{
-      to{ opacity: 1; transform: translateY(0px); }
-    }
-    .ticon{
-      width: 34px; height: 34px;
-      border-radius: 14px;
-      display:grid; place-items:center;
-      border: 1px solid rgba(0,255,65,0.35);
-      background: rgba(0,255,65,0.10);
-      flex: 0 0 auto;
-    }
-    .ticon svg{ width: 16px; height: 16px; fill: rgba(0,255,65,0.95); }
-    .ttext b{ display:block; color:#fff; font-weight: 900; }
-    .ttext small{ display:block; margin-top: 4px; color: rgba(255,255,255,0.70); font-weight: 700; line-height: 1.3; }
-
-    /* ---------- Modal (game details) ---------- */
-    .modalBack{
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 16px;
-      background: rgba(0,0,0,0.70);
-      backdrop-filter: blur(10px);
-    }
-    .modalBack.open{ display:flex; }
-    .modal{
-      width: min(980px, 100%);
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(10,10,10,0.92);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      transform: translateY(10px);
-      opacity: 0;
-      animation: modalIn .25s ease forwards;
-    }
-    @keyframes modalIn{
-      to{ opacity: 1; transform: translateY(0px); }
-    }
-    .modalHero{
-      position: relative;
-      height: clamp(220px, 28vw, 360px);
-      background:#000;
-    }
-    .modalHero img{
-      width:100%; height:100%;
-      object-fit: cover;
-      display:block;
-      transform: scale(1.03);
-    }
-    .modalOverlay{
-      position:absolute; inset:0;
-      background:
-        linear-gradient(90deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.30) 55%, rgba(0,0,0,.55) 100%),
-        linear-gradient(180deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,.60) 100%);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(12,12,12,.92);
+      box-shadow: var(--shadowSoft);
+      padding:12px 12px;
+      display:flex; gap:10px; align-items:flex-start;
+      animation: floatIn .35s ease both;
       pointer-events:none;
     }
-    .modalHead{
-      position:absolute;
-      left: 16px; right: 16px; bottom: 14px;
-      display:flex; align-items:flex-end; justify-content: space-between;
-      gap: 12px;
-    }
-    @media (max-width: 720px){
-      .modalHead{ flex-direction: column; align-items:flex-start; }
-    }
-    .modalTitle{
-      font-size: clamp(22px, 3.2vw, 40px);
-      font-weight: 900;
-      letter-spacing: -1px;
-      text-transform: uppercase;
-      color:#fff;
-      text-shadow: 0 10px 28px rgba(0,0,0,0.90);
-      line-height: 1.05;
-    }
-    .modalMeta{
-      margin-top: 6px;
-      color: rgba(255,255,255,0.76);
-      font-weight: 700;
-      text-shadow: 0 10px 28px rgba(0,0,0,0.90);
-    }
-    .modalBody{
-      padding: 14px 16px 16px;
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 12px;
-      align-items: start;
-    }
-    @media (max-width: 980px){ .modalBody{ grid-template-columns: 1fr; } }
-
-    .modalCard{
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.02);
-      padding: 14px;
-    }
-    .modalCard h4{
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .7px;
-      color: rgba(255,255,255,0.80);
-      margin-bottom: 10px;
-      font-weight: 900;
-    }
-    .modalCard p{
-      color: var(--muted);
-      line-height: 1.7;
-      font-weight: 600;
-    }
-
-    .modalClose{
-      position:absolute;
-      top: 12px; right: 12px;
-      width: 40px; height: 40px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.35);
-      backdrop-filter: blur(10px);
-      cursor:pointer;
+    .toast .ic{
+      width:34px; height:34px; border-radius:12px;
+      background: rgba(0,255,65,.12);
+      border:1px solid rgba(0,255,65,.20);
+      color:var(--neon);
       display:grid; place-items:center;
-      transition: transform .18s ease, background .18s ease, border-color .18s ease;
-      z-index: 3;
+      flex:0 0 auto;
     }
-    .modalClose:hover{ transform: scale(1.04); border-color: rgba(255,255,255,0.22); background: rgba(0,0,0,0.48); }
-    .modalClose svg{ width: 18px; height: 18px; fill: rgba(255,255,255,0.9); }
+    .toast b{color:#fff}
+    .toast p{margin:2px 0 0; color:var(--muted2); font-size:12px; line-height:1.45}
 
     /* ---------- Footer ---------- */
     footer{
-      padding: 34px 0 50px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.45);
-      font-weight: 700;
-      font-size: 12px;
+      padding:44px 0;
+      border-top:1px solid rgba(255,255,255,.06);
+      color:#606060;
+      font-size:12px;
     }
 
-    /* reduce motion */
-    @media (prefers-reduced-motion: reduce){
-      .dot{ animation: none; }
-      .slide, .reveal{ transition: none; }
+    /* ---------- Responsive ---------- */
+    @media (max-width: 980px){
+      .heroGrid{grid-template-columns: 1fr; gap:18px}
+      .heroCardMedia{height: 300px}
+      .heroCardText{max-width: 100%}
+      .heroStats{grid-template-columns: 1fr; }
+      .demoGrid{grid-template-columns: 1fr}
+      .howGrid{grid-template-columns: 1fr}
+      .catalogShell{grid-template-columns: 1fr}
+      .side{position:relative; top:auto}
+      .pricingWrap{grid-template-columns: 1fr}
+      .socialGrid{grid-template-columns: 1fr}
+      .modalBody{grid-template-columns: 1fr}
     }
   </style>
 </head>
 
 <body>
-  <div class="spacer"></div>
 
-  <header>
-    <div class="hwrap">
-      <a class="brand" href="#topo" aria-label="Ir para o topo">
-        <div class="logo">OVER<span>ISE</span></div>
-        <div class="badge">● ONLINE</div>
-      </a>
-
-      <nav class="nav">
-        <a class="btn" href="#demo">Demonstração</a>
-        <a class="btn" href="#catalogo">Catálogo</a>
-        <a class="btn primary" href="#planos">Ver planos</a>
-      </nav>
+<header>
+  <div class="container nav">
+    <div class="logo">OVER<span>ISE</span></div>
+    <div class="navlinks">
+      <a href="#como">Como funciona</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#planos">Planos</a>
+      <a href="#faq">FAQ</a>
     </div>
-  </header>
+    <div class="nav-cta">
+      <a class="btn" href="#catalogo">Ver catálogo</a>
+      <a class="btn primary" href="#planos">Comprar</a>
+    </div>
+  </div>
+</header>
 
-  <!-- HERO -->
-  <section id="topo" class="hero section">
-    <div class="container heroGrid">
-      <div class="reveal">
-        <div class="kicker"><span class="dot"></span> SISTEMA ATIVO • EXPERIÊNCIA PREMIUM</div>
-        <h1 class="hTitle">Sua biblioteca,<br><span>sem complicação.</span></h1>
-        <p class="hSub">
-          Uma experiência rápida e elegante para pesquisar, organizar e instalar sua coleção com uma interface moderna.
-          <br/>Use a busca inteligente para encontrar títulos em segundos.
-        </p>
+<!-- HERO -->
+<section class="section top hero">
+  <div class="container heroGrid">
+    <div class="heroLeft">
+      <div class="pill"><span class="dot"></span> Sistema ativo • experiência premium</div>
+      <h1 class="heroTitle">Sua biblioteca, <span class="accent">sem complicação</span>.</h1>
+      <p class="heroSub">
+        Uma experiência rápida e elegante para pesquisar, organizar e instalar sua coleção com uma interface moderna.
+        Use a busca inteligente para encontrar títulos em segundos.
+      </p>
 
-        <div class="heroCtas">
-          <a class="btn primary" href="#planos">Quero começar</a>
-          <button class="btn" id="btnOpenCatalog">Ver catálogo</button>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <b id="statCount">—</b>
-            <small>Títulos no catálogo</small>
-          </div>
-          <div class="stat">
-            <b>Carregamento rápido</b>
-            <small>Interface otimizada</small>
-          </div>
-          <div class="stat">
-            <b>Busca inteligente</b>
-            <small>Atalhos (GTA, FIFA…)</small>
-          </div>
-        </div>
+      <div class="heroActions">
+        <a class="btn primary" href="#planos">Quero começar</a>
+        <a class="btn" href="#catalogo">Ver catálogo</a>
       </div>
 
-      <!-- Featured Slider -->
-      <div class="reveal">
-        <div class="sliderWrap">
-          <div class="slider" id="featuredSlider" aria-label="Destaques">
-            <!-- slides via JS -->
-            <div class="navArrows" aria-hidden="false">
-              <div class="arrow" id="prevSlide" title="Anterior" aria-label="Anterior">
-                <svg viewBox="0 0 24 24"><path d="M15.5 19.5 8 12l7.5-7.5 1.4 1.4L10.8 12l6.1 6.1z"/></svg>
-              </div>
-              <div class="arrow" id="nextSlide" title="Próximo" aria-label="Próximo">
-                <svg viewBox="0 0 24 24"><path d="M8.5 19.5 7.1 18.1 13.2 12 7.1 5.9 8.5 4.5 16 12z"/></svg>
-              </div>
-            </div>
-            <div class="dots" id="sliderDots"></div>
-          </div>
+      <div class="heroStats">
+        <div class="stat">
+          <b id="statTotal">741</b>
+          <span>Títulos no catálogo</span>
+        </div>
+        <div class="stat">
+          <b>Carregamento</b>
+          <span>Interface otimizada</span>
+        </div>
+        <div class="stat">
+          <b>Busca inteligente</b>
+          <span>Atalhos (GTA, FIFA…)</span>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- DEMO (VIDEO) -->
-  <section id="demo" class="section">
-    <div class="container">
-      <div class="videoGrid">
-        <div class="reveal">
-          <div class="secTitle">Demonstração</div>
-          <p class="secSub">
-            Assista a uma demonstração rápida da experiência: interface, busca, navegação e catálogo.
-            <br/><b style="color:#fff">Dica:</b> mantenha o vídeo curto (30–60s) e bem direto.
-          </p>
+    <!-- Hero Featured (auto, fade-left) -->
+    <div class="heroCard" id="featuredHeroCard">
+      <div class="heroCardMedia">
+        <img id="featuredImg" alt="Em destaque"/>
+        <div class="heroCardOverlay"></div>
 
-          <div class="card" style="margin-top:14px;">
-            <div class="cardPad">
-              <div class="secTitle" style="font-size:18px; margin-bottom:6px;">Como funciona</div>
-              <p class="secSub">Três passos simples para uma experiência sem fricção.</p>
+        <button class="modalClose" id="featPrev" aria-label="Anterior">‹</button>
+        <button class="modalClose" style="right:64px" id="featNext" aria-label="Próximo">›</button>
 
-              <div class="steps">
-                <div class="step">
-                  <div class="stepTop">
-                    <div class="stepNum">1</div>
-                    <h3>Escolha</h3>
-                  </div>
-                  <p>Encontre o título na vitrine ou use a busca inteligente.</p>
-                </div>
-                <div class="step">
-                  <div class="stepTop">
-                    <div class="stepNum">2</div>
-                    <h3>Configuração</h3>
-                  </div>
-                  <p>Siga o passo a passo de instalação e organização com clareza.</p>
-                </div>
-                <div class="step">
-                  <div class="stepTop">
-                    <div class="stepNum">3</div>
-                    <h3>Jogue</h3>
-                  </div>
-                  <p>Tenha sua biblioteca organizada e acessível com rapidez.</p>
-                </div>
-              </div>
-
-              <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-                <a class="btn primary" href="#planos">Ver planos</a>
-                <button class="btn" id="btnOpenCatalog2">Ver catálogo</button>
-              </div>
+        <div class="heroCardInfo">
+          <div class="heroCardText">
+            <div class="badgeRow">
+              <span class="chip green">Em destaque</span>
+              <span class="chip">Catálogo</span>
             </div>
+            <div class="heroCardName" id="featuredName">—</div>
+            <div class="heroCardDesc" id="featuredDesc">Navegue por categorias e veja detalhes no catálogo.</div>
           </div>
-        </div>
-
-        <div class="reveal">
-          <div class="videoBox">
-            <!-- TROQUE O SRC ABAIXO PELO SEU VÍDEO (mp4) -->
-            <video controls preload="metadata" poster="" aria-label="Vídeo de demonstração">
-              <source src="demo.mp4" type="video/mp4" />
-              Seu navegador não suporta vídeo.
-            </video>
-            <div class="videoHint">▶ Demonstração do produto</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING / PLANOS -->
-  <section id="planos" class="section">
-    <div class="container">
-      <div class="pricingGrid">
-        <div class="reveal">
-          <div class="secTitle">Planos e comparação</div>
-          <p class="secSub">
-            Uma tabela clara (estilo KeyRush) para facilitar a decisão.
-            Ajuste os textos conforme a sua oferta real.
-          </p>
-
-          <div style="margin-top:14px;">
-            <table class="compareTable" aria-label="Tabela comparativa">
-              <thead>
-                <tr>
-                  <th>Recursos</th>
-                  <th>Plano Básico</th>
-                  <th class="good">Plano Overise</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Interface premium + vitrine</td>
-                  <td class="bad">Limitado</td>
-                  <td class="good">Completo</td>
-                </tr>
-                <tr>
-                  <td>Busca inteligente + categorias</td>
-                  <td class="bad">Parcial</td>
-                  <td class="good">Completo</td>
-                </tr>
-                <tr>
-                  <td>Atualizações / melhorias</td>
-                  <td class="bad">Raras</td>
-                  <td class="good">Constantes</td>
-                </tr>
-                <tr>
-                  <td>Suporte e tutoriais</td>
-                  <td class="bad">Básico</td>
-                  <td class="good">Prioritário</td>
-                </tr>
-                <tr>
-                  <td>Acesso ao catálogo</td>
-                  <td class="bad">Parcial</td>
-                  <td class="good">Completo</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="card" style="margin-top:14px;">
-            <div class="cardPad">
-              <div class="secTitle" style="font-size:18px; margin-bottom:6px;">O que você recebe</div>
-              <p class="secSub">Uma experiência completa para gerenciar sua biblioteca com facilidade.</p>
-              <div class="bullets">
-                <div class="bullet">
-                  <div class="check"><svg viewBox="0 0 24 24"><path d="M9.2 16.6 4.9 12.3l1.4-1.4 2.9 2.9 8.6-8.6 1.4 1.4z"/></svg></div>
-                  Interface premium + busca rápida
-                </div>
-                <div class="bullet">
-                  <div class="check"><svg viewBox="0 0 24 24"><path d="M9.2 16.6 4.9 12.3l1.4-1.4 2.9 2.9 8.6-8.6 1.4 1.4z"/></svg></div>
-                  Catálogo com categorias e vitrine de destaques
-                </div>
-                <div class="bullet">
-                  <div class="check"><svg viewBox="0 0 24 24"><path d="M9.2 16.6 4.9 12.3l1.4-1.4 2.9 2.9 8.6-8.6 1.4 1.4z"/></svg></div>
-                  Modal de detalhes + CTA contextual
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="reveal">
-          <div class="planCard" aria-label="Plano em destaque">
-            <div class="planTop">
-              <div>
-                <div class="planTag">Oferta • Premium</div>
-                <div style="margin-top:8px; color:rgba(255,255,255,0.70); font-weight:800;">
-                  Plano recomendado
-                </div>
-              </div>
-              <div class="badge" style="border-color:rgba(0,255,65,0.35); background:rgba(0,255,65,0.08);">ATIVO</div>
-            </div>
-
-            <div class="priceLine">
-              <div class="price">R$ 9,97</div>
-              <small>/ acesso</small>
-            </div>
-
-            <div class="bullets">
-              <div class="bullet">
-                <div class="check"><svg viewBox="0 0 24 24"><path d="M9.2 16.6 4.9 12.3l1.4-1.4 2.9 2.9 8.6-8.6 1.4 1.4z"/></svg></div>
-                Acesso ao catálogo completo
-              </div>
-              <div class="bullet">
-                <div class="check"><svg viewBox="0 0 24 24"><path d="M9.2 16.6 4.9 12.3l1.4-1.4 2.9 2.9 8.6-8.6 1.4 1.4z"/></svg></div>
-                Atualizações e melhorias
-              </div>
-              <div class="bullet">
-                <div class="check"><svg viewBox="0 0 24 24"><path d="M9.2 16.6 4.9 12.3l1.4-1.4 2.9 2.9 8.6-8.6 1.4 1.4z"/></svg></div>
-                Suporte e guias
-              </div>
-            </div>
-
-            <button class="buyBtn" id="buyBtn">Comprar agora</button>
-            <div class="safeNote">🔒 Pagamento seguro • Entrega automática</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CATALOG -->
-  <section id="catalogo" class="section">
-    <div class="container">
-      <div class="catalogHeader reveal">
-        <div>
-          <div class="secTitle">Catálogo</div>
-          <p class="secSub">Clique em <b style="color:#fff">Ver catálogo</b> para expandir. Use a busca e categorias para navegar rapidamente.</p>
-        </div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn primary" id="toggleCatalogBtn">Ver catálogo</button>
-          <a class="btn" href="#planos">Ver planos</a>
-        </div>
-      </div>
-
-      <div class="catalogShell" id="catalogShell">
-        <div class="storeLayout">
-          <aside class="sidebar reveal">
-            <div class="sideTitle">
-              <b>Busca</b>
-              <span class="countPill" id="catCount">—</span>
-            </div>
-
-            <div class="searchBox">
-              <input id="catalogSearch" placeholder="Pesquisar…" autocomplete="off" />
-            </div>
-
-            <div class="sideTitle" style="margin-top:6px;">
-              <b>Categorias</b>
-              <span class="countPill" id="totalCount">0</span>
-            </div>
-
-            <div class="cats" id="cats"></div>
-
-            <div style="margin-top:12px; color:rgba(255,255,255,0.55); font-weight:700; font-size:12px; line-height:1.5;">
-              • Carregamento otimizado<br/>
-              • Imagens lazy + paginação<br/>
-              • Clique em um jogo para ver detalhes
-            </div>
-          </aside>
-
-          <main class="storeMain reveal">
-            <div class="storeHero">
-              <div class="storeHeroBanner" id="storeHeroBanner">
-                <img id="storeHeroImg" alt="Banner do catálogo" referrerpolicy="no-referrer" />
-                <div class="storeHeroOverlay"></div>
-                <div class="storeHeroText">
-                  <div>
-                    <div class="chips" style="margin-bottom:8px;">
-                      <span class="chip green">Catálogo</span>
-                      <span class="chip">Em destaque</span>
-                    </div>
-                    <div class="storeTitle" id="storeHeroTitle">—</div>
-                    <div class="storeSmall" id="storeHeroDesc">Selecione um jogo para ver detalhes</div>
-                  </div>
-                  <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                    <button class="btn" id="btnHeroDetails">Ver detalhes</button>
-                    <button class="btn primary" id="btnHeroOffer">Ver oferta</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="rail" id="featuredRail" aria-label="Jogos em destaque"></div>
-
-            <div class="grid" id="catalogGrid"></div>
-
-            <div class="moreRow">
-              <button class="btn" id="loadMoreBtn">Carregar mais</button>
-            </div>
-          </main>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROOF -->
-  <section class="section">
-    <div class="container">
-      <div class="reveal">
-        <div class="secTitle">Quem usa aprova</div>
-        <p class="secSub">Prova social em cards (você pode trocar por prints reais depois).</p>
-      </div>
-
-      <div class="proofGrid">
-        <div class="review reveal">
-          <div class="rTop">
-            <div class="avatar">R</div>
-            <div>
-              <div class="rName">Rafael M.</div>
-              <div class="stars">★★★★★</div>
-            </div>
-          </div>
-          <div class="rText">“Interface bonita e rápida. A busca é absurda de boa e o catálogo fica bem organizado.”</div>
-        </div>
-
-        <div class="review reveal">
-          <div class="rTop">
-            <div class="avatar">G</div>
-            <div>
-              <div class="rName">Gustavo L.</div>
-              <div class="stars">★★★★★</div>
-            </div>
-          </div>
-          <div class="rText">“Curti o modo vitrine e o modal de detalhes. Passa muita sensação de produto premium.”</div>
-        </div>
-
-        <div class="review reveal">
-          <div class="rTop">
-            <div class="avatar">A</div>
-            <div>
-              <div class="rName">André S.</div>
-              <div class="stars">★★★★★</div>
-            </div>
-          </div>
-          <div class="rText">“Ficou bem parecido com loja grande. Micro animações deixam tudo mais vivo.”</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="section">
-    <div class="container">
-      <div class="reveal">
-        <div class="secTitle">Perguntas frequentes</div>
-        <p class="secSub">Accordion clean (um por vez), com animação suave.</p>
-      </div>
-
-      <div class="faq reveal" style="margin-top:14px;">
-        <div class="faqItem">
-          <button class="faqBtn" type="button">O que eu recebo?
-            <span class="chev"><svg viewBox="0 0 24 24"><path d="M12 15.5 5.5 9 7 7.5l5 5 5-5L18.5 9z"/></svg></span>
-          </button>
-          <div class="faqBody"><p>Você recebe acesso ao software e aos recursos de organização, busca e catálogo conforme o plano adquirido.</p></div>
-        </div>
-
-        <div class="faqItem">
-          <button class="faqBtn" type="button">Como funciona a entrega?
-            <span class="chev"><svg viewBox="0 0 24 24"><path d="M12 15.5 5.5 9 7 7.5l5 5 5-5L18.5 9z"/></svg></span>
-          </button>
-          <div class="faqBody"><p>Após a compra, você recebe instruções de acesso/instalação e suporte, conforme a política do seu produto.</p></div>
-        </div>
-
-        <div class="faqItem">
-          <button class="faqBtn" type="button">Posso ver o catálogo antes?
-            <span class="chev"><svg viewBox="0 0 24 24"><path d="M12 15.5 5.5 9 7 7.5l5 5 5-5L18.5 9z"/></svg></span>
-          </button>
-          <div class="faqBody"><p>Sim. Clique em “Ver catálogo” para expandir e pesquise títulos com filtros por categoria.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      © <span id="year"></span> OVERISE SOFTWARE • Todos os direitos reservados.
-    </div>
-  </footer>
-
-  <!-- Toasts -->
-  <div class="toastWrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
-
-  <!-- Modal -->
-  <div class="modalBack" id="modalBack" role="dialog" aria-modal="true" aria-label="Detalhes do jogo">
-    <div class="modal" role="document">
-      <div class="modalHero">
-        <img id="modalImg" alt="Capa do jogo" referrerpolicy="no-referrer" />
-        <div class="modalOverlay"></div>
-        <button class="modalClose" id="modalClose" aria-label="Fechar">
-          <svg viewBox="0 0 24 24"><path d="M18.3 7.1 16.9 5.7 12 10.6 7.1 5.7 5.7 7.1 10.6 12l-4.9 4.9 1.4 1.4 4.9-4.9 4.9 4.9 1.4-1.4L13.4 12z"/></svg>
-        </button>
-        <div class="modalHead">
-          <div>
-            <div class="chips" id="modalChips" style="margin-bottom:8px;"></div>
-            <div class="modalTitle" id="modalTitle">—</div>
-            <div class="modalMeta" id="modalMeta">—</div>
-          </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="btn" id="modalCatalogBtn">Voltar ao catálogo</button>
-            <button class="btn primary" id="modalOfferBtn">Ver oferta</button>
-          </div>
-        </div>
-      </div>
-      <div class="modalBody">
-        <div class="modalCard">
-          <h4>Sobre</h4>
-          <p id="modalAbout">
-            Detalhes rápidos do título, categorias e chamada para a oferta.
-          </p>
-        </div>
-        <div class="modalCard">
-          <h4>Próximo passo</h4>
-          <p>
-            Clique em <b style="color:#fff">Ver oferta</b> para analisar os planos e seguir com a compra.
-          </p>
-          <div style="margin-top:12px;">
-            <button class="buyBtn" id="modalBuyBtn">Ir para planos</button>
-            <div class="safeNote">Você não será redirecionado automaticamente ao clicar no jogo.</div>
+          <div class="heroCardBtns">
+            <button class="btn small ghost" id="btnFeatDetails">Ver detalhes</button>
+            <button class="btn small primary" id="btnFeatOpenCatalog">Abrir catálogo</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Infinite marquee -->
+  <div class="container marqueeWrap reveal">
+    <div class="marqueeTitle">
+      <span>Principais títulos • vitrine premium</span>
+      <span class="muted2">Passe o mouse para pausar</span>
+    </div>
+    <div class="marquee">
+      <div class="marqueeTrack" id="marqueeTrack"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO + COMO FUNCIONA -->
+<section id="como" class="section tight">
+  <div class="container demoGrid">
+    <div class="card pad reveal">
+      <h2 class="cardTitle">Como funciona</h2>
+      <p class="cardText">
+        Tudo pensado para ser simples: você pesquisa, visualiza e organiza em uma interface moderna.
+        O catálogo é carregado localmente via <b>games_741_steam.json</b>, garantindo velocidade.
+      </p>
+
+      <div class="howGrid">
+        <div class="how">
+          <div class="k">1) Acesse</div>
+          <div class="s">Entre no painel e navegue pelo catálogo.</div>
+        </div>
+        <div class="how">
+          <div class="k">2) Pesquise</div>
+          <div class="s">Use atalhos (GTA, FIFA…) e categorias.</div>
+        </div>
+        <div class="how">
+          <div class="k">3) Escolha</div>
+          <div class="s">Clique no jogo para ver detalhes e a oferta.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal" style="position:relative">
+      <div class="videoWrap">
+        <!-- Troque pelo seu vídeo (YouTube embed ou <video src="...">) -->
+        <iframe
+          src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
+          title="Demonstração"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <div class="videoOverlay"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CATÁLOGO -->
+<section id="catalogo" class="section">
+  <div class="container">
+    <div class="catalogHeader reveal">
+      <div>
+        <h2>Catálogo</h2>
+        <p>
+          Pesquise e filtre por categoria. Clique em um jogo para abrir detalhes e ver o botão de oferta.
+          O catálogo só abre quando você quiser — para manter a página leve.
+        </p>
+      </div>
+      <div class="catalogActions">
+        <button class="btn" id="btnToggleCatalog">Ver catálogo</button>
+        <a class="btn primary" href="#planos">Ver planos</a>
+      </div>
+    </div>
+
+    <div class="catalogCollapsed" id="catalogArea">
+      <div class="catalogShell">
+        <aside class="side">
+          <div class="searchBox">
+            <input class="input" id="searchInput" placeholder="Buscar (ex: GTA, FIFA, MINE...)" />
+          </div>
+          <div class="sideMeta" id="statusMsg">Carregando…</div>
+
+          <div class="cats" id="cats"></div>
+
+          <div class="sideMeta" style="margin-top:12px">
+            • Imagens: Steam header 16:9<br/>
+            • Performance: lazy-load + paginação<br/>
+            • Clique no jogo: abre detalhes
+          </div>
+        </aside>
+
+        <main>
+          <div class="grid" id="grid"></div>
+          <div style="display:flex; gap:10px; justify-content:center; margin-top:14px">
+            <button class="btn" id="btnLoadMore" style="display:none">Carregar mais</button>
+          </div>
+        </main>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PLANOS (tabela) -->
+<section id="planos" class="section tight">
+  <div class="container">
+    <div class="reveal">
+      <h2 style="margin:0; font-size:28px; font-weight:950; letter-spacing:-1px; color:#fff; text-transform:uppercase">Planos</h2>
+      <p class="muted" style="margin:10px 0 0; line-height:1.6; max-width:68ch">
+        Escolha o plano que faz sentido para você. A compra/checkout é configurada no botão.
+      </p>
+    </div>
+
+    <div class="pricingWrap">
+      <div class="plan reveal">
+        <div class="planTop">
+          <div class="planName">Compra avulsa</div>
+          <div class="planBadge">Básico</div>
+        </div>
+        <div class="priceRow">
+          <div class="priceNow" style="color:#fff">R$ —</div>
+          <div class="priceSmall">*valor sob consulta</div>
+        </div>
+        <table class="table">
+          <tr><td>Catálogo</td><td class="bad">Limitado</td></tr>
+          <tr><td>Atualizações</td><td>Manuais</td></tr>
+          <tr><td>Suporte</td><td>Horário comercial</td></tr>
+          <tr><td>Experiência</td><td>Essencial</td></tr>
+        </table>
+        <div class="buyRow">
+          <button class="btn" onclick="alert('Configure seu checkout aqui')">Consultar</button>
+        </div>
+        <div class="secure">🔒 Pagamento seguro • Entrega automática (se aplicável)</div>
+      </div>
+
+      <div class="plan featured reveal">
+        <div class="planTop">
+          <div class="planName">Passe Premium</div>
+          <div class="planBadge">Recomendado</div>
+        </div>
+        <div class="priceRow">
+          <div class="priceNow">R$ 9,97</div>
+          <div class="priceSmall">acesso vitalício</div>
+        </div>
+        <table class="table">
+          <tr><td>Catálogo</td><td class="good">Completo (741)</td></tr>
+          <tr><td>Atualizações</td><td class="good">Automáticas</td></tr>
+          <tr><td>Suporte</td><td class="good">Comunidade + guia</td></tr>
+          <tr><td>Experiência</td><td class="good">Premium</td></tr>
+        </table>
+        <div class="buyRow">
+          <button class="btn primary" onclick="window.open('SEU_LINK_DE_CHECKOUT_AQUI','_blank')">Comprar agora</button>
+        </div>
+        <div class="secure">🔒 Pagamento seguro • Acesso imediato • Suporte</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL -->
+<section class="section tight">
+  <div class="container reveal">
+    <h2 style="margin:0; font-size:28px; font-weight:950; letter-spacing:-1px; color:#fff; text-transform:uppercase">Quem usa aprova</h2>
+    <p class="muted" style="margin:10px 0 0; line-height:1.6">Depoimentos em estilo “cards”, inspirados na KeyRush.</p>
+
+    <div class="socialGrid">
+      <div class="quote">
+        <div class="who">
+          <div class="av">R</div>
+          <div>
+            <div style="font-weight:950; color:#fff">Rafael M.</div>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <div class="txt">“Interface bonita, rápida e fácil de usar. Achei os jogos em segundos.”</div>
+      </div>
+
+      <div class="quote">
+        <div class="who">
+          <div class="av">G</div>
+          <div>
+            <div style="font-weight:950; color:#fff">Gustavo L.</div>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <div class="txt">“A busca inteligente salva muito tempo. Curti demais a organização.”</div>
+      </div>
+
+      <div class="quote">
+        <div class="who">
+          <div class="av">A</div>
+          <div>
+            <div style="font-weight:950; color:#fff">André S.</div>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <div class="txt">“Visual premium, parece uma loja grande. Catálogo carrega instantâneo.”</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section tight">
+  <div class="container reveal">
+    <h2 style="margin:0; font-size:28px; font-weight:950; letter-spacing:-1px; color:#fff; text-transform:uppercase">FAQ</h2>
+    <p class="muted" style="margin:10px 0 0; line-height:1.6; max-width:70ch">
+      Respostas rápidas para as dúvidas mais comuns.
+    </p>
+
+    <div class="faq">
+      <div class="qa">
+        <button class="q" type="button">
+          O que eu recebo?
+          <span class="chev">+</span>
+        </button>
+        <div class="a">
+          Você recebe acesso à interface/painel com o catálogo, guia de uso e recursos do software conforme o plano.
+        </div>
+      </div>
+      <div class="qa">
+        <button class="q" type="button">
+          Preciso instalar algo?
+          <span class="chev">+</span>
+        </button>
+        <div class="a">
+          Você pode assistir à demonstração e seguir o guia. Caso exista um app, ele será indicado no painel.
+        </div>
+      </div>
+      <div class="qa">
+        <button class="q" type="button">
+          Como funciona o catálogo?
+          <span class="chev">+</span>
+        </button>
+        <div class="a">
+          O site carrega o arquivo <b>games_741_steam.json</b> localmente e renderiza os cards com performance (lazy-load + paginação).
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    © 2026 OVERISE SOFTWARE • Todos os direitos reservados.
+  </div>
+</footer>
+
+<!-- GAME MODAL -->
+<div class="backdrop" id="backdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Detalhes do jogo">
+    <div class="modalTop">
+      <img id="modalImg" alt="Capa do jogo"/>
+      <button class="modalClose" id="modalClose" aria-label="Fechar">✕</button>
+    </div>
+    <div class="modalBody">
+      <div>
+        <h3 class="modalTitle" id="modalTitle">—</h3>
+        <p class="modalDesc" id="modalDesc">
+          Detalhes do jogo. (Você pode personalizar esta descrição usando informações do seu produto/catálogo.)
+        </p>
+      </div>
+      <div class="modalSide">
+        <div class="row"><span>Disponibilidade</span> ✓ Ativo</div>
+        <div class="row"><span>Categoria</span> <b id="modalCat">—</b></div>
+        <div class="row"><span>Origem</span> Steam</div>
+        <div class="modalBtns">
+          <button class="btn" id="modalGoPlans">Ver oferta</button>
+          <button class="btn primary" id="modalBuyNow">Comprar</button>
+        </div>
+        <div class="secure">Dica: clique em “Ver oferta” para comparar os planos.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toasts -->
+<div class="toasts" id="toasts"></div>
+
 <script>
-/* ===========================
-   CONFIG
-=========================== */
-const JSON_PATH = "./games_741_steam.json";
-const CHECKOUT_URL = "SEU_LINK_DE_CHECKOUT_AQUI"; // <-- troque aqui
+  /** ==========================
+   *  CONFIG
+   * ========================== */
+  const JSON_PATH = "./games_741_steam.json";
 
-// Lista de “famosos” para destaque (automático por nome)
-const FEATURED_KEYWORDS = [
-  "GOD OF WAR RAGNAROK",
-  "GOD OF WAR",
-  "CYBERPUNK 2077",
-  "THE LAST OF US",
-  "FORZA HORIZON 5",
-  "FORZA HORIZON 4",
-  "RED DEAD REDEMPTION 2",
-  "ELDEN RING",
-  "HOGWARTS LEGACY",
-  "MARVEL'S SPIDER-MAN",
-  "SPIDER-MAN",
-  "HALO",
-  "GTA V",
-  "GRAND THEFT AUTO V",
-];
+  // Banners Steam (quando tiver appid)
+  const STEAM_HEADER = (appid) =>
+    `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg`;
 
-// Toast names
-const NAMES = ["João", "Maria", "Pedro", "Ana", "Lucas", "Bruno", "Rafa", "Carla", "Vitor", "Julia"];
+  // Fallback (caso cover falhe)
+  const FALLBACK_IMG =
+    "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='920' height='520'><rect width='100%25' height='100%25' fill='%23111'/><text x='50%25' y='50%25' fill='%23333' font-family='Inter,Arial' font-size='28' text-anchor='middle'>SEM CAPA</text></svg>";
 
-/* ===========================
-   STATE
-=========================== */
-let GAMES = [];
-let CATS = [];
-let ACTIVE_CAT = "TODOS";
-let QUERY = "";
-let PAGE = 0;
-const PAGE_SIZE = 18;
+  // Lista “famosos” (o sistema tenta encontrar automaticamente no JSON pelo nome)
+  const FEATURED_NAMES = [
+    "GOD OF WAR RAGNAROK",
+    "CYBERPUNK 2077",
+    "THE LAST OF US",
+    "FORZA HORIZON 5",
+    "GRAND THEFT AUTO V",
+    "RED DEAD REDEMPTION 2",
+    "ELDEN RING",
+    "MARVEL'S SPIDER-MAN REMASTERED"
+  ];
 
-let FEATURED = [];
-let HERO_PICK = null;
-let MODAL_GAME = null;
+  // Apelidos da busca
+  const ALIASES = new Map([
+    ["GTA", "GRAND THEFT AUTO"],
+    ["GTA 5", "GRAND THEFT AUTO V"],
+    ["RDR2", "RED DEAD REDEMPTION 2"],
+    ["COD", "CALL OF DUTY"],
+    ["FIFA", "EA SPORTS FC"],
+    ["ETS2", "EURO TRUCK SIMULATOR 2"],
+    ["NFS", "NEED FOR SPEED"],
+    ["MINE", "MINECRAFT"],
+  ]);
 
-const els = {
-  year: document.getElementById("year"),
-  statCount: document.getElementById("statCount"),
+  /** ==========================
+   *  STATE
+   * ========================== */
+  let GAMES = [];
+  let FILTERED = [];
+  let ACTIVE_CATEGORY = "TODOS";
+  let page = 0;
+  const PER_PAGE = 18;
 
-  // slider
-  slider: document.getElementById("featuredSlider"),
-  dots: document.getElementById("sliderDots"),
-  prev: document.getElementById("prevSlide"),
-  next: document.getElementById("nextSlide"),
+  /** ==========================
+   *  DOM
+   * ========================== */
+  const statTotal = document.getElementById("statTotal");
 
-  // pricing
-  buyBtn: document.getElementById("buyBtn"),
+  const marqueeTrack = document.getElementById("marqueeTrack");
 
-  // catalog
-  toggleCatalogBtn: document.getElementById("toggleCatalogBtn"),
-  catalogShell: document.getElementById("catalogShell"),
-  btnOpenCatalog: document.getElementById("btnOpenCatalog"),
-  btnOpenCatalog2: document.getElementById("btnOpenCatalog2"),
+  const featuredImg = document.getElementById("featuredImg");
+  const featuredName = document.getElementById("featuredName");
+  const featuredDesc = document.getElementById("featuredDesc");
+  const btnFeatDetails = document.getElementById("btnFeatDetails");
+  const btnFeatOpenCatalog = document.getElementById("btnFeatOpenCatalog");
+  const featPrev = document.getElementById("featPrev");
+  const featNext = document.getElementById("featNext");
 
-  cats: document.getElementById("cats"),
-  totalCount: document.getElementById("totalCount"),
-  catCount: document.getElementById("catCount"),
-  search: document.getElementById("catalogSearch"),
+  const btnToggleCatalog = document.getElementById("btnToggleCatalog");
+  const catalogArea = document.getElementById("catalogArea");
+  const searchInput = document.getElementById("searchInput");
+  const statusMsg = document.getElementById("statusMsg");
+  const catsEl = document.getElementById("cats");
+  const grid = document.getElementById("grid");
+  const btnLoadMore = document.getElementById("btnLoadMore");
 
-  storeHeroImg: document.getElementById("storeHeroImg"),
-  storeHeroTitle: document.getElementById("storeHeroTitle"),
-  storeHeroDesc: document.getElementById("storeHeroDesc"),
-  btnHeroDetails: document.getElementById("btnHeroDetails"),
-  btnHeroOffer: document.getElementById("btnHeroOffer"),
+  const backdrop = document.getElementById("backdrop");
+  const modalClose = document.getElementById("modalClose");
+  const modalImg = document.getElementById("modalImg");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalDesc = document.getElementById("modalDesc");
+  const modalCat = document.getElementById("modalCat");
+  const modalGoPlans = document.getElementById("modalGoPlans");
+  const modalBuyNow = document.getElementById("modalBuyNow");
 
-  rail: document.getElementById("featuredRail"),
-  grid: document.getElementById("catalogGrid"),
-  loadMore: document.getElementById("loadMoreBtn"),
+  const toasts = document.getElementById("toasts");
 
-  // toast
-  toastWrap: document.getElementById("toastWrap"),
-
-  // modal
-  modalBack: document.getElementById("modalBack"),
-  modalClose: document.getElementById("modalClose"),
-  modalImg: document.getElementById("modalImg"),
-  modalTitle: document.getElementById("modalTitle"),
-  modalMeta: document.getElementById("modalMeta"),
-  modalChips: document.getElementById("modalChips"),
-  modalAbout: document.getElementById("modalAbout"),
-  modalOfferBtn: document.getElementById("modalOfferBtn"),
-  modalBuyBtn: document.getElementById("modalBuyBtn"),
-  modalCatalogBtn: document.getElementById("modalCatalogBtn"),
-};
-
-/* ===========================
-   UTILS
-=========================== */
-function normalize(s){
-  return String(s || "")
-    .toUpperCase()
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-// alias dictionary (busca inteligente)
-function normalizeQuery(q){
-  q = normalize(q);
-  if(q === "GTA") q = "GRAND THEFT AUTO";
-  if(q === "GTA 5") q = "GRAND THEFT AUTO V";
-  if(q === "COD") q = "CALL OF DUTY";
-  if(q === "RE4") q = "RESIDENT EVIL 4";
-  if(q === "RDR2") q = "RED DEAD REDEMPTION 2";
-  if(q === "MK") q = "MORTAL KOMBAT";
-  if(q === "ETS2") q = "EURO TRUCK SIMULATOR 2";
-  if(q === "FORZA") q = "FORZA HORIZON";
-  return q;
-}
-
-function debounce(fn, ms=180){
-  let t;
-  return (...args)=>{ clearTimeout(t); t = setTimeout(()=>fn(...args), ms); };
-}
-
-// Tries to "upgrade" Steam header to higher-res variants when possible
-function getImageCandidates(url){
-  const u = String(url || "");
-  if(!u) return [];
-  // Steam headers often: .../apps/{appid}/header.jpg
-  if(u.includes("/header.jpg")){
-    return [
-      u.replace("/header.jpg", "/capsule_616x353.jpg"),
-      u.replace("/header.jpg", "/library_hero.jpg"),
-      u.replace("/header.jpg", "/hero_capsule.jpg"),
-      u
-    ];
+  /** ==========================
+   *  UTILS
+   * ========================== */
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, m => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#39;"
+    }[m]));
   }
-  return [u];
-}
 
-function setBestImage(imgEl, url, alt=""){
-  const candidates = getImageCandidates(url);
-  if(!candidates.length){
-    imgEl.src = "";
-    imgEl.alt = alt;
-    return;
+  function getCover(game){
+    if(game.cover && typeof game.cover === "string" && game.cover.trim().length) return game.cover;
+    if(game.appid) return STEAM_HEADER(game.appid);
+    return FALLBACK_IMG;
   }
-  imgEl.alt = alt;
-  let i = 0;
-  imgEl.onerror = ()=> {
-    i++;
-    if(i < candidates.length){
-      imgEl.src = candidates[i];
-    }else{
-      // last resort (blank)
-      imgEl.onerror = null;
-    }
-  };
-  imgEl.src = candidates[0];
-}
 
-// pick featured games from list based on keywords
-function buildFeatured(games){
-  const byName = new Map(games.map(g => [normalize(g.name), g]));
-  const picked = [];
-  for(const kw of FEATURED_KEYWORDS){
-    const K = normalize(kw);
-    // exact match first
-    if(byName.has(K)) {
-      picked.push(byName.get(K));
-      continue;
-    }
-    // partial match fallback
-    const found = games.find(g => normalize(g.name).includes(K));
-    if(found) picked.push(found);
+  function normalizeQuery(q){
+    q = (q||"").trim().toUpperCase();
+    if(ALIASES.has(q)) q = ALIASES.get(q);
+    return q;
   }
-  // unique
-  const seen = new Set();
-  const uniq = [];
-  for(const g of picked){
-    if(!g || !g.name) continue;
-    const k = normalize(g.name);
-    if(seen.has(k)) continue;
-    seen.add(k);
-    uniq.push(g);
+
+  function debounce(fn, ms=220){
+    let t;
+    return (...args) => { clearTimeout(t); t = setTimeout(()=>fn(...args), ms); };
   }
-  // guarantee at least 6 by adding random known ones
-  if(uniq.length < 6){
-    for(const g of games){
-      if(uniq.length >= 6) break;
-      const k = normalize(g.name);
-      if(seen.has(k)) continue;
-      if(g.cover){
-        seen.add(k);
-        uniq.push(g);
-      }
-    }
-  }
-  return uniq.slice(0, 8);
-}
 
-function buildCategories(games){
-  const counts = new Map();
-  for(const g of games){
-    const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
-    for(const c of cats){
-      const C = String(c);
-      counts.set(C, (counts.get(C)||0) + 1);
-    }
-  }
-  const arr = [...counts.entries()].sort((a,b)=>b[1]-a[1]).map(([c,n])=>({c,n}));
-  return [{c:"TODOS", n: games.length}, ...arr];
-}
-
-function filterGames(){
-  const q = normalizeQuery(QUERY);
-  const qOk = q.length >= 2;
-
-  return GAMES.filter(g=>{
-    const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
-    const inCat = (ACTIVE_CAT === "TODOS") ? true : cats.includes(ACTIVE_CAT);
-    if(!inCat) return false;
-    if(!qOk) return true;
-    return normalize(g.name).includes(q);
-  });
-}
-
-function scrollToId(id){
-  document.getElementById(id)?.scrollIntoView({behavior:"smooth"});
-}
-
-/* ===========================
-   REVEAL ON SCROLL
-=========================== */
-const revealEls = () => document.querySelectorAll(".reveal");
-const io = new IntersectionObserver((entries)=>{
-  for(const e of entries){
-    if(e.isIntersecting){
-      e.target.classList.add("on");
-      io.unobserve(e.target);
-    }
-  }
-},{ rootMargin:"140px" });
-
-function initReveal(){
-  revealEls().forEach(el=>io.observe(el));
-}
-
-/* ===========================
-   SLIDER
-=========================== */
-let sliderIndex = 0;
-let sliderTimer = null;
-
-function renderSlider(){
-  // clear slides
-  const existingSlides = els.slider.querySelectorAll(".slide");
-  existingSlides.forEach(s => s.remove());
-  els.dots.innerHTML = "";
-
-  FEATURED.forEach((g, idx)=>{
-    const slide = document.createElement("div");
-    slide.className = "slide" + (idx===0 ? " active":"");
-    slide.dataset.idx = String(idx);
-
-    slide.innerHTML = `
-      <div class="slideBg">
-        <img referrerpolicy="no-referrer" alt="${escapeHtml(g.name)}"/>
-      </div>
-      <div class="overlay"></div>
-      <div class="slideContent">
-        <div>
-          <div class="chips" style="margin-bottom:10px;">
-            <span class="chip green">Em destaque</span>
-            <span class="chip">Catálogo</span>
-          </div>
-          <div class="slideTitle">${escapeHtml(g.name)}</div>
-          <div class="slideDesc">${escapeHtml(buildShortDesc(g))}</div>
-        </div>
-        <div class="slideActions">
-          <button class="btn" data-action="details" data-idx="${idx}">Ver detalhes</button>
-          <button class="btn primary" data-action="catalog" data-idx="${idx}">Abrir catálogo</button>
-        </div>
+  function toast(msg){
+    const el = document.createElement("div");
+    el.className = "toast";
+    el.innerHTML = `
+      <div class="ic">✓</div>
+      <div>
+        <b>Ativação registrada</b>
+        <p>${escapeHtml(msg)}</p>
       </div>
     `;
-
-    els.slider.appendChild(slide);
-
-    const img = slide.querySelector("img");
-    setBestImage(img, g.cover, g.name);
-
-    const dot = document.createElement("button");
-    dot.className = "dotBtn" + (idx===0 ? " active":"");
-    dot.addEventListener("click", ()=> goToSlide(idx, true));
-    els.dots.appendChild(dot);
-  });
-
-  // actions
-  els.slider.querySelectorAll("[data-action]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const idx = Number(btn.getAttribute("data-idx") || 0);
-      const g = FEATURED[idx];
-      if(!g) return;
-      const action = btn.getAttribute("data-action");
-      if(action === "details"){
-        openModal(g);
-      }else if(action === "catalog"){
-        openCatalog(true);
-        // set hero to this game
-        setStoreHero(g);
-        scrollToId("catalogo");
-      }
-    });
-  });
-
-  resetSliderTimer();
-}
-
-function goToSlide(nextIdx, user=false){
-  const slides = [...els.slider.querySelectorAll(".slide")];
-  const dots = [...els.dots.querySelectorAll(".dotBtn")];
-  if(!slides.length) return;
-
-  const current = slides[sliderIndex];
-  const next = slides[nextIdx];
-
-  if(current === next) return;
-
-  // animate: current exits left, next enters
-  current.classList.remove("active");
-  current.classList.add("exitLeft");
-  next.classList.add("active");
-  next.classList.remove("exitLeft");
-
-  dots[sliderIndex]?.classList.remove("active");
-  dots[nextIdx]?.classList.add("active");
-
-  // cleanup exit class after transition
-  setTimeout(()=> current.classList.remove("exitLeft"), 650);
-
-  sliderIndex = nextIdx;
-  if(user) resetSliderTimer();
-}
-
-function nextSlide(){
-  const nextIdx = (sliderIndex + 1) % FEATURED.length;
-  goToSlide(nextIdx, true);
-}
-function prevSlide(){
-  const nextIdx = (sliderIndex - 1 + FEATURED.length) % FEATURED.length;
-  goToSlide(nextIdx, true);
-}
-
-function resetSliderTimer(){
-  if(sliderTimer) clearInterval(sliderTimer);
-  sliderTimer = setInterval(()=>{
-    const nextIdx = (sliderIndex + 1) % FEATURED.length;
-    goToSlide(nextIdx, false);
-  }, 6500);
-}
-
-/* ===========================
-   CATALOG (collapsed)
-=========================== */
-function openCatalog(scroll=false){
-  els.catalogShell.classList.add("open");
-  els.toggleCatalogBtn.textContent = "Ocultar catálogo";
-  if(scroll) scrollToId("catalogo");
-}
-
-function closeCatalog(){
-  els.catalogShell.classList.remove("open");
-  els.toggleCatalogBtn.textContent = "Ver catálogo";
-}
-
-function toggleCatalog(){
-  if(els.catalogShell.classList.contains("open")) closeCatalog();
-  else openCatalog(true);
-}
-
-function renderCategories(){
-  CATS = buildCategories(GAMES);
-  els.totalCount.textContent = String(GAMES.length);
-
-  els.cats.innerHTML = CATS.map(({c,n})=>{
-    const active = (c === ACTIVE_CAT) ? "active" : "";
-    return `<div class="catBtn ${active}" data-cat="${escapeHtml(c)}">${escapeHtml(c)} <small>(${n})</small></div>`;
-  }).join("");
-
-  els.cats.querySelectorAll(".catBtn").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      ACTIVE_CAT = btn.getAttribute("data-cat") || "TODOS";
-      // re-render active
-      renderCategories();
-      PAGE = 0;
-      renderCatalog();
-    });
-  });
-}
-
-function renderRail(){
-  els.rail.innerHTML = FEATURED.map(g=>{
-    return `
-      <div class="railCard" data-name="${escapeAttr(g.name)}">
-        <img referrerpolicy="no-referrer" alt="${escapeHtml(g.name)}" />
-        <div class="rname">${escapeHtml(g.name)}</div>
-      </div>
-    `;
-  }).join("");
-
-  els.rail.querySelectorAll(".railCard").forEach(card=>{
-    const name = card.getAttribute("data-name");
-    const g = FEATURED.find(x => x && x.name === name) || GAMES.find(x=>x && x.name === name);
-    const img = card.querySelector("img");
-    setBestImage(img, g?.cover, g?.name || "");
-
-    card.addEventListener("click", ()=>{
-      if(g){
-        setStoreHero(g);
-        openModal(g);
-      }
-    });
-  });
-}
-
-function renderCatalog(){
-  const filtered = filterGames();
-  const total = filtered.length;
-  els.catCount.textContent = String(total);
-
-  const slice = filtered.slice(0, (PAGE+1) * PAGE_SIZE);
-
-  els.loadMore.style.display = (slice.length < total) ? "inline-flex" : "none";
-
-  els.grid.innerHTML = slice.map(g=>{
-    const cats = (g.categories && g.categories.length) ? g.categories.slice(0,2) : ["OUTROS"];
-    const ctags = cats.map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join("");
-    return `
-      <div class="gCard" data-name="${escapeAttr(g.name)}">
-        <img referrerpolicy="no-referrer" alt="${escapeHtml(g.name)}" loading="lazy" />
-        <div class="gInfo">
-          <div class="gName">${escapeHtml(g.name)}</div>
-          <div class="gTags">
-            <span class="tag green">Disponível</span>
-            ${ctags}
-          </div>
-        </div>
-      </div>
-    `;
-  }).join("");
-
-  // set images & click => modal (NOT scroll offer automatically)
-  els.grid.querySelectorAll(".gCard").forEach(card=>{
-    const name = card.getAttribute("data-name");
-    const g = GAMES.find(x=>x && x.name === name);
-    const img = card.querySelector("img");
-    setBestImage(img, g?.cover, g?.name || "");
-
-    card.addEventListener("click", ()=>{
-      if(g){
-        setStoreHero(g);
-        openModal(g);
-      }
-    });
-  });
-
-  // if hero not set yet, set from featured[0]
-  if(!HERO_PICK && FEATURED[0]){
-    setStoreHero(FEATURED[0]);
+    toasts.appendChild(el);
+    setTimeout(()=>{ el.style.opacity = "0"; el.style.transform = "translateY(8px)"; }, 2800);
+    setTimeout(()=>{ el.remove(); }, 3400);
   }
-}
 
-function setStoreHero(g){
-  if(!g) return;
-  HERO_PICK = g;
+  /** ==========================
+   *  REVEAL ON SCROLL
+   * ========================== */
+  const ioReveal = new IntersectionObserver((entries)=>{
+    for(const e of entries){
+      if(e.isIntersecting){
+        e.target.classList.add("show");
+        ioReveal.unobserve(e.target);
+      }
+    }
+  }, {rootMargin:"120px"});
+  document.querySelectorAll(".reveal").forEach(el=>ioReveal.observe(el));
 
-  els.storeHeroTitle.textContent = g.name || "—";
-  els.storeHeroDesc.textContent = buildShortDesc(g);
-
-  setBestImage(els.storeHeroImg, g.cover, g.name);
-
-  els.btnHeroDetails.onclick = ()=> openModal(g);
-  els.btnHeroOffer.onclick = ()=> scrollToId("planos");
-}
-
-/* ===========================
-   MODAL (game details + "Ver oferta")
-=========================== */
-function openModal(g){
-  MODAL_GAME = g;
-  els.modalTitle.textContent = g?.name || "—";
-
-  const cats = (g?.categories && g.categories.length) ? g.categories : ["OUTROS"];
-  els.modalChips.innerHTML = `
-    <span class="chip green">Disponível</span>
-    ${cats.slice(0,3).map(c=>`<span class="chip">${escapeHtml(c)}</span>`).join("")}
-  `;
-
-  els.modalMeta.textContent = cats.length ? `Categorias: ${cats.slice(0,5).join(" • ")}` : "—";
-  els.modalAbout.textContent = buildModalAbout(g);
-
-  setBestImage(els.modalImg, g?.cover, g?.name || "");
-
-  els.modalBack.classList.add("open");
-  document.body.style.overflow = "hidden";
-}
-
-function closeModal(){
-  els.modalBack.classList.remove("open");
-  document.body.style.overflow = "";
-  MODAL_GAME = null;
-}
-
-function buildShortDesc(g){
-  const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
-  // text kept generic (no illicit claims)
-  return `Navegue por categorias (${cats.slice(0,2).join(", ")}) e veja detalhes no catálogo.`;
-}
-
-function buildModalAbout(g){
-  const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
-  return `Este título aparece no catálogo para navegação e organização. Categorias: ${cats.slice(0,6).join(", ")}.`;
-}
-
-/* ===========================
-   FAQ (one open at a time)
-=========================== */
-function initFaq(){
-  const items = document.querySelectorAll(".faqItem");
-  items.forEach(item=>{
-    const btn = item.querySelector(".faqBtn");
-    const body = item.querySelector(".faqBody");
+  /** ==========================
+   *  FAQ
+   * ========================== */
+  document.querySelectorAll(".faq .qa .q").forEach(btn=>{
     btn.addEventListener("click", ()=>{
-      // close others
-      items.forEach(other=>{
-        if(other !== item){
-          other.classList.remove("open");
-          other.querySelector(".faqBody").style.maxHeight = "0px";
-        }
+      const qa = btn.closest(".qa");
+      const open = qa.classList.contains("open");
+      document.querySelectorAll(".faq .qa").forEach(x=>x.classList.remove("open"));
+      if(!open) qa.classList.add("open");
+    });
+  });
+
+  /** ==========================
+   *  LOAD JSON
+   * ========================== */
+  async function loadGames(){
+    const r = await fetch(JSON_PATH);
+    const data = await r.json();
+
+    // suporta: array direto OU {games:[...]}
+    const arr = Array.isArray(data) ? data : (data.games || []);
+    GAMES = arr.map(g => ({
+      name: g.name || g.title || "",
+      cover: g.cover || "",
+      appid: g.appid || g.steam_appid || null,
+      categories: Array.isArray(g.categories) ? g.categories : []
+    })).filter(g => g.name);
+
+    statTotal.textContent = String(GAMES.length || 741);
+
+    buildFeatured();
+    buildMarquee();
+    buildCategories();
+    applyFilters();
+  }
+
+  /** ==========================
+   *  FEATURED HERO (auto, slide fade)
+   * ========================== */
+  let featuredList = [];
+  let featuredIndex = 0;
+  let featuredTimer = null;
+
+  function findGameByFamousName(name){
+    const n = name.toUpperCase();
+    // tenta match exato
+    let g = GAMES.find(x => x.name.toUpperCase() === n);
+    if(g) return g;
+    // tenta contains
+    g = GAMES.find(x => x.name.toUpperCase().includes(n));
+    if(g) return g;
+    // tenta sem caracteres especiais comuns
+    const n2 = n.replace(/[^A-Z0-9 ]+/g,"").trim();
+    g = GAMES.find(x => x.name.toUpperCase().replace(/[^A-Z0-9 ]+/g,"").includes(n2));
+    return g || null;
+  }
+
+  function buildFeatured(){
+    featuredList = [];
+    for(const nm of FEATURED_NAMES){
+      const g = findGameByFamousName(nm);
+      if(g) featuredList.push(g);
+    }
+
+    // fallback se algum não existir
+    if(featuredList.length < 4){
+      featuredList = GAMES.slice(0, 8);
+    }
+
+    featuredIndex = 0;
+    renderFeatured();
+
+    clearInterval(featuredTimer);
+    featuredTimer = setInterval(()=>nextFeatured(), 5200);
+  }
+
+  function renderFeatured(){
+    const g = featuredList[featuredIndex];
+    if(!g) return;
+
+    // animação slide/fade
+    const card = document.getElementById("featuredHeroCard");
+    card.style.animation = "none";
+    void card.offsetWidth; // reflow
+    card.style.animation = "slideFade 5.2s ease both";
+
+    featuredImg.src = getCover(g);
+    featuredImg.onerror = () => featuredImg.src = FALLBACK_IMG;
+    featuredName.textContent = g.name;
+    featuredDesc.textContent = "Navegue por categorias, veja detalhes e encontre títulos em segundos.";
+
+    btnFeatDetails.onclick = () => openModal(g);
+    btnFeatOpenCatalog.onclick = () => {
+      openCatalog();
+      setTimeout(()=>document.getElementById("catalogo").scrollIntoView({behavior:"smooth"}), 50);
+    };
+  }
+
+  function nextFeatured(){
+    featuredIndex = (featuredIndex + 1) % featuredList.length;
+    renderFeatured();
+  }
+  function prevFeatured(){
+    featuredIndex = (featuredIndex - 1 + featuredList.length) % featuredList.length;
+    renderFeatured();
+  }
+
+  featNext.addEventListener("click", ()=>{
+    clearInterval(featuredTimer);
+    nextFeatured();
+    featuredTimer = setInterval(()=>nextFeatured(), 5200);
+  });
+  featPrev.addEventListener("click", ()=>{
+    clearInterval(featuredTimer);
+    prevFeatured();
+    featuredTimer = setInterval(()=>nextFeatured(), 5200);
+  });
+
+  /** ==========================
+   *  MARQUEE (infinite)
+   * ========================== */
+  function buildMarquee(){
+    // duplica lista para loop perfeito
+    const list = featuredList.length ? featuredList : GAMES.slice(0, 12);
+    const doubled = [...list, ...list];
+
+    marqueeTrack.innerHTML = doubled.map(g => `
+      <div class="miniCard" title="${escapeHtml(g.name)}" data-name="${escapeHtml(g.name)}">
+        <img src="${getCover(g)}" alt="${escapeHtml(g.name)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'"/>
+        <div class="miniOverlay"></div>
+        <div class="miniLabel">${escapeHtml(g.name)}</div>
+      </div>
+    `).join("");
+
+    marqueeTrack.querySelectorAll(".miniCard").forEach(card=>{
+      card.addEventListener("click", ()=>{
+        const name = card.getAttribute("data-name");
+        const g = GAMES.find(x => x.name === name) || GAMES.find(x => x.name.toUpperCase() === (name||"").toUpperCase());
+        if(g) openModal(g);
       });
-
-      const open = item.classList.toggle("open");
-      body.style.maxHeight = open ? (body.scrollHeight + "px") : "0px";
     });
-  });
-}
-
-/* ===========================
-   TOASTS (micro urgency)
-=========================== */
-function pushToast(){
-  if(!FEATURED.length) return;
-  const name = NAMES[Math.floor(Math.random()*NAMES.length)];
-  const game = FEATURED[Math.floor(Math.random()*FEATURED.length)];
-  const el = document.createElement("div");
-  el.className = "toast";
-  el.innerHTML = `
-    <div class="ticon">
-      <svg viewBox="0 0 24 24"><path d="M7 6h10v2H7V6zm0 5h10v2H7v-2zm0 5h7v2H7v-2z"/></svg>
-    </div>
-    <div class="ttext">
-      <b>${name} viu ${escapeHtml(game.name)}</b>
-      <small>Explorando o catálogo agora</small>
-    </div>
-  `;
-  els.toastWrap.appendChild(el);
-  setTimeout(()=> el.remove(), 5200);
-}
-
-/* ===========================
-   INIT
-=========================== */
-async function loadGames(){
-  const r = await fetch(JSON_PATH, { cache: "no-store" });
-  const data = await r.json();
-  // Accept array or {games:[]}
-  const list = Array.isArray(data) ? data : (data.games || []);
-  // normalize shape
-  GAMES = list.map(x => ({
-    name: x.name || x.title || "",
-    categories: Array.isArray(x.categories) ? x.categories : (Array.isArray(x.category) ? x.category : []),
-    cover: x.cover || x.image || x.banner || ""
-  })).filter(g => g.name);
-
-  els.statCount.textContent = String(GAMES.length);
-}
-
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m]));
-}
-function escapeAttr(s){
-  return String(s).replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-}
-
-async function init(){
-  els.year.textContent = String(new Date().getFullYear());
-
-  // buttons
-  els.toggleCatalogBtn.addEventListener("click", toggleCatalog);
-  els.btnOpenCatalog.addEventListener("click", ()=> openCatalog(true));
-  els.btnOpenCatalog2.addEventListener("click", ()=> openCatalog(true));
-
-  els.buyBtn.addEventListener("click", ()=>{
-    if(CHECKOUT_URL && CHECKOUT_URL !== "SEU_LINK_DE_CHECKOUT_AQUI"){
-      window.open(CHECKOUT_URL, "_blank");
-    }else{
-      alert("Defina seu link de checkout em CHECKOUT_URL no código.");
-    }
-  });
-
-  // modal events
-  els.modalClose.addEventListener("click", closeModal);
-  els.modalBack.addEventListener("click", (e)=>{
-    if(e.target === els.modalBack) closeModal();
-  });
-  window.addEventListener("keydown", (e)=>{
-    if(e.key === "Escape") closeModal();
-  });
-
-  els.modalOfferBtn.addEventListener("click", ()=>{
-    closeModal();
-    scrollToId("planos");
-  });
-  els.modalBuyBtn.addEventListener("click", ()=>{
-    closeModal();
-    scrollToId("planos");
-  });
-  els.modalCatalogBtn.addEventListener("click", ()=>{
-    closeModal();
-    openCatalog(true);
-    scrollToId("catalogo");
-  });
-
-  // search
-  els.search.addEventListener("input", debounce(()=>{
-    QUERY = els.search.value;
-    PAGE = 0;
-    renderCatalog();
-  }, 160));
-
-  // load more
-  els.loadMore.addEventListener("click", ()=>{
-    PAGE++;
-    renderCatalog();
-  });
-
-  // load data
-  try{
-    await loadGames();
-  }catch(err){
-    console.error(err);
-    els.statCount.textContent = "Erro";
   }
 
-  // build featured + slider + catalog bits
-  FEATURED = buildFeatured(GAMES);
+  /** ==========================
+   *  CATALOG TOGGLE
+   * ========================== */
+  function openCatalog(){
+    catalogArea.classList.add("show");
+    btnToggleCatalog.textContent = "Ocultar catálogo";
+  }
+  function closeCatalog(){
+    catalogArea.classList.remove("show");
+    btnToggleCatalog.textContent = "Ver catálogo";
+  }
 
-  // slider
-  renderSlider();
-  els.next.addEventListener("click", nextSlide);
-  els.prev.addEventListener("click", prevSlide);
+  btnToggleCatalog.addEventListener("click", ()=>{
+    if(catalogArea.classList.contains("show")) closeCatalog();
+    else openCatalog();
+  });
 
-  // catalog
-  renderCategories();
-  renderRail();
-  renderCatalog();
-  setStoreHero(FEATURED[0] || GAMES[0]);
+  /** ==========================
+   *  CATEGORIES
+   * ========================== */
+  function buildCategories(){
+    const counts = new Map();
+    for(const g of GAMES){
+      const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
+      for(const c of cats){
+        const k = String(c).toUpperCase();
+        counts.set(k, (counts.get(k)||0) + 1);
+      }
+    }
 
-  // toast interval
-  setInterval(pushToast, 9000);
-  setTimeout(pushToast, 2500);
+    const sorted = [...counts.entries()].sort((a,b)=>b[1]-a[1]).slice(0, 14);
+    const items = [{c:"TODOS", n:GAMES.length}, ...sorted.map(([c,n])=>({c,n}))];
 
-  // faq
-  initFaq();
+    catsEl.innerHTML = items.map(({c,n})=>`
+      <div class="cat ${c===ACTIVE_CATEGORY ? "active":""}" data-cat="${escapeHtml(c)}">${escapeHtml(c)} <small>(${n})</small></div>
+    `).join("");
 
-  // reveal
-  initReveal();
+    catsEl.querySelectorAll(".cat").forEach(el=>{
+      el.addEventListener("click", ()=>{
+        ACTIVE_CATEGORY = el.getAttribute("data-cat") || "TODOS";
+        buildCategories();
+        page = 0;
+        applyFilters();
+      });
+    });
+  }
 
-  // pre-open catalog if user clicks slider actions; also for better UX we can lazy-open
-  // keep closed by default as requested
-}
+  /** ==========================
+   *  FILTER + RENDER
+   * ========================== */
+  function applyFilters(){
+    const q = normalizeQuery(searchInput.value);
+    const qOk = q.length >= 2;
 
-init();
+    FILTERED = GAMES.filter(g=>{
+      const cats = (g.categories && g.categories.length) ? g.categories.map(x=>String(x).toUpperCase()) : ["OUTROS"];
+      const inCat = (ACTIVE_CATEGORY === "TODOS") ? true : cats.includes(ACTIVE_CATEGORY);
+      if(!inCat) return false;
+      if(!qOk) return true;
+      return g.name.toUpperCase().includes(q);
+    });
+
+    statusMsg.textContent = `${FILTERED.length} resultados encontrados.`;
+    page = 0;
+    renderPage();
+  }
+
+  const applyFiltersDebounced = debounce(applyFilters, 220);
+  searchInput.addEventListener("input", applyFiltersDebounced);
+  searchInput.addEventListener("focus", ()=>{
+    if(!catalogArea.classList.contains("show")) openCatalog();
+  });
+
+  function renderPage(){
+    const slice = FILTERED.slice(0, (page+1) * PER_PAGE);
+    grid.innerHTML = slice.map(g => {
+      const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
+      const mainCat = cats[0] || "OUTROS";
+
+      return `
+        <div class="game" data-name="${escapeHtml(g.name)}">
+          <div class="gameImg">
+            <img src="${getCover(g)}" alt="${escapeHtml(g.name)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'"/>
+            <div class="gameGrad"></div>
+          </div>
+          <div class="gameInfo">
+            <div class="gameName">${escapeHtml(g.name)}</div>
+            <div class="tagRow">
+              <span class="tag ok">Disponível</span>
+              <span class="tag">${escapeHtml(String(mainCat))}</span>
+            </div>
+            <div class="gameCta">
+              <span class="tiny">Clique para detalhes</span>
+              <button class="ghostBtn" type="button">Ver</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    grid.querySelectorAll(".game").forEach(el=>{
+      el.addEventListener("click", ()=>{
+        const name = el.getAttribute("data-name");
+        const g = GAMES.find(x=>x.name === name) || GAMES.find(x=>x.name.toUpperCase() === (name||"").toUpperCase());
+        if(g) openModal(g);
+      });
+    });
+
+    const canMore = ((page+1) * PER_PAGE) < FILTERED.length;
+    btnLoadMore.style.display = canMore ? "inline-flex" : "none";
+  }
+
+  btnLoadMore.addEventListener("click", ()=>{
+    page++;
+    renderPage();
+  });
+
+  /** ==========================
+   *  MODAL
+   * ========================== */
+  let CURRENT_GAME = null;
+
+  function openModal(game){
+    CURRENT_GAME = game;
+    modalTitle.textContent = game.name;
+    modalImg.src = getCover(game);
+    modalImg.onerror = () => modalImg.src = FALLBACK_IMG;
+
+    const cats = (game.categories && game.categories.length) ? game.categories : ["OUTROS"];
+    modalCat.textContent = String(cats[0] || "OUTROS");
+
+    // descrição neutra (você edita)
+    modalDesc.textContent = "Abra o catálogo para explorar mais títulos ou vá para a oferta para adquirir o acesso ao software.";
+
+    backdrop.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal(){
+    backdrop.classList.remove("show");
+    document.body.style.overflow = "";
+    CURRENT_GAME = null;
+  }
+
+  modalClose.addEventListener("click", closeModal);
+  backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
+  document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
+
+  modalGoPlans.addEventListener("click", ()=>{
+    closeModal();
+    document.getElementById("planos").scrollIntoView({behavior:"smooth"});
+  });
+  modalBuyNow.addEventListener("click", ()=>{
+    window.open("SEU_LINK_DE_CHECKOUT_AQUI", "_blank");
+  });
+
+  /** ==========================
+   *  TOASTS (gamificação) - neutro
+   * ========================== */
+  const NAMES = ["João", "Marcos", "Ana", "Paulo", "Bruna", "Rafael", "Gustavo", "Diego", "Larissa", "Carla"];
+  function startToasts(){
+    setInterval(()=>{
+      if(!GAMES.length) return;
+      const n = NAMES[Math.floor(Math.random()*NAMES.length)];
+      const g = (featuredList.length ? featuredList : GAMES)[Math.floor(Math.random()*(featuredList.length ? featuredList.length : 20))];
+      toast(`${n} acabou de abrir ${g?.name || "um título"} no catálogo`);
+    }, 5200);
+  }
+
+  /** ==========================
+   *  INIT
+   * ========================== */
+  loadGames().then(()=> startToasts()).catch(()=>{
+    statusMsg.textContent = "Erro ao carregar games_741_steam.json";
+  });
 </script>
+
 </body>
 </html>
