@@ -2,1347 +2,1633 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>OVERISE | Official Software</title>
-  <meta name="description" content="OVERISE: catálogo premium, busca inteligente e experiência de software com visual dark premium. Encontre jogos rapidamente e explore a vitrine de destaques." />
+
+  <!-- SEO / Social -->
+  <meta name="description" content="OVERISE — software para organizar e acessar sua biblioteca de jogos com uma experiência premium. Interface rápida, catálogo visual e busca inteligente." />
   <meta property="og:title" content="OVERISE | Official Software" />
-  <meta property="og:description" content="Catálogo premium + busca inteligente + vitrine 16:9. Experiência dark premium." />
+  <meta property="og:description" content="Interface premium, vitrine de destaques e busca instantânea. Experiência Dark Premium." />
   <meta property="og:type" content="website" />
-  <meta property="og:locale" content="pt_BR" />
   <meta name="theme-color" content="#00FF41" />
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg:#050505;
-      --panel:#0f0f0f;
-      --panel2:#0b0b0b;
-      --border:#1f1f1f;
-      --text:#e0e0e0;
-      --muted:#9a9a9a;
-      --muted2:#6d6d6d;
+      --panel:#0b0b0b;
+      --panel2:#0f0f0f;
+      --border:rgba(255,255,255,.08);
+      --text:#e8e8e8;
+      --muted:rgba(255,255,255,.58);
+      --muted2:rgba(255,255,255,.42);
       --neon:#00FF41;
-      --font:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      --shadow: 0 10px 40px rgba(0,0,0,.55);
-      --shadowNeon: 0 0 60px rgba(0,255,65,.12);
-      --radius: 14px;
-      --radius2: 12px;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius:18px;
+      --radius2:14px;
+      --max:1180px;
     }
-
-    *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth; scroll-padding-top:92px;}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth; scroll-padding-top: 86px;}
     body{
-      background:var(--bg);
+      margin:0;
+      background: radial-gradient(1200px 700px at 50% -10%, rgba(0,255,65,.12), transparent 60%),
+                  radial-gradient(900px 600px at 0% 30%, rgba(0,120,255,.06), transparent 60%),
+                  var(--bg);
       color:var(--text);
-      font-family:var(--font);
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       overflow-x:hidden;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:inherit; text-decoration:none}
+    button{font-family:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding: 0 18px;}
+    .glow{
+      box-shadow: 0 0 0 1px rgba(0,255,65,.22), 0 0 40px rgba(0,255,65,.12);
     }
 
-    /* ===== Header ===== */
+    /* Header */
     header{
-      position:fixed; top:0; left:0; right:0;
-      z-index:1000;
-      background: rgba(5,5,5,.92);
-      backdrop-filter: blur(10px);
+      position:fixed; top:0; left:0; right:0; z-index:999;
+      backdrop-filter: blur(12px);
+      background: rgba(5,5,5,.72);
       border-bottom: 1px solid rgba(255,255,255,.06);
-      padding: 14px 5%;
+    }
+    .hrow{
+      height: 68px;
       display:flex; align-items:center; justify-content:space-between;
+      gap: 16px;
     }
-    .logo{
-      font-weight: 900;
-      font-size: 1.45rem;
-      letter-spacing: -1px;
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900; letter-spacing:-.8px; text-transform:uppercase;
       color:#fff;
-      text-transform:uppercase;
-      user-select:none;
-      display:flex;
-      align-items:center;
-      gap:10px;
     }
-    .logo-badge{
-      width:10px;height:10px;border-radius:999px;background:var(--neon);
-      box-shadow:0 0 18px rgba(0,255,65,.55);
-    }
-    .logo span{color:var(--neon)}
-    .nav-actions{display:flex; align-items:center; gap:10px}
-    .nav-btn{
+    .brand .dot{
+      width:10px; height:10px; border-radius:50%;
       background: var(--neon);
-      color:#000;
-      padding: 10px 18px;
-      font-weight: 900;
-      text-decoration:none;
-      text-transform:uppercase;
-      font-size:.82rem;
-      border-radius: 10px;
-      transition: .25s ease;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      letter-spacing:.7px;
-      white-space:nowrap;
+      box-shadow: 0 0 18px rgba(0,255,65,.7);
     }
-    .nav-btn:hover{
-      box-shadow: 0 0 22px rgba(0,255,65,.35);
-      transform: translateY(-1px);
-      background:#fff;
+    .brand span{color:var(--neon)}
+    .nav{
+      display:flex; align-items:center; gap: 10px;
     }
-    .nav-btn.secondary{
-      background: transparent;
-      border: 1px solid rgba(255,255,255,.25);
-      color:#fff;
-    }
-    .nav-btn.secondary:hover{
-      border-color: var(--neon);
-      box-shadow: 0 0 18px rgba(0,255,65,.18);
-      background: rgba(0,255,65,.08);
-      color:#fff;
-      transform: translateY(-1px);
-    }
-
-    /* ===== Hero ===== */
-    .hero{
-      position:relative;
-      padding: 150px 20px 60px;
-      text-align:center;
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,.06) 0%, rgba(5,5,5,0) 55%),
-        radial-gradient(circle at 20% 10%, rgba(0,255,65,.09) 0%, rgba(0,0,0,0) 45%),
-        radial-gradient(circle at 80% 0%, rgba(0,255,65,.06) 0%, rgba(0,0,0,0) 50%);
-      overflow:hidden;
-    }
-    .hero-topline{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      color: var(--neon);
-      font-weight: 800;
-      letter-spacing:1px;
-      margin-bottom: 18px;
-      font-size: .9rem;
-      text-transform:uppercase;
-    }
-    .pulse{
-      width:10px;height:10px;border-radius:999px;background:var(--neon);
-      box-shadow: 0 0 18px rgba(0,255,65,.6);
-      animation: pulse 1.6s ease-in-out infinite;
-    }
-    @keyframes pulse{
-      0%,100%{transform:scale(1); opacity:.65}
-      50%{transform:scale(1.35); opacity:1}
-    }
-    .hero h1{
-      font-size: clamp(2.3rem, 6vw, 4.5rem);
-      line-height: 1.05;
-      margin: 0 auto 18px;
-      color:#fff;
-      text-transform:uppercase;
-      letter-spacing: -2px;
-      max-width: 1100px;
-    }
-    .hero h1 span{color:var(--neon)}
-    .hero p{
-      color: var(--muted);
-      font-size: 1.08rem;
-      max-width: 820px;
-      margin: 0 auto 28px;
-      line-height: 1.7;
-    }
-    .hero-ctas{
-      display:flex;
-      justify-content:center;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top: 16px;
-    }
-    .hero-micro{
-      margin-top: 18px;
-      color: var(--muted2);
-      font-size: .9rem;
-      display:flex;
-      justify-content:center;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-    .hero-micro b{color:#cfcfcf}
-    .divider{
-      width:100%;
-      height:1px;
-      margin: 22px auto 0;
-      max-width: 1100px;
-      background: linear-gradient(to right, transparent, rgba(255,255,255,.10), transparent);
-    }
-
-    /* ===== Carousel ===== */
-    .carousel-wrap{
-      padding: 18px 0 10px;
-    }
-    .carousel-container{
-      width: 100%;
-      overflow:hidden;
-      margin: 0 auto;
-      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    }
-    .carousel-track{
-      display:flex;
-      gap:18px;
-      width:max-content;
-      will-change: transform;
-      animation: scroll 44s linear infinite;
-    }
-    @keyframes scroll{
-      0%{ transform: translateX(0); }
-      100%{ transform: translateX(-50%); }
-    }
-    .carousel-item{
-      width: 340px;
-      border-radius: var(--radius);
-      overflow:hidden;
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 10px 14px;
+      border-radius: 999px;
       border:1px solid rgba(255,255,255,.10);
-      background: #000;
-      position:relative;
-      flex-shrink:0;
-      box-shadow: var(--shadow);
-    }
-    .carousel-item img{
-      width:100%;
-      aspect-ratio:16/9;
-      object-fit:cover;
-      display:block;
-      transform: scale(1.03);
-      transition: transform .45s ease;
-    }
-    .carousel-item:hover img{transform:scale(1.08)}
-    .carousel-caption{
-      position:absolute;
-      left:0; right:0; bottom:0;
-      padding: 12px 12px 10px;
-      background: linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,0));
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .carousel-title{
-      color:#fff;
-      font-weight: 900;
-      letter-spacing:.4px;
-      text-transform: uppercase;
-      font-size: .85rem;
-      line-height:1.2;
-      text-align:left;
-    }
-    .chip{
-      font-size: .72rem;
-      font-weight: 900;
-      letter-spacing: .7px;
-      text-transform: uppercase;
-      color: #000;
-      background: var(--neon);
-      padding: 7px 9px;
-      border-radius: 999px;
-      white-space:nowrap;
-    }
-
-    /* ===== Section base ===== */
-    section{padding: 84px 20px;}
-    .section-title{
-      text-align:center;
-      color:#fff;
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      text-transform:uppercase;
-      letter-spacing:-1px;
-      margin-bottom: 14px;
-    }
-    .section-sub{
-      text-align:center;
-      color: var(--muted);
-      max-width: 820px;
-      margin: 0 auto 34px;
-      line-height:1.7;
-      font-size: 1.02rem;
-    }
-
-    /* ===== About/Compare ===== */
-    .about-section{
-      background: #0a0a0a;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .about-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 34px;
-      align-items: start;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .about-card{
-      background: linear-gradient(180deg, rgba(255,255,255,.04) 0%, rgba(0,0,0,.0) 100%);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius);
-      padding: 26px;
-      box-shadow: var(--shadow);
-    }
-    .about-card h3{
-      color:#fff;
-      text-transform: uppercase;
-      letter-spacing:-.6px;
-      margin-bottom: 10px;
-      font-size: 1.25rem;
-      line-height:1.2;
-    }
-    .about-card p{
-      color: var(--muted);
-      line-height:1.7;
-      margin-bottom: 14px;
-      font-size: .98rem;
-    }
-    .feature-list{list-style:none; margin-top: 10px}
-    .feature-list li{
-      display:flex; align-items:flex-start; gap:10px;
-      padding: 10px 0;
-      border-top: 1px solid rgba(255,255,255,.07);
-      color:#cfcfcf;
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.80);
       font-weight: 700;
-      font-size: .95rem;
+      font-size: 13px;
+      transition: .22s ease;
     }
-    .feature-list li:first-child{border-top:none}
-    .feature-dot{
-      width:10px;height:10px;border-radius:999px;background:var(--neon);
-      margin-top: 6px;
-      box-shadow:0 0 14px rgba(0,255,65,.45);
-      flex: 0 0 auto;
-    }
-
-    .compare-table{
-      width:100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    .compare-table td{
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,.07);
-      color:#cfcfcf;
-      font-size: .95rem;
-    }
-    .compare-table td:nth-child(2){color:#ff5a5a}
-    .compare-table td:nth-child(3){color:var(--neon); font-weight: 900}
-    .compare-table tr:last-child td{border-bottom:none}
-
-    /* ===== Catalog/Search ===== */
-    .catalog-section{
-      text-align:center;
-    }
-    .search-wrapper{
-      max-width: 760px;
-      margin: 0 auto 18px;
-      position:relative;
-    }
-    .search-input{
-      width:100%;
-      padding: 18px 18px;
-      background: var(--panel);
-      border: 2px solid rgba(255,255,255,.12);
-      color:#fff;
-      font-size: 1.05rem;
-      border-radius: var(--radius);
-      outline:none;
-      text-transform: uppercase;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      transition: .25s ease;
-    }
-    .search-input:focus{
-      border-color: var(--neon);
-      box-shadow: 0 0 30px rgba(0,255,65,.12);
-    }
-    .hint-row{
-      display:flex;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-      color: var(--muted2);
-      font-size: .9rem;
-    }
-    .hint{
+    .pill:hover{transform: translateY(-1px); border-color: rgba(0,255,65,.45);}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 12px 16px;
+      border-radius: 12px;
       border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      padding: 7px 10px;
-      border-radius: 999px;
-      cursor:pointer;
-      user-select:none;
-      transition:.2s ease;
-    }
-    .hint:hover{
-      border-color: rgba(0,255,65,.45);
-      box-shadow: 0 0 18px rgba(0,255,65,.08);
-      transform: translateY(-1px);
-    }
-
-    #statusMsg{
-      margin: 14px auto 0;
-      max-width: 900px;
-      color: var(--neon);
-      font-weight: 900;
-      letter-spacing: .7px;
-      text-transform: uppercase;
-      font-size: .92rem;
-      display:none;
-    }
-    #full-grid{
-      display:none;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 22px;
-      max-width: 1300px;
-      margin: 34px auto 0;
-      text-align:left;
-    }
-    #full-grid.active{display:grid}
-
-    .game-card{
-      background: var(--panel);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: var(--radius);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-      cursor:pointer;
-    }
-    .game-card:hover{
-      transform: translateY(-7px);
-      border-color: var(--neon);
-      box-shadow: var(--shadowNeon);
-    }
-    .imgbox{
-      width:100%;
-      aspect-ratio:16/9;
-      background:#000;
-      overflow:hidden;
-    }
-    .imgbox img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      transform: scale(1.02);
-      transition: transform .45s ease;
-    }
-    .game-card:hover .imgbox img{transform:scale(1.06)}
-    .card-info{
-      padding: 14px 14px 14px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      flex:1;
-    }
-    .game-title{
-      font-weight: 900;
-      font-size: .92rem;
+      background: rgba(255,255,255,.04);
       color:#fff;
-      text-transform: uppercase;
-      line-height:1.25;
-      letter-spacing:.4px;
-    }
-    .meta-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-top:auto;
-    }
-    .badge{
-      font-size: .72rem;
       font-weight: 900;
       letter-spacing:.6px;
-      text-transform: uppercase;
-      padding: 6px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(0,255,65,.55);
-      background: rgba(0,255,65,.10);
-      color: var(--neon);
-      display:inline-flex;
-      align-items:center;
-      gap:7px;
-      white-space:nowrap;
-    }
-    .dot{
-      width:8px;height:8px;border-radius:999px;background:var(--neon);
-      box-shadow:0 0 12px rgba(0,255,65,.45);
-    }
-    .mini{
-      font-size: .85rem;
-      color: var(--muted2);
-      font-weight: 700;
-    }
-
-    .more-wrap{
-      display:none;
-      margin: 28px auto 0;
-      text-align:center;
-    }
-    .more-wrap.active{display:block}
-    .btn-more{
-      background: transparent;
-      border: 1px solid rgba(255,255,255,.25);
-      color:#fff;
-      padding: 14px 18px;
-      border-radius: 12px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .7px;
+      text-transform:uppercase;
+      font-size: 12px;
       cursor:pointer;
-      transition: .2s ease;
+      transition:.22s ease;
+      user-select:none;
     }
-    .btn-more:hover{
-      border-color: var(--neon);
-      background: rgba(0,255,65,.08);
-      transform: translateY(-1px);
-      box-shadow: 0 0 18px rgba(0,255,65,.10);
+    .btn:hover{transform: translateY(-1px); border-color: rgba(0,255,65,.40);}
+    .btn-primary{
+      background: var(--neon);
+      color:#000;
+      border: 1px solid rgba(0,255,65,.9);
+      box-shadow: 0 10px 30px rgba(0,255,65,.12);
+    }
+    .btn-primary:hover{filter:brightness(1.05); box-shadow: 0 0 40px rgba(0,255,65,.28); border-color: rgba(0,255,65,1);}
+    .btn-ghost{
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.18);
+      color: rgba(255,255,255,.92);
+    }
+    .hide-md{display:inline-flex}
+    @media (max-width: 720px){
+      .hide-md{display:none}
+      .pill{display:none}
     }
 
-    .cta-ver-tudo{
-      margin-top: 28px;
-      display:none;
-      text-align:center;
+    /* Sections */
+    section{padding: 64px 0;}
+    .hero{
+      padding-top: 118px;
+      padding-bottom: 38px;
     }
-    .cta-ver-tudo.active{display:block}
-
-    /* ===== Feedback ===== */
-    .feedback-section{
-      background: #0a0a0a;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .feedback-grid{
+    .hero-grid{
       display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 22px;
-      max-width: 1200px;
-      margin: 36px auto 0;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 28px;
+      align-items: center;
     }
-    .review-card{
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr}
+    }
+
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      font-weight: 800; letter-spacing: 1.2px;
+      text-transform:uppercase;
+      color: rgba(0,255,65,.95);
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .kicker .live{
+      width:8px; height:8px; border-radius:50%;
+      background: var(--neon);
+      box-shadow: 0 0 20px rgba(0,255,65,.85);
+    }
+    h1{
+      margin:0;
+      font-size: clamp(2.2rem, 4.8vw, 4rem);
+      letter-spacing: -1.6px;
+      text-transform: uppercase;
+      line-height: 1.02;
+      color:#fff;
+    }
+    .lead{
+      margin-top: 14px;
+      max-width: 54ch;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.65;
+    }
+    .hero-cta{
+      display:flex; gap: 12px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+    .note{
+      margin-top: 12px;
+      color: rgba(255,255,255,.45);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* Metrics */
+    .metrics{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 22px;
+    }
+    @media (max-width: 520px){
+      .metrics{grid-template-columns:1fr}
+    }
+    .metric{
       background: rgba(255,255,255,.03);
       border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+    .metric .big{
+      font-weight: 900;
+      font-size: 20px;
+      letter-spacing:-.6px;
+      color:#fff;
+    }
+    .metric .small{
+      margin-top: 6px;
+      font-size: 12px;
+      color: rgba(255,255,255,.52);
+      line-height: 1.4;
+    }
+    .metric .big span{color:var(--neon)}
+
+    /* Hero right card */
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow:hidden;
+    }
+    .hero-card:before{
+      content:"";
+      position:absolute; inset:-120px -180px auto auto;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle at center, rgba(0,255,65,.14), transparent 62%);
+      transform: rotate(25deg);
+      pointer-events:none;
+    }
+    .hero-card h3{
+      margin:0;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,.9);
+    }
+    .hero-card p{
+      margin: 10px 0 0;
+      color: rgba(255,255,255,.60);
+      font-size: 13px;
+      line-height: 1.6;
+      max-width: 56ch;
+    }
+    .mini-row{
+      display:flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 9px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,65,.28);
+      background: rgba(0,255,65,.08);
+      font-weight: 800;
+      font-size: 12px;
+      color: rgba(255,255,255,.90);
+      white-space: nowrap;
+    }
+    .chip .c{
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--neon);
+      box-shadow: 0 0 14px rgba(0,255,65,.7);
+    }
+
+    /* Featured shelf (Keyrush-like) */
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between; gap: 14px;
+      margin-bottom: 16px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size: 22px;
+      letter-spacing:-.6px;
+      text-transform: uppercase;
+      color:#fff;
+    }
+    .section-title p{
+      margin:0;
+      color: var(--muted2);
+      font-size: 13px;
+      max-width: 52ch;
+      line-height: 1.5;
+    }
+    .shelf{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 980px){
+      .shelf{grid-template-columns: repeat(6, 1fr);}
+    }
+    @media (max-width: 560px){
+      .shelf{grid-template-columns: repeat(2, 1fr);}
+    }
+    .game{
+      grid-column: span 3;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      overflow:hidden;
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+      cursor:pointer;
+    }
+    .game:hover{
+      transform: translateY(-4px);
+      border-color: rgba(0,255,65,.45);
+      box-shadow: 0 22px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(0,255,65,.12);
+    }
+    .game .img{
+      width:100%;
+      aspect-ratio: 16/9;
+      background:#000;
+      display:block;
+      object-fit: cover;
+    }
+    .ginfo{
+      padding: 12px;
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap: 10px;
+    }
+    .gname{
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing:.6px;
+      text-transform: uppercase;
+      color:#fff;
+      line-height: 1.25;
+      flex:1;
+    }
+    .gbadge{
+      display:inline-flex; align-items:center; gap:6px;
+      font-size: 11px;
+      font-weight: 900;
+      color: rgba(255,255,255,.90);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius: 999px;
+      padding: 6px 8px;
+      white-space: nowrap;
+    }
+    .gbadge i{
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--neon);
+      display:inline-block;
+      box-shadow: 0 0 12px rgba(0,255,65,.7);
+    }
+
+    /* App / product section */
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    @media (max-width: 920px){
+      .grid2{grid-template-columns: 1fr;}
+    }
+    .card{
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.09);
       border-radius: var(--radius);
       padding: 22px;
       box-shadow: var(--shadow);
+      position: relative;
+      overflow:hidden;
     }
-    .user-info{
-      display:flex;
-      align-items:center;
-      gap: 12px;
-      margin-bottom: 12px;
+    .card h3{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:-.4px;
+      text-transform: uppercase;
+      color:#fff;
     }
-    .avatar{
-      width: 42px; height: 42px;
-      border-radius: 999px;
-      background: rgba(0,255,65,.14);
-      border: 1px solid rgba(0,255,65,.35);
+    .card p{
+      margin: 10px 0 0;
+      color: rgba(255,255,255,.60);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .bullets{margin-top: 14px; display:grid; gap: 10px;}
+    .b{
+      display:flex; gap: 10px; align-items:flex-start;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .b .ic{
+      width: 34px; height: 34px; border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(0,255,65,.10);
+      border: 1px solid rgba(0,255,65,.25);
       color: var(--neon);
-      display:flex;
-      align-items:center;
-      justify-content:center;
       font-weight: 900;
-      letter-spacing:.5px;
-      box-shadow: 0 0 18px rgba(0,255,65,.12);
-      flex:0 0 auto;
+      flex-shrink:0;
     }
-    .stars{color:#FFD700;font-size:.92rem}
-    .review-text{
-      color:#b9b9b9;
-      font-size:.95rem;
-      line-height:1.6;
+    .b .t{font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing:.6px; color:#fff;}
+    .b .s{margin-top: 4px; font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.5;}
+    .mock{
+      border-radius: var(--radius);
+      border: 1px solid rgba(0,255,65,.20);
+      background: linear-gradient(180deg, rgba(0,255,65,.10), rgba(0,0,0,.35));
+      min-height: 280px;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 18px;
+      position: relative;
+      overflow:hidden;
+    }
+    .mock:before{
+      content:"";
+      position:absolute; inset:-120px auto auto -150px;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle at center, rgba(0,255,65,.18), transparent 60%);
+      transform: rotate(-18deg);
+      pointer-events:none;
+    }
+    .mock .top{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      position: relative;
+    }
+    .kbd{
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      color: rgba(255,255,255,.85);
+    }
+    .mock .screen{
+      margin-top: 12px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.40);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 14px;
+      position: relative;
+    }
+    .lines{display:grid; gap:10px; margin-top: 8px;}
+    .line{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.06);
+      overflow:hidden;
+      position:relative;
+    }
+    .line:after{
+      content:"";
+      position:absolute; left:-30%; top:0; bottom:0;
+      width: 30%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,65,.25), transparent);
+      animation: shimmer 2.2s infinite linear;
+    }
+    @keyframes shimmer{
+      0%{transform: translateX(0)}
+      100%{transform: translateX(400%)}
+    }
+
+    /* How it works */
+    .steps{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    @media (max-width: 920px){
+      .steps{grid-template-columns:1fr}
+    }
+    .step{
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      position:relative;
+      overflow:hidden;
+    }
+    .step .n{
+      width: 34px; height: 34px; border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(0,255,65,.10);
+      border: 1px solid rgba(0,255,65,.25);
+      color: var(--neon);
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+    .step .t{
+      margin:0;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing:.6px;
+      color:#fff;
+      font-size: 12px;
+    }
+    .step .s{
+      margin-top: 6px;
+      color: rgba(255,255,255,.58);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* Catalog search */
+    .searchbox{
+      margin-top: 12px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+    }
+    .searchrow{
+      display:flex; gap: 10px; align-items:center;
+      flex-wrap: wrap;
+    }
+    .input{
+      flex: 1;
+      min-width: 220px;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 14px 14px;
+      color:#fff;
+      outline:none;
+      font-weight: 800;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    .input::placeholder{color: rgba(255,255,255,.35)}
+    .input:focus{border-color: rgba(0,255,65,.45); box-shadow: 0 0 0 4px rgba(0,255,65,.08)}
+    .smallmuted{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.50);
+      line-height: 1.5;
+    }
+
+    .grid{
+      margin-top: 14px;
+      display:none;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .grid.active{display:grid}
+    .card2{
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 16px;
+      overflow:hidden;
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+      cursor:pointer;
+    }
+    .card2:hover{
+      transform: translateY(-3px);
+      border-color: rgba(0,255,65,.45);
+      box-shadow: 0 22px 70px rgba(0,0,0,.55);
+    }
+    .card2 img{
+      width:100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display:block;
+      background:#000;
+    }
+    .c2info{
+      padding: 12px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display:flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .c2name{
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing:.6px;
+      color:#fff;
+      line-height: 1.25;
+    }
+    .tagrow{display:flex; gap: 6px; flex-wrap:wrap;}
+    .tag{
+      display:inline-flex; align-items:center; gap:6px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing:.4px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.86);
+    }
+    .tag i{
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--neon);
+      display:inline-block;
+    }
+
+    /* Social proofs */
+    .proofs{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    @media (max-width: 920px){
+      .proofs{grid-template-columns:1fr}
+    }
+    .proof{
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+    }
+    .proof .who{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .user{
+      display:flex; align-items:center; gap: 10px;
+    }
+    .ava{
+      width: 38px; height: 38px; border-radius: 14px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      font-weight: 900;
+      color:#fff;
+    }
+    .uname{
+      font-weight: 900;
+      color:#fff;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing:.6px;
+    }
+    .uinfo{
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      margin-top: 4px;
+    }
+    .seal{
+      display:inline-flex; align-items:center; gap: 8px;
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing:.6px;
+      text-transform: uppercase;
+      color: rgba(0,255,65,.95);
+      border: 1px solid rgba(0,255,65,.30);
+      background: rgba(0,255,65,.08);
+      padding: 7px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .proof p{
+      margin: 12px 0 0;
+      color: rgba(255,255,255,.62);
+      font-size: 13px;
+      line-height: 1.7;
       font-style: italic;
     }
 
-    /* ===== FAQ ===== */
-    .faq-section{
-      max-width: 900px;
+    /* FAQ */
+    .faq{
+      max-width: 860px;
       margin: 0 auto;
     }
-    .faq-title{
-      text-align:center;
-      color:#fff;
-      font-size: clamp(1.6rem, 3vw, 2rem);
-      margin-bottom: 34px;
-      text-transform: uppercase;
-      letter-spacing: -1px;
+    .faq h2{margin:0; text-align:center; color:#fff; text-transform:uppercase; letter-spacing:-.6px;}
+    .acc{
+      margin-top: 18px;
+      border-radius: var(--radius);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.09);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
     }
-    .accordion-item{
-      border-bottom: 1px solid rgba(255,255,255,.10);
-      padding: 6px 0;
-    }
-    .accordion-header{
-      padding: 18px 0;
-      color:#fff;
-      font-weight: 900;
+    .item{border-bottom: 1px solid rgba(255,255,255,.08);}
+    .item:last-child{border-bottom:none}
+    .q{
+      padding: 16px 16px;
       cursor:pointer;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: 10px;
-      text-transform: uppercase;
-      letter-spacing:.4px;
-    }
-    .accordion-icon{
-      color: var(--neon);
-      font-weight: 900;
-      font-size: 1.6rem;
-      width: 32px;
-      text-align:right;
+      display:flex; align-items:center; justify-content:space-between; gap: 12px;
       user-select:none;
     }
-    .accordion-content{
+    .q .t{
+      font-weight: 900;
+      letter-spacing:.6px;
+      text-transform: uppercase;
+      font-size: 12px;
+      color:#fff;
+    }
+    .chev{
+      width: 36px; height: 36px;
+      border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.10);
+      color: var(--neon);
+      font-weight: 900;
+      transition: transform .18s ease;
+      flex-shrink:0;
+    }
+    .a{
       max-height: 0;
       overflow:hidden;
-      transition: max-height .28s ease;
-      color: var(--muted);
+      transition: max-height .26s ease;
+      padding: 0 16px;
+      color: rgba(255,255,255,.62);
       line-height: 1.7;
-      padding-right: 42px;
+      font-size: 13px;
     }
-    .accordion-item.active .accordion-content{
-      max-height: 220px;
-      padding-bottom: 18px;
-    }
+    .item.open .a{max-height: 240px; padding-bottom: 16px;}
+    .item.open .chev{transform: rotate(45deg);}
 
-    /* ===== Offer ===== */
-    .offer-section{
-      padding: 0 20px 80px;
+    /* Offer */
+    .offer{
+      padding-top: 34px;
+      padding-bottom: 80px;
     }
-    .offer-box{
-      background: linear-gradient(180deg, rgba(255,255,255,.05) 0%, rgba(0,0,0,.0) 100%);
-      border: 1px solid rgba(0,255,65,.75);
-      border-radius: 22px;
-      padding: 56px 22px;
-      max-width: 640px;
+    .offerbox{
+      max-width: 720px;
       margin: 0 auto;
-      text-align:center;
-      box-shadow: var(--shadowNeon);
+      background: linear-gradient(180deg, rgba(0,255,65,.12), rgba(255,255,255,.03) 22%, rgba(0,0,0,.30));
+      border: 1px solid rgba(0,255,65,.45);
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 0 0 1px rgba(0,255,65,.08), 0 30px 120px rgba(0,0,0,.65);
+      position: relative;
+      overflow:hidden;
     }
-    .offer-pill{
-      display:inline-block;
-      background: var(--neon);
-      color:#000;
-      padding: 7px 14px;
+    .offerbox:before{
+      content:"";
+      position:absolute; inset:-140px -120px auto auto;
+      width: 460px; height: 460px;
+      background: radial-gradient(circle at center, rgba(0,255,65,.22), transparent 60%);
+      transform: rotate(25deg);
+      pointer-events:none;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
       border-radius: 999px;
+      border: 1px solid rgba(0,255,65,.35);
+      background: rgba(0,255,65,.10);
       font-weight: 900;
-      font-size: .78rem;
+      letter-spacing:.8px;
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: .8px;
-      margin-bottom: 12px;
+      color: rgba(0,255,65,.95);
+      position: relative;
     }
-    .offer-title{
+    .badge .b{
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--neon);
+      box-shadow: 0 0 14px rgba(0,255,65,.8);
+    }
+    .offerhead{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap: 16px;
+      margin-top: 12px;
+      position: relative;
+    }
+    .offerhead h2{
+      margin:0;
       color:#fff;
-      font-size: clamp(2rem, 4vw, 2.6rem);
-      line-height:1.15;
       text-transform: uppercase;
-      letter-spacing:-1px;
+      letter-spacing: -1px;
+      font-size: 26px;
+      line-height: 1.1;
     }
     .price{
-      font-size: clamp(3.2rem, 6vw, 4.6rem);
       font-weight: 900;
+      font-size: 44px;
+      letter-spacing: -1.6px;
       color: var(--neon);
-      margin: 18px 0 10px;
-      letter-spacing: -2px;
+      white-space: nowrap;
     }
-    .offer-list{
-      text-align:left;
-      color:#cfcfcf;
-      margin: 16px auto 26px;
-      line-height: 2;
-      list-style:none;
-      max-width: 420px;
-      font-weight: 700;
+    @media (max-width: 520px){
+      .offerhead{flex-direction:column; align-items:flex-start}
+      .price{font-size: 40px}
     }
-    .offer-list li{display:flex; gap:10px; align-items:flex-start}
-    .offer-list .ok{
+    .offerbox p{
+      margin: 10px 0 0;
+      color: rgba(255,255,255,.62);
+      font-size: 13px;
+      line-height: 1.65;
+      position: relative;
+    }
+    .list{
+      margin-top: 14px;
+      display:grid;
+      gap: 10px;
+      position: relative;
+    }
+    .li{
+      display:flex; gap:10px; align-items:flex-start;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .li .ok{
+      width: 26px; height: 26px; border-radius: 10px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(0,255,65,.12);
+      border: 1px solid rgba(0,255,65,.30);
       color: var(--neon);
       font-weight: 900;
-      margin-top: 2px;
+      flex-shrink:0;
+      margin-top: 1px;
     }
-    .btn-buy{
-      width: 100%;
+    .li .txt{
+      color: rgba(255,255,255,.72);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .buyrow{
+      display:flex; gap: 10px; margin-top: 16px; flex-wrap: wrap;
+      position: relative;
+    }
+    .buy{
+      flex: 1;
+      min-width: 220px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(0,255,65,.85);
       background: var(--neon);
       color:#000;
-      padding: 18px 20px;
-      font-size: 1.08rem;
       font-weight: 900;
-      border: none;
-      border-radius: 14px;
-      cursor:pointer;
+      letter-spacing: .7px;
       text-transform: uppercase;
-      letter-spacing: .9px;
-      transition:.25s ease;
+      cursor:pointer;
+      transition:.18s ease;
     }
-    .btn-buy:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 0 40px rgba(0,255,65,.35);
-      background:#fff;
+    .buy:hover{transform: translateY(-1px); box-shadow: 0 0 40px rgba(0,255,65,.30);}
+    .safe{
+      flex: 1;
+      min-width: 220px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.88);
+      font-weight: 900;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      cursor:pointer;
+      transition:.18s ease;
     }
-    .secure{
-      margin-top: 12px;
-      font-size: .86rem;
-      color: var(--muted2);
-    }
+    .safe:hover{transform: translateY(-1px); border-color: rgba(0,255,65,.35);}
 
     footer{
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 28px 0;
+      color: rgba(255,255,255,.45);
+      font-size: 12px;
+      line-height: 1.6;
       text-align:center;
-      padding: 42px 20px;
-      color:#555;
-      font-size: .85rem;
-      border-top: 1px solid rgba(255,255,255,.07);
     }
 
-    /* ===== Toasts ===== */
+    /* Toasts */
     .toasts{
       position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 2000;
+      right: 14px;
+      bottom: 14px;
+      z-index: 9999;
       display:flex;
-      flex-direction:column;
+      flex-direction: column;
       gap: 10px;
       pointer-events:none;
     }
     .toast{
-      pointer-events:none;
-      background: rgba(10,10,10,.92);
+      width: min(360px, calc(100vw - 28px));
+      background: rgba(15,15,15,.88);
       border: 1px solid rgba(255,255,255,.10);
-      border-left: 3px solid var(--neon);
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 12px 12px;
-      min-width: 260px;
-      max-width: 360px;
-      box-shadow: var(--shadow);
-      animation: toastIn .28s ease-out;
+      box-shadow: 0 18px 70px rgba(0,0,0,.60);
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      transform: translateY(10px);
+      opacity: 0;
+      animation: toastIn .25s ease forwards;
     }
     @keyframes toastIn{
-      from{ transform: translateY(8px); opacity: 0 }
-      to{ transform: translateY(0); opacity: 1 }
+      to{transform: translateY(0); opacity:1;}
     }
-    .toast .t1{
-      color:#fff;
+    .toast .ic{
+      width: 36px; height: 36px; border-radius: 14px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(0,255,65,.10);
+      border: 1px solid rgba(0,255,65,.25);
+      color: var(--neon);
+      font-weight: 900;
+      flex-shrink:0;
+    }
+    .toast .t{
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing:.4px;
-      font-size:.8rem;
-      margin-bottom: 3px;
+      letter-spacing:.6px;
+      font-size: 11px;
+      color:#fff;
     }
-    .toast .t2{
-      color: var(--muted);
-      font-size: .9rem;
-      line-height:1.35;
+    .toast .s{
+      margin-top: 3px;
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
+      line-height: 1.45;
     }
 
-    /* ===== Mobile ===== */
-    @media(max-width: 768px){
-      header{padding: 12px 4%}
-      .nav-btn{padding: 10px 14px}
-      .carousel-item{width: 300px}
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none!important; transition:none!important}
+      html{scroll-behavior:auto}
     }
   </style>
 </head>
 
 <body>
-
   <header>
-    <div class="logo">
-      <span class="logo-badge"></span>
-      OVER<span>ISE</span>
-    </div>
-    <div class="nav-actions">
-      <a class="nav-btn secondary" href="#catalogo">Ver catálogo</a>
-      <a class="nav-btn" href="#offer">Liberar acesso</a>
+    <div class="wrap">
+      <div class="hrow">
+        <div class="brand">
+          <span class="dot"></span>
+          OVER<span>ISE</span>
+        </div>
+
+        <div class="nav">
+          <a class="pill" href="#catalogo" title="Ver catálogo">Catálogo</a>
+          <a class="pill hide-md" href="#como-funciona" title="Como funciona">Como funciona</a>
+          <a class="btn btn-ghost" href="#catalogo">Ver lista</a>
+          <a class="btn btn-primary" href="#oferta">Liberar acesso</a>
+        </div>
+      </div>
     </div>
   </header>
 
+  <!-- HERO -->
   <section class="hero">
-    <div class="hero-topline"><span class="pulse"></span> Sistema online • V4.1</div>
-    <h1>Catálogo premium<br><span>com busca inteligente</span></h1>
-    <p>
-      Explore uma vitrine 16:9 no estilo “Game Pass”, encontre títulos em segundos
-      e navegue com desempenho alto mesmo com centenas de itens.
-    </p>
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="kicker"><span class="live"></span> Sistema online • Interface V5</div>
+          <h1>Sua biblioteca.<br><span style="color:var(--neon)">sem fricção.</span></h1>
+          <div class="lead">
+            Um software com experiência premium para organizar, pesquisar e acessar sua coleção de jogos com velocidade e visual cinematográfico (banners 16:9).
+          </div>
 
-    <div class="hero-ctas">
-      <a class="nav-btn secondary" href="#catalogo">Pesquisar jogos</a>
-      <a class="nav-btn" href="#offer">Ver oferta</a>
-    </div>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#oferta">Começar agora</a>
+            <a class="btn btn-ghost" href="#catalogo">Pesquisar jogos</a>
+          </div>
 
-    <div class="hero-micro">
-      <span>⚡ <b>Carregamento rápido</b> (JSON local)</span>
-      <span>🧠 <b>Apelidos</b> (ex: GTA, COD)</span>
-      <span>🖼️ <b>Capas 16:9</b> (header)</span>
-    </div>
+          <div class="metrics">
+            <div class="metric">
+              <div class="big"><span id="statTotal">741</span>+</div>
+              <div class="small">Itens no catálogo local (JSON) para carregamento instantâneo.</div>
+            </div>
+            <div class="metric">
+              <div class="big"><span>16:9</span></div>
+              <div class="small">Vitrine widescreen com banners oficiais para um visual premium.</div>
+            </div>
+            <div class="metric">
+              <div class="big"><span>Busca</span> Smart</div>
+              <div class="small">Atalhos: “GTA”, “COD”, “NFS”, “RDR2”… encontra rápido.</div>
+            </div>
+          </div>
 
-    <div class="divider"></div>
+          <div class="note">
+            *Este site usa <b>games_741_steam.json</b> local para performance e estabilidade.
+          </div>
+        </div>
 
-    <div class="carousel-wrap">
-      <div class="carousel-container">
-        <div class="carousel-track" id="carouselTrack">
-          <!-- JS injeta destaques aqui -->
+        <div class="hero-card glow">
+          <h3>Overise Software</h3>
+          <p>
+            Experiência “Dark Premium” com foco em velocidade: carregamento instantâneo, vitrine de destaques e busca com catálogo oculto (sem poluição visual).
+          </p>
+
+          <div class="mini-row">
+            <div class="chip"><span class="c"></span> Catálogo local</div>
+            <div class="chip"><span class="c"></span> Lazy-load</div>
+            <div class="chip"><span class="c"></span> UI premium</div>
+          </div>
+
+          <div class="mock" style="margin-top:14px;">
+            <div class="top">
+              <div class="brand" style="gap:8px; font-size: 14px;">
+                <span class="dot"></span> OVER<span>ISE</span>
+              </div>
+              <div class="kbd">Windows App</div>
+            </div>
+            <div class="screen">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                <div style="font-weight:900; text-transform:uppercase; letter-spacing:.7px; font-size:12px; color:#fff;">
+                  Biblioteca
+                </div>
+                <div style="color: rgba(255,255,255,.55); font-size:12px;">Pesquisa rápida</div>
+              </div>
+              <div class="lines">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+              </div>
+              <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+                <span class="tag"><i></i> Disponível</span>
+                <span class="tag"><i></i> Offline-friendly</span>
+                <span class="tag"><i></i> Destaques</span>
+              </div>
+            </div>
+            <div style="position:relative; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn btn-primary" style="flex:1; min-width: 180px;" onclick="scrollToId('catalogo')">Abrir catálogo</button>
+              <button class="btn btn-ghost" style="flex:1; min-width: 180px;" onclick="scrollToId('oferta')">Ver oferta</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="about-section">
-    <div class="section-title">Mais que uma lista. Um sistema.</div>
-    <div class="section-sub">
-      Interface dark premium, vitrine cinematográfica e uma engine de busca
-      pensada para converter curiosidade em ação.
-    </div>
+  <!-- FEATURED -->
+  <section>
+    <div class="wrap">
+      <div class="section-title">
+        <div>
+          <h2>Destaques da semana</h2>
+          <p>Uma vitrine com o “filé” primeiro. Clique em qualquer card para ir direto à oferta.</p>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="btn btn-ghost" onclick="scrollToId('catalogo')">Ver catálogo</button>
+          <button class="btn btn-primary" onclick="scrollToId('oferta')">Comprar</button>
+        </div>
+      </div>
 
-    <div class="about-grid">
-      <div class="about-card">
-        <h3>Experiência “premium”</h3>
+      <div class="shelf" id="featuredShelf"></div>
+    </div>
+  </section>
+
+  <!-- APP / BENEFITS -->
+  <section id="sobre">
+    <div class="wrap">
+      <div class="grid2">
+        <div class="card">
+          <h3>Um ecossistema. Não só uma página.</h3>
+          <p>
+            A proposta é entregar uma experiência de software premium: interface rápida, vitrine cinematográfica e busca inteligente
+            com dados locais para estabilidade.
+          </p>
+          <div class="bullets">
+            <div class="b">
+              <div class="ic">⚡</div>
+              <div>
+                <div class="t">Carregamento instantâneo</div>
+                <div class="s">Catálogo via JSON local (sem depender de APIs externas instáveis).</div>
+              </div>
+            </div>
+            <div class="b">
+              <div class="ic">🧠</div>
+              <div>
+                <div class="t">Busca inteligente</div>
+                <div class="s">Atalhos e dicionário interno: encontre rápido mesmo com nomes abreviados.</div>
+              </div>
+            </div>
+            <div class="b">
+              <div class="ic">🎬</div>
+              <div>
+                <div class="t">Visual widescreen 16:9</div>
+                <div class="s">Banners cinematográficos para um layout estilo Netflix / Game Pass.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Comparativo de valor</h3>
+          <p>
+            Uma forma simples de comunicar “custo-benefício” (ajuste os textos conforme seu produto real).
+          </p>
+          <div class="bullets">
+            <div class="b">
+              <div class="ic">💸</div>
+              <div>
+                <div class="t">Compra avulsa</div>
+                <div class="s">Você paga por item/serviço isolado, sem experiência unificada.</div>
+              </div>
+            </div>
+            <div class="b">
+              <div class="ic">🧩</div>
+              <div>
+                <div class="t">Overise</div>
+                <div class="s">Um software com UI premium + organização + vitrine + busca inteligente.</div>
+              </div>
+            </div>
+            <div class="b">
+              <div class="ic">🔒</div>
+              <div>
+                <div class="t">Confiança</div>
+                <div class="s">Ajuste suas políticas/termos conforme operação, suporte e entrega real.</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="scrollToId('como-funciona')">Como funciona</button>
+            <button class="btn btn-primary" onclick="scrollToId('oferta')">Liberar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="como-funciona">
+    <div class="wrap">
+      <div class="section-title">
+        <div>
+          <h2>Como funciona</h2>
+          <p>3 passos, simples e claros (padrão KeyRush). Ajuste os detalhes conforme a entrega real do seu software.</p>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="n">1</div>
+          <p class="t">Comprar</p>
+          <div class="s">Finalize a compra e receba instruções imediatas de acesso e configuração.</div>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <p class="t">Instalar o app</p>
+          <div class="s">Baixe e instale o software (Windows). Interface direta e onboarding simples.</div>
+        </div>
+        <div class="step">
+          <div class="n">3</div>
+          <p class="t">Pesquisar e organizar</p>
+          <div class="s">Use a vitrine + busca inteligente para navegar e organizar sua biblioteca.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOG -->
+  <section id="catalogo">
+    <div class="wrap">
+      <div class="section-title">
+        <div>
+          <h2>Catálogo (busca rápida)</h2>
+          <p>O catálogo grande fica oculto por padrão. Digite para abrir e exibir resultados sem poluir a página.</p>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <button class="btn btn-ghost" id="btnToggleCatalog">Mostrar catálogo</button>
+          <button class="btn btn-primary" onclick="scrollToId('oferta')">Ir para oferta</button>
+        </div>
+      </div>
+
+      <div class="searchbox">
+        <div class="searchrow">
+          <input id="q" class="input" placeholder="Digite: GTA, FIFA, MINE, COD, RDR2..." autocomplete="off" />
+          <button class="btn btn-primary" id="btnSearch">Buscar</button>
+          <button class="btn btn-ghost" id="btnClear">Limpar</button>
+        </div>
+
+        <div class="smallmuted" id="status">
+          Carregando dados do <b>games_741_steam.json</b>…
+        </div>
+
+        <div class="grid" id="grid"></div>
+
+        <div style="margin-top: 14px; display:none; gap:10px; flex-wrap:wrap;" id="moreRow">
+          <button class="btn btn-ghost" id="btnMore">Carregar mais</button>
+          <button class="btn btn-primary" onclick="scrollToId('oferta')">Continuar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <section>
+    <div class="wrap">
+      <div class="section-title">
+        <div>
+          <h2>Prova social</h2>
+          <p>Cards estilo “comunidade/Discord”. Troque os textos por depoimentos reais da sua operação.</p>
+        </div>
+      </div>
+
+      <div class="proofs">
+        <div class="proof">
+          <div class="who">
+            <div class="user">
+              <div class="ava">R</div>
+              <div>
+                <div class="uname">Rafael M.</div>
+                <div class="uinfo">★★★★★ • verificado</div>
+              </div>
+            </div>
+            <div class="seal">✓ verificado</div>
+          </div>
+          <p>“Interface muito rápida. A busca é inteligente e a vitrine deixa tudo mais organizado.”</p>
+        </div>
+
+        <div class="proof">
+          <div class="who">
+            <div class="user">
+              <div class="ava">G</div>
+              <div>
+                <div class="uname">Gustavo L.</div>
+                <div class="uinfo">★★★★★ • verificado</div>
+              </div>
+            </div>
+            <div class="seal">✓ verificado</div>
+          </div>
+          <p>“O layout 16:9 é lindo. Dá sensação de aplicativo premium, bem estilo Game Pass.”</p>
+        </div>
+
+        <div class="proof">
+          <div class="who">
+            <div class="user">
+              <div class="ava">A</div>
+              <div>
+                <div class="uname">André S.</div>
+                <div class="uinfo">★★★★★ • verificado</div>
+              </div>
+            </div>
+            <div class="seal">✓ verificado</div>
+          </div>
+          <p>“Curti o catálogo escondido — só aparece quando eu pesquiso. Fica clean e profissional.”</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="wrap">
+      <div class="faq">
+        <h2>Perguntas frequentes</h2>
+
+        <div class="acc" id="faq">
+          <div class="item">
+            <div class="q"><div class="t">O que eu recebo?</div><div class="chev">+</div></div>
+            <div class="a">Acesso ao software e ao painel do produto, com instruções de uso e suporte conforme sua operação.</div>
+          </div>
+
+          <div class="item">
+            <div class="q"><div class="t">Funciona em quais sistemas?</div><div class="chev">+</div></div>
+            <div class="a">O foco é Windows (PC). Caso você ofereça outras plataformas, ajuste aqui.</div>
+          </div>
+
+          <div class="item">
+            <div class="q"><div class="t">Como é a entrega?</div><div class="chev">+</div></div>
+            <div class="a">Entrega automática após a confirmação do pagamento, com instruções e acesso à área do cliente.</div>
+          </div>
+
+          <div class="item">
+            <div class="q"><div class="t">Existe suporte?</div><div class="chev">+</div></div>
+            <div class="a">Sim. Defina canal (Discord/WhatsApp/Email) e horário. Ajuste conforme seu suporte real.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFER -->
+  <section class="offer" id="oferta">
+    <div class="wrap">
+      <div class="offerbox">
+        <div class="badge"><span class="b"></span> Oferta de lançamento</div>
+
+        <div class="offerhead">
+          <h2>Passe vitalício<br><span style="color:var(--neon)">Overise</span></h2>
+          <div class="price">R$ 9,97</div>
+        </div>
+
         <p>
-          UI limpa, rápida e com foco no que importa: vitrine de destaques,
-          busca instantânea e cards consistentes no padrão widescreen 16:9.
+          Ajuste a promessa para refletir exatamente o que você entrega. A estrutura do checkout e acesso pode ser conectada no botão abaixo.
         </p>
-        <ul class="feature-list">
-          <li><span class="feature-dot"></span> Catálogo em JSON (sem dependência de API)</li>
-          <li><span class="feature-dot"></span> Lazy loading + paginação leve</li>
-          <li><span class="feature-dot"></span> Carrossel automático de destaques</li>
-        </ul>
-      </div>
 
-      <div class="about-card">
-        <h3>Comparativo (exemplo)</h3>
-        <p>
-          Use esta seção para explicar por que seu software/serviço é “no-brainer”.
-          A tabela abaixo é um modelo que você pode ajustar livremente.
+        <div class="list">
+          <div class="li"><div class="ok">✓</div><div class="txt"><b>Acesso imediato</b> ao software / painel do produto</div></div>
+          <div class="li"><div class="ok">✓</div><div class="txt"><b>Interface premium</b> (vitrine + busca + catálogo oculto)</div></div>
+          <div class="li"><div class="ok">✓</div><div class="txt"><b>Atualizações</b> e melhorias contínuas (conforme sua operação)</div></div>
+          <div class="li"><div class="ok">✓</div><div class="txt"><b>Suporte</b> (Discord/WhatsApp) (defina SLA real)</div></div>
+        </div>
+
+        <div class="buyrow">
+          <button class="buy" onclick="openCheckout()">Comprar agora</button>
+          <button class="safe" onclick="scrollToId('catalogo')">Ver catálogo</button>
+        </div>
+
+        <p style="margin-top:12px;">
+          🔒 Pagamento seguro • ⚡ Entrega automática • ✅ Interface premium
         </p>
-        <table class="compare-table">
-          <tr>
-            <td>Experiência</td>
-            <td>Padrão</td>
-            <td>Overise</td>
-          </tr>
-          <tr>
-            <td>Descoberta</td>
-            <td>Manual</td>
-            <td>Busca inteligente</td>
-          </tr>
-          <tr>
-            <td>Vitrine</td>
-            <td>Comum</td>
-            <td>16:9 Cinemático</td>
-          </tr>
-          <tr>
-            <td>Performance</td>
-            <td>Pesada</td>
-            <td>Leve + cache</td>
-          </tr>
-        </table>
       </div>
-    </div>
-  </section>
-
-  <section id="catalogo" class="catalog-section">
-    <div class="section-title">Database global</div>
-    <div class="section-sub">
-      O catálogo fica “limpo” por padrão. Digite 2+ caracteres para revelar os cards.
-    </div>
-
-    <div class="search-wrapper">
-      <input id="searchInput" class="search-input" placeholder="Digite o nome do jogo (ex: GTA, FIFA, MINE...)" autocomplete="off"/>
-    </div>
-
-    <div class="hint-row" id="hintRow">
-      <div class="hint" data-q="GTA">GTA</div>
-      <div class="hint" data-q="FIFA">FIFA</div>
-      <div class="hint" data-q="COD">COD</div>
-      <div class="hint" data-q="MINE">MINE</div>
-      <div class="hint" data-q="ELDEN">ELDEN</div>
-      <div class="hint" data-q="FORZA">FORZA</div>
-    </div>
-
-    <div id="statusMsg"></div>
-
-    <div id="full-grid"></div>
-
-    <div class="more-wrap" id="moreWrap">
-      <button class="btn-more" id="btnMore">Mostrar mais</button>
-    </div>
-
-    <div class="cta-ver-tudo" id="ctaVerTudo">
-      <a class="nav-btn" href="#offer">Ir para a oferta</a>
-    </div>
-  </section>
-
-  <section class="feedback-section">
-    <div class="section-title">Quem usa aprova</div>
-    <div class="section-sub">
-      Exemplo de prova social. Você pode trocar os textos e nomes conforme sua necessidade.
-    </div>
-
-    <div class="feedback-grid">
-      <div class="review-card">
-        <div class="user-info">
-          <div class="avatar">R</div>
-          <div>
-            <div style="color:#fff;font-weight:900;">Rafael M.</div>
-            <div class="stars">★★★★★</div>
-          </div>
-        </div>
-        <p class="review-text">“Layout muito bonito e a busca é rápida. Achei meus jogos em segundos.”</p>
-      </div>
-
-      <div class="review-card">
-        <div class="user-info">
-          <div class="avatar">G</div>
-          <div>
-            <div style="color:#fff;font-weight:900;">Gustavo L.</div>
-            <div class="stars">★★★★★</div>
-          </div>
-        </div>
-        <p class="review-text">“A vitrine 16:9 ficou top. Parece catálogo de plataforma grande.”</p>
-      </div>
-
-      <div class="review-card">
-        <div class="user-info">
-          <div class="avatar">A</div>
-          <div>
-            <div style="color:#fff;font-weight:900;">André S.</div>
-            <div class="stars">★★★★★</div>
-          </div>
-        </div>
-        <p class="review-text">“O ‘mostrar mais’ ajuda a navegar sem travar. Muito bem otimizado.”</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="faq-section">
-    <div class="faq-title">Perguntas frequentes</div>
-
-    <div class="accordion-item">
-      <div class="accordion-header">
-        Como funciona a busca?
-        <div class="accordion-icon">+</div>
-      </div>
-      <div class="accordion-content">
-        A busca é feita localmente no navegador usando o JSON do catálogo.
-        Você também pode usar apelidos (ex: “GTA”, “COD”, “MINE”) para achar mais rápido.
-      </div>
-    </div>
-
-    <div class="accordion-item">
-      <div class="accordion-header">
-        Por que o catálogo fica oculto?
-        <div class="accordion-icon">+</div>
-      </div>
-      <div class="accordion-content">
-        Para manter a página leve e focada. O grid aparece quando você digita 2+ caracteres,
-        evitando carregar centenas de cards sem necessidade.
-      </div>
-    </div>
-
-    <div class="accordion-item">
-      <div class="accordion-header">
-        As capas são oficiais?
-        <div class="accordion-icon">+</div>
-      </div>
-      <div class="accordion-content">
-        As capas são URLs 16:9 (header) armazenadas no seu JSON local.
-        Se uma imagem falhar, a página usa um fallback local para nunca ficar “preto”.
-      </div>
-    </div>
-  </section>
-
-  <section id="offer" class="offer-section">
-    <div class="offer-box">
-      <div class="offer-pill">Oferta</div>
-      <div class="offer-title">Acesso vitalício</div>
-
-      <div class="price">R$ 9,97</div>
-
-      <ul class="offer-list">
-        <li><span class="ok">✅</span> Acesso imediato ao painel</li>
-        <li><span class="ok">✅</span> Vitrine + catálogo com busca inteligente</li>
-        <li><span class="ok">✅</span> Atualizações e melhorias contínuas</li>
-        <li><span class="ok">✅</span> Suporte e onboarding</li>
-      </ul>
-
-      <button class="btn-buy" onclick="window.open('SEU_LINK_DE_CHECKOUT_AQUI', '_blank')">
-        Comprar agora
-      </button>
-
-      <div class="secure">🔒 Pagamento seguro • Entrega automática</div>
     </div>
   </section>
 
   <footer>
-    © 2026 OVERISE SOFTWARE. Todos os direitos reservados.
+    © 2026 OVERISE SOFTWARE. Todos os direitos reservados.<br/>
+    Este site é uma página de apresentação do software e do catálogo local usado para demonstração e navegação.
   </footer>
 
+  <!-- Toast container -->
   <div class="toasts" id="toasts"></div>
 
 <script>
-/* =========================================================
-   CONFIG + HELPERS
-   ========================================================= */
+/**
+ * OVERISE V5 — Single-file landing + catálogo
+ * Usa: games_741_steam.json (mesma pasta)
+ * Espera cada item como: { "name": "...", "cover": "...", "categories": ["..."] }
+ */
 
-const FALLBACK_IMG =
-  "data:image/svg+xml;utf8," +
-  encodeURIComponent(`
-  <svg xmlns='http://www.w3.org/2000/svg' width='1280' height='720'>
-    <defs>
-      <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
-        <stop stop-color='#0b0b0b' offset='0'/>
-        <stop stop-color='#050505' offset='1'/>
-      </linearGradient>
-    </defs>
-    <rect width='100%' height='100%' fill='url(#g)'/>
-    <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
-      fill='#00FF41' font-family='Inter, Arial, sans-serif' font-size='56' font-weight='900'>OVERISE</text>
-    <text x='50%' y='58%' dominant-baseline='middle' text-anchor='middle'
-      fill='#666' font-family='monospace' font-size='22'>SEM CAPA</text>
-  </svg>`);
+/* ===== Helpers ===== */
+function scrollToId(id){ document.getElementById(id)?.scrollIntoView({behavior:"smooth"}); }
+function escapeHtml(s){
+  return String(s ?? "").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m]));
+}
+function norm(s){
+  return String(s ?? "")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .toUpperCase();
+}
+function debounce(fn, ms=180){
+  let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), ms); };
+}
 
+/* ===== Config ===== */
 const JSON_PATH = "./games_741_steam.json";
+const FALLBACK_IMG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450'><rect width='100%' height='100%' fill='%230b0b0b'/><text x='50%' y='50%' fill='%23444' font-family='Inter,Arial' font-size='28' text-anchor='middle'>SEM CAPA</text></svg>";
 
-/** dicionário de apelidos */
 const ALIASES = new Map([
   ["GTA", "GRAND THEFT AUTO"],
   ["GTA 5", "GRAND THEFT AUTO V"],
   ["COD", "CALL OF DUTY"],
-  ["RE4", "RESIDENT EVIL 4"],
+  ["NFS", "NEED FOR SPEED"],
   ["RDR2", "RED DEAD REDEMPTION 2"],
   ["MK", "MORTAL KOMBAT"],
   ["ETS2", "EURO TRUCK SIMULATOR 2"],
-  ["NFS", "NEED FOR SPEED"],
   ["MINE", "MINECRAFT"],
-  ["FIFA", "EA SPORTS FC"]
 ]);
 
-/** Destaques (tentativa por nome: se não achar, cai no top do JSON) */
-const HIGHLIGHTS_BY_NAME = [
-  "Grand Theft Auto V",
-  "Red Dead Redemption 2",
-  "Cyberpunk 2077",
-  "Elden Ring",
-  "God of War",
-  "The Last of Us Part I",
-  "Forza Horizon 5",
-  "Resident Evil 4",
-  "Hogwarts Legacy"
-];
+/* ===== State ===== */
+let GAMES = [];
+let READY = false;
+let CATALOG_VISIBLE = false;
 
-/** simples debounce */
-function debounce(fn, ms=220){
-  let t;
-  return (...args)=>{
-    clearTimeout(t);
-    t = setTimeout(()=>fn(...args), ms);
-  };
-}
+let lastResults = [];
+let shown = 0;
+const PAGE_SIZE = 12;
 
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, m=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
-  }[m]));
-}
+/* ===== DOM ===== */
+const statTotal = document.getElementById("statTotal");
+const featuredShelf = document.getElementById("featuredShelf");
 
-/* =========================================================
-   STATE
-   ========================================================= */
-let FULL_CATALOG = [];
-let CATALOG_LOADED = false;
+const q = document.getElementById("q");
+const btnSearch = document.getElementById("btnSearch");
+const btnClear = document.getElementById("btnClear");
+const btnToggleCatalog = document.getElementById("btnToggleCatalog");
 
-let currentResults = [];
-let page = 0;
-const PER_PAGE = 12;
-
-/* =========================================================
-   DOM
-   ========================================================= */
-const input = document.getElementById("searchInput");
-const statusMsg = document.getElementById("statusMsg");
-const grid = document.getElementById("full-grid");
-const moreWrap = document.getElementById("moreWrap");
+const status = document.getElementById("status");
+const grid = document.getElementById("grid");
+const moreRow = document.getElementById("moreRow");
 const btnMore = document.getElementById("btnMore");
-const ctaVerTudo = document.getElementById("ctaVerTudo");
-const carouselTrack = document.getElementById("carouselTrack");
-const toastsEl = document.getElementById("toasts");
 
-/* =========================================================
-   LOAD JSON
-   ========================================================= */
+/* ===== Load JSON ===== */
 async function loadCatalog(){
-  if(CATALOG_LOADED) return;
+  if(READY) return;
   try{
-    const r = await fetch(JSON_PATH, { cache: "force-cache" });
+    const r = await fetch(JSON_PATH, { cache: "no-store" });
     const data = await r.json();
-    FULL_CATALOG = Array.isArray(data) ? data : (data.games || []);
-    CATALOG_LOADED = true;
 
-    // montar carrossel assim que carregar
-    buildCarousel();
+    // Aceita array direto ou {games:[...]}
+    GAMES = Array.isArray(data) ? data : (Array.isArray(data.games) ? data.games : []);
+    READY = true;
 
+    statTotal.textContent = String(GAMES.length || 741);
+    status.innerHTML = `Pronto. Digite para buscar. <span style="color:rgba(255,255,255,.55)">(${GAMES.length} itens carregados)</span>`;
+
+    buildFeatured();
+    startToasts();
   }catch(e){
-    CATALOG_LOADED = false;
-    statusMsg.style.display = "block";
-    statusMsg.textContent = "Erro ao carregar o catálogo (games_741_steam.json).";
+    status.innerHTML = "<span style='color:rgba(255,180,0,.95)'>Erro ao carregar o catálogo.</span> Verifique se <b>games_741_steam.json</b> está na mesma pasta do index.html.";
     console.error(e);
   }
 }
 
-/* pre-load leve depois do hero */
-setTimeout(loadCatalog, 1400);
+/* ===== Featured (AAA) ===== */
+const FEATURED_KEYWORDS = [
+  "GRAND THEFT AUTO", "RED DEAD REDEMPTION", "CYBERPUNK", "ELDEN RING", "GOD OF WAR",
+  "SPIDER-MAN", "THE LAST OF US", "FORZA", "CALL OF DUTY", "FIFA", "EA SPORTS FC",
+  "RESIDENT EVIL", "MORTAL KOMBAT", "HOGWARTS", "ASSASSIN", "DARK SOULS"
+];
 
-/* =========================================================
-   CAROUSEL
-   ========================================================= */
-function findGameByName(name){
-  const up = name.trim().toUpperCase();
-  return FULL_CATALOG.find(g => (g.name||"").toUpperCase() === up) || null;
-}
-
-function pickHighlights(){
-  const picks = [];
+function pickFeatured(){
+  const picked = [];
   const used = new Set();
 
-  for(const n of HIGHLIGHTS_BY_NAME){
-    const g = findGameByName(n);
-    if(g && !used.has(g.name)){
-      picks.push(g);
-      used.add(g.name);
+  // primeiro: por keywords
+  for(const kw of FEATURED_KEYWORDS){
+    const item = GAMES.find(g=>{
+      const n = norm(g.name);
+      return n.includes(kw) && g.cover && !used.has(g.name);
+    });
+    if(item){
+      picked.push(item);
+      used.add(item.name);
+      if(picked.length >= 8) break;
     }
   }
 
-  // fallback: pega do início
-  for(const g of FULL_CATALOG){
-    if(picks.length >= 10) break;
-    if(g && g.name && !used.has(g.name)){
-      picks.push(g);
-      used.add(g.name);
+  // fallback: qualquer com cover
+  if(picked.length < 8){
+    for(const g of GAMES){
+      if(g.cover && !used.has(g.name)){
+        picked.push(g);
+        used.add(g.name);
+        if(picked.length >= 8) break;
+      }
     }
   }
-  return picks.slice(0, 10);
+  return picked.slice(0,8);
 }
 
-function buildCarousel(){
-  if(!FULL_CATALOG.length) return;
+function buildFeatured(){
+  if(!GAMES.length) return;
 
-  const highlights = pickHighlights();
-  // duplica lista pra loop perfeito em -50%
-  const items = highlights.concat(highlights);
-
+  const list = pickFeatured();
   let html = "";
-  for(const g of items){
-    const cover = g.cover || FALLBACK_IMG;
+  for(const g of list){
+    const img = g.cover || FALLBACK_IMG;
     html += `
-      <div class="carousel-item" title="${escapeHtml(g.name)}">
-        <img
-          src="${cover}"
-          alt="${escapeHtml(g.name)}"
-          loading="lazy"
-          referrerpolicy="no-referrer"
-          onerror="this.onerror=null; this.src='${FALLBACK_IMG}';"
-        />
-        <div class="carousel-caption">
-          <div class="carousel-title">${escapeHtml(g.name)}</div>
-          <div class="chip">destaque</div>
+      <div class="game" onclick="scrollToId('oferta')" title="${escapeHtml(g.name)}">
+        <img class="img" src="${img}" loading="lazy" referrerpolicy="no-referrer" onerror="this.src='${FALLBACK_IMG}'" />
+        <div class="ginfo">
+          <div class="gname">${escapeHtml(g.name)}</div>
+          <div class="gbadge"><i></i> destaque</div>
         </div>
       </div>
     `;
   }
-  carouselTrack.innerHTML = html;
-
-  // pausa animação ao passar mouse (desktop)
-  carouselTrack.addEventListener("mouseenter", ()=>carouselTrack.style.animationPlayState = "paused");
-  carouselTrack.addEventListener("mouseleave", ()=>carouselTrack.style.animationPlayState = "running");
+  featuredShelf.innerHTML = html;
 }
 
-/* =========================================================
-   SEARCH / FILTER
-   ========================================================= */
-function normalizeQuery(q){
-  q = (q || "").trim().toUpperCase();
-  if(ALIASES.has(q)) q = ALIASES.get(q);
-  return q;
+/* ===== Search ===== */
+function normalizeQuery(raw){
+  let t = norm(raw).trim();
+  if(t.length < 2) return t;
+
+  // aplica aliases exatos
+  if(ALIASES.has(t)) t = ALIASES.get(t);
+
+  // alias por começo
+  if(t === "MINECRAFT") t = "MINECRAFT";
+  return t;
 }
 
-function filterCatalog(term){
+function filterGames(term){
+  if(!term || term.length < 2) return [];
   const t = normalizeQuery(term);
-  if(t.length < 2) return [];
-  return FULL_CATALOG.filter(g => (g.name||"").toUpperCase().includes(t));
+
+  // busca simples e rápida
+  return GAMES.filter(g => norm(g.name).includes(t));
 }
 
-function clearCatalogUI(){
-  grid.innerHTML = "";
-  grid.classList.remove("active");
-  statusMsg.style.display = "none";
-  moreWrap.classList.remove("active");
-  ctaVerTudo.classList.remove("active");
-  currentResults = [];
-  page = 0;
+function showCatalog(yes){
+  CATALOG_VISIBLE = !!yes;
+  if(CATALOG_VISIBLE){
+    grid.classList.add("active");
+    btnToggleCatalog.textContent = "Ocultar catálogo";
+  }else{
+    grid.classList.remove("active");
+    btnToggleCatalog.textContent = "Mostrar catálogo";
+    grid.innerHTML = "";
+    moreRow.style.display = "none";
+  }
 }
 
-function renderPageAppend(){
-  const start = page * PER_PAGE;
-  const slice = currentResults.slice(start, start + PER_PAGE);
-  if(!slice.length) return;
+function renderPage(){
+  const slice = lastResults.slice(shown, shown + PAGE_SIZE);
+  shown += slice.length;
 
   let html = "";
   for(const g of slice){
-    const cover = g.cover || FALLBACK_IMG;
+    const img = g.cover || FALLBACK_IMG;
+    const cats = Array.isArray(g.categories) ? g.categories.slice(0,2) : [];
     html += `
-      <div class="game-card" onclick="location.href='#offer'">
-        <div class="imgbox">
-          <img
-            src="${cover}"
-            alt="${escapeHtml(g.name)}"
-            loading="lazy"
-            referrerpolicy="no-referrer"
-            onerror="this.onerror=null; this.src='${FALLBACK_IMG}';"
-          />
-        </div>
-        <div class="card-info">
-          <div class="game-title">${escapeHtml(g.name)}</div>
-          <div class="meta-row">
-            <div class="badge"><span class="dot"></span> disponível</div>
-            <div class="mini">ver oferta →</div>
+      <div class="card2" onclick="scrollToId('oferta')" title="${escapeHtml(g.name)}">
+        <img src="${img}" loading="lazy" referrerpolicy="no-referrer" onerror="this.src='${FALLBACK_IMG}'" />
+        <div class="c2info">
+          <div class="c2name">${escapeHtml(g.name)}</div>
+          <div class="tagrow">
+            <span class="tag"><i></i> disponível</span>
+            ${cats.map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join("")}
           </div>
         </div>
       </div>
     `;
   }
 
-  // append sem reflow pesado
+  // append sem ficar fazendo innerHTML += em loop grande
   const tmp = document.createElement("div");
   tmp.innerHTML = html;
   while(tmp.firstChild) grid.appendChild(tmp.firstChild);
 
-  page++;
-
-  // botão "mostrar mais"
-  const hasMore = (page * PER_PAGE) < currentResults.length;
-  if(hasMore) moreWrap.classList.add("active");
-  else moreWrap.classList.remove("active");
-
-  // CTA
-  if(currentResults.length > 0) ctaVerTudo.classList.add("active");
+  // controls
+  if(lastResults.length > 0){
+    moreRow.style.display = "flex";
+    btnMore.style.display = shown < lastResults.length ? "inline-flex" : "none";
+  }else{
+    moreRow.style.display = "none";
+  }
 }
 
-async function performSearch(){
-  await loadCatalog();
-
-  const term = input.value;
-  const results = filterCatalog(term);
-
-  if(normalizeQuery(term).length < 2){
-    clearCatalogUI();
+function doSearch(){
+  if(!READY){
+    status.textContent = "Carregando catálogo…";
     return;
   }
 
-  currentResults = results;
-  page = 0;
+  const term = q.value || "";
+  const clean = term.trim();
 
-  statusMsg.style.display = "block";
-  statusMsg.textContent = `${results.length} resultados encontrados`;
-
-  grid.classList.add("active");
-  grid.innerHTML = "";
-  moreWrap.classList.remove("active");
-  ctaVerTudo.classList.remove("active");
-
-  renderPageAppend();
-}
-
-const performSearchDebounced = debounce(performSearch, 220);
-
-/* =========================================================
-   FAQ (um por vez)
-   ========================================================= */
-document.querySelectorAll(".accordion-header").forEach(header=>{
-  header.addEventListener("click", ()=>{
-    const item = header.parentElement;
-
-    // fecha os outros
-    document.querySelectorAll(".accordion-item").forEach(it=>{
-      if(it !== item) it.classList.remove("active");
-    });
-
-    item.classList.toggle("active");
-
-    // ícones +/-
-    document.querySelectorAll(".accordion-item").forEach(it=>{
-      const icon = it.querySelector(".accordion-icon");
-      if(!icon) return;
-      icon.textContent = it.classList.contains("active") ? "–" : "+";
-    });
-  });
-});
-
-/* =========================================================
-   Hints clicáveis
-   ========================================================= */
-document.querySelectorAll("[data-q]").forEach(el=>{
-  el.addEventListener("click", ()=>{
-    input.value = el.getAttribute("data-q") || "";
-    input.focus();
-    performSearch();
-  });
-});
-
-/* =========================================================
-   EVENTOS
-   ========================================================= */
-input.addEventListener("focus", loadCatalog);
-input.addEventListener("input", ()=>{ performSearchDebounced(); });
-
-btnMore.addEventListener("click", ()=>{
-  renderPageAppend();
-});
-
-/* =========================================================
-   TOASTS (prova social neutra)
-   ========================================================= */
-const toastNames = ["João", "Maria", "Rafael", "Gustavo", "Ana", "Bruno", "Lucas", "Camila", "Felipe", "Beatriz"];
-function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-function toastMessage(){
-  if(!FULL_CATALOG.length){
-    return `${rand(toastNames)} está explorando o catálogo agora.`;
+  if(clean.length < 2){
+    status.innerHTML = "Digite pelo menos <b>2 letras</b> para pesquisar.";
+    grid.innerHTML = "";
+    moreRow.style.display = "none";
+    return;
   }
-  const g = rand(FULL_CATALOG);
-  return `${rand(toastNames)} encontrou “${g.name}”.`;
+
+  showCatalog(true);
+
+  lastResults = filterGames(clean);
+  shown = 0;
+  grid.innerHTML = "";
+
+  status.innerHTML = `<b>${lastResults.length}</b> resultado(s) para <span style="color:rgba(0,255,65,.95)">${escapeHtml(clean.toUpperCase())}</span>.`;
+
+  renderPage();
 }
 
-function pushToast(){
-  const t = document.createElement("div");
-  t.className = "toast";
-  t.innerHTML = `
-    <div class="t1">atividade recente</div>
-    <div class="t2">${escapeHtml(toastMessage())}</div>
+const doSearchDebounced = debounce(doSearch, 160);
+
+/* ===== FAQ ===== */
+document.querySelectorAll("#faq .item .q").forEach(qEl=>{
+  qEl.addEventListener("click", ()=>{
+    const item = qEl.parentElement;
+    // um por vez (KeyRush style)
+    document.querySelectorAll("#faq .item").forEach(it=>{
+      if(it !== item) it.classList.remove("open");
+    });
+    item.classList.toggle("open");
+  });
+});
+
+/* ===== Actions ===== */
+btnSearch.addEventListener("click", doSearch);
+q.addEventListener("input", doSearchDebounced);
+q.addEventListener("focus", loadCatalog);
+q.addEventListener("keypress", (e)=>{ if(e.key === "Enter") doSearch(); });
+
+btnClear.addEventListener("click", ()=>{
+  q.value = "";
+  status.innerHTML = "Digite para buscar. Ex.: <b>GTA</b>, <b>FIFA</b>, <b>MINE</b>, <b>COD</b>…";
+  grid.innerHTML = "";
+  moreRow.style.display = "none";
+});
+
+btnToggleCatalog.addEventListener("click", ()=>{
+  showCatalog(!CATALOG_VISIBLE);
+});
+
+btnMore.addEventListener("click", renderPage);
+
+/* ===== Checkout ===== */
+function openCheckout(){
+  // Troque pelo seu link real:
+  const CHECKOUT_URL = "SEU_LINK_DE_CHECKOUT_AQUI";
+  window.open(CHECKOUT_URL, "_blank");
+}
+
+/* ===== Toasts (gamificação leve) ===== */
+const toastsEl = document.getElementById("toasts");
+const toastNames = ["João", "Maria", "Lucas", "Ana", "Rafael", "Gustavo", "Pedro", "Beatriz", "Felipe", "Bruna", "Tiago", "Camila"];
+let toastTimer = null;
+
+function toast(msgTitle, msgSub){
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.innerHTML = `
+    <div class="ic">✓</div>
+    <div>
+      <div class="t">${escapeHtml(msgTitle)}</div>
+      <div class="s">${escapeHtml(msgSub)}</div>
+    </div>
   `;
-  toastsEl.appendChild(t);
+  toastsEl.appendChild(el);
+
+  setTimeout(()=>{ el.style.opacity = "0"; el.style.transform = "translateY(10px)"; }, 4200);
+  setTimeout(()=>{ el.remove(); }, 4800);
+}
+
+function randomFrom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function startToasts(){
+  if(!GAMES.length) return;
+
+  // solta um toast depois de alguns segundos e repete
+  if(toastTimer) clearInterval(toastTimer);
 
   setTimeout(()=>{
-    t.style.opacity = "0";
-    t.style.transform = "translateY(6px)";
-    setTimeout(()=>t.remove(), 260);
-  }, 4200);
+    const g = randomFrom(GAMES.filter(x=>x.cover)) || randomFrom(GAMES);
+    toast(`${randomFrom(toastNames)} acabou de explorar`, `${g?.name || "o catálogo"} agora mesmo.`);
+  }, 2800);
+
+  toastTimer = setInterval(()=>{
+    const g = randomFrom(GAMES.filter(x=>x.cover)) || randomFrom(GAMES);
+    toast(`${randomFrom(toastNames)} acabou de explorar`, `${g?.name || "o catálogo"} agora mesmo.`);
+  }, 9000);
 }
 
-// começa depois de 6s, a cada 10–16s
-setTimeout(()=>{
-  pushToast();
-  setInterval(pushToast, 12000 + Math.floor(Math.random()*4000));
-}, 6000);
+/* ===== Init ===== */
+(function init(){
+  // pré-carrega após um tempo (performance)
+  setTimeout(loadCatalog, 1200);
 
+  // mensagem inicial
+  status.innerHTML = "Carregando dados do <b>games_741_steam.json</b>…";
+})();
 </script>
-
 </body>
 </html>
