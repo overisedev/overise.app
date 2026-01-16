@@ -1,1655 +1,1467 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OVERISE | Software</title>
+  <title>OVERISE | Official Software</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg:#050505;
       --panel:#0f0f0f;
-      --panel2:#101010;
-      --border:rgba(255,255,255,.08);
-      --text:#e7e7e7;
+      --panel2:#0b0b0b;
+      --border:#1f1f1f;
+      --text:#eaeaea;
       --muted:#a0a0a0;
-      --muted2:#7e7e7e;
       --neon:#00FF41;
-      --shadow: 0 18px 60px rgba(0,0,0,.60);
-      --shadowSoft: 0 12px 40px rgba(0,0,0,.45);
-      --r:18px;
-      --r2:26px;
-      --max: 1180px;
-      --font: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --shadow: rgba(0,0,0,.65);
+      --radius:16px;
+      --radius2:20px;
+      --font:'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    *{box-sizing:border-box; margin:0; padding:0;}
     body{
-      margin:0;
-      font-family:var(--font);
-      background: radial-gradient(1200px 600px at 30% -10%, rgba(0,255,65,.10), transparent 55%),
-                  radial-gradient(900px 500px at 110% 10%, rgba(0,255,65,.06), transparent 55%),
-                  var(--bg);
+      background:var(--bg);
       color:var(--text);
+      font-family:var(--font);
       overflow-x:hidden;
     }
+    a{color:inherit; text-decoration:none;}
+    button{font-family:inherit}
 
-    /* ---------- Helpers ---------- */
-    .container{width:min(var(--max), calc(100% - 40px)); margin:0 auto}
-    .section{padding:110px 0}
-    .section.tight{padding:80px 0}
-    .section.top{padding-top:140px}
-    .muted{color:var(--muted)}
-    .muted2{color:var(--muted2)}
-    .pill{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 14px; border-radius:999px;
-      background: rgba(255,255,255,.05);
-      border:1px solid var(--border);
-      font-weight:700; letter-spacing:.6px; text-transform:uppercase; font-size:12px;
-      backdrop-filter: blur(10px);
-    }
-    .dot{width:8px; height:8px; border-radius:50%; background:var(--neon); box-shadow: 0 0 14px rgba(0,255,65,.55)}
-
-    /* ---------- Micro Animations (global) ---------- */
-    @keyframes floatIn {
-      from {opacity:0; transform: translateY(14px)}
-      to   {opacity:1; transform: translateY(0)}
-    }
-    @keyframes fadeLeft {
-      from {opacity:0; transform: translateX(22px)}
-      to   {opacity:1; transform: translateX(0)}
-    }
-    @keyframes sheen {
-      0%{transform:translateX(-120%)}
-      60%{transform:translateX(120%)}
-      100%{transform:translateX(120%)}
-    }
-    @keyframes marquee {
-      from {transform: translateX(0)}
-      to   {transform: translateX(-50%)}
-    }
-    @keyframes slideFade {
-      0%{opacity:0; transform: translateX(26px)}
-      12%{opacity:1; transform: translateX(0)}
-      88%{opacity:1; transform: translateX(0)}
-      100%{opacity:0; transform: translateX(-26px)}
-    }
-
-    .reveal{opacity:0; transform: translateY(14px); transition: .8s ease}
-    .reveal.show{opacity:1; transform: translateY(0)}
-
-    /* ---------- Header ---------- */
+    /* ===== HEADER ===== */
     header{
-      position:fixed; inset:0 0 auto 0; z-index:1000;
-      background: rgba(5,5,5,.72);
-      border-bottom:1px solid rgba(255,255,255,.06);
-      backdrop-filter: blur(14px);
-    }
-    .nav{
+      position:fixed; inset:0 0 auto 0;
+      z-index:1000;
+      padding:14px 5%;
       display:flex; align-items:center; justify-content:space-between;
-      padding:14px 0;
+      background: rgba(5,5,5,.78);
+      backdrop-filter: blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
     .logo{
-      display:flex; align-items:center; gap:12px;
-      font-weight:900; letter-spacing:-1px; text-transform:uppercase;
-      font-size:18px; color:#fff;
+      font-weight:900;
+      letter-spacing:-1px;
+      text-transform:uppercase;
+      color:#fff;
+      font-size:1.25rem;
+      display:flex; align-items:center; gap:10px;
+    }
+    .logo-dot{
+      width:8px; height:8px; border-radius:50%;
+      background:var(--neon);
+      box-shadow:0 0 18px rgba(0,255,65,.5);
     }
     .logo span{color:var(--neon)}
-    .navlinks{
-      display:flex; align-items:center; gap:14px;
-      font-weight:700; color:var(--muted2);
-    }
-    .navlinks a{
-      color:inherit; text-decoration:none; padding:10px 12px; border-radius:12px;
-      transition:.2s ease;
-    }
-    .navlinks a:hover{
-      color:#fff;
-      background: rgba(255,255,255,.05);
-      transform: translateY(-1px);
+    .nav-cta{
+      display:flex; align-items:center; gap:10px;
     }
     .btn{
-      position:relative;
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:12px 18px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
       color:#fff;
-      font-weight:900; letter-spacing:.5px; text-transform:uppercase;
-      cursor:pointer; text-decoration:none;
-      transition:.22s ease;
+      padding:10px 16px;
+      border-radius:12px;
+      font-weight:800;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      font-size:.85rem;
+      cursor:pointer;
+      transition:.25s ease;
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:8px;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
+    .btn-primary{
+      background: var(--neon);
+      border-color: rgba(0,255,65,.35);
+      color:#000;
+      box-shadow: 0 0 24px rgba(0,255,65,.12);
+    }
+    .btn-primary:hover{
+      box-shadow: 0 0 36px rgba(0,255,65,.22);
+      transform: translateY(-2px);
+      background:#fff;
+    }
+    .btn-soft{
+      background: rgba(255,255,255,.02);
+      border-color: rgba(255,255,255,.10);
+      color:#dcdcdc;
+    }
+
+    /* ===== LAYOUT WRAPPER ===== */
+    .wrap{
+      width:min(1180px, 92%);
+      margin:0 auto;
+    }
+
+    /* ===== HERO ===== */
+    .hero{
+      padding:110px 0 64px;
+      position:relative;
       overflow:hidden;
     }
-    .btn::after{
+    .hero::before{
       content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(120deg, transparent, rgba(255,255,255,.18), transparent);
-      transform: translateX(-120%);
-      animation: sheen 4.8s ease-in-out infinite;
+      position:absolute; inset:-120px -120px auto -120px;
+      height:360px;
+      background: radial-gradient(closest-side, rgba(0,255,65,.18), transparent 65%);
+      filter: blur(10px);
       pointer-events:none;
     }
-    .btn:hover{transform: translateY(-2px); border-color: rgba(255,255,255,.18); box-shadow: var(--shadowSoft)}
-    .btn.primary{
-      background: linear-gradient(180deg, rgba(0,255,65,.95), rgba(0,200,55,.85));
-      color:#000;
-      border-color: rgba(0,255,65,.55);
-    }
-    .btn.primary::after{display:none}
-    .btn.primary:hover{box-shadow: 0 18px 60px rgba(0,255,65,.15)}
-
-    .nav-cta{display:flex; gap:10px; align-items:center}
-
-    /* ---------- Hero ---------- */
-    .hero{
-      padding-top:120px;
-    }
-    .heroGrid{
+    .hero-grid{
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
+      grid-template-columns: 1.1fr .9fr;
       gap:34px;
       align-items:center;
     }
-    .heroLeft{animation: floatIn .8s ease both}
-    .heroTitle{
-      margin:18px 0 14px;
-      font-weight:950;
-      font-size: clamp(36px, 5.2vw, 60px);
-      line-height: 1.02;
-      letter-spacing: -2px;
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr; gap:22px;}
+    }
+
+    .kicker{
+      display:flex; align-items:center; gap:10px;
+      color:var(--neon);
+      font-weight:900;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+      font-size:.85rem;
+      margin-bottom:14px;
+    }
+    .kicker .dot{
+      width:10px; height:10px; border-radius:50%;
+      background:var(--neon);
+      box-shadow:0 0 18px rgba(0,255,65,.55);
+    }
+    h1{
+      font-size: clamp(2.4rem, 4.8vw, 4rem);
+      letter-spacing:-2px;
+      line-height:1.02;
+      text-transform:uppercase;
       color:#fff;
+      margin-bottom:14px;
     }
-    .heroTitle .accent{color:var(--neon)}
-    .heroSub{
-      max-width: 46ch;
-      font-size:16px;
-      line-height:1.7;
-      color:var(--muted);
-      margin-bottom:26px;
+    h1 .neon{color:var(--neon)}
+    .lead{
+      color: var(--muted);
+      font-size:1.05rem;
+      line-height:1.6;
+      max-width: 640px;
     }
-    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:28px}
-    .heroStats{
+    .hero-actions{
+      display:flex; gap:12px; flex-wrap:wrap;
+      margin-top:22px;
+    }
+
+    .hero-metrics{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap:12px;
-      margin-top:18px;
+      margin-top:24px;
     }
-    .stat{
-      background: rgba(255,255,255,.04);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:14px;
-      box-shadow: var(--shadowSoft);
-      transition:.25s ease;
+    @media (max-width: 520px){
+      .hero-metrics{grid-template-columns:1fr; }
     }
-    .stat:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.25)}
-    .stat b{display:block; font-size:18px; color:#fff}
-    .stat span{font-size:12px; color:var(--muted2)}
-    .heroCard{
-      border-radius: var(--r2);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadow);
+    .metric{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding:14px 14px;
+      position:relative;
       overflow:hidden;
-      position:relative;
-      isolation:isolate;
-      animation: fadeLeft .8s ease both;
     }
-    .heroCard::before{
+    .metric::after{
       content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(700px 240px at 20% 10%, rgba(0,255,65,.16), transparent 60%);
+      position:absolute; inset:auto -30px -30px auto;
+      width:120px; height:120px;
+      background: radial-gradient(closest-side, rgba(0,255,65,.20), transparent 70%);
+      filter: blur(10px);
       pointer-events:none;
-      z-index:0;
     }
-    .heroCardMedia{
+    .metric .big{
+      font-weight:900;
+      font-size:1.15rem;
+      color:#fff;
+      letter-spacing:-.6px;
+    }
+    .metric .small{
+      color:#a8a8a8;
+      font-size:.88rem;
+      margin-top:4px;
+    }
+
+    /* ===== FEATURE BANNER (DIREITA) ===== */
+    .feature-card{
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,.09);
+      overflow:hidden;
+      background: #0b0b0b;
       position:relative;
-      height: 320px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.55);
+    }
+    .feature-img{
+      position:relative;
+      aspect-ratio: 16/9;
       background:#000;
       overflow:hidden;
     }
-    .heroCardMedia img{
+    .feature-img img{
       width:100%; height:100%;
-      object-fit:cover;
-      filter:saturate(1.05) contrast(1.05);
-      transform: scale(1.03);
+      object-fit: cover;
+      transform: scale(1.02);
+      filter:saturate(1.05);
     }
-    .heroCardOverlay{
+    .feature-img::after{
+      content:"";
       position:absolute; inset:0;
       background:
-        radial-gradient(800px 320px at 78% 45%, rgba(0,0,0,.15), rgba(0,0,0,.78)),
-        linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.20));
+        linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.20) 55%, rgba(0,0,0,.55) 100%),
+        linear-gradient(0deg, rgba(0,0,0,.80) 0%, rgba(0,0,0,.10) 55%, rgba(0,0,0,.25) 100%);
+      pointer-events:none;
     }
-    .heroCardInfo{
-      position:absolute; left:18px; right:18px; bottom:18px;
-      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+    .feature-body{
+      position:absolute; inset:auto 16px 16px 16px;
+      display:flex; flex-direction:column; gap:10px;
     }
-    .heroCardText{
-      max-width: 60%;
-    }
-    .badgeRow{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
+    .chips{display:flex; gap:8px; flex-wrap:wrap;}
     .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:11px;
+      font-size:.72rem;
       font-weight:900;
       text-transform:uppercase;
-      letter-spacing:.5px;
-      background: rgba(0,0,0,.35);
-      border:1px solid rgba(255,255,255,.12);
-      color:#fff;
-      text-shadow: 0 10px 30px rgba(0,0,0,.9);
-      backdrop-filter: blur(10px);
+      letter-spacing:.6px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      color:#eaeaea;
+      backdrop-filter: blur(8px);
+      text-shadow: 0 10px 24px rgba(0,0,0,.9);
     }
-    .chip.green{
+    .chip.neon{
       border-color: rgba(0,255,65,.35);
-      box-shadow: 0 0 0 1px rgba(0,255,65,.10) inset;
+      color: var(--neon);
+      background: rgba(0,255,65,.12);
     }
-    .heroCardName{
-      margin:0;
-      font-weight:950;
-      font-size: 26px;
+    .feature-title{
+      font-weight:900;
+      text-transform:uppercase;
       color:#fff;
       letter-spacing:-1px;
-      text-transform:uppercase;
-      text-shadow: 0 10px 40px rgba(0,0,0,.95);
+      font-size: clamp(1.6rem, 2.4vw, 2.3rem);
+      text-shadow: 0 14px 40px rgba(0,0,0,.95);
+      line-height:1.05;
     }
-    .heroCardDesc{
-      margin-top:6px;
-      color: rgba(255,255,255,.80);
-      font-size:13px;
-      text-shadow: 0 10px 30px rgba(0,0,0,.9);
+    .feature-sub{
+      color:#cfcfcf;
+      text-shadow: 0 14px 36px rgba(0,0,0,.95);
+      font-size:.95rem;
+      max-width: 420px;
+      opacity:.9;
     }
-    .heroCardBtns{display:flex; gap:10px}
-    .btn.small{padding:10px 14px; border-radius:12px; font-size:12px}
-    .btn.ghost{background: rgba(0,0,0,.32)}
+    .feature-cta{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:2px;
+    }
+    .dots{
+      position:absolute; inset:auto 0 10px 0;
+      display:flex; justify-content:center; gap:8px;
+      pointer-events:none;
+    }
+    .dots span{
+      width:7px; height:7px; border-radius:50%;
+      background: rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.10);
+      transition:.25s ease;
+    }
+    .dots span.active{
+      background: var(--neon);
+      border-color: rgba(0,255,65,.45);
+      box-shadow: 0 0 18px rgba(0,255,65,.35);
+    }
 
-    /* ---------- Infinite AAA Marquee ---------- */
-    .marqueeWrap{
-      margin-top:72px;
-      padding-top:22px;
-      border-top: 1px solid rgba(255,255,255,.06);
+    /* ===== CARROSSEL INFINITO (AAA) ===== */
+    .infinite-strip{
+      padding: 10px 0 70px;
     }
-    .marqueeTitle{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:14px; margin-bottom:14px;
-      color:var(--muted2);
-      font-weight:800; text-transform:uppercase; letter-spacing:1px; font-size:12px;
-    }
-    .marquee{
+    .strip{
       width:100%;
       overflow:hidden;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      box-shadow: var(--shadowSoft);
       mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     }
-    .marqueeTrack{
-      display:flex; gap:14px;
+    .strip-track{
+      display:flex;
+      gap:14px;
       width:max-content;
-      padding:14px;
-      animation: marquee 42s linear infinite;
+      animation: stripScroll 46s linear infinite;
     }
-    .marquee:hover .marqueeTrack{animation-play-state: paused}
-    .miniCard{
-      width: 260px;
-      border-radius: 16px;
+    .strip-item{
+      width: 240px;
+      border-radius: 14px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.10);
       background:#0b0b0b;
-      flex: 0 0 auto;
+      box-shadow: 0 14px 40px rgba(0,0,0,.45);
       position:relative;
-      transform: translateZ(0);
-      transition:.25s ease;
     }
-    .miniCard:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.25)}
-    .miniCard img{
+    .strip-item img{
       width:100%;
-      aspect-ratio: 16 / 9;
-      object-fit:cover;
+      aspect-ratio: 16/9;
+      object-fit: cover;
       display:block;
-      transform:scale(1.03);
-      transition:.4s ease;
+      transform: scale(1.02);
+      transition: transform .35s ease;
       filter:saturate(1.05);
     }
-    .miniCard:hover img{transform:scale(1.07)}
-    .miniOverlay{
+    .strip-item:hover img{transform: scale(1.08)}
+    .strip-item::after{
+      content:"";
       position:absolute; inset:0;
-      background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,.05));
+      background: linear-gradient(0deg, rgba(0,0,0,.50), rgba(0,0,0,0) 60%);
       pointer-events:none;
     }
-    .miniLabel{
-      position:absolute; left:12px; right:12px; bottom:10px;
-      color:#fff; font-weight:900; font-size:12px;
-      letter-spacing:.4px; text-transform:uppercase;
-      text-shadow: 0 10px 30px rgba(0,0,0,.95);
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    @keyframes stripScroll{
+      0%{transform: translateX(0)}
+      100%{transform: translateX(-50%)}
     }
 
-    /* ---------- Demo (video) ---------- */
-    .demoGrid{
+    /* ===== DEMO (VIDEO) ===== */
+    .section{
+      padding: 84px 0;
+    }
+    .section-title{
+      font-weight:900; letter-spacing:-1px;
+      text-transform:uppercase;
+      color:#fff;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      margin-bottom: 10px;
+    }
+    .section-sub{
+      color:#a8a8a8;
+      line-height:1.6;
+      max-width: 780px;
+      margin-bottom: 28px;
+    }
+    .demo-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap:18px;
+      gap:20px;
       align-items:stretch;
     }
+    @media (max-width: 980px){
+      .demo-grid{grid-template-columns:1fr}
+    }
     .card{
-      border-radius: var(--r2);
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadowSoft);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border-radius: var(--radius2);
       overflow:hidden;
       position:relative;
+      box-shadow: 0 18px 48px rgba(0,0,0,.45);
     }
-    .card.pad{padding:24px}
-    .cardTitle{font-size:22px; font-weight:950; margin:0 0 10px; color:#fff; letter-spacing:-.8px; text-transform:uppercase}
-    .cardText{color:var(--muted); line-height:1.7; font-size:14px}
-    .howGrid{
-      margin-top:18px;
+    .card-pad{padding:18px}
+    .how-steps{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      gap:12px;
+      gap:14px;
+      margin-top: 14px;
     }
-    .how{
-      background: rgba(0,0,0,.25);
+    @media (max-width: 720px){
+      .how-steps{grid-template-columns:1fr}
+    }
+    .step{
+      background: rgba(0,0,0,.22);
       border:1px solid rgba(255,255,255,.08);
-      border-radius:16px;
+      border-radius: 16px;
       padding:14px;
       transition:.25s ease;
     }
-    .how:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.22)}
-    .how .k{font-weight:950; color:#fff; letter-spacing:-.4px}
-    .how .s{color:var(--muted2); font-size:12px; margin-top:4px; line-height:1.5}
-
-    .videoWrap{
-      height:100%;
-      min-height: 340px;
-      background:#000;
+    .step:hover{
+      transform: translateY(-2px);
+      border-color: rgba(0,255,65,.18);
+      box-shadow: 0 18px 40px rgba(0,255,65,.06);
     }
-    .videoWrap iframe,
-    .videoWrap video{
-      width:100%;
-      height:100%;
-      display:block;
-      border:0;
-    }
-    .videoOverlay{
-      position:absolute; inset:0;
-      background: radial-gradient(900px 360px at 30% 20%, rgba(0,255,65,.10), transparent 55%),
-                  linear-gradient(to top, rgba(0,0,0,.75), transparent 55%);
-      pointer-events:none;
-    }
-
-    /* ---------- Catalog Preview (KeyRush-like) ---------- */
-    .catalogHeader{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:18px;
-      margin-bottom:22px;
-    }
-    .catalogHeader h2{
-      margin:0;
-      font-size:28px;
-      font-weight:950;
-      letter-spacing:-1px;
-      color:#fff;
+    .step .n{
+      font-weight:900; color:var(--neon);
       text-transform:uppercase;
+      letter-spacing:.7px;
+      font-size:.85rem;
+      margin-bottom:6px;
     }
-    .catalogHeader p{margin:8px 0 0; color:var(--muted); max-width:52ch; line-height:1.6}
-    .catalogActions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .step .t{font-weight:900; color:#fff; margin-bottom:6px;}
+    .step .d{color:#a8a8a8; font-size:.95rem; line-height:1.5;}
 
-    .catalogCollapsed{
-      display:none;
-      margin-top:20px;
-      animation: floatIn .5s ease both;
+    .video-box{
+      aspect-ratio: 16/9;
+      background:#000;
+      position:relative;
     }
-    .catalogCollapsed.show{display:block}
+    .video-box iframe, .video-box video{
+      width:100%; height:100%;
+      display:block;
+    }
+    .video-overlay{
+      position:absolute; inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(0deg, rgba(0,0,0,.45), rgba(0,0,0,0) 55%),
+        linear-gradient(90deg, rgba(0,0,0,.20), rgba(0,0,0,0) 60%);
+    }
 
-    .catalogShell{
+    /* ===== CATALOGO (SEM LISTA, 3 CARDS ROTATIVOS) ===== */
+    .catalog-shell{
       display:grid;
       grid-template-columns: 320px 1fr;
-      gap:16px;
+      gap:18px;
       align-items:start;
     }
-    .side{
-      position:sticky; top:86px;
+    @media (max-width: 980px){
+      .catalog-shell{grid-template-columns:1fr;}
+    }
+    .sidebar{
+      position:sticky;
+      top:88px;
+    }
+    .sidebar .box{
       padding:16px;
-      border-radius: var(--r2);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadowSoft);
     }
-    .searchBox{
-      display:flex; gap:10px;
-    }
-    .input{
-      width:100%;
-      padding:14px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.28);
-      color:#fff;
-      outline:none;
-      font-weight:800;
-      letter-spacing:.5px;
-      text-transform:uppercase;
-      transition:.2s ease;
-    }
-    .input:focus{border-color: rgba(0,255,65,.45); box-shadow: 0 0 0 4px rgba(0,255,65,.10)}
-    .sideMeta{
-      margin-top:12px;
-      color:var(--muted2);
-      font-size:12px;
-      line-height:1.6;
-    }
-    .cats{
-      display:flex; flex-wrap:wrap; gap:8px;
-      margin-top:16px;
-    }
-    .cat{
-      cursor:pointer; user-select:none;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.22);
+    .sidebar h3{
       font-weight:900;
-      font-size:12px;
-      letter-spacing:.4px;
-      color:#d7d7d7;
-      transition:.2s ease;
       text-transform:uppercase;
+      color:#fff;
+      margin-bottom:8px;
+      letter-spacing:-.5px;
     }
-    .cat:hover{transform: translateY(-1px); border-color: rgba(0,255,65,.25)}
-    .cat.active{background: rgba(0,255,65,.90); color:#000; border-color: rgba(0,255,65,.55)}
-    .cat small{opacity:.85; font-weight:900}
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap:14px;
+    .sidebar p{
+      color:#a8a8a8;
+      font-size:.95rem;
+      line-height:1.55;
+      margin-bottom:14px;
     }
-    .game{
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadowSoft);
-      overflow:hidden;
+    .cat-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:8px;
+    }
+    .cat-btn{
       cursor:pointer;
-      transform: translateZ(0);
-      transition:.25s ease;
-    }
-    .game:hover{transform: translateY(-4px); border-color: rgba(0,255,65,.22)}
-    .gameImg{
-      aspect-ratio:16/9;
-      background:#000;
-      position:relative;
-      overflow:hidden;
-    }
-    .gameImg img{
-      width:100%; height:100%;
-      object-fit:cover;
-      display:block;
-      transform: scale(1.03);
-      transition:.45s ease;
-    }
-    .game:hover .gameImg img{transform: scale(1.07)}
-    .gameGrad{
-      position:absolute; inset:0;
-      background: linear-gradient(to top, rgba(0,0,0,.86), rgba(0,0,0,.05));
-      pointer-events:none;
-    }
-    .gameInfo{
-      padding:12px 12px 14px;
-      display:flex; flex-direction:column; gap:10px;
-    }
-    .gameName{
-      font-weight:950;
-      font-size:12px;
-      letter-spacing:.4px;
-      color:#fff;
-      text-transform:uppercase;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .tagRow{display:flex; gap:8px; flex-wrap:wrap}
-    .tag{
-      font-size:10px;
-      font-weight:950;
-      letter-spacing:.5px;
-      text-transform:uppercase;
-      padding:7px 9px;
-      border-radius:999px;
-      background: rgba(0,0,0,.30);
-      border:1px solid rgba(255,255,255,.10);
-      color:#fff;
-      text-shadow: 0 10px 30px rgba(0,0,0,.95);
-    }
-    .tag.ok{border-color: rgba(0,255,65,.30)}
-    .gameCta{
-      display:flex; gap:10px; align-items:center; justify-content:space-between;
-    }
-    .tiny{
-      font-size:11px; color:var(--muted2);
-      letter-spacing:.4px;
-    }
-    .ghostBtn{
+      user-select:none;
       padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.22);
-      color:#fff;
-      font-weight:950;
-      text-transform:uppercase;
-      font-size:11px;
-      cursor:pointer;
-      transition:.2s ease;
-    }
-    .ghostBtn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
-    .greenBtn{
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(0,255,65,.45);
-      background: rgba(0,255,65,.90);
-      color:#000;
-      font-weight:950;
-      text-transform:uppercase;
-      font-size:11px;
-      cursor:pointer;
-      transition:.2s ease;
-    }
-    .greenBtn:hover{transform: translateY(-1px); filter: brightness(1.03)}
-
-    /* ---------- Pricing Table (KeyRush-like) ---------- */
-    .pricingWrap{
-      margin-top:20px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:16px;
-      align-items:stretch;
-    }
-    .plan{
-      border-radius: var(--r2);
+      border-radius: 14px;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadowSoft);
-      padding:22px;
-      position:relative;
-      overflow:hidden;
-      transition:.25s ease;
+      background: rgba(255,255,255,.02);
+      font-weight:900;
+      font-size:.78rem;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      color:#d6d6d6;
+      transition:.2s ease;
     }
-    .plan:hover{transform: translateY(-4px); border-color: rgba(0,255,65,.22)}
-    .plan.featured{
-      border-color: rgba(0,255,65,.45);
-      box-shadow: 0 18px 60px rgba(0,255,65,.10);
+    .cat-btn:hover{
+      border-color: rgba(0,255,65,.22);
+      transform: translateY(-1px);
     }
-    .planTop{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+    .cat-btn.active{
+      background: rgba(0,255,65,.14);
+      border-color: rgba(0,255,65,.35);
+      color: var(--neon);
+      box-shadow: 0 14px 34px rgba(0,255,65,.06);
+    }
+
+    .catalog-topbar{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
       margin-bottom:12px;
     }
-    .planName{
-      font-weight:950; font-size:18px; letter-spacing:-.6px; color:#fff; text-transform:uppercase;
-    }
-    .planBadge{
-      font-size:11px; font-weight:950; letter-spacing:.5px; text-transform:uppercase;
-      padding:8px 10px; border-radius:999px;
-      background: rgba(0,255,65,.14);
-      border:1px solid rgba(0,255,65,.35);
-      color: var(--neon);
-    }
-    .priceRow{
-      display:flex; align-items:baseline; gap:10px; margin:8px 0 12px;
-    }
-    .priceNow{
-      font-weight:950;
-      font-size:44px;
-      letter-spacing:-2px;
-      color:var(--neon);
-    }
-    .priceSmall{color:var(--muted2); font-weight:800}
-    .table{
-      width:100%;
-      border-collapse: collapse;
-      margin-top:10px;
-      overflow:hidden;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.18);
-    }
-    .table td{
-      padding:14px 12px;
-      border-bottom: 1px solid rgba(255,255,255,.06);
-      color:#d9d9d9;
-      font-weight:700;
-      font-size:13px;
-    }
-    .table tr:last-child td{border-bottom:0}
-    .table td:last-child{text-align:right; color:#fff}
-    .table .bad{color:#ff6b6b}
-    .table .good{color:var(--neon)}
-    .buyRow{margin-top:14px; display:flex; gap:10px; align-items:center}
-    .buyRow .btn{width:100%}
-    .secure{margin-top:10px; color:var(--muted2); font-size:12px; line-height:1.5}
 
-    /* ---------- Social + FAQ ---------- */
-    .socialGrid{
+    .catalog-stage{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap:14px;
-      margin-top:20px;
     }
-    .quote{
-      border-radius: var(--r2);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadowSoft);
-      padding:18px;
-      transition:.25s ease;
+    @media (max-width: 980px){
+      .catalog-stage{grid-template-columns: 1fr;}
     }
-    .quote:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.20)}
-    .who{
-      display:flex; align-items:center; gap:12px; margin-bottom:12px;
-    }
-    .av{
-      width:38px; height:38px; border-radius:50%;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.10);
-      display:grid; place-items:center;
-      font-weight:950; color:#fff;
-    }
-    .stars{color:#ffd34d; font-weight:950; letter-spacing:1px; font-size:12px}
-    .txt{color:var(--muted); line-height:1.65; font-size:13px; font-style:italic}
-
-    .faq{
-      margin-top:18px;
-      border-radius: var(--r2);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadowSoft);
+    .game-tile{
+      border-radius: 18px;
       overflow:hidden;
-    }
-    .qa{
-      border-top:1px solid rgba(255,255,255,.06);
-    }
-    .qa:first-child{border-top:0}
-    .q{
-      width:100%;
-      background:transparent;
-      border:0;
-      padding:16px 18px;
-      color:#fff;
-      cursor:pointer;
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      font-weight:900; letter-spacing:.4px; text-transform:uppercase;
-    }
-    .chev{
-      width:26px; height:26px; border-radius:8px;
       border:1px solid rgba(255,255,255,.10);
-      display:grid; place-items:center;
-      color:var(--neon);
-      transition:.25s ease;
-      background: rgba(0,0,0,.20);
-    }
-    .a{
-      max-height:0;
-      overflow:hidden;
-      transition: max-height .35s ease;
-      padding:0 18px;
-      color:var(--muted);
-      line-height:1.65;
-      font-size:14px;
-    }
-    .qa.open .a{max-height:180px; padding-bottom:16px}
-    .qa.open .chev{transform: rotate(45deg)}
-
-    /* ---------- Modal (game details) ---------- */
-    .backdrop{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.68);
-      backdrop-filter: blur(10px);
-      display:none;
-      z-index:2000;
-      padding:18px;
-    }
-    .backdrop.show{display:grid; place-items:center}
-    .modal{
-      width:min(980px, 100%);
-      border-radius: 26px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(10,10,10,.92);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      transform: translateY(10px);
-      opacity:0;
-      transition:.25s ease;
-    }
-    .backdrop.show .modal{transform: translateY(0); opacity:1}
-    .modalTop{
+      background: #0b0b0b;
+      box-shadow: 0 18px 48px rgba(0,0,0,.42);
       position:relative;
-      height: 320px;
+      cursor:pointer;
+      min-height: 220px;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+    .game-tile:hover{
+      transform: translateY(-3px);
+      border-color: rgba(0,255,65,.20);
+    }
+    .game-tile .img{
+      position:absolute; inset:0;
       background:#000;
     }
-    .modalTop img{
+    .game-tile img{
       width:100%; height:100%;
-      object-fit:cover;
+      object-fit: cover;
+      display:block;
       transform: scale(1.02);
-      filter:saturate(1.05) contrast(1.05);
+      filter:saturate(1.05);
     }
-    .modalTop::after{
+    .game-tile .shade{
+      position:absolute; inset:0;
+      background:
+        linear-gradient(0deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.12) 65%),
+        linear-gradient(90deg, rgba(0,0,0,.65) 0%, rgba(0,0,0,.10) 60%, rgba(0,0,0,.35) 100%);
+      pointer-events:none;
+    }
+    .tile-body{
+      position:absolute;
+      inset:auto 14px 14px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .tile-title{
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:-.6px;
+      color:#fff;
+      font-size: 1.25rem;
+      line-height:1.05;
+      text-shadow: 0 16px 44px rgba(0,0,0,.95);
+    }
+    .tile-sub{
+      color:#cfcfcf;
+      font-size:.92rem;
+      line-height:1.45;
+      opacity:.92;
+      max-width: 420px;
+      text-shadow: 0 16px 40px rgba(0,0,0,.95);
+    }
+    .tile-actions{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:2px;
+    }
+
+    /* Fade/slide left animation */
+    .fade-swap{
+      animation: fadeLeft .55s ease both;
+    }
+    @keyframes fadeLeft{
+      0%{opacity:0; transform: translateX(22px)}
+      100%{opacity:1; transform: translateX(0)}
+    }
+
+    /* ===== PLANOS (TABELA / COMPRA) ===== */
+    .plans{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+      margin-top: 16px;
+    }
+    .plan-table{
+      width:100%;
+      border-collapse: collapse;
+      overflow:hidden;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: 0 18px 48px rgba(0,0,0,.45);
+    }
+    .plan-table th, .plan-table td{
+      padding:16px 18px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      text-align:left;
+      font-size:.95rem;
+    }
+    .plan-table th{
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      font-weight:900;
+      color:#fff;
+      background: rgba(0,0,0,.30);
+    }
+    .plan-table td{
+      color:#d8d8d8;
+    }
+    .plan-table tr:last-child td{border-bottom:none;}
+    .price-big{
+      font-size: 2.6rem;
+      font-weight:900;
+      letter-spacing:-2px;
+      color: var(--neon);
+    }
+    .old{
+      color:#7e7e7e;
+      text-decoration: line-through;
+      font-weight:800;
+      margin-left: 10px;
+      font-size:1rem;
+    }
+    .tag-save{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.7px;
+      font-size:.78rem;
+      color:#000;
+      background: var(--neon);
+      padding:6px 10px;
+      border-radius: 999px;
+      box-shadow: 0 18px 42px rgba(0,255,65,.14);
+    }
+    .buy-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .safe-note{
+      font-size:.85rem;
+      color:#9a9a9a;
+      line-height:1.45;
+    }
+
+    /* ===== MODAL ===== */
+    .modal{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(10px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:2000;
+      padding: 18px;
+    }
+    .modal.open{display:flex;}
+    .modal-card{
+      width:min(1100px, 96vw);
+      border-radius: 22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background: #0b0b0b;
+      box-shadow: 0 40px 120px rgba(0,0,0,.85);
+      transform: translateY(8px);
+      animation: pop .22s ease forwards;
+    }
+    @keyframes pop{
+      to{transform: translateY(0)}
+    }
+    .modal-hero{
+      position:relative;
+      aspect-ratio: 16/6.8;
+      background:#000;
+      overflow:hidden;
+    }
+    .modal-hero img{
+      width:100%; height:100%;
+      object-fit: cover;
+      filter:saturate(1.05) contrast(1.05);
+      transform: scale(1.02);
+    }
+    .modal-hero::after{
       content:"";
       position:absolute; inset:0;
-      background: radial-gradient(900px 380px at 20% 30%, rgba(0,255,65,.10), transparent 60%),
-                  linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.12));
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.18) 55%, rgba(0,0,0,.55) 100%),
+        linear-gradient(0deg, rgba(0,0,0,.88) 0%, rgba(0,0,0,.18) 55%, rgba(0,0,0,.32) 100%);
+      pointer-events:none;
     }
-    .modalBody{
-      padding:18px;
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:16px;
-      align-items:start;
-    }
-    .modalTitle{
-      font-weight:950;
-      font-size:22px;
-      letter-spacing:-.8px;
-      text-transform:uppercase;
-      color:#fff;
-      margin:0 0 8px;
-      text-shadow: 0 10px 30px rgba(0,0,0,.9);
-    }
-    .modalDesc{color:var(--muted); line-height:1.7; font-size:14px; margin:0}
-    .modalClose{
-      position:absolute; top:14px; right:14px;
-      width:42px; height:42px; border-radius:14px;
+    .modal-close{
+      position:absolute;
+      top:14px; right:14px;
+      width:42px; height:42px;
+      border-radius: 14px;
       border:1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.35);
-      color:#fff; cursor:pointer;
-      display:grid; place-items:center;
+      color:#fff;
+      font-size:18px;
+      cursor:pointer;
       transition:.2s ease;
       z-index:5;
     }
-    .modalClose:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
-    .modalSide{
+    .modal-close:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.24)}
+    .modal-body{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      padding:18px;
+      align-items:stretch;
+      background:
+        radial-gradient(closest-side, rgba(0,255,65,.08), transparent 60%);
+    }
+    @media (max-width: 980px){
+      .modal-body{grid-template-columns:1fr;}
+    }
+    .modal-left{
+      padding: 4px 6px 8px 6px;
+    }
+    .modal-title{
+      font-weight:900;
+      text-transform:uppercase;
+      color:#fff;
+      letter-spacing:-1px;
+      font-size: 1.85rem; /* menor = mais premium */
+      line-height:1.08;
+      margin: 2px 0 8px 0;
+      text-shadow: 0 16px 44px rgba(0,0,0,.95);
+    }
+    .modal-desc{
+      color:#bdbdbd;
+      line-height:1.6;
+      font-size:1.02rem;
+      max-width: 62ch;
+    }
+    .modal-right{
       border-radius: 18px;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      padding:14px;
+      background: rgba(255,255,255,.03);
+      padding:16px;
+      box-shadow: 0 18px 48px rgba(0,0,0,.35);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
     }
-    .modalSide .row{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    .meta-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
       padding:10px 0;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      color:#d9d9d9;
-      font-weight:800;
-      font-size:13px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      color:#cfcfcf;
+      font-size:.95rem;
     }
-    .modalSide .row:last-child{border-bottom:0}
-    .modalSide .row span{color:var(--muted2); font-weight:800}
-    .modalSide .modalBtns{display:flex; gap:10px; margin-top:12px}
-    .modalSide .modalBtns .btn{width:100%}
+    .meta-row:last-child{border-bottom:none;}
+    .meta-row b{color:#fff}
+    .modal-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 4px;
+    }
+    .hint{
+      color:#8a8a8a;
+      font-size:.85rem;
+      line-height:1.4;
+    }
 
-    /* ---------- Toasts ---------- */
-    .toasts{
-      position:fixed; right:18px; bottom:18px; z-index:2500;
-      display:flex; flex-direction:column; gap:10px;
-      pointer-events:none;
-    }
-    .toast{
-      width:min(340px, calc(100vw - 36px));
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(12,12,12,.92);
-      box-shadow: var(--shadowSoft);
-      padding:12px 12px;
-      display:flex; gap:10px; align-items:flex-start;
-      animation: floatIn .35s ease both;
-      pointer-events:none;
-    }
-    .toast .ic{
-      width:34px; height:34px; border-radius:12px;
-      background: rgba(0,255,65,.12);
-      border:1px solid rgba(0,255,65,.20);
-      color:var(--neon);
-      display:grid; place-items:center;
-      flex:0 0 auto;
-    }
-    .toast b{color:#fff}
-    .toast p{margin:2px 0 0; color:var(--muted2); font-size:12px; line-height:1.45}
-
-    /* ---------- Footer ---------- */
+    /* ===== FOOTER ===== */
     footer{
-      padding:44px 0;
+      padding: 40px 0;
+      color:#6a6a6a;
       border-top:1px solid rgba(255,255,255,.06);
-      color:#606060;
-      font-size:12px;
-    }
-
-    /* ---------- Responsive ---------- */
-    @media (max-width: 980px){
-      .heroGrid{grid-template-columns: 1fr; gap:18px}
-      .heroCardMedia{height: 300px}
-      .heroCardText{max-width: 100%}
-      .heroStats{grid-template-columns: 1fr; }
-      .demoGrid{grid-template-columns: 1fr}
-      .howGrid{grid-template-columns: 1fr}
-      .catalogShell{grid-template-columns: 1fr}
-      .side{position:relative; top:auto}
-      .pricingWrap{grid-template-columns: 1fr}
-      .socialGrid{grid-template-columns: 1fr}
-      .modalBody{grid-template-columns: 1fr}
+      text-align:center;
+      font-size:.85rem;
     }
   </style>
 </head>
 
 <body>
-
-<header>
-  <div class="container nav">
-    <div class="logo">OVER<span>ISE</span></div>
-    <div class="navlinks">
-      <a href="#como">Como funciona</a>
-      <a href="#catalogo">Catálogo</a>
-      <a href="#planos">Planos</a>
-      <a href="#faq">FAQ</a>
-    </div>
+  <header>
+    <div class="logo"><span class="logo-dot"></span>OVER<span>ISE</span></div>
     <div class="nav-cta">
-      <a class="btn" href="#catalogo">Ver catálogo</a>
-      <a class="btn primary" href="#planos">Comprar</a>
+      <a class="btn btn-soft" href="#catalogo">Ver catálogo</a>
+      <a class="btn btn-primary" href="#planos">Ver planos</a>
     </div>
-  </div>
-</header>
+  </header>
 
-<!-- HERO -->
-<section class="section top hero">
-  <div class="container heroGrid">
-    <div class="heroLeft">
-      <div class="pill"><span class="dot"></span> Sistema ativo • experiência premium</div>
-      <h1 class="heroTitle">Sua biblioteca, <span class="accent">sem complicação</span>.</h1>
-      <p class="heroSub">
-        Uma experiência rápida e elegante para pesquisar, organizar e instalar sua coleção com uma interface moderna.
-        Use a busca inteligente para encontrar títulos em segundos.
-      </p>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="kicker"><span class="dot"></span> SISTEMA ATIVO • EXPERIÊNCIA PREMIUM</div>
+          <h1>SUA BIBLIOTECA,<br><span class="neon">SEM COMPLICAÇÃO.</span></h1>
+          <p class="lead">
+            Uma experiência rápida e elegante para pesquisar, organizar e instalar sua coleção com uma interface moderna.
+            Use a busca inteligente e categorias para encontrar títulos em segundos.
+          </p>
 
-      <div class="heroActions">
-        <a class="btn primary" href="#planos">Quero começar</a>
-        <a class="btn" href="#catalogo">Ver catálogo</a>
-      </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#planos">Quero começar</a>
+            <a class="btn btn-soft" href="#catalogo">Ver catálogo</a>
+          </div>
 
-      <div class="heroStats">
-        <div class="stat">
-          <b id="statTotal">741</b>
-          <span>Títulos no catálogo</span>
-        </div>
-        <div class="stat">
-          <b>Carregamento</b>
-          <span>Interface otimizada</span>
-        </div>
-        <div class="stat">
-          <b>Busca inteligente</b>
-          <span>Atalhos (GTA, FIFA…)</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Hero Featured (auto, fade-left) -->
-    <div class="heroCard" id="featuredHeroCard">
-      <div class="heroCardMedia">
-        <img id="featuredImg" alt="Em destaque"/>
-        <div class="heroCardOverlay"></div>
-
-        <button class="modalClose" id="featPrev" aria-label="Anterior">‹</button>
-        <button class="modalClose" style="right:64px" id="featNext" aria-label="Próximo">›</button>
-
-        <div class="heroCardInfo">
-          <div class="heroCardText">
-            <div class="badgeRow">
-              <span class="chip green">Em destaque</span>
-              <span class="chip">Catálogo</span>
+          <div class="hero-metrics">
+            <div class="metric">
+              <div class="big">Carregamento rápido</div>
+              <div class="small">Interface otimizada e leve</div>
             </div>
-            <div class="heroCardName" id="featuredName">—</div>
-            <div class="heroCardDesc" id="featuredDesc">Navegue por categorias e veja detalhes no catálogo.</div>
-          </div>
-          <div class="heroCardBtns">
-            <button class="btn small ghost" id="btnFeatDetails">Ver detalhes</button>
-            <button class="btn small primary" id="btnFeatOpenCatalog">Abrir catálogo</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Infinite marquee -->
-  <div class="container marqueeWrap reveal">
-    <div class="marqueeTitle">
-      <span>Principais títulos • vitrine premium</span>
-      <span class="muted2">Passe o mouse para pausar</span>
-    </div>
-    <div class="marquee">
-      <div class="marqueeTrack" id="marqueeTrack"></div>
-    </div>
-  </div>
-</section>
-
-<!-- DEMO + COMO FUNCIONA -->
-<section id="como" class="section tight">
-  <div class="container demoGrid">
-    <div class="card pad reveal">
-      <h2 class="cardTitle">Como funciona</h2>
-      <p class="cardText">
-        Tudo pensado para ser simples: você pesquisa, visualiza e organiza em uma interface moderna.
-        O catálogo é carregado localmente via <b>games_741_steam.json</b>, garantindo velocidade.
-      </p>
-
-      <div class="howGrid">
-        <div class="how">
-          <div class="k">1) Acesse</div>
-          <div class="s">Entre no painel e navegue pelo catálogo.</div>
-        </div>
-        <div class="how">
-          <div class="k">2) Pesquise</div>
-          <div class="s">Use atalhos (GTA, FIFA…) e categorias.</div>
-        </div>
-        <div class="how">
-          <div class="k">3) Escolha</div>
-          <div class="s">Clique no jogo para ver detalhes e a oferta.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card reveal" style="position:relative">
-      <div class="videoWrap">
-        <!-- Troque pelo seu vídeo (YouTube embed ou <video src="...">) -->
-        <iframe
-          src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
-          title="Demonstração"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      </div>
-      <div class="videoOverlay"></div>
-    </div>
-  </div>
-</section>
-
-<!-- CATÁLOGO -->
-<section id="catalogo" class="section">
-  <div class="container">
-    <div class="catalogHeader reveal">
-      <div>
-        <h2>Catálogo</h2>
-        <p>
-          Pesquise e filtre por categoria. Clique em um jogo para abrir detalhes e ver o botão de oferta.
-          O catálogo só abre quando você quiser — para manter a página leve.
-        </p>
-      </div>
-      <div class="catalogActions">
-        <button class="btn" id="btnToggleCatalog">Ver catálogo</button>
-        <a class="btn primary" href="#planos">Ver planos</a>
-      </div>
-    </div>
-
-    <div class="catalogCollapsed" id="catalogArea">
-      <div class="catalogShell">
-        <aside class="side">
-          <div class="searchBox">
-            <input class="input" id="searchInput" placeholder="Buscar (ex: GTA, FIFA, MINE...)" />
-          </div>
-          <div class="sideMeta" id="statusMsg">Carregando…</div>
-
-          <div class="cats" id="cats"></div>
-
-          <div class="sideMeta" style="margin-top:12px">
-            • Imagens: Steam header 16:9<br/>
-            • Performance: lazy-load + paginação<br/>
-            • Clique no jogo: abre detalhes
-          </div>
-        </aside>
-
-        <main>
-          <div class="grid" id="grid"></div>
-          <div style="display:flex; gap:10px; justify-content:center; margin-top:14px">
-            <button class="btn" id="btnLoadMore" style="display:none">Carregar mais</button>
-          </div>
-        </main>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- PLANOS (tabela) -->
-<section id="planos" class="section tight">
-  <div class="container">
-    <div class="reveal">
-      <h2 style="margin:0; font-size:28px; font-weight:950; letter-spacing:-1px; color:#fff; text-transform:uppercase">Planos</h2>
-      <p class="muted" style="margin:10px 0 0; line-height:1.6; max-width:68ch">
-        Escolha o plano que faz sentido para você. A compra/checkout é configurada no botão.
-      </p>
-    </div>
-
-    <div class="pricingWrap">
-      <div class="plan reveal">
-        <div class="planTop">
-          <div class="planName">Compra avulsa</div>
-          <div class="planBadge">Básico</div>
-        </div>
-        <div class="priceRow">
-          <div class="priceNow" style="color:#fff">R$ —</div>
-          <div class="priceSmall">*valor sob consulta</div>
-        </div>
-        <table class="table">
-          <tr><td>Catálogo</td><td class="bad">Limitado</td></tr>
-          <tr><td>Atualizações</td><td>Manuais</td></tr>
-          <tr><td>Suporte</td><td>Horário comercial</td></tr>
-          <tr><td>Experiência</td><td>Essencial</td></tr>
-        </table>
-        <div class="buyRow">
-          <button class="btn" onclick="alert('Configure seu checkout aqui')">Consultar</button>
-        </div>
-        <div class="secure">🔒 Pagamento seguro • Entrega automática (se aplicável)</div>
-      </div>
-
-      <div class="plan featured reveal">
-        <div class="planTop">
-          <div class="planName">Passe Premium</div>
-          <div class="planBadge">Recomendado</div>
-        </div>
-        <div class="priceRow">
-          <div class="priceNow">R$ 9,97</div>
-          <div class="priceSmall">acesso vitalício</div>
-        </div>
-        <table class="table">
-          <tr><td>Catálogo</td><td class="good">Completo (741)</td></tr>
-          <tr><td>Atualizações</td><td class="good">Automáticas</td></tr>
-          <tr><td>Suporte</td><td class="good">Comunidade + guia</td></tr>
-          <tr><td>Experiência</td><td class="good">Premium</td></tr>
-        </table>
-        <div class="buyRow">
-          <button class="btn primary" onclick="window.open('SEU_LINK_DE_CHECKOUT_AQUI','_blank')">Comprar agora</button>
-        </div>
-        <div class="secure">🔒 Pagamento seguro • Acesso imediato • Suporte</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SOCIAL -->
-<section class="section tight">
-  <div class="container reveal">
-    <h2 style="margin:0; font-size:28px; font-weight:950; letter-spacing:-1px; color:#fff; text-transform:uppercase">Quem usa aprova</h2>
-    <p class="muted" style="margin:10px 0 0; line-height:1.6">Depoimentos em estilo “cards”, inspirados na KeyRush.</p>
-
-    <div class="socialGrid">
-      <div class="quote">
-        <div class="who">
-          <div class="av">R</div>
-          <div>
-            <div style="font-weight:950; color:#fff">Rafael M.</div>
-            <div class="stars">★★★★★</div>
+            <div class="metric">
+              <div class="big">Busca inteligente</div>
+              <div class="small">Atalhos (GTA, FIFA…)</div>
+            </div>
+            <div class="metric">
+              <div class="big">Premium</div>
+              <div class="small">Visual estilo store</div>
+            </div>
           </div>
         </div>
-        <div class="txt">“Interface bonita, rápida e fácil de usar. Achei os jogos em segundos.”</div>
-      </div>
 
-      <div class="quote">
-        <div class="who">
-          <div class="av">G</div>
-          <div>
-            <div style="font-weight:950; color:#fff">Gustavo L.</div>
-            <div class="stars">★★★★★</div>
+        <!-- FEATURE (rotativo) -->
+        <div class="feature-card" id="heroFeaturedCard">
+          <div class="feature-img">
+            <img id="heroFeaturedImg" alt="Destaque" />
+            <div class="dots" id="heroDots"></div>
+          </div>
+          <div class="feature-body">
+            <div class="chips">
+              <span class="chip neon">Em destaque</span>
+              <span class="chip" id="heroChip2">Catálogo</span>
+            </div>
+            <div class="feature-title" id="heroFeaturedTitle">Carregando…</div>
+            <div class="feature-sub" id="heroFeaturedSub">Navegue por categorias e veja detalhes no catálogo.</div>
+            <div class="feature-cta">
+              <button class="btn btn-soft" id="heroDetailsBtn">Ver detalhes</button>
+              <a class="btn btn-primary" href="#catalogo">Abrir catálogo</a>
+            </div>
           </div>
         </div>
-        <div class="txt">“A busca inteligente salva muito tempo. Curti demais a organização.”</div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CARROSSEL INFINITO AAA -->
+  <section class="infinite-strip">
+    <div class="wrap">
+      <div class="strip" aria-label="Carrossel de jogos famosos">
+        <div class="strip-track" id="aaaStrip"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO / COMO FUNCIONA -->
+  <section class="section" id="demo">
+    <div class="wrap">
+      <div class="section-title">DEMONSTRAÇÃO</div>
+      <div class="section-sub">
+        Assista a uma demonstração rápida da experiência: interface, categorias e como você acessa os detalhes do jogo e o botão de oferta.
       </div>
 
-      <div class="quote">
-        <div class="who">
-          <div class="av">A</div>
-          <div>
-            <div style="font-weight:950; color:#fff">André S.</div>
-            <div class="stars">★★★★★</div>
+      <div class="demo-grid">
+        <div class="card">
+          <div class="video-box">
+            <!-- TROQUE O SRC AQUI (YouTube embed ou seu vídeo) -->
+            <iframe
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              title="Demonstração Overise"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+            <div class="video-overlay"></div>
           </div>
         </div>
-        <div class="txt">“Visual premium, parece uma loja grande. Catálogo carrega instantâneo.”</div>
+
+        <div class="card card-pad">
+          <div class="section-title" style="font-size:1.6rem; margin-bottom:6px;">COMO FUNCIONA</div>
+          <div class="section-sub" style="margin-bottom:12px;">
+            Tudo pensado para ser simples: você navega por categorias, abre detalhes e decide a oferta.
+            O catálogo é carregado localmente via <b>games_741_steam.json</b>, garantindo velocidade.
+          </div>
+
+          <div class="how-steps">
+            <div class="step">
+              <div class="n">1) Acesse</div>
+              <div class="t">Entre no painel</div>
+              <div class="d">Você entra e vê a interface premium com destaques e categorias.</div>
+            </div>
+            <div class="step">
+              <div class="n">2) Explore</div>
+              <div class="t">Categorias</div>
+              <div class="d">Selecione uma categoria e veja jogos alternando com animação suave.</div>
+            </div>
+            <div class="step">
+              <div class="n">3) Escolha</div>
+              <div class="t">Detalhes e oferta</div>
+              <div class="d">Clique no jogo para abrir detalhes e o botão de oferta — sem te jogar pra baixo.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CATALOGO -->
+  <section class="section" id="catalogo">
+    <div class="wrap">
+      <div class="section-title">CATÁLOGO</div>
+      <div class="section-sub">
+        Pesquise e filtre por categoria. Clique em um jogo para abrir detalhes e ver o botão de oferta.
+        O catálogo fica leve e alterna automaticamente — sem listar 741 itens na tela.
+      </div>
+
+      <div class="catalog-shell">
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <div class="card box">
+            <h3>Navegação</h3>
+            <p>Escolha uma categoria. Os 3 cards principais vão alternar automaticamente com transição fade para o próximo jogo.</p>
+
+            <div class="cat-list" id="catList"></div>
+
+            <div style="margin-top:14px; color:#8f8f8f; font-size:.88rem; line-height:1.55;">
+              • Imagens: Steam (alta resolução no modal)<br>
+              • Performance: lazy + cache de appid<br>
+              • Clique no jogo: abre detalhes
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage -->
+        <div>
+          <div class="catalog-topbar">
+            <button class="btn btn-soft" id="btnShuffle">Trocar jogos</button>
+            <a class="btn btn-primary" href="#planos">Ver planos</a>
+          </div>
+
+          <div class="catalog-stage" id="catalogStage">
+            <!-- 3 tiles dinâmicos -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANOS -->
+  <section class="section" id="planos">
+    <div class="wrap">
+      <div class="section-title">PLANOS</div>
+      <div class="section-sub">
+        Compra por impulso com preço “no-brainer”. Você adquire o acesso ao software/experiência Overise.
+      </div>
+
+      <table class="plan-table" role="table" aria-label="Tabela de planos">
+        <thead>
+          <tr>
+            <th>Plano</th>
+            <th>Inclui</th>
+            <th style="text-align:right;">Preço</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:900; color:#fff;">
+              PASSE VITALÍCIO
+              <div style="margin-top:8px;"><span class="tag-save">OFERTA</span></div>
+            </td>
+            <td>
+              ✅ Acesso ao software<br>
+              ✅ Catálogo premium por categorias<br>
+              ✅ Atualizações e suporte<br>
+              ✅ Multiplayer em títulos selecionados
+            </td>
+            <td style="text-align:right;">
+              <div class="price-big">R$ 9,97 <span class="old">R$ 199,90</span></div>
+              <div class="safe-note" style="margin-top:6px;">
+                🔒 Pagamento seguro • Entrega automática
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <div class="buy-row">
+                <div class="safe-note">
+                  Dica: no catálogo, clique em um jogo e use “Ver oferta” dentro do modal.
+                </div>
+                <button class="btn btn-primary" onclick="window.open('SEU_LINK_DE_CHECKOUT_AQUI','_blank')">Comprar agora</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+  <footer>
+    © 2026 OVERISE SOFTWARE. Todos os direitos reservados.
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="modal-hero">
+        <button class="modal-close" id="modalClose">×</button>
+        <img id="modalImg" alt="Banner do jogo">
+      </div>
+      <div class="modal-body">
+        <div class="modal-left">
+          <div class="chips" style="margin-bottom:10px;">
+            <span class="chip neon" id="modalChipA">Em destaque</span>
+            <span class="chip" id="modalChipB">Catálogo</span>
+          </div>
+          <div class="modal-title" id="modalTitle">Jogo</div>
+          <div class="modal-desc" id="modalDesc">
+            Abra o catálogo para explorar mais títulos ou vá para a oferta para adquirir o acesso ao software.
+          </div>
+        </div>
+
+        <div class="modal-right">
+          <div class="meta-row"><span>Disponibilidade</span> <b>✓ Ativo</b></div>
+          <div class="meta-row"><span>Categoria</span> <b id="modalCategory">—</b></div>
+          <div class="meta-row"><span>Origem</span> <b>Steam</b></div>
+
+          <div class="modal-actions">
+            <a class="btn btn-soft" href="#planos" id="modalOfferBtn">Ver oferta</a>
+            <button class="btn btn-primary" onclick="window.open('SEU_LINK_DE_CHECKOUT_AQUI','_blank')">Comprar</button>
+          </div>
+
+          <div class="hint">Dica: clique em “Ver oferta” para comparar os planos e concluir a compra.</div>
+        </div>
       </div>
     </div>
   </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq" class="section tight">
-  <div class="container reveal">
-    <h2 style="margin:0; font-size:28px; font-weight:950; letter-spacing:-1px; color:#fff; text-transform:uppercase">FAQ</h2>
-    <p class="muted" style="margin:10px 0 0; line-height:1.6; max-width:70ch">
-      Respostas rápidas para as dúvidas mais comuns.
-    </p>
-
-    <div class="faq">
-      <div class="qa">
-        <button class="q" type="button">
-          O que eu recebo?
-          <span class="chev">+</span>
-        </button>
-        <div class="a">
-          Você recebe acesso à interface/painel com o catálogo, guia de uso e recursos do software conforme o plano.
-        </div>
-      </div>
-      <div class="qa">
-        <button class="q" type="button">
-          Preciso instalar algo?
-          <span class="chev">+</span>
-        </button>
-        <div class="a">
-          Você pode assistir à demonstração e seguir o guia. Caso exista um app, ele será indicado no painel.
-        </div>
-      </div>
-      <div class="qa">
-        <button class="q" type="button">
-          Como funciona o catálogo?
-          <span class="chev">+</span>
-        </button>
-        <div class="a">
-          O site carrega o arquivo <b>games_741_steam.json</b> localmente e renderiza os cards com performance (lazy-load + paginação).
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    © 2026 OVERISE SOFTWARE • Todos os direitos reservados.
-  </div>
-</footer>
-
-<!-- GAME MODAL -->
-<div class="backdrop" id="backdrop" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true" aria-label="Detalhes do jogo">
-    <div class="modalTop">
-      <img id="modalImg" alt="Capa do jogo"/>
-      <button class="modalClose" id="modalClose" aria-label="Fechar">✕</button>
-    </div>
-    <div class="modalBody">
-      <div>
-        <h3 class="modalTitle" id="modalTitle">—</h3>
-        <p class="modalDesc" id="modalDesc">
-          Detalhes do jogo. (Você pode personalizar esta descrição usando informações do seu produto/catálogo.)
-        </p>
-      </div>
-      <div class="modalSide">
-        <div class="row"><span>Disponibilidade</span> ✓ Ativo</div>
-        <div class="row"><span>Categoria</span> <b id="modalCat">—</b></div>
-        <div class="row"><span>Origem</span> Steam</div>
-        <div class="modalBtns">
-          <button class="btn" id="modalGoPlans">Ver oferta</button>
-          <button class="btn primary" id="modalBuyNow">Comprar</button>
-        </div>
-        <div class="secure">Dica: clique em “Ver oferta” para comparar os planos.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Toasts -->
-<div class="toasts" id="toasts"></div>
 
 <script>
-  /** ==========================
-   *  CONFIG
-   * ========================== */
-  const JSON_PATH = "./games_741_steam.json";
+/* ============================
+   CONFIG
+============================ */
+const JSON_PATH = "./games_741_steam.json";
 
-  // Banners Steam (quando tiver appid)
-  const STEAM_HEADER = (appid) =>
-    `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg`;
+/* Imagens Steam (melhor qualidade no modal):
+   - library_hero é grande (1920x620) e fica MUITO melhor que header.jpg
+*/
+const steamLibraryHero = (appid) => `https://cdn.akamai.steamstatic.com/steam/apps/${appid}/library_hero.jpg`;
+const steamHeader = (appid) => `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg`;
 
-  // Fallback (caso cover falhe)
-  const FALLBACK_IMG =
-    "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='920' height='520'><rect width='100%25' height='100%25' fill='%23111'/><text x='50%25' y='50%25' fill='%23333' font-family='Inter,Arial' font-size='28' text-anchor='middle'>SEM CAPA</text></svg>";
+/* Cache appid (se seu JSON já tiver appid, melhor ainda) */
+const CACHE_KEY = "overise_appid_cache_v2";
+let appidCache = {};
+try { appidCache = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}"); } catch(e){ appidCache = {}; }
+const saveCache = () => { try { localStorage.setItem(CACHE_KEY, JSON.stringify(appidCache)); } catch(e){} };
 
-  // Lista “famosos” (o sistema tenta encontrar automaticamente no JSON pelo nome)
-  const FEATURED_NAMES = [
-    "GOD OF WAR RAGNAROK",
-    "CYBERPUNK 2077",
-    "THE LAST OF US",
-    "FORZA HORIZON 5",
-    "GRAND THEFT AUTO V",
-    "RED DEAD REDEMPTION 2",
-    "ELDEN RING",
-    "MARVEL'S SPIDER-MAN REMASTERED"
-  ];
+const STEAM_SEARCH = (term) =>
+  `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(term)}&l=portuguese&cc=BR`;
 
-  // Apelidos da busca
-  const ALIASES = new Map([
-    ["GTA", "GRAND THEFT AUTO"],
-    ["GTA 5", "GRAND THEFT AUTO V"],
-    ["RDR2", "RED DEAD REDEMPTION 2"],
-    ["COD", "CALL OF DUTY"],
-    ["FIFA", "EA SPORTS FC"],
-    ["ETS2", "EURO TRUCK SIMULATOR 2"],
-    ["NFS", "NEED FOR SPEED"],
-    ["MINE", "MINECRAFT"],
-  ]);
-
-  /** ==========================
-   *  STATE
-   * ========================== */
-  let GAMES = [];
-  let FILTERED = [];
-  let ACTIVE_CATEGORY = "TODOS";
-  let page = 0;
-  const PER_PAGE = 18;
-
-  /** ==========================
-   *  DOM
-   * ========================== */
-  const statTotal = document.getElementById("statTotal");
-
-  const marqueeTrack = document.getElementById("marqueeTrack");
-
-  const featuredImg = document.getElementById("featuredImg");
-  const featuredName = document.getElementById("featuredName");
-  const featuredDesc = document.getElementById("featuredDesc");
-  const btnFeatDetails = document.getElementById("btnFeatDetails");
-  const btnFeatOpenCatalog = document.getElementById("btnFeatOpenCatalog");
-  const featPrev = document.getElementById("featPrev");
-  const featNext = document.getElementById("featNext");
-
-  const btnToggleCatalog = document.getElementById("btnToggleCatalog");
-  const catalogArea = document.getElementById("catalogArea");
-  const searchInput = document.getElementById("searchInput");
-  const statusMsg = document.getElementById("statusMsg");
-  const catsEl = document.getElementById("cats");
-  const grid = document.getElementById("grid");
-  const btnLoadMore = document.getElementById("btnLoadMore");
-
-  const backdrop = document.getElementById("backdrop");
-  const modalClose = document.getElementById("modalClose");
-  const modalImg = document.getElementById("modalImg");
-  const modalTitle = document.getElementById("modalTitle");
-  const modalDesc = document.getElementById("modalDesc");
-  const modalCat = document.getElementById("modalCat");
-  const modalGoPlans = document.getElementById("modalGoPlans");
-  const modalBuyNow = document.getElementById("modalBuyNow");
-
-  const toasts = document.getElementById("toasts");
-
-  /** ==========================
-   *  UTILS
-   * ========================== */
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, m => ({
-      "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#39;"
-    }[m]));
-  }
-
-  function getCover(game){
-    if(game.cover && typeof game.cover === "string" && game.cover.trim().length) return game.cover;
-    if(game.appid) return STEAM_HEADER(game.appid);
-    return FALLBACK_IMG;
-  }
-
-  function normalizeQuery(q){
-    q = (q||"").trim().toUpperCase();
-    if(ALIASES.has(q)) q = ALIASES.get(q);
-    return q;
-  }
-
-  function debounce(fn, ms=220){
-    let t;
-    return (...args) => { clearTimeout(t); t = setTimeout(()=>fn(...args), ms); };
-  }
-
-  function toast(msg){
-    const el = document.createElement("div");
-    el.className = "toast";
-    el.innerHTML = `
-      <div class="ic">✓</div>
-      <div>
-        <b>Ativação registrada</b>
-        <p>${escapeHtml(msg)}</p>
-      </div>
-    `;
-    toasts.appendChild(el);
-    setTimeout(()=>{ el.style.opacity = "0"; el.style.transform = "translateY(8px)"; }, 2800);
-    setTimeout(()=>{ el.remove(); }, 3400);
-  }
-
-  /** ==========================
-   *  REVEAL ON SCROLL
-   * ========================== */
-  const ioReveal = new IntersectionObserver((entries)=>{
-    for(const e of entries){
-      if(e.isIntersecting){
-        e.target.classList.add("show");
-        ioReveal.unobserve(e.target);
-      }
-    }
-  }, {rootMargin:"120px"});
-  document.querySelectorAll(".reveal").forEach(el=>ioReveal.observe(el));
-
-  /** ==========================
-   *  FAQ
-   * ========================== */
-  document.querySelectorAll(".faq .qa .q").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const qa = btn.closest(".qa");
-      const open = qa.classList.contains("open");
-      document.querySelectorAll(".faq .qa").forEach(x=>x.classList.remove("open"));
-      if(!open) qa.classList.add("open");
+class FetchQueue{
+  constructor(limit=6){ this.limit=limit; this.active=0; this.q=[]; }
+  push(task){
+    return new Promise((resolve,reject)=>{
+      this.q.push({task,resolve,reject});
+      this._next();
     });
-  });
-
-  /** ==========================
-   *  LOAD JSON
-   * ========================== */
-  async function loadGames(){
-    const r = await fetch(JSON_PATH);
-    const data = await r.json();
-
-    // suporta: array direto OU {games:[...]}
-    const arr = Array.isArray(data) ? data : (data.games || []);
-    GAMES = arr.map(g => ({
-      name: g.name || g.title || "",
-      cover: g.cover || "",
-      appid: g.appid || g.steam_appid || null,
-      categories: Array.isArray(g.categories) ? g.categories : []
-    })).filter(g => g.name);
-
-    statTotal.textContent = String(GAMES.length || 741);
-
-    buildFeatured();
-    buildMarquee();
-    buildCategories();
-    applyFilters();
   }
-
-  /** ==========================
-   *  FEATURED HERO (auto, slide fade)
-   * ========================== */
-  let featuredList = [];
-  let featuredIndex = 0;
-  let featuredTimer = null;
-
-  function findGameByFamousName(name){
-    const n = name.toUpperCase();
-    // tenta match exato
-    let g = GAMES.find(x => x.name.toUpperCase() === n);
-    if(g) return g;
-    // tenta contains
-    g = GAMES.find(x => x.name.toUpperCase().includes(n));
-    if(g) return g;
-    // tenta sem caracteres especiais comuns
-    const n2 = n.replace(/[^A-Z0-9 ]+/g,"").trim();
-    g = GAMES.find(x => x.name.toUpperCase().replace(/[^A-Z0-9 ]+/g,"").includes(n2));
-    return g || null;
-  }
-
-  function buildFeatured(){
-    featuredList = [];
-    for(const nm of FEATURED_NAMES){
-      const g = findGameByFamousName(nm);
-      if(g) featuredList.push(g);
+  _next(){
+    while(this.active < this.limit && this.q.length){
+      const {task,resolve,reject} = this.q.shift();
+      this.active++;
+      Promise.resolve().then(task).then(resolve).catch(reject).finally(()=>{
+        this.active--; this._next();
+      });
     }
+  }
+}
+const q = new FetchQueue(6);
 
-    // fallback se algum não existir
-    if(featuredList.length < 4){
-      featuredList = GAMES.slice(0, 8);
-    }
+/* ============================
+   DADOS
+============================ */
+let GAMES = [];
+let categories = [];
+let ACTIVE_CAT = "TODOS";
 
-    featuredIndex = 0;
-    renderFeatured();
+/* Lista AAA (para hero/strip) — sem Forza Horizon 4 */
+const AAA_NAMES = [
+  "Grand Theft Auto V",
+  "Red Dead Redemption 2",
+  "Cyberpunk 2077",
+  "God of War Ragnarök",
+  "God of War",
+  "The Last of Us Part I",
+  "Forza Horizon 5",
+  "Elden Ring",
+  "Marvel’s Spider-Man Remastered",
+  "Hogwarts Legacy",
+  "Resident Evil 4",
+  "Sekiro"
+];
 
-    clearInterval(featuredTimer);
-    featuredTimer = setInterval(()=>nextFeatured(), 5200);
+/* Texto curto (sub) por jogo no destaque */
+const AAA_SUB = {
+  "Grand Theft Auto V":"O clássico mundo aberto — campanha e diversão sem fim.",
+  "Red Dead Redemption 2":"Uma história épica no velho-oeste com imersão total.",
+  "Cyberpunk 2077":"Futuro distópico, ação e liberdade em Night City.",
+  "God of War Ragnarök":"A jornada de Kratos continua em alto nível cinematográfico.",
+  "God of War":"A reinvenção que virou referência em narrativa.",
+  "The Last of Us Part I":"Uma das histórias mais marcantes dos games.",
+  "Forza Horizon 5":"Velocidade e liberdade no melhor festival do Horizon.",
+  "Elden Ring":"Exploração e desafio em um mundo aberto colossal.",
+  "Marvel’s Spider-Man Remastered":"Ação fluida e cinematográfica em Nova York.",
+  "Hogwarts Legacy":"Explore Hogwarts com liberdade e magia.",
+  "Resident Evil 4":"Tensão e ação com produção premium.",
+  "Sekiro":"Combate afiado e desafio de alto nível."
+};
+
+/* ============================
+   HELPERS
+============================ */
+function normUpper(s){ return String(s||"").trim().toUpperCase(); }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function uniqByName(list){
+  const seen = new Set();
+  const out = [];
+  for(const g of list){
+    const k = normUpper(g.name);
+    if(seen.has(k)) continue;
+    seen.add(k); out.push(g);
+  }
+  return out;
+}
+
+function guessCategories(game){
+  // JSON pode ser: {name, categories} ou {name, categoria}
+  const cats = game.categories || game.categorias || game.category || [];
+  if(Array.isArray(cats)) return cats;
+  if(typeof cats === "string") return [cats];
+  return [];
+}
+
+/* Busca appid automático (fallback) */
+async function resolveAppId(name){
+  if(appidCache[name] !== undefined) return appidCache[name]; // null também
+  const url = STEAM_SEARCH(name);
+  const r = await fetch(url, {mode:"cors"});
+  const data = await r.json();
+  const appid = (data && data.items && data.items[0] && data.items[0].id) ? data.items[0].id : null;
+  appidCache[name] = appid;
+  saveCache();
+  return appid;
+}
+
+/* Escolhe banner de melhor qualidade:
+   1) se tiver appid no JSON -> library_hero
+   2) tenta cache / storesearch -> library_hero
+   3) se falhar -> header
+   4) se falhar -> g.cover se existir
+*/
+async function bestBannerUrl(game){
+  const name = game.name;
+  const cover = game.cover || game.banner || null;
+
+  const directAppid = game.appid || game.steam_appid || game.steamAppId || null;
+  let appid = directAppid;
+
+  if(!appid){
+    appid = await resolveAppId(name);
   }
 
-  function renderFeatured(){
-    const g = featuredList[featuredIndex];
-    if(!g) return;
-
-    // animação slide/fade
-    const card = document.getElementById("featuredHeroCard");
-    card.style.animation = "none";
-    void card.offsetWidth; // reflow
-    card.style.animation = "slideFade 5.2s ease both";
-
-    featuredImg.src = getCover(g);
-    featuredImg.onerror = () => featuredImg.src = FALLBACK_IMG;
-    featuredName.textContent = g.name;
-    featuredDesc.textContent = "Navegue por categorias, veja detalhes e encontre títulos em segundos.";
-
-    btnFeatDetails.onclick = () => openModal(g);
-    btnFeatOpenCatalog.onclick = () => {
-      openCatalog();
-      setTimeout(()=>document.getElementById("catalogo").scrollIntoView({behavior:"smooth"}), 50);
+  if(appid){
+    return {
+      primary: steamLibraryHero(appid),
+      fallback: steamHeader(appid),
+      cover
     };
   }
+  return { primary: cover || "", fallback: cover || "", cover };
+}
 
-  function nextFeatured(){
-    featuredIndex = (featuredIndex + 1) % featuredList.length;
-    renderFeatured();
-  }
-  function prevFeatured(){
-    featuredIndex = (featuredIndex - 1 + featuredList.length) % featuredList.length;
-    renderFeatured();
-  }
-
-  featNext.addEventListener("click", ()=>{
-    clearInterval(featuredTimer);
-    nextFeatured();
-    featuredTimer = setInterval(()=>nextFeatured(), 5200);
-  });
-  featPrev.addEventListener("click", ()=>{
-    clearInterval(featuredTimer);
-    prevFeatured();
-    featuredTimer = setInterval(()=>nextFeatured(), 5200);
-  });
-
-  /** ==========================
-   *  MARQUEE (infinite)
-   * ========================== */
-  function buildMarquee(){
-    // duplica lista para loop perfeito
-    const list = featuredList.length ? featuredList : GAMES.slice(0, 12);
-    const doubled = [...list, ...list];
-
-    marqueeTrack.innerHTML = doubled.map(g => `
-      <div class="miniCard" title="${escapeHtml(g.name)}" data-name="${escapeHtml(g.name)}">
-        <img src="${getCover(g)}" alt="${escapeHtml(g.name)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'"/>
-        <div class="miniOverlay"></div>
-        <div class="miniLabel">${escapeHtml(g.name)}</div>
-      </div>
-    `).join("");
-
-    marqueeTrack.querySelectorAll(".miniCard").forEach(card=>{
-      card.addEventListener("click", ()=>{
-        const name = card.getAttribute("data-name");
-        const g = GAMES.find(x => x.name === name) || GAMES.find(x => x.name.toUpperCase() === (name||"").toUpperCase());
-        if(g) openModal(g);
-      });
-    });
-  }
-
-  /** ==========================
-   *  CATALOG TOGGLE
-   * ========================== */
-  function openCatalog(){
-    catalogArea.classList.add("show");
-    btnToggleCatalog.textContent = "Ocultar catálogo";
-  }
-  function closeCatalog(){
-    catalogArea.classList.remove("show");
-    btnToggleCatalog.textContent = "Ver catálogo";
-  }
-
-  btnToggleCatalog.addEventListener("click", ()=>{
-    if(catalogArea.classList.contains("show")) closeCatalog();
-    else openCatalog();
-  });
-
-  /** ==========================
-   *  CATEGORIES
-   * ========================== */
-  function buildCategories(){
-    const counts = new Map();
-    for(const g of GAMES){
-      const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
-      for(const c of cats){
-        const k = String(c).toUpperCase();
-        counts.set(k, (counts.get(k)||0) + 1);
-      }
+function setImgWithFallback(imgEl, primary, fallback, finalFallback){
+  imgEl.onerror = null;
+  imgEl.src = primary || finalFallback || "";
+  imgEl.onerror = () => {
+    imgEl.onerror = null;
+    if(fallback && imgEl.src !== fallback){
+      imgEl.src = fallback;
+      imgEl.onerror = () => {
+        imgEl.onerror = null;
+        if(finalFallback) imgEl.src = finalFallback;
+      };
+    } else if(finalFallback){
+      imgEl.src = finalFallback;
     }
+  };
+}
 
-    const sorted = [...counts.entries()].sort((a,b)=>b[1]-a[1]).slice(0, 14);
-    const items = [{c:"TODOS", n:GAMES.length}, ...sorted.map(([c,n])=>({c,n}))];
+/* ============================
+   LOAD JSON
+============================ */
+async function loadGames(){
+  const r = await fetch(JSON_PATH);
+  const data = await r.json();
+  // aceita array direto ou {games:[...]}
+  const arr = Array.isArray(data) ? data : (data.games || []);
+  // normaliza: precisa ter .name
+  GAMES = arr
+    .map(x => ({...x, name: x.name || x.nome || ""}))
+    .filter(x => x.name && x.name.trim().length > 0);
 
-    catsEl.innerHTML = items.map(({c,n})=>`
-      <div class="cat ${c===ACTIVE_CATEGORY ? "active":""}" data-cat="${escapeHtml(c)}">${escapeHtml(c)} <small>(${n})</small></div>
-    `).join("");
-
-    catsEl.querySelectorAll(".cat").forEach(el=>{
-      el.addEventListener("click", ()=>{
-        ACTIVE_CATEGORY = el.getAttribute("data-cat") || "TODOS";
-        buildCategories();
-        page = 0;
-        applyFilters();
-      });
-    });
+  // categorias (apenas nomes, sem contagem)
+  const set = new Set();
+  for(const g of GAMES){
+    for(const c of guessCategories(g)){
+      if(!c) continue;
+      set.add(String(c).trim().toUpperCase());
+    }
   }
+  categories = ["TODOS", ...[...set].sort((a,b)=>a.localeCompare(b, "pt-BR"))];
+}
 
-  /** ==========================
-   *  FILTER + RENDER
-   * ========================== */
-  function applyFilters(){
-    const q = normalizeQuery(searchInput.value);
-    const qOk = q.length >= 2;
+/* ============================
+   HERO FEATURE ROTATOR (AAA)
+============================ */
+let heroIndex = 0;
+let heroAAA = [];
+const heroImg = document.getElementById("heroFeaturedImg");
+const heroTitle = document.getElementById("heroFeaturedTitle");
+const heroSub = document.getElementById("heroFeaturedSub");
+const heroDots = document.getElementById("heroDots");
+const heroDetailsBtn = document.getElementById("heroDetailsBtn");
 
-    FILTERED = GAMES.filter(g=>{
-      const cats = (g.categories && g.categories.length) ? g.categories.map(x=>String(x).toUpperCase()) : ["OUTROS"];
-      const inCat = (ACTIVE_CATEGORY === "TODOS") ? true : cats.includes(ACTIVE_CATEGORY);
-      if(!inCat) return false;
-      if(!qOk) return true;
-      return g.name.toUpperCase().includes(q);
+function renderHeroDots(){
+  heroDots.innerHTML = heroAAA.map((_,i)=>`<span class="${i===heroIndex?'active':''}"></span>`).join("");
+}
+async function setHeroSlide(i){
+  heroIndex = i % heroAAA.length;
+  const g = heroAAA[heroIndex];
+  heroTitle.textContent = (g && g.name) ? g.name.toUpperCase() : "DESTAQUE";
+  heroSub.textContent = AAA_SUB[g.name] || "Navegue por categorias e veja detalhes no catálogo.";
+
+  renderHeroDots();
+
+  // banner high quality
+  const {primary, fallback, cover} = await bestBannerUrl(g);
+  setImgWithFallback(heroImg, primary, fallback, cover || fallback || "");
+  heroDetailsBtn.onclick = () => openModal(g, "Em destaque");
+}
+function nextHero(){
+  const next = (heroIndex + 1) % heroAAA.length;
+  // micro animação (fade)
+  const card = document.getElementById("heroFeaturedCard");
+  card.classList.remove("fade-swap");
+  void card.offsetWidth;
+  card.classList.add("fade-swap");
+  setHeroSlide(next);
+}
+
+/* ============================
+   STRIP AAA (INFINITE)
+============================ */
+function buildStrip(aaaGames){
+  const strip = document.getElementById("aaaStrip");
+  // duplicar para scroll infinito
+  const base = aaaGames.slice(0, 10); // suficiente e leve
+  const dup = base.concat(base);
+  strip.innerHTML = dup.map(g=>{
+    // para strip, header já está OK (pequeno). mas se tiver appid, ainda melhor:
+    const appid = g.appid || g.steam_appid || g.steamAppId;
+    const img = appid ? steamHeader(appid) : (g.cover || "");
+    return `<div class="strip-item" title="${g.name}">
+      <img loading="lazy" src="${img}" alt="${g.name}">
+    </div>`;
+  }).join("");
+}
+
+/* ============================
+   CATEGORIAS + STAGE (3 cards rotativos)
+============================ */
+const catListEl = document.getElementById("catList");
+const stageEl = document.getElementById("catalogStage");
+const btnShuffle = document.getElementById("btnShuffle");
+
+let stagePool = [];
+let stageCurrent = [];
+
+function renderCategoriesOnly(){
+  catListEl.innerHTML = categories.map(c=>{
+    const active = (c === ACTIVE_CAT) ? "active" : "";
+    return `<div class="cat-btn ${active}" data-cat="${c}">${c}</div>`;
+  }).join("");
+
+  catListEl.querySelectorAll(".cat-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      ACTIVE_CAT = btn.getAttribute("data-cat");
+      renderCategoriesOnly();
+      refreshPoolAndStage(true);
     });
-
-    statusMsg.textContent = `${FILTERED.length} resultados encontrados.`;
-    page = 0;
-    renderPage();
-  }
-
-  const applyFiltersDebounced = debounce(applyFilters, 220);
-  searchInput.addEventListener("input", applyFiltersDebounced);
-  searchInput.addEventListener("focus", ()=>{
-    if(!catalogArea.classList.contains("show")) openCatalog();
   });
+}
 
-  function renderPage(){
-    const slice = FILTERED.slice(0, (page+1) * PER_PAGE);
-    grid.innerHTML = slice.map(g => {
-      const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
-      const mainCat = cats[0] || "OUTROS";
+function poolByCategory(cat){
+  if(cat === "TODOS") return GAMES.slice();
+  return GAMES.filter(g => guessCategories(g).map(x=>String(x).toUpperCase()).includes(cat));
+}
 
-      return `
-        <div class="game" data-name="${escapeHtml(g.name)}">
-          <div class="gameImg">
-            <img src="${getCover(g)}" alt="${escapeHtml(g.name)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'"/>
-            <div class="gameGrad"></div>
-          </div>
-          <div class="gameInfo">
-            <div class="gameName">${escapeHtml(g.name)}</div>
-            <div class="tagRow">
-              <span class="tag ok">Disponível</span>
-              <span class="tag">${escapeHtml(String(mainCat))}</span>
-            </div>
-            <div class="gameCta">
-              <span class="tiny">Clique para detalhes</span>
-              <button class="ghostBtn" type="button">Ver</button>
-            </div>
-          </div>
+function refreshPoolAndStage(force=false){
+  stagePool = uniqByName(poolByCategory(ACTIVE_CAT));
+  if(stagePool.length < 3){
+    // fallback
+    stagePool = uniqByName(GAMES.slice());
+  }
+  if(force || stageCurrent.length !== 3){
+    stageCurrent = pick3(stagePool);
+    renderStage(stageCurrent, true);
+  }
+}
+
+function pick3(pool){
+  const out = [];
+  const used = new Set();
+  while(out.length < 3 && used.size < pool.length){
+    const g = pick(pool);
+    const k = normUpper(g.name);
+    if(used.has(k)) continue;
+    used.add(k);
+    out.push(g);
+  }
+  // garantia
+  while(out.length < 3){
+    out.push(pool[out.length] || pool[0]);
+  }
+  return out;
+}
+
+async function renderStage(list, animate){
+  stageEl.innerHTML = "";
+  for(const g of list){
+    const tile = document.createElement("div");
+    tile.className = "game-tile" + (animate ? " fade-swap" : "");
+    tile.innerHTML = `
+      <div class="img"><img alt="${g.name}"></div>
+      <div class="shade"></div>
+      <div class="tile-body">
+        <div class="chips">
+          <span class="chip neon">Destaque</span>
+          <span class="chip">${ACTIVE_CAT === "TODOS" ? "Catálogo" : ACTIVE_CAT}</span>
         </div>
-      `;
-    }).join("");
-
-    grid.querySelectorAll(".game").forEach(el=>{
-      el.addEventListener("click", ()=>{
-        const name = el.getAttribute("data-name");
-        const g = GAMES.find(x=>x.name === name) || GAMES.find(x=>x.name.toUpperCase() === (name||"").toUpperCase());
-        if(g) openModal(g);
-      });
+        <div class="tile-title">${g.name.toUpperCase()}</div>
+        <div class="tile-sub">Clique para ver detalhes e o botão de oferta.</div>
+        <div class="tile-actions">
+          <button class="btn btn-soft" type="button">Ver detalhes</button>
+          <a class="btn btn-primary" href="#planos">Ver planos</a>
+        </div>
+      </div>
+    `;
+    tile.addEventListener("click", ()=>openModal(g, ACTIVE_CAT === "TODOS" ? "Catálogo" : ACTIVE_CAT));
+    // botão "ver detalhes" também abre
+    tile.querySelector(".btn-soft").addEventListener("click", (e)=>{
+      e.stopPropagation();
+      openModal(g, ACTIVE_CAT === "TODOS" ? "Catálogo" : ACTIVE_CAT);
     });
 
-    const canMore = ((page+1) * PER_PAGE) < FILTERED.length;
-    btnLoadMore.style.display = canMore ? "inline-flex" : "none";
+    stageEl.appendChild(tile);
+
+    // carregar imagem em fila (evita travar)
+    const imgEl = tile.querySelector("img");
+    q.push(async ()=>{
+      const {primary, fallback, cover} = await bestBannerUrl(g);
+      // para tile, podemos usar header (mais leve) como fallback e cover por último
+      // mas tentamos library_hero primeiro (fica lindo)
+      setImgWithFallback(imgEl, primary, fallback, cover || fallback || "");
+    });
+  }
+}
+
+/* alternância automática: troca 3 jogos por novos a cada X segundos */
+let stageTimer = null;
+function startStageAutoSwap(){
+  if(stageTimer) clearInterval(stageTimer);
+  stageTimer = setInterval(()=>{
+    stageCurrent = pick3(stagePool);
+    renderStage(stageCurrent, true);
+  }, 5200); // ritmo suave
+}
+btnShuffle.addEventListener("click", ()=>{
+  stageCurrent = pick3(stagePool);
+  renderStage(stageCurrent, true);
+});
+
+/* ============================
+   MODAL
+============================ */
+const modal = document.getElementById("modal");
+const modalClose = document.getElementById("modalClose");
+const modalImg = document.getElementById("modalImg");
+const modalTitle = document.getElementById("modalTitle");
+const modalCategory = document.getElementById("modalCategory");
+const modalChipA = document.getElementById("modalChipA");
+const modalChipB = document.getElementById("modalChipB");
+const modalOfferBtn = document.getElementById("modalOfferBtn");
+
+function openModal(game, catLabel){
+  modalTitle.textContent = game.name.toUpperCase();
+  modalCategory.textContent = (catLabel || "CATÁLOGO");
+  modalChipA.textContent = "Disponível";
+  modalChipB.textContent = (catLabel || "Catálogo").toUpperCase();
+
+  // texto/spacing mais premium
+  const cats = guessCategories(game);
+  const niceCat = (cats && cats[0]) ? String(cats[0]).toUpperCase() : (catLabel || "CATÁLOGO");
+  modalCategory.textContent = niceCat;
+
+  modalOfferBtn.onclick = (e) => {
+    // mantém o comportamento: botão de oferta, não “jogar” ao clicar no jogo
+    // aqui a oferta é a seção de planos
+  };
+
+  modal.classList.add("open");
+
+  // imagem em alta qualidade
+  q.push(async ()=>{
+    const {primary, fallback, cover} = await bestBannerUrl(game);
+    // modal: sempre tenta library_hero e fallback para header, por último cover
+    setImgWithFallback(modalImg, primary, fallback, cover || fallback || "");
+  });
+}
+
+function closeModal(){
+  modal.classList.remove("open");
+}
+modalClose.addEventListener("click", closeModal);
+modal.addEventListener("click", (e)=>{
+  if(e.target === modal) closeModal();
+});
+document.addEventListener("keydown", (e)=>{
+  if(e.key === "Escape") closeModal();
+});
+
+/* ============================
+   INIT
+============================ */
+async function init(){
+  await loadGames();
+
+  // map AAA -> encontrar no JSON (por includes)
+  const upperMap = GAMES.map(g => ({g, u:normUpper(g.name)}));
+  heroAAA = [];
+  for(const name of AAA_NAMES){
+    const u = normUpper(name);
+    const found = upperMap.find(x => x.u === u) || upperMap.find(x => x.u.includes(u)) || upperMap.find(x => u.includes(x.u));
+    if(found) heroAAA.push(found.g);
+  }
+  heroAAA = uniqByName(heroAAA);
+  if(heroAAA.length < 5){
+    // fallback: pega aleatórios
+    heroAAA = uniqByName(GAMES).slice(0, 8);
   }
 
-  btnLoadMore.addEventListener("click", ()=>{
-    page++;
-    renderPage();
-  });
+  // Hero dots e primeiro slide
+  heroDots.innerHTML = heroAAA.map((_,i)=>`<span class="${i===0?'active':''}"></span>`).join("");
+  await setHeroSlide(0);
+  setInterval(nextHero, 6200);
 
-  /** ==========================
-   *  MODAL
-   * ========================== */
-  let CURRENT_GAME = null;
+  // Strip AAA
+  buildStrip(heroAAA);
 
-  function openModal(game){
-    CURRENT_GAME = game;
-    modalTitle.textContent = game.name;
-    modalImg.src = getCover(game);
-    modalImg.onerror = () => modalImg.src = FALLBACK_IMG;
+  // Categorias (sem contagem/741)
+  renderCategoriesOnly();
 
-    const cats = (game.categories && game.categories.length) ? game.categories : ["OUTROS"];
-    modalCat.textContent = String(cats[0] || "OUTROS");
-
-    // descrição neutra (você edita)
-    modalDesc.textContent = "Abra o catálogo para explorar mais títulos ou vá para a oferta para adquirir o acesso ao software.";
-
-    backdrop.classList.add("show");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeModal(){
-    backdrop.classList.remove("show");
-    document.body.style.overflow = "";
-    CURRENT_GAME = null;
-  }
-
-  modalClose.addEventListener("click", closeModal);
-  backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
-  document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
-
-  modalGoPlans.addEventListener("click", ()=>{
-    closeModal();
-    document.getElementById("planos").scrollIntoView({behavior:"smooth"});
-  });
-  modalBuyNow.addEventListener("click", ()=>{
-    window.open("SEU_LINK_DE_CHECKOUT_AQUI", "_blank");
-  });
-
-  /** ==========================
-   *  TOASTS (gamificação) - neutro
-   * ========================== */
-  const NAMES = ["João", "Marcos", "Ana", "Paulo", "Bruna", "Rafael", "Gustavo", "Diego", "Larissa", "Carla"];
-  function startToasts(){
-    setInterval(()=>{
-      if(!GAMES.length) return;
-      const n = NAMES[Math.floor(Math.random()*NAMES.length)];
-      const g = (featuredList.length ? featuredList : GAMES)[Math.floor(Math.random()*(featuredList.length ? featuredList.length : 20))];
-      toast(`${n} acabou de abrir ${g?.name || "um título"} no catálogo`);
-    }, 5200);
-  }
-
-  /** ==========================
-   *  INIT
-   * ========================== */
-  loadGames().then(()=> startToasts()).catch(()=>{
-    statusMsg.textContent = "Erro ao carregar games_741_steam.json";
-  });
+  // Stage 3 games
+  refreshPoolAndStage(true);
+  startStageAutoSwap();
+}
+init();
 </script>
 
 </body>
