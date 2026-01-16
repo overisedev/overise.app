@@ -2358,7 +2358,18 @@
   /** ==========================
    *  INIT
    * ========================== */
-  loadGames().catch(()=>toast("Erro ao carregar o catálogo local."));
+  // IMPORTANT: fetch() do JSON pode falhar se você abrir este HTML via file:// (duplo clique).
+  // Rode via servidor (recomendado):
+  // - VSCode: extensão Live Server
+  // - Ou no terminal:  python -m http.server 8080   e abra http://localhost:8080
+  if(location.protocol === 'file:'){
+    toast('Abra este site via servidor (ex: Live Server). file:// bloqueia o carregamento do catálogo.');
+  }
+
+  loadGames().catch((err)=>{
+    console.error(err);
+    toast('Erro ao carregar o catálogo local. Verifique se o JSON está na mesma pasta e se você abriu via servidor.');
+  });
 </script>
 
 </body>
