@@ -39,6 +39,7 @@
       overflow-x:hidden;
     }
 
+    /* ---------- Helpers ---------- */
     .container{width:min(var(--max), calc(100% - 40px)); margin:0 auto}
     .section{padding:110px 0}
     .section.tight{padding:80px 0}
@@ -55,10 +56,24 @@
     }
     .dot{width:8px; height:8px; border-radius:50%; background:var(--neon); box-shadow: 0 0 14px rgba(0,255,65,.55)}
 
-    @keyframes floatIn {from {opacity:0; transform: translateY(14px)} to {opacity:1; transform: translateY(0)}}
-    @keyframes fadeLeft {from {opacity:0; transform: translateX(22px)} to {opacity:1; transform: translateX(0)}}
-    @keyframes sheen {0%{transform:translateX(-120%)} 60%{transform:translateX(120%)} 100%{transform:translateX(120%)}}
-    @keyframes marquee {from {transform: translateX(0)} to {transform: translateX(-50%)}}
+    /* ---------- Micro Animations ---------- */
+    @keyframes floatIn {
+      from {opacity:0; transform: translateY(14px)}
+      to   {opacity:1; transform: translateY(0)}
+    }
+    @keyframes fadeLeft {
+      from {opacity:0; transform: translateX(22px)}
+      to   {opacity:1; transform: translateX(0)}
+    }
+    @keyframes sheen {
+      0%{transform:translateX(-120%)}
+      60%{transform:translateX(120%)}
+      100%{transform:translateX(120%)}
+    }
+    @keyframes marquee {
+      from {transform: translateX(0)}
+      to   {transform: translateX(-50%)}
+    }
     @keyframes swapFadeLeft {
       0%   {opacity:0; transform: translate3d(22px, 0, 0)}
       60%  {opacity:1; transform: translate3d(0, 0, 0)}
@@ -78,22 +93,29 @@
     .nav{
       display:flex; align-items:center; justify-content:space-between;
       padding:14px 0;
-      flex-wrap:nowrap; /* evita quebrar a marca */
-      gap:14px;
+      gap:18px;
     }
+
+    /* FIX: marca não quebra nem cria espaçamento estranho entre "OVER" e "ISE" */
     .logo{
-      display:flex; align-items:center; gap:0;
-      font-weight:900; letter-spacing:-1px; text-transform:uppercase;
-      font-size:18px; color:#fff;
+      display:inline-flex;
+      align-items:baseline;
+      gap:0;
+      font-weight:900;
+      letter-spacing:-1px;
+      text-transform:uppercase;
+      font-size:18px;
+      color:#fff;
       white-space:nowrap;
-      flex:0 0 auto;
       line-height:1;
+      flex:0 0 auto;
     }
-    .logo span{color:var(--neon)}
+    .logoBase{color:#fff}
+    .logoAccent{color:var(--neon)}
+
     .navlinks{
       display:flex; align-items:center; gap:14px;
       font-weight:700; color:var(--muted2);
-      white-space:nowrap;
       flex:1 1 auto;
       justify-content:center;
       min-width:0;
@@ -101,13 +123,13 @@
     .navlinks a{
       color:inherit; text-decoration:none; padding:10px 12px; border-radius:12px;
       transition:.2s ease;
+      white-space:nowrap;
     }
     .navlinks a:hover{
       color:#fff;
       background: rgba(255,255,255,.05);
       transform: translateY(-1px);
     }
-
     .btn{
       position:relative;
       display:inline-flex; align-items:center; justify-content:center; gap:10px;
@@ -120,6 +142,7 @@
       cursor:pointer; text-decoration:none;
       transition:.22s ease;
       overflow:hidden;
+      white-space:nowrap;
     }
     .btn::after{
       content:"";
@@ -166,14 +189,12 @@
       color:var(--muted);
       margin-bottom:26px;
     }
-    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:22px}
-
-    /* REMOVIDO: subtexto pequeno dos stats (o usuário pediu) */
+    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px}
     .heroStats{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap:12px;
-      margin-top:4px;
+      margin-top:10px;
     }
     .stat{
       background: rgba(255,255,255,.04);
@@ -276,15 +297,15 @@
     .featPrev{right:64px}
     .featNext{right:14px}
 
-    /* ---------- Infinite AAA Marquee ---------- */
+    /* ---------- Infinite AAA Marquee (FULL WIDTH) ---------- */
     .marqueeWrap{
-      margin-top:72px;
-      padding-top:22px;
+      margin-top:56px;
+      padding-top:18px;
       border-top: 1px solid rgba(255,255,255,.06);
     }
     .marqueeTitle{
       display:flex; align-items:center; justify-content:space-between;
-      gap:14px; margin-bottom:14px;
+      gap:14px; margin-bottom:12px;
       color:var(--muted2);
       font-weight:800; text-transform:uppercase; letter-spacing:1px; font-size:12px;
     }
@@ -301,11 +322,11 @@
       display:flex; gap:14px;
       width:max-content;
       padding:14px;
-      animation: marquee 42s linear infinite;
+      animation: marquee 46s linear infinite;
     }
     .marquee:hover .marqueeTrack{animation-play-state: paused}
     .miniCard{
-      width: 260px;
+      width: 240px;
       border-radius: 16px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.10);
@@ -337,6 +358,20 @@
       letter-spacing:.4px; text-transform:uppercase;
       text-shadow: 0 10px 30px rgba(0,0,0,.95);
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+    /* full width wrapper */
+    .marqueeFull{
+      width:100vw;
+      margin-left: calc(50% - 50vw);
+    }
+    .marqueeFull .marquee{
+      border-left:0; border-right:0;
+      border-radius:0;
+    }
+    .marqueeFull .marqueeTrack{
+      padding-left:18px;
+      padding-right:18px;
     }
 
     /* ---------- Demo (video) ---------- */
@@ -386,8 +421,95 @@
       pointer-events:none;
     }
 
+    /* ---------- SOBRE NÓS + GARANTIA ---------- */
+    .twoCols{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:18px;
+      align-items:stretch;
+      margin-top:18px;
+    }
+    .kpiGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:12px;
+      margin-top:14px;
+    }
+    .kpi{
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      padding:14px;
+      box-shadow: var(--shadowSoft);
+    }
+    .kpi b{display:block; color:#fff; font-weight:950; letter-spacing:-.4px}
+    .kpi span{display:block; color:var(--muted2); font-size:12px; margin-top:6px; line-height:1.45}
+
+    .guaranteeCard{
+      border-radius: var(--r2);
+      border:1px solid rgba(0,255,65,.22);
+      background: radial-gradient(900px 360px at 18% 18%, rgba(0,255,65,.10), transparent 58%),
+                  rgba(255,255,255,.04);
+      box-shadow: 0 18px 60px rgba(0,255,65,.08);
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+    }
+    .guaranteeTop{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      margin-bottom:10px;
+    }
+    .guaranteeBadge{
+      font-size:11px; font-weight:950; letter-spacing:.5px; text-transform:uppercase;
+      padding:8px 10px; border-radius:999px;
+      background: rgba(0,255,65,.14);
+      border:1px solid rgba(0,255,65,.35);
+      color: var(--neon);
+      white-space:nowrap;
+    }
+    .guaranteeTitle{
+      margin:0;
+      font-weight:950;
+      font-size:18px;
+      letter-spacing:-.6px;
+      text-transform:uppercase;
+      color:#fff;
+    }
+    .guaranteeText{
+      margin:8px 0 0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:14px;
+      max-width:70ch;
+    }
+    .guaranteeList{
+      margin:14px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:10px;
+    }
+    .guaranteeList li{
+      display:flex; gap:10px; align-items:flex-start;
+      color:#d9d9d9;
+      font-weight:700;
+      font-size:13px;
+      line-height:1.5;
+    }
+    .check{
+      width:26px; height:26px; border-radius:10px;
+      background: rgba(0,255,65,.12);
+      border:1px solid rgba(0,255,65,.22);
+      color:var(--neon);
+      display:grid; place-items:center;
+      flex:0 0 auto;
+      margin-top:1px;
+    }
+    .guaranteeActions{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+
     /* ---------- Catalog ---------- */
     #catalogo.section{padding:86px 0}
+
     .catalogHeader{
       display:flex; align-items:flex-end; justify-content:space-between; gap:18px;
       margin-bottom:18px;
@@ -409,6 +531,7 @@
       gap:14px;
       align-items:start;
     }
+
     .side{
       position:sticky; top:86px;
       padding:14px;
@@ -426,7 +549,10 @@
       margin-bottom:10px;
       display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
-    .cats{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
+    .cats{
+      display:flex; flex-wrap:wrap; gap:8px;
+      margin-top:8px;
+    }
     .cat{
       cursor:pointer; user-select:none;
       padding:10px 12px;
@@ -506,8 +632,14 @@
       text-shadow: 0 10px 30px rgba(0,0,0,.95);
     }
     .tag.ok{border-color: rgba(0,255,65,.30)}
-    .gameCta{display:flex; gap:10px; align-items:center; justify-content:space-between}
-    .tiny{font-size:11px; color:var(--muted2); letter-spacing:.4px}
+    .gameCta{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+    }
+    .tiny{
+      font-size:11px; color:var(--muted2);
+      letter-spacing:.4px;
+      white-space:nowrap;
+    }
     .ghostBtn{
       padding:10px 12px;
       border-radius:12px;
@@ -522,161 +654,101 @@
     }
     .ghostBtn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
     .swapAnim{
-      animation: swapFadeLeft .95s cubic-bezier(.22,.9,.22,1) both;
+      animation: swapFadeLeft 1.05s cubic-bezier(.22,.9,.22,1) both;
       will-change: transform, opacity;
     }
 
-    /* CTA "Ver catálogo completo" (alinhamento premium + claro) */
+    /* CTA de catálogo completo (mais claro) */
     .catalogMoreRow{
       margin-top:14px;
-      padding:16px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.18);
       display:flex;
+      flex-direction:column;
       align-items:center;
-      justify-content:space-between;
-      gap:14px;
+      gap:8px;
     }
-    .catalogMoreLeft{
-      display:flex; flex-direction:column; gap:4px;
-      min-width:0;
-    }
-    .catalogMoreTitle{
-      font-weight:950; color:#fff; text-transform:uppercase; letter-spacing:.6px; font-size:12px;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    .catalogMoreBtn{
+      width: min(520px, 100%);
+      justify-content:center;
+      padding:14px 18px;
+      border-radius:16px;
     }
     .catalogMoreHint{
       color:var(--muted2);
       font-size:12px;
-      line-height:1.45;
+      letter-spacing:.4px;
+      text-align:center;
     }
-    .catalogMoreBtn{
-      flex:0 0 auto;
-      padding:12px 16px;
-      border-radius:14px;
-      font-size:12px;
+    .catalogMoreIcon{
+      font-weight:950;
+      font-size:14px;
+      opacity:.9;
     }
 
-    /* Full Catalog (painel completo) */
+    /* CATÁLOGO COMPLETO */
     .fullCatalog{
-      margin-top:14px;
+      margin-top:16px;
       border-radius: var(--r2);
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
       box-shadow: var(--shadowSoft);
-      overflow:hidden;
-      display:none;
-      animation: floatIn .35s ease both;
-    }
-    .fullCatalog.show{display:block}
-    .fullPad{padding:18px}
-
-    .fullHeader{
       padding:18px;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
-      border-bottom:1px solid rgba(255,255,255,.06);
+      display:none;
+    }
+    .fullCatalog.open{display:block}
+    .fullTop{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:14px;
+      align-items:center;
+      margin-bottom:14px;
     }
     .fullTitle{
-      margin:0;
       font-weight:950;
-      letter-spacing:-.8px;
-      text-transform:uppercase;
       font-size:18px;
+      text-transform:uppercase;
+      letter-spacing:-.6px;
       color:#fff;
-      line-height:1.1;
+      margin:0;
     }
     .fullSub{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
-      max-width:52ch;
-    }
-
-    .fullSearchWrap{
-      display:flex; align-items:center; gap:10px;
-      flex:0 0 auto;
-      min-width: 380px;
-      max-width: 520px;
-      width: 44vw;
+      color:var(--muted2);
+      font-size:12px;
+      margin-top:6px;
+      line-height:1.45;
     }
     .fullSearch{
-      flex:1 1 auto;
-      display:flex; align-items:center; gap:10px;
-      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
       border-radius: 16px;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.22);
+      background: rgba(0,0,0,.18);
+      min-width: min(520px, 100%);
     }
-    .fullSearchIcon{color:rgba(255,255,255,.65); font-weight:900}
+    .fullSearchIcon{opacity:.75}
     .fullSearch input{
-      width:100%;
       background:transparent;
       border:0;
       outline:none;
       color:#fff;
       font-weight:800;
-      letter-spacing:.2px;
-      font-size:13px;
+      width: 320px;
+      max-width: 48vw;
     }
-
     .fullGrid{
-      padding:18px;
       display:grid;
       grid-template-columns: repeat(4, 1fr);
       gap:12px;
     }
-    .fullItem{
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      overflow:hidden;
-      cursor:pointer;
-      transition:.22s ease;
-      box-shadow: var(--shadowSoft);
-    }
-    .fullItem:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.22)}
-    .fullItem img{
-      width:100%;
-      aspect-ratio:16/9;
-      object-fit:cover;
-      display:block;
-      transform:scale(1.03);
-      transition:.35s ease;
-      filter:saturate(1.06) contrast(1.06);
-    }
-    .fullItem:hover img{transform:scale(1.06)}
-    .fullItemInfo{
-      padding:10px 10px 12px;
-      display:flex; flex-direction:column; gap:8px;
-    }
-    .fullItemName{
-      font-weight:950;
-      font-size:11px;
-      letter-spacing:.45px;
-      color:#fff;
-      text-transform:uppercase;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
     .fullBottom{
-      padding:16px 18px;
-      border-top:1px solid rgba(255,255,255,.06);
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      margin-top:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
     }
-    .fullCount{color:var(--muted2); font-size:12px; font-weight:800}
-
-    .emptyBox{
-      grid-column: 1 / -1;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      padding:18px;
-    }
-    .emptyTitle{
-      font-weight:950; color:#fff; text-transform:uppercase; letter-spacing:.6px; font-size:12px;
-    }
-    .emptyText{margin-top:6px; color:var(--muted2); font-size:12px; line-height:1.5}
 
     /* ---------- Pricing (3 planos) ---------- */
     .pricingWrap{
@@ -701,17 +773,31 @@
       border-color: rgba(0,255,65,.45);
       box-shadow: 0 18px 60px rgba(0,255,65,.10);
     }
-    .planTop{display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:12px}
-    .planName{font-weight:950; font-size:18px; letter-spacing:-.6px; color:#fff; text-transform:uppercase}
+    .planTop{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+      margin-bottom:12px;
+    }
+    .planName{
+      font-weight:950; font-size:18px; letter-spacing:-.6px; color:#fff; text-transform:uppercase;
+    }
     .planBadge{
       font-size:11px; font-weight:950; letter-spacing:.5px; text-transform:uppercase;
       padding:8px 10px; border-radius:999px;
       background: rgba(0,255,65,.14);
       border:1px solid rgba(0,255,65,.35);
       color: var(--neon);
+      white-space:nowrap;
     }
-    .priceRow{display:flex; align-items:baseline; gap:10px; margin:8px 0 12px}
-    .priceNow{font-weight:950; font-size:40px; letter-spacing:-2px; color:var(--neon)}
+    .priceRow{
+      display:flex; align-items:baseline; gap:10px; margin:8px 0 12px;
+      flex-wrap:wrap;
+    }
+    .priceNow{
+      font-weight:950;
+      font-size:40px;
+      letter-spacing:-2px;
+      color:var(--neon);
+    }
     .priceSmall{color:var(--muted2); font-weight:800}
     .priceWas{
       color: rgba(255,255,255,.35);
@@ -761,7 +847,9 @@
       transition:.25s ease;
     }
     .quote:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.20)}
-    .who{display:flex; align-items:center; gap:12px; margin-bottom:12px}
+    .who{
+      display:flex; align-items:center; gap:12px; margin-bottom:12px;
+    }
     .av{
       width:38px; height:38px; border-radius:50%;
       background: rgba(255,255,255,.08);
@@ -812,7 +900,7 @@
     .qa.open .a{max-height:240px; padding-bottom:16px}
     .qa.open .chev{transform: rotate(45deg)}
 
-    /* ---------- Modal ---------- */
+    /* ---------- Modal (banner com mais “presença”) ---------- */
     .backdrop{
       position:fixed; inset:0;
       background: rgba(0,0,0,.68);
@@ -834,6 +922,7 @@
       transition:.25s ease;
     }
     .backdrop.show .modal{transform: translateY(0); opacity:1}
+
     .modalTop{
       position:relative;
       height: clamp(240px, 32vw, 360px);
@@ -862,6 +951,7 @@
       pointer-events:none;
       z-index:1;
     }
+
     .modalBody{
       padding:24px;
       display:grid;
@@ -915,34 +1005,7 @@
     .modalSide .modalBtns{display:flex; gap:10px; margin-top:12px}
     .modalSide .modalBtns .btn{width:100%}
 
-    /* ---------- Toasts ---------- */
-    .toasts{
-      position:fixed; right:18px; bottom:18px; z-index:2500;
-      display:flex; flex-direction:column; gap:10px;
-      pointer-events:none;
-    }
-    .toast{
-      width:min(340px, calc(100vw - 36px));
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(12,12,12,.92);
-      box-shadow: var(--shadowSoft);
-      padding:12px 12px;
-      display:flex; gap:10px; align-items:flex-start;
-      animation: floatIn .35s ease both;
-      pointer-events:none;
-    }
-    .toast .ic{
-      width:34px; height:34px; border-radius:12px;
-      background: rgba(0,255,65,.12);
-      border:1px solid rgba(0,255,65,.20);
-      color:var(--neon);
-      display:grid; place-items:center;
-      flex:0 0 auto;
-    }
-    .toast b{color:#fff}
-    .toast p{margin:2px 0 0; color:var(--muted2); font-size:12px; line-height:1.45}
-
+    /* ---------- Footer ---------- */
     footer{
       padding:44px 0;
       border-top:1px solid rgba(255,255,255,.06);
@@ -951,9 +1014,6 @@
     }
 
     /* ---------- Responsive ---------- */
-    @media (max-width: 1040px){
-      .fullGrid{grid-template-columns: repeat(3, 1fr)}
-    }
     @media (max-width: 980px){
       .heroGrid{grid-template-columns: 1fr; gap:18px}
       .heroCardMedia{height: 300px}
@@ -961,22 +1021,19 @@
       .heroStats{grid-template-columns: 1fr}
       .demoGrid{grid-template-columns: 1fr}
       .howGrid{grid-template-columns: 1fr}
+      .twoCols{grid-template-columns: 1fr}
+      .kpiGrid{grid-template-columns: 1fr}
       .catalogShell{grid-template-columns: 1fr}
       .side{position:relative; top:auto}
       .showcaseRow{grid-template-columns: 1fr}
-      .catalogMoreRow{flex-direction:column; align-items:stretch}
-      .catalogMoreBtn{width:100%}
+      .fullTop{grid-template-columns: 1fr}
+      .fullSearch{min-width:100%}
+      .fullSearch input{width:100%; max-width:100%}
+      .fullGrid{grid-template-columns: 1fr}
       .pricingWrap{grid-template-columns: 1fr}
       .modalBody{grid-template-columns: 1fr}
       .socialGrid{grid-template-columns: 1fr}
-      .fullHeader{flex-direction:column; align-items:stretch}
-      .fullSearchWrap{width:100%; min-width:0; max-width:none}
-      .fullGrid{grid-template-columns: repeat(2, 1fr)}
-      .navlinks{display:none} /* evita quebrar header em telas menores */
-    }
-    @media (max-width: 520px){
-      .fullGrid{grid-template-columns: 1fr}
-      .container{width:min(var(--max), calc(100% - 28px))}
+      .navlinks{display:none}
     }
   </style>
 </head>
@@ -985,13 +1042,18 @@
 
 <header>
   <div class="container nav">
-    <div class="logo" aria-label="OVERISE">OVER<span>ISE</span></div>
+    <div class="logo" aria-label="Overise">
+      <span class="logoBase">OVER</span><span class="logoAccent">ISE</span>
+    </div>
+
     <div class="navlinks">
       <a href="#como">Como funciona</a>
       <a href="#catalogo">Catálogo</a>
+      <a href="#sobre">Sobre nós</a>
       <a href="#planos">Planos</a>
       <a href="#faq">FAQ</a>
     </div>
+
     <div class="nav-cta">
       <a class="btn" href="#catalogo">Ver catálogo</a>
       <a class="btn primary" href="#planos">Comprar</a>
@@ -1015,6 +1077,7 @@
         <a class="btn" href="#catalogo">Ver catálogo</a>
       </div>
 
+      <!-- textos desnecessários removidos: ficou só o essencial -->
       <div class="heroStats">
         <div class="stat"><b>Carregamento rápido</b></div>
         <div class="stat"><b>Organização por categorias</b></div>
@@ -1037,19 +1100,20 @@
               <span class="chip">Vitrine</span>
             </div>
             <div class="heroCardName" id="featuredName">—</div>
-            <div class="heroCardDesc" id="featuredDesc">Navegue por categorias e abra detalhes em um clique.</div>
+            <div class="heroCardDesc" id="featuredDesc">Navegue por categorias e abra detalhes com 1 clique.</div>
           </div>
           <div class="heroCardBtns">
-            <button class="btn small ghost" id="btnFeatDetails">Ver detalhes</button>
-            <button class="btn small primary" id="btnFeatOpenCatalog">Abrir catálogo</button>
+            <button class="btn small ghost" id="btnFeatDetails" type="button">Ver detalhes</button>
+            <button class="btn small primary" id="btnFeatOpenCatalog" type="button">Abrir catálogo</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="container marqueeWrap reveal">
-    <div class="marqueeTitle">
+  <!-- CARROSSEL FULL WIDTH -->
+  <div class="marqueeWrap reveal marqueeFull">
+    <div class="container marqueeTitle">
       <span>Principais títulos • vitrine premium</span>
       <span class="muted2">Passe o mouse para pausar</span>
     </div>
@@ -1072,11 +1136,11 @@
       <div class="howGrid">
         <div class="how">
           <div class="k">1) Acesse</div>
-          <div class="s">Entre no painel e navegue pelo catálogo.</div>
+          <div class="s">Entre e navegue pelo catálogo.</div>
         </div>
         <div class="how">
           <div class="k">2) Explore</div>
-          <div class="s">Filtre por categorias e encontre títulos rapidamente.</div>
+          <div class="s">Filtre por categorias e encontre rápido.</div>
         </div>
         <div class="how">
           <div class="k">3) Desbloqueie</div>
@@ -1087,6 +1151,7 @@
 
     <div class="card reveal" style="position:relative">
       <div class="videoWrap">
+        <!-- vídeo genérico (sem VSL agora) -->
         <iframe
           src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
           title="Demonstração"
@@ -1106,7 +1171,7 @@
       <div>
         <h2>Catálogo</h2>
         <p>
-          Navegue por categorias. A vitrine exibe uma seleção rotativa com transição suave — clique para abrir detalhes.
+          Navegue por categorias. A vitrine exibe 3 títulos rotativos com transição suave — clique para abrir detalhes.
         </p>
       </div>
       <div class="catalogActions">
@@ -1126,28 +1191,26 @@
       <main>
         <div class="showcaseRow" id="showcase"></div>
 
-        <!-- CTA claro: abre catálogo completo (não troca os 3) -->
-        <div class="catalogMoreRow" aria-label="Abrir catálogo completo">
-          <div class="catalogMoreLeft">
-            <div class="catalogMoreTitle">Ver catálogo completo</div>
-            <div class="catalogMoreHint">Abra a biblioteca com busca, paginação e mais títulos.</div>
-          </div>
-          <button class="btn ghost catalogMoreBtn" id="btnMoreCatalog" type="button">Abrir</button>
+        <!-- CTA claro (ABRE catálogo completo) -->
+        <div class="catalogMoreRow">
+          <button class="btn ghost catalogMoreBtn" id="btnMoreCatalog" type="button">
+            <span class="catalogMoreIcon">⌕</span>
+            Ver catálogo completo
+          </button>
+          <div class="catalogMoreHint">Abra a biblioteca completa, com busca e paginação.</div>
         </div>
 
-        <!-- Catálogo completo -->
-        <div class="fullCatalog" id="fullCatalog" aria-hidden="true">
-          <div class="fullHeader">
+        <!-- CATÁLOGO COMPLETO -->
+        <section class="fullCatalog" id="fullCatalog" aria-hidden="true">
+          <div class="fullTop">
             <div>
-              <h3 class="fullTitle">Catálogo completo</h3>
-              <p class="fullSub">Pesquise pelo nome, siglas e abreviações (ex: GTA, RDR2, COD) e abra detalhes com 1 clique.</p>
+              <div class="fullTitle">Catálogo completo</div>
+              <div class="fullSub">Pesquise pelo nome (ex: “gta”, “rdr2”, “tlou”) e clique para abrir detalhes.</div>
             </div>
 
-            <div class="fullSearchWrap">
-              <div class="fullSearch">
-                <span class="fullSearchIcon">⌕</span>
-                <input id="fullSearchInput" type="text" placeholder="Buscar (ex: GTA, FIFA, Elden...)" autocomplete="off"/>
-              </div>
+            <div class="fullSearch">
+              <span class="fullSearchIcon">⌕</span>
+              <input id="fullSearchInput" type="text" placeholder="Buscar (ex: GTA, FIFA, Elden...)" autocomplete="off"/>
               <button class="btn small ghost" id="btnFullClose" type="button">Fechar</button>
             </div>
           </div>
@@ -1156,10 +1219,73 @@
 
           <div class="fullBottom">
             <button class="btn" id="btnLoadMore" type="button">Carregar mais</button>
-            <div class="fullCount" id="fullCount">—</div>
+            <div class="muted2" id="fullCount" style="font-size:12px"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE NÓS + GARANTIA (posicionamento estratégico antes dos planos) -->
+<section id="sobre" class="section tight">
+  <div class="container reveal">
+    <h2 style="margin:0; font-size:28px; font-weight:950; letter-spacing:-1px; color:#fff; text-transform:uppercase">Sobre nós</h2>
+    <p class="muted" style="margin:10px 0 0; line-height:1.6; max-width:78ch">
+      A <b style="color:#fff">Overise</b> nasceu para entregar uma experiência limpa, rápida e premium de biblioteca:
+      organização por categorias, vitrine inteligente e detalhes em 1 clique — tudo pensado para reduzir fricção e aumentar clareza.
+    </p>
+
+    <div class="twoCols">
+      <div class="card pad">
+        <h3 class="cardTitle" style="margin-bottom:8px">O que a Overise prioriza</h3>
+        <p class="cardText">
+          Interface premium, performance e navegação intuitiva. A ideia é o usuário bater o olho, entender,
+          explorar rápido e chegar na etapa de desbloqueio sem confusão.
+        </p>
+
+        <div class="kpiGrid">
+          <div class="kpi">
+            <b>Clareza</b>
+            <span>Menos ruído, mais foco na ação.</span>
+          </div>
+          <div class="kpi">
+            <b>Performance</b>
+            <span>Rápido e leve no carregamento.</span>
+          </div>
+          <div class="kpi">
+            <b>Experiência</b>
+            <span>Visual consistente e elegante.</span>
+          </div>
+          <div class="kpi">
+            <b>Confiança</b>
+            <span>Transparência + garantia de reembolso.</span>
           </div>
         </div>
-      </main>
+      </div>
+
+      <div class="guaranteeCard">
+        <div class="guaranteeTop">
+          <div>
+            <h3 class="guaranteeTitle">Garantia de reembolso em até 30 dias</h3>
+            <p class="guaranteeText">
+              Teste com tranquilidade. Se não fizer sentido para você, solicitou, reembolsou — simples e direto.
+            </p>
+          </div>
+          <div class="guaranteeBadge">30 dias</div>
+        </div>
+
+        <ul class="guaranteeList">
+          <li><span class="check">✓</span>Processo claro e sem burocracia.</li>
+          <li><span class="check">✓</span>Você mantém o controle da sua decisão.</li>
+          <li><span class="check">✓</span>Compra com segurança e confiança.</li>
+        </ul>
+
+        <div class="guaranteeActions">
+          <a class="btn primary" href="#planos">Ver planos</a>
+          <a class="btn" href="#catalogo">Explorar catálogo</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1175,6 +1301,7 @@
     </div>
 
     <div class="pricingWrap">
+      <!-- BÁSICO -->
       <div class="plan reveal">
         <div class="planTop">
           <div class="planName">Acesso Básico</div>
@@ -1191,11 +1318,12 @@
           <tr><td>Suporte</td><td>Base</td></tr>
         </table>
         <div class="buyRow">
-          <button class="btn" onclick="window.open('SEU_LINK_BASICO','_blank')">Selecionar</button>
+          <button class="btn" type="button">Selecionar</button>
         </div>
-        <div class="secure">🔒 Pagamento seguro • Ativação imediata</div>
+        <div class="secure">🔒 Pagamento seguro • Garantia de 30 dias</div>
       </div>
 
+      <!-- AVANÇADO -->
       <div class="plan featured reveal">
         <div class="planTop">
           <div class="planName">Acesso Avançado</div>
@@ -1212,11 +1340,12 @@
           <tr><td>Suporte</td><td class="good">Guia + comunidade</td></tr>
         </table>
         <div class="buyRow">
-          <button class="btn primary" onclick="window.open('SEU_LINK_AVANCADO','_blank')">Selecionar</button>
+          <button class="btn primary" type="button">Selecionar</button>
         </div>
-        <div class="secure">🔒 Pagamento seguro • Ativação imediata • Suporte</div>
+        <div class="secure">🔒 Pagamento seguro • Garantia de 30 dias</div>
       </div>
 
+      <!-- PERMANENTE -->
       <div class="plan reveal">
         <div class="planTop">
           <div class="planName">Acesso Permanente</div>
@@ -1233,9 +1362,9 @@
           <tr><td>Experiência</td><td class="good">Premium+</td></tr>
         </table>
         <div class="buyRow">
-          <button class="btn" onclick="window.open('SEU_LINK_PERMANENTE','_blank')">Selecionar</button>
+          <button class="btn" type="button">Selecionar</button>
         </div>
-        <div class="secure">🔒 Pagamento seguro • Acesso definitivo</div>
+        <div class="secure">🔒 Pagamento seguro • Garantia de 30 dias</div>
       </div>
     </div>
   </div>
@@ -1308,7 +1437,16 @@
           <span class="chev">+</span>
         </button>
         <div class="a">
-          O catálogo é carregado localmente e a vitrine alterna automaticamente 3 títulos por vez. O catálogo completo abre com busca e paginação.
+          A vitrine mostra 3 títulos por vez (aleatórios por categoria). Você também pode abrir o catálogo completo com busca e paginação.
+        </div>
+      </div>
+      <div class="qa">
+        <button class="q" type="button">
+          Garantia de 30 dias funciona como?
+          <span class="chev">+</span>
+        </button>
+        <div class="a">
+          Você pode solicitar reembolso em até 30 dias após a compra, conforme a política do produto. Compra sem medo.
         </div>
       </div>
       <div class="qa">
@@ -1317,7 +1455,7 @@
           <span class="chev">+</span>
         </button>
         <div class="a">
-          Sim. Clique em qualquer título para abrir o modal com detalhes e o botão de desbloqueio.
+          Sim. Clique em qualquer título para abrir o modal com detalhes e o botão “Desbloquear”.
         </div>
       </div>
     </div>
@@ -1340,7 +1478,9 @@
     <div class="modalBody">
       <div>
         <h3 class="modalTitle" id="modalTitle">—</h3>
-        <p class="modalDesc" id="modalDesc">Visualize os detalhes do título e avance para desbloquear.</p>
+        <p class="modalDesc" id="modalDesc">
+          Visualize os detalhes do título e avance para desbloquear.
+        </p>
       </div>
       <div class="modalSide">
         <div class="row"><span>Disponibilidade</span> ✓ Ativo</div>
@@ -1354,8 +1494,6 @@
     </div>
   </div>
 </div>
-
-<div class="toasts" id="toasts"></div>
 
 <script>
   /** ==========================
@@ -1402,10 +1540,9 @@
   let showcaseTimer = null;
 
   // catálogo completo
-  let FULL_OPEN = false;
-  let fullFiltered = [];
-  let fullCursor = 0;
-  const FULL_PAGE = 24;
+  let fullOpen = false;
+  let fullPage = 0;
+  const FULL_PAGE_SIZE = 24;
 
   /** ==========================
    *  DOM
@@ -1439,8 +1576,6 @@
   const modalCat = document.getElementById("modalCat");
   const modalUnlock = document.getElementById("modalUnlock");
 
-  const toasts = document.getElementById("toasts");
-
   /** ==========================
    *  UTILS
    * ========================== */
@@ -1457,72 +1592,6 @@
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
-  }
-
-  function normalizeStr(s){
-    return String(s || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9 ]+/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
-  function makeAcronym(name){
-    const n = normalizeStr(name);
-    if(!n) return "";
-    const parts = n.split(" ").filter(Boolean);
-    // ignora palavras muito comuns
-    const stop = new Set(["the","of","and","a","an","edition","ultimate","definitive","remastered","complete","game","year"]);
-    const letters = parts.filter(p=>!stop.has(p)).map(p=>p[0]).join("");
-    return letters;
-  }
-
-  // alias para siglas/abreviações
-  const ALIASES = new Map([
-    ["gta", ["grand theft auto", "grand theft auto v", "gta v", "gta5", "gta 5"]],
-    ["rdr2", ["red dead redemption 2", "red dead redemption ii"]],
-    ["cod", ["call of duty"]],
-    ["fifa", ["fifa"]],
-    ["cs", ["counter strike", "counter-strike"]],
-    ["cs2", ["counter strike 2", "counter-strike 2"]],
-    ["csgo", ["counter strike global offensive", "counter-strike global offensive"]],
-    ["ow", ["overwatch"]],
-    ["pubg", ["playerunknowns battlegrounds", "playerunknown's battlegrounds"]],
-  ]);
-
-  function buildSearchBlob(game){
-    const name = game.name || "";
-    const n = normalizeStr(name);
-    const acronym = makeAcronym(name);
-    // adiciona também versões sem espaços pra bater em "gta5", "rdr2"
-    const compact = n.replace(/\s/g, "");
-    let extra = "";
-
-    // se o nome contém termos conhecidos, adiciona variações
-    // (ex: "grand theft auto v" => permite "gta")
-    if(n.includes("grand theft auto")) extra += " gta gta5 gta v ";
-    if(n.includes("red dead redemption 2")) extra += " rdr2 ";
-    if(n.includes("call of duty")) extra += " cod ";
-
-    return `${n} ${compact} ${acronym} ${extra}`.trim();
-  }
-
-  function matchesQuery(game, rawQ){
-    const q = normalizeStr(rawQ);
-    if(!q) return true;
-
-    // aliases diretos (gta, rdr2, etc.)
-    if(ALIASES.has(q)){
-      const variants = ALIASES.get(q).map(normalizeStr);
-      const blob = game._searchBlob;
-      return variants.some(v => blob.includes(v.replace(/\s/g,"")) || blob.includes(v));
-    }
-
-    const blob = game._searchBlob;
-    // tenta com e sem espaços
-    return blob.includes(q) || blob.includes(q.replace(/\s/g,""));
   }
 
   function setImgWithFallback(imgEl, urls){
@@ -1554,19 +1623,46 @@
     return list;
   }
 
-  function toast(msg){
-    const el = document.createElement("div");
-    el.className = "toast";
-    el.innerHTML = `
-      <div class="ic">✓</div>
-      <div>
-        <b>Sistema</b>
-        <p>${escapeHtml(msg)}</p>
-      </div>
-    `;
-    toasts.appendChild(el);
-    setTimeout(()=>{ el.style.opacity = "0"; el.style.transform = "translateY(8px)"; }, 2800);
-    setTimeout(()=>{ el.remove(); }, 3400);
+  // normalização (para busca por abreviações, acentos, símbolos, etc.)
+  function normalize(s){
+    return String(s || "")
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+      .replace(/[^a-z0-9 ]+/g," ")
+      .replace(/\s+/g," ")
+      .trim();
+  }
+
+  function makeAcronym(name){
+    const parts = normalize(name).split(" ").filter(Boolean);
+    const keep = parts.filter(p => p.length >= 3 || /^[0-9]+$/.test(p));
+    const ac = keep.map(p => p[0]).join("");
+    return ac;
+  }
+
+  function buildAliases(nameNorm){
+    const aliases = [];
+    if(nameNorm.includes("grand theft auto")) aliases.push("gta");
+    if(nameNorm.includes("red dead redemption 2")) aliases.push("rdr2","rdr 2");
+    if(nameNorm.includes("red dead redemption")) aliases.push("rdr");
+    if(nameNorm.includes("the last of us")) aliases.push("tlou","t lou");
+    if(nameNorm.includes("god of war")) aliases.push("gow");
+    if(nameNorm.includes("counter strike")) aliases.push("cs","csgo","cs go");
+    if(nameNorm.includes("call of duty")) aliases.push("cod");
+    if(nameNorm.includes("cyberpunk 2077")) aliases.push("cp2077","cyberpunk");
+    if(nameNorm.includes("fifa")) aliases.push("fifa");
+    if(nameNorm.includes("efootball")) aliases.push("pes");
+    if(nameNorm.includes("need for speed")) aliases.push("nfs");
+    if(nameNorm.includes("forza horizon")) aliases.push("fh");
+    if(nameNorm.includes("red dead")) aliases.push("reddead");
+    return aliases;
+  }
+
+  function makeSearchBlob(game){
+    const n = normalize(game.name);
+    const ac = makeAcronym(game.name);
+    const aliases = buildAliases(n).join(" ");
+    return `${n} ${ac} ${aliases}`.trim();
   }
 
   /** ==========================
@@ -1606,25 +1702,19 @@
       name: g.name || g.title || "",
       cover: g.cover || "",
       steam_appid: (g.steam_appid ?? g.appid ?? null),
-      categories: Array.isArray(g.categories) ? g.categories : []
+      categories: Array.isArray(g.categories) ? g.categories : [],
+      _search: "" // preenchido depois
     })).filter(g => g.name);
 
-    // indexa blobs de busca (resolve "GTA" etc.)
-    GAMES.forEach(g => g._searchBlob = buildSearchBlob(g));
+    // cria blob de busca
+    for(const g of GAMES) g._search = makeSearchBlob(g);
 
     buildFeatured();
-    buildMarquee();
+    buildMarquee();     // full width + mais jogos
     buildCategories();
-
     resetShowcasePool(true);
     renderShowcase(true);
     startShowcaseAuto();
-
-    // catálogo completo pronto (fechado)
-    applyFullFilter("");
-    renderFull(true);
-
-    startToasts();
   }
 
   /** ==========================
@@ -1697,11 +1787,20 @@
   });
 
   /** ==========================
-   *  MARQUEE
+   *  MARQUEE (mais jogos + cheio)
    * ========================== */
   function buildMarquee(){
-    const list = featuredList.length ? featuredList : GAMES.slice(0, 12);
-    const doubled = [...list, ...list];
+    const base = featuredList.length ? featuredList.slice() : [];
+    const need = 28; // quantos diferentes no carrossel
+
+    const pool = shuffle(GAMES);
+    for(const g of pool){
+      if(base.length >= need) break;
+      if(!base.some(x => x.name === g.name)) base.push(g);
+    }
+
+    // 3x pra “encher” e rodar infinito bem suave
+    const doubled = [...base, ...base, ...base];
 
     marqueeTrack.innerHTML = doubled.map(g => `
       <div class="miniCard" title="${escapeHtml(g.name)}" data-name="${escapeHtml(g.name)}">
@@ -1714,31 +1813,25 @@
     marqueeTrack.querySelectorAll(".miniCard").forEach(card=>{
       card.addEventListener("click", ()=>{
         const name = card.getAttribute("data-name");
-        const g = GAMES.find(x => x.name === name) || GAMES.find(x => x.name.toUpperCase() === (name||"").toUpperCase());
+        const g = GAMES.find(x => x.name === name);
         if(g) openModal(g);
       });
     });
   }
 
   /** ==========================
-   *  CATEGORIES (sem números)
+   *  CATEGORIES
    * ========================== */
   function buildCategories(){
     const set = new Set();
     for(const g of GAMES){
       const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
-      for(const c of cats){
-        set.add(String(c).toUpperCase());
-      }
+      for(const c of cats) set.add(String(c).toUpperCase());
     }
 
     const preferred = ["AÇÃO","RPG","MUNDO ABERTO","TERROR","SIMULADOR","INDIE","COOPERATIVO","CORRIDA","SOBREVIVÊNCIA","ESTRATÉGIA","ESPORTES","VR","OUTROS"];
     const all = [...set].sort((a,b)=>a.localeCompare(b));
-    const ordered = [
-      "TODOS",
-      ...preferred.filter(x=>set.has(x)),
-      ...all.filter(x=>x!=="TODOS" && !preferred.includes(x))
-    ];
+    const ordered = ["TODOS", ...preferred.filter(x=>set.has(x)), ...all.filter(x=>x!=="TODOS" && !preferred.includes(x))];
 
     catsEl.innerHTML = ordered.map(c=>`
       <div class="cat ${c===ACTIVE_CATEGORY ? "active":""}" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</div>
@@ -1750,17 +1843,19 @@
         buildCategories();
         resetShowcasePool(true);
         renderShowcase(true);
-
-        // também filtra o catálogo completo por categoria ativa
-        applyFullFilter(fullSearchInput.value || "");
-
         restartShowcaseAuto();
+
+        // se catálogo completo estiver aberto, atualiza a grid também
+        if(fullOpen){
+          resetFullCatalog(true);
+          renderFullCatalog(true);
+        }
       });
     });
   }
 
   /** ==========================
-   *  SHOWCASE (aleatório)
+   *  SHOWCASE (vitrine 3 aleatória)
    * ========================== */
   function getCategoryPoolRaw(){
     if(ACTIVE_CATEGORY === "TODOS") return GAMES;
@@ -1795,9 +1890,6 @@
   }
 
   function renderShowcase(animate=false){
-    // se catálogo completo estiver aberto, não fica trocando vitrine (evita distração)
-    if(FULL_OPEN) return;
-
     resetShowcasePool(false);
     const picks = takeNext3();
 
@@ -1841,7 +1933,7 @@
     showcase.querySelectorAll(".game").forEach(el=>{
       el.addEventListener("click", ()=>{
         const name = el.getAttribute("data-name");
-        const g = GAMES.find(x=>x.name === name) || GAMES.find(x=>x.name.toUpperCase() === (name||"").toUpperCase());
+        const g = GAMES.find(x=>x.name === name);
         if(g) openModal(g);
       });
     });
@@ -1849,7 +1941,7 @@
 
   function startShowcaseAuto(){
     clearInterval(showcaseTimer);
-    showcaseTimer = setInterval(()=>renderShowcase(true), 7500);
+    showcaseTimer = setInterval(()=>renderShowcase(true), 7800); // mais lento e fluido
   }
   function restartShowcaseAuto(){
     clearInterval(showcaseTimer);
@@ -1857,105 +1949,124 @@
   }
 
   /** ==========================
-   *  FULL CATALOG
+   *  CATÁLOGO COMPLETO (busca + paginação)
    * ========================== */
-  function openFullCatalog(){
-    FULL_OPEN = true;
-    fullCatalog.classList.add("show");
-    fullCatalog.setAttribute("aria-hidden","false");
+  function toggleFullCatalog(open){
+    fullOpen = (open !== undefined) ? !!open : !fullOpen;
+    fullCatalog.classList.toggle("open", fullOpen);
+    fullCatalog.setAttribute("aria-hidden", String(!fullOpen));
 
-    // pausa vitrine (fica estático enquanto o usuário navega)
-    clearInterval(showcaseTimer);
-
-    // garante foco no input (UX)
-    setTimeout(()=>fullSearchInput.focus(), 60);
-
-    renderFull(true);
-  }
-
-  function closeFullCatalog(){
-    FULL_OPEN = false;
-    fullCatalog.classList.remove("show");
-    fullCatalog.setAttribute("aria-hidden","true");
-
-    // retoma vitrine
-    renderShowcase(false);
-    startShowcaseAuto();
-  }
-
-  btnMoreCatalog.addEventListener("click", ()=>{
-    if(FULL_OPEN) return;
-    openFullCatalog();
-  });
-
-  btnFullClose.addEventListener("click", closeFullCatalog);
-
-  function applyFullFilter(q){
-    const raw = getCategoryPoolRaw(); // respeita categoria ativa
-    const filtered = raw.filter(g => matchesQuery(g, q));
-    fullFiltered = filtered;
-    fullCursor = 0;
-  }
-
-  function renderFull(reset=false){
-    if(reset){
-      fullGrid.innerHTML = "";
-      fullCursor = 0;
+    if(fullOpen){
+      resetFullCatalog(true);
+      renderFullCatalog(true);
+      setTimeout(()=>fullSearchInput.focus(), 50);
+      fullCatalog.scrollIntoView({behavior:"smooth", block:"start"});
     }
+  }
 
-    const total = fullFiltered.length;
-    const next = fullFiltered.slice(fullCursor, fullCursor + FULL_PAGE);
-    fullCursor += next.length;
+  function resetFullCatalog(force=false){
+    if(force){
+      fullPage = 0;
+      fullGrid.innerHTML = "";
+    }
+  }
 
-    if(total === 0){
+  function getFullFiltered(){
+    const q = normalize(fullSearchInput.value);
+    const list = getCategoryPoolRaw();
+
+    if(!q) return list;
+
+    // busca por abreviações (gta, rdr2...) + nome + sigla
+    return list.filter(g => g._search.includes(q));
+  }
+
+  function renderFullCatalog(reset=false){
+    if(reset) resetFullCatalog(true);
+
+    const all = getFullFiltered();
+    const total = all.length;
+
+    const start = fullPage * FULL_PAGE_SIZE;
+    const end = start + FULL_PAGE_SIZE;
+    const slice = all.slice(start, end);
+
+    if(reset && total === 0){
       fullGrid.innerHTML = `
-        <div class="emptyBox">
-          <div class="emptyTitle">Nada encontrado</div>
-          <div class="emptyText">Tente outra sigla, termo ou categoria. Ex: <b>GTA</b>, <b>RDR2</b>, <b>FIFA</b>.</div>
+        <div class="game" style="grid-column: 1 / -1; padding:18px; cursor:default">
+          <div class="gameInfo">
+            <div class="gameName">Nada encontrado</div>
+            <div class="tiny">Tente outra busca ou categoria.</div>
+          </div>
         </div>
       `;
-      fullCount.textContent = "0 resultados";
       btnLoadMore.style.display = "none";
+      fullCount.textContent = "";
       return;
     }
 
-    const html = next.map(g => `
-      <div class="fullItem" data-name="${escapeHtml(g.name)}" title="${escapeHtml(g.name)}">
-        <img src="${getCardCover(g)}" alt="${escapeHtml(g.name)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'"/>
-        <div class="fullItemInfo">
-          <div class="fullItemName">${escapeHtml(g.name)}</div>
+    if(slice.length === 0){
+      btnLoadMore.style.display = "none";
+      fullCount.textContent = total ? `Mostrando ${Math.min(total, end)} de ${total}` : "";
+      return;
+    }
+
+    const html = slice.map(g=>{
+      const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
+      const mainCat = String(cats[0] || "OUTROS");
+
+      return `
+        <div class="game" data-name="${escapeHtml(g.name)}">
+          <div class="gameImg">
+            <img src="${getCardCover(g)}" alt="${escapeHtml(g.name)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'"/>
+            <div class="gameGrad"></div>
+          </div>
+          <div class="gameInfo">
+            <div class="gameName">${escapeHtml(g.name)}</div>
+            <div class="tagRow">
+              <span class="tag ok">Disponível</span>
+              <span class="tag">${escapeHtml(mainCat)}</span>
+            </div>
+            <div class="gameCta">
+              <span class="tiny">Clique para detalhes</span>
+              <button class="ghostBtn" type="button" tabindex="-1">Desbloquear</button>
+            </div>
+          </div>
         </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
 
-    if(reset) fullGrid.innerHTML = html;
-    else fullGrid.insertAdjacentHTML("beforeend", html);
+    // append
+    const wrap = document.createElement("div");
+    wrap.innerHTML = html;
+    const cards = [...wrap.children];
+    for(const c of cards) fullGrid.appendChild(c);
 
-    fullGrid.querySelectorAll(".fullItem").forEach(el=>{
+    // bind clicks
+    fullGrid.querySelectorAll(".game").forEach(el=>{
       if(el._bound) return;
       el._bound = true;
       el.addEventListener("click", ()=>{
         const name = el.getAttribute("data-name");
-        const g = GAMES.find(x=>x.name === name) || GAMES.find(x=>x.name.toUpperCase() === (name||"").toUpperCase());
+        const g = GAMES.find(x=>x.name === name);
         if(g) openModal(g);
       });
     });
 
-    fullCount.textContent = `${Math.min(fullCursor, total)} de ${total} exibidos`;
-    btnLoadMore.style.display = (fullCursor < total) ? "inline-flex" : "none";
+    const shown = Math.min(total, end);
+    fullCount.textContent = `Mostrando ${shown} de ${total}`;
+    btnLoadMore.style.display = (shown < total) ? "inline-flex" : "none";
   }
 
+  btnMoreCatalog.addEventListener("click", ()=>toggleFullCatalog(true));
+  btnFullClose.addEventListener("click", ()=>toggleFullCatalog(false));
   btnLoadMore.addEventListener("click", ()=>{
-    renderFull(false);
+    fullPage += 1;
+    renderFullCatalog(false);
   });
-
-  let searchDebounce = null;
   fullSearchInput.addEventListener("input", ()=>{
-    clearTimeout(searchDebounce);
-    searchDebounce = setTimeout(()=>{
-      applyFullFilter(fullSearchInput.value || "");
-      renderFull(true);
-    }, 120);
+    fullPage = 0;
+    renderFullCatalog(true);
   });
 
   /** ==========================
@@ -1969,7 +2080,6 @@
     modalCat.textContent = String(cats[0] || "OUTROS");
 
     modalDesc.textContent = "Visualize os detalhes do título e avance para desbloquear.";
-
     backdrop.classList.add("show");
     document.body.style.overflow = "hidden";
   }
@@ -1981,41 +2091,17 @@
 
   modalClose.addEventListener("click", closeModal);
   backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
-  document.addEventListener("keydown", (e)=>{
-    if(e.key === "Escape"){
-      if(backdrop.classList.contains("show")) closeModal();
-      if(FULL_OPEN) closeFullCatalog();
-    }
-  });
+  document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
 
-  // Sem VSL agora: neutro
+  // sem VSL agora: não redireciona
   modalUnlock.addEventListener("click", ()=>{
     closeModal();
-    toast("Desbloqueio disponível na próxima etapa.");
   });
-
-  /** ==========================
-   *  TOASTS
-   * ========================== */
-  const EVENTS = [
-    "Biblioteca indexada com sucesso.",
-    "Cache local atualizado.",
-    "Vitrine sincronizada.",
-    "Categorias carregadas.",
-    "Interface otimizada em tempo real."
-  ];
-
-  function startToasts(){
-    setInterval(()=>{
-      if(!GAMES.length) return;
-      toast(EVENTS[Math.floor(Math.random()*EVENTS.length)]);
-    }, 5200);
-  }
 
   /** ==========================
    *  INIT
    * ========================== */
-  loadGames().catch(()=>toast("Erro ao carregar o catálogo local."));
+  loadGames().catch(()=>console.log("Erro ao carregar o catálogo local."));
 </script>
 
 </body>
