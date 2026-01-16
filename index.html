@@ -973,13 +973,40 @@
         </aside>
 
         <main>
-          <div class="showcaseRow" id="showcase"></div>
+  <div class="showcaseRow" id="showcase"></div>
 
-          <!-- botão "ver mais" -->
-          <div style="margin-top:20px; display:flex; justify-content:flex-end">
-            <button class="btn ghost" id="btnMoreCatalog" type="button">Ver mais jogos</button>
-          </div>
-        </main>
+  <!-- CTA mais claro e central (abre catálogo completo) -->
+  <div class="catalogMoreRow">
+    <button class="btn ghost catalogMoreBtn" id="btnMoreCatalog" type="button">
+      <span class="catalogMoreIcon">⌕</span>
+      Ver catálogo completo
+    </button>
+    <div class="catalogMoreHint">Explore a biblioteca completa, com busca e paginação.</div>
+  </div>
+
+  <!-- CATÁLOGO COMPLETO (colapsado por padrão) -->
+  <section class="fullCatalog" id="fullCatalog" aria-hidden="true">
+    <div class="fullTop">
+      <div>
+        <div class="fullTitle">Catálogo completo</div>
+        <div class="fullSub">Pesquise pelo nome e abra detalhes com 1 clique.</div>
+      </div>
+
+      <div class="fullSearch">
+        <span class="fullSearchIcon">⌕</span>
+        <input id="fullSearchInput" type="text" placeholder="Buscar (ex: GTA, FIFA, Elden...)" autocomplete="off"/>
+        <button class="btn small ghost" id="btnFullClose" type="button">Fechar</button>
+      </div>
+    </div>
+
+    <div class="fullGrid" id="fullGrid"></div>
+
+    <div class="fullBottom">
+      <button class="btn" id="btnLoadMore" type="button">Carregar mais</button>
+      <div class="muted2" id="fullCount" style="font-size:12px"></div>
+    </div>
+  </section>
+</main>
       </div>
     </div>
   </div>
@@ -1654,3 +1681,4 @@
 </body>
 </html>
 ```
+
