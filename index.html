@@ -74,9 +74,12 @@
       from {transform: translateX(0)}
       to   {transform: translateX(-50%)}
     }
+
+    /* MAIS “PREMIUM” */
     @keyframes swapFadeLeft {
-      from {opacity:0; transform: translateX(18px)}
-      to   {opacity:1; transform: translateX(0)}
+      0%   {opacity:0; transform: translate3d(22px, 0, 0)}
+      60%  {opacity:1; transform: translate3d(0, 0, 0)}
+      100% {opacity:1; transform: translate3d(0, 0, 0)}
     }
 
     .reveal{opacity:0; transform: translateY(14px); transition: .8s ease}
@@ -391,12 +394,11 @@
     }
 
     /* ---------- Catalog (padding ajustado + vitrine 3) ---------- */
-    /* Ajuste: menos “padding grandão” nessa seção */
     #catalogo.section{padding:86px 0}
 
     .catalogHeader{
       display:flex; align-items:flex-end; justify-content:space-between; gap:18px;
-      margin-bottom:18px; /* menor */
+      margin-bottom:18px;
     }
     .catalogHeader h2{
       margin:0;
@@ -414,14 +416,13 @@
     .catalogShell{
       display:grid;
       grid-template-columns: 320px 1fr;
-      gap:14px; /* menor */
+      gap:14px;
       align-items:start;
     }
 
-    /* Ajuste: “padding do painel/lupa” (ficava muito espaçoso) */
     .side{
       position:sticky; top:86px;
-      padding:14px; /* antes 16 */
+      padding:14px;
       border-radius: var(--r2);
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
@@ -469,6 +470,21 @@
       gap:14px;
       align-items:stretch;
     }
+
+    /* Fade-out / Fade-in para troca suave (container) */
+    .showcaseFadeOut{
+      opacity:0;
+      transform: translate3d(-8px, 0, 0);
+      transition: opacity .35s ease, transform .35s ease;
+      will-change: opacity, transform;
+    }
+    .showcaseFadeIn{
+      opacity:1;
+      transform: translate3d(0, 0, 0);
+      transition: opacity .65s cubic-bezier(.22,.9,.22,1), transform .65s cubic-bezier(.22,.9,.22,1);
+      will-change: opacity, transform;
+    }
+
     .game{
       border-radius: 18px;
       border:1px solid rgba(255,255,255,.10);
@@ -546,7 +562,12 @@
       transition:.2s ease;
     }
     .ghostBtn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
-    .swapAnim{animation: swapFadeLeft .55s ease both}
+
+    /* MAIS LENTO + MAIS “MANTEIGA” nos cards */
+    .swapAnim{
+      animation: swapFadeLeft .95s cubic-bezier(.22, .9, .22, 1) both;
+      will-change: transform, opacity;
+    }
 
     /* ---------- Pricing (3 planos) ---------- */
     .pricingWrap{
@@ -725,7 +746,6 @@
       background:#000;
       overflow:hidden;
     }
-    /* AQUI: aumenta contraste/saturação e evita “lavado” */
     .modalTop img{
       width:100%; height:100%;
       object-fit:cover;
@@ -733,7 +753,6 @@
       transform: scale(1.03);
       filter: saturate(1.18) contrast(1.14);
     }
-    /* Overlay calibrada: menos “cinza”, mais “vitrine” */
     .modalTop::after{
       content:"";
       position:absolute; inset:0;
@@ -742,7 +761,6 @@
         linear-gradient(to top, rgba(0,0,0,.82), rgba(0,0,0,.10));
       pointer-events:none;
     }
-    /* Vignette extra pra dar profundidade sem “apagar” a arte */
     .modalTop::before{
       content:"";
       position:absolute; inset:-2px;
@@ -966,7 +984,7 @@
         </div>
         <div class="how">
           <div class="k">3) Escolha</div>
-          <div class="s">Clique no jogo para ver detalhes e a oferta.</div>
+          <div class="s">Clique no jogo para ver detalhes.</div>
         </div>
       </div>
     </div>
@@ -1181,7 +1199,7 @@
           <span class="chev">+</span>
         </button>
         <div class="a">
-          Sim. Clique em qualquer título para abrir o modal com detalhes e opções de oferta.
+          Sim. Clique em qualquer título para abrir o modal com detalhes.
         </div>
       </div>
     </div>
@@ -1205,18 +1223,20 @@
       <div>
         <h3 class="modalTitle" id="modalTitle">—</h3>
         <p class="modalDesc" id="modalDesc">
-          Visualize detalhes do título e acesse a oferta para ativar seu plano com segurança.
+          Visualize detalhes do título e desbloqueie para ver a demonstração completa.
         </p>
       </div>
       <div class="modalSide">
         <div class="row"><span>Disponibilidade</span> ✓ Ativo</div>
         <div class="row"><span>Categoria</span> <b id="modalCat">—</b></div>
         <div class="row"><span>Origem</span> Steam</div>
+
+        <!-- 1 botão apenas -->
         <div class="modalBtns">
-          <button class="btn" id="modalGoPlans">Ver oferta</button>
-          <button class="btn primary" id="modalBuyNow">Comprar</button>
+          <button class="btn primary" id="modalUnlock">Desbloquear</button>
         </div>
-        <div class="secure">Dica: clique em “Ver oferta” para comparar os planos.</div>
+
+        <div class="secure">🔓 Desbloqueie e assista à demonstração completa.</div>
       </div>
     </div>
   </div>
@@ -1251,6 +1271,9 @@
     "ELDEN RING",
     "SPIDER-MAN"
   ];
+
+  // vídeo genérico enquanto você não colocar a VSL
+  const GENERIC_VIDEO_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 
   /** ==========================
    *  STATE
@@ -1290,8 +1313,7 @@
   const modalTitle = document.getElementById("modalTitle");
   const modalDesc = document.getElementById("modalDesc");
   const modalCat = document.getElementById("modalCat");
-  const modalGoPlans = document.getElementById("modalGoPlans");
-  const modalBuyNow = document.getElementById("modalBuyNow");
+  const modalUnlock = document.getElementById("modalUnlock");
 
   const toasts = document.getElementById("toasts");
 
@@ -1535,7 +1557,7 @@
   }
 
   /** ==========================
-   *  SHOWCASE (aleatório)
+   *  SHOWCASE (aleatório + fade premium)
    * ========================== */
   function getCategoryPoolRaw(){
     if(ACTIVE_CATEGORY === "TODOS") return GAMES;
@@ -1559,7 +1581,6 @@
     if(!poolShuffled.length) return [];
     if(poolShuffled.length <= 3) return poolShuffled.slice(0, 3);
 
-    // se chegou perto do fim, reembaralha pra não cair em ordem “previsível”
     if(poolCursor + 3 > poolShuffled.length){
       poolShuffled = shuffle(poolShuffled);
       poolCursor = 0;
@@ -1622,8 +1643,22 @@
 
   function startShowcaseAuto(){
     clearInterval(showcaseTimer);
-    showcaseTimer = setInterval(()=>renderShowcase(true), 4200);
+    showcaseTimer = setInterval(()=>{
+      // fade-out do container (deixa MUITO mais fluido)
+      showcase.classList.add("showcaseFadeOut");
+
+      setTimeout(()=>{
+        renderShowcase(true);
+
+        // fade-in
+        showcase.classList.remove("showcaseFadeOut");
+        showcase.classList.add("showcaseFadeIn");
+
+        setTimeout(()=>showcase.classList.remove("showcaseFadeIn"), 750);
+      }, 300);
+    }, 7500); // MAIS TEMPO (antes 4200)
   }
+
   function restartShowcaseAuto(){
     clearInterval(showcaseTimer);
     startShowcaseAuto();
@@ -1641,7 +1676,7 @@
     const cats = (game.categories && game.categories.length) ? game.categories : ["OUTROS"];
     modalCat.textContent = String(cats[0] || "OUTROS");
 
-    modalDesc.textContent = "Visualize detalhes do título e acesse a oferta para ativar seu plano com segurança.";
+    modalDesc.textContent = "Visualize os detalhes do título e desbloqueie para ver a demonstração completa.";
 
     backdrop.classList.add("show");
     document.body.style.overflow = "hidden";
@@ -1656,13 +1691,10 @@
   backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
   document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
 
-  modalGoPlans.addEventListener("click", ()=>{
+  // 1 CTA: DESBLOQUEAR -> vídeo genérico por enquanto
+  modalUnlock.addEventListener("click", ()=>{
     closeModal();
-    document.getElementById("planos").scrollIntoView({behavior:"smooth"});
-  });
-
-  modalBuyNow.addEventListener("click", ()=>{
-    window.open("SEU_LINK_DE_CHECKOUT_AQUI", "_blank");
+    window.open(GENERIC_VIDEO_URL, "_blank");
   });
 
   /** ==========================
