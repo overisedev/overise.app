@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -74,8 +75,6 @@
       from {transform: translateX(0)}
       to   {transform: translateX(-50%)}
     }
-
-    /* MAIS “PREMIUM” */
     @keyframes swapFadeLeft {
       0%   {opacity:0; transform: translate3d(22px, 0, 0)}
       60%  {opacity:1; transform: translate3d(0, 0, 0)}
@@ -100,6 +99,7 @@
       display:flex; align-items:center; gap:12px;
       font-weight:900; letter-spacing:-1px; text-transform:uppercase;
       font-size:18px; color:#fff;
+      white-space:nowrap; /* evita "quebrar" a marca */
     }
     .logo span{color:var(--neon)}
     .navlinks{
@@ -173,24 +173,7 @@
       color:var(--muted);
       margin-bottom:26px;
     }
-    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:28px}
-    .heroStats{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-      margin-top:18px;
-    }
-    .stat{
-      background: rgba(255,255,255,.04);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:14px;
-      box-shadow: var(--shadowSoft);
-      transition:.25s ease;
-    }
-    .stat:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.25)}
-    .stat b{display:block; font-size:16px; color:#fff}
-    .stat span{font-size:12px; color:var(--muted2)}
+    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:6px}
 
     .heroCard{
       border-radius: var(--r2);
@@ -457,34 +440,12 @@
     .cat:hover{transform: translateY(-1px); border-color: rgba(0,255,65,.25)}
     .cat.active{background: rgba(0,255,65,.90); color:#000; border-color: rgba(0,255,65,.55)}
 
-    .sideMeta{
-      margin-top:12px;
-      color:var(--muted2);
-      font-size:12px;
-      line-height:1.6;
-    }
-
     .showcaseRow{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap:14px;
       align-items:stretch;
     }
-
-    /* Fade-out / Fade-in para troca suave (container) */
-    .showcaseFadeOut{
-      opacity:0;
-      transform: translate3d(-8px, 0, 0);
-      transition: opacity .35s ease, transform .35s ease;
-      will-change: opacity, transform;
-    }
-    .showcaseFadeIn{
-      opacity:1;
-      transform: translate3d(0, 0, 0);
-      transition: opacity .65s cubic-bezier(.22,.9,.22,1), transform .65s cubic-bezier(.22,.9,.22,1);
-      will-change: opacity, transform;
-    }
-
     .game{
       border-radius: 18px;
       border:1px solid rgba(255,255,255,.10);
@@ -562,10 +523,8 @@
       transition:.2s ease;
     }
     .ghostBtn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
-
-    /* MAIS LENTO + MAIS “MANTEIGA” nos cards */
     .swapAnim{
-      animation: swapFadeLeft .95s cubic-bezier(.22, .9, .22, 1) both;
+      animation: swapFadeLeft .85s cubic-bezier(.22,.9,.22,1) both;
       will-change: transform, opacity;
     }
 
@@ -863,7 +822,6 @@
       .heroGrid{grid-template-columns: 1fr; gap:18px}
       .heroCardMedia{height: 300px}
       .heroCardText{max-width: 100%}
-      .heroStats{grid-template-columns: 1fr}
       .demoGrid{grid-template-columns: 1fr}
       .howGrid{grid-template-columns: 1fr}
       .catalogShell{grid-template-columns: 1fr}
@@ -908,21 +866,6 @@
       <div class="heroActions">
         <a class="btn primary" href="#planos">Quero começar</a>
         <a class="btn" href="#catalogo">Ver catálogo</a>
-      </div>
-
-      <div class="heroStats">
-        <div class="stat">
-          <b>Carregamento rápido</b>
-          <span>Catálogo local</span>
-        </div>
-        <div class="stat">
-          <b>Organização por categorias</b>
-          <span>Experiência premium</span>
-        </div>
-        <div class="stat">
-          <b>Busca inteligente</b>
-          <span>Atalhos (GTA, FIFA…)</span>
-        </div>
       </div>
     </div>
 
@@ -983,8 +926,8 @@
           <div class="s">Filtre por categorias e encontre títulos rapidamente.</div>
         </div>
         <div class="how">
-          <div class="k">3) Escolha</div>
-          <div class="s">Clique no jogo para ver detalhes.</div>
+          <div class="k">3) Desbloqueie</div>
+          <div class="s">Abra detalhes e avance para desbloquear.</div>
         </div>
       </div>
     </div>
@@ -1027,16 +970,15 @@
           </div>
 
           <div class="cats" id="cats"></div>
-
-          <div class="sideMeta">
-            • Vitrine rotativa (3 jogos)<br/>
-            • Clique: abre detalhes<br/>
-            • Imagens 16:9 com overlay
-          </div>
         </aside>
 
         <main>
           <div class="showcaseRow" id="showcase"></div>
+
+          <!-- botão "ver mais" -->
+          <div style="margin-top:20px; display:flex; justify-content:flex-end">
+            <button class="btn ghost" id="btnMoreCatalog" type="button">Ver mais jogos</button>
+          </div>
         </main>
       </div>
     </div>
@@ -1195,11 +1137,11 @@
       </div>
       <div class="qa">
         <button class="q" type="button">
-          Posso ver detalhes antes de comprar?
+          Posso ver detalhes antes de desbloquear?
           <span class="chev">+</span>
         </button>
         <div class="a">
-          Sim. Clique em qualquer título para abrir o modal com detalhes.
+          Sim. Clique em qualquer título para abrir o modal com detalhes e o botão de desbloqueio.
         </div>
       </div>
     </div>
@@ -1223,20 +1165,17 @@
       <div>
         <h3 class="modalTitle" id="modalTitle">—</h3>
         <p class="modalDesc" id="modalDesc">
-          Visualize detalhes do título e desbloqueie para ver a demonstração completa.
+          Visualize os detalhes do título e avance para desbloquear.
         </p>
       </div>
       <div class="modalSide">
         <div class="row"><span>Disponibilidade</span> ✓ Ativo</div>
         <div class="row"><span>Categoria</span> <b id="modalCat">—</b></div>
         <div class="row"><span>Origem</span> Steam</div>
-
-        <!-- 1 botão apenas -->
         <div class="modalBtns">
-          <button class="btn primary" id="modalUnlock">Desbloquear</button>
+          <button class="btn primary" id="modalUnlock" type="button">Desbloquear</button>
         </div>
-
-        <div class="secure">🔓 Desbloqueie e assista à demonstração completa.</div>
+        <div class="secure">🔓 Desbloqueie para continuar.</div>
       </div>
     </div>
   </div>
@@ -1272,9 +1211,6 @@
     "SPIDER-MAN"
   ];
 
-  // vídeo genérico enquanto você não colocar a VSL
-  const GENERIC_VIDEO_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-
   /** ==========================
    *  STATE
    * ========================== */
@@ -1306,6 +1242,7 @@
 
   const catsEl = document.getElementById("cats");
   const showcase = document.getElementById("showcase");
+  const btnMoreCatalog = document.getElementById("btnMoreCatalog");
 
   const backdrop = document.getElementById("backdrop");
   const modalClose = document.getElementById("modalClose");
@@ -1557,7 +1494,7 @@
   }
 
   /** ==========================
-   *  SHOWCASE (aleatório + fade premium)
+   *  SHOWCASE (aleatório)
    * ========================== */
   function getCategoryPoolRaw(){
     if(ACTIVE_CATEGORY === "TODOS") return GAMES;
@@ -1625,7 +1562,7 @@
             </div>
             <div class="gameCta">
               <span class="tiny">Clique para detalhes</span>
-              <button class="ghostBtn" type="button">Ver</button>
+              <button class="ghostBtn" type="button">Desbloquear</button>
             </div>
           </div>
         </div>
@@ -1643,26 +1580,19 @@
 
   function startShowcaseAuto(){
     clearInterval(showcaseTimer);
-    showcaseTimer = setInterval(()=>{
-      // fade-out do container (deixa MUITO mais fluido)
-      showcase.classList.add("showcaseFadeOut");
-
-      setTimeout(()=>{
-        renderShowcase(true);
-
-        // fade-in
-        showcase.classList.remove("showcaseFadeOut");
-        showcase.classList.add("showcaseFadeIn");
-
-        setTimeout(()=>showcase.classList.remove("showcaseFadeIn"), 750);
-      }, 300);
-    }, 7500); // MAIS TEMPO (antes 4200)
+    // MAIS LENTO + mais “premium”
+    showcaseTimer = setInterval(()=>renderShowcase(true), 7500);
   }
-
   function restartShowcaseAuto(){
     clearInterval(showcaseTimer);
     startShowcaseAuto();
   }
+
+  // Botão "Ver mais jogos" (manual)
+  btnMoreCatalog.addEventListener("click", ()=>{
+    renderShowcase(true);
+    restartShowcaseAuto();
+  });
 
   /** ==========================
    *  MODAL
@@ -1676,7 +1606,7 @@
     const cats = (game.categories && game.categories.length) ? game.categories : ["OUTROS"];
     modalCat.textContent = String(cats[0] || "OUTROS");
 
-    modalDesc.textContent = "Visualize os detalhes do título e desbloqueie para ver a demonstração completa.";
+    modalDesc.textContent = "Visualize os detalhes do título e avance para desbloquear.";
 
     backdrop.classList.add("show");
     document.body.style.overflow = "hidden";
@@ -1691,10 +1621,10 @@
   backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
   document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
 
-  // 1 CTA: DESBLOQUEAR -> vídeo genérico por enquanto
+  // Sem VSL agora: deixa neutro (não redireciona)
   modalUnlock.addEventListener("click", ()=>{
     closeModal();
-    window.open(GENERIC_VIDEO_URL, "_blank");
+    toast("Desbloqueio disponível na próxima etapa.");
   });
 
   /** ==========================
@@ -1723,3 +1653,4 @@
 
 </body>
 </html>
+```
