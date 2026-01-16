@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -94,17 +93,19 @@
     .nav{
       display:flex; align-items:center; justify-content:space-between;
       padding:14px 0;
+      gap:14px;
     }
     .logo{
       display:flex; align-items:center; gap:12px;
       font-weight:900; letter-spacing:-1px; text-transform:uppercase;
       font-size:18px; color:#fff;
-      white-space:nowrap; /* evita "quebrar" a marca */
+      white-space:nowrap;
     }
     .logo span{color:var(--neon)}
     .navlinks{
       display:flex; align-items:center; gap:14px;
       font-weight:700; color:var(--muted2);
+      flex-wrap:wrap;
     }
     .navlinks a{
       color:inherit; text-decoration:none; padding:10px 12px; border-radius:12px;
@@ -173,7 +174,7 @@
       color:var(--muted);
       margin-bottom:26px;
     }
-    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:6px}
+    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px}
 
     .heroCard{
       border-radius: var(--r2);
@@ -303,6 +304,7 @@
       position:relative;
       transform: translateZ(0);
       transition:.25s ease;
+      cursor:pointer;
     }
     .miniCard:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.25)}
     .miniCard img{
@@ -376,7 +378,7 @@
       pointer-events:none;
     }
 
-    /* ---------- Catalog (padding ajustado + vitrine 3) ---------- */
+    /* ---------- Catalog ---------- */
     #catalogo.section{padding:86px 0}
 
     .catalogHeader{
@@ -526,6 +528,117 @@
     .swapAnim{
       animation: swapFadeLeft .85s cubic-bezier(.22,.9,.22,1) both;
       will-change: transform, opacity;
+    }
+
+    /* ---------- CTA "Ver catálogo completo" (alinhado e claro) ---------- */
+    .catalogMoreRow{
+      margin-top:18px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+    }
+    .catalogMoreBtn{
+      min-width: 340px;
+      justify-content:center;
+      padding:14px 18px;
+      border-radius:16px;
+    }
+    .catalogMoreIcon{
+      width:22px; height:22px;
+      display:grid; place-items:center;
+      border-radius:10px;
+      background: rgba(0,255,65,.10);
+      border:1px solid rgba(0,255,65,.18);
+      color: var(--neon);
+      font-weight:950;
+    }
+    .catalogMoreHint{
+      color: rgba(255,255,255,.45);
+      font-size:12px;
+      letter-spacing:.2px;
+      text-align:center;
+      max-width: 64ch;
+      line-height: 1.5;
+    }
+
+    /* ---------- Catálogo completo (expandível) ---------- */
+    .fullCatalog{
+      margin-top:18px;
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadowSoft);
+      overflow:hidden;
+
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: max-height .55s cubic-bezier(.22,.9,.22,1), opacity .35s ease, transform .35s ease;
+    }
+    .fullCatalog.open{
+      max-height: 2200px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fullTop{
+      padding:18px 18px 12px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:14px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .fullTitle{
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:-.8px;
+      color:#fff;
+      font-size:18px;
+    }
+    .fullSub{
+      margin-top:6px;
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.5;
+    }
+    .fullSearch{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.10);
+      padding:10px 12px;
+      border-radius:16px;
+      min-width: min(520px, 100%);
+    }
+    .fullSearchIcon{
+      color: rgba(255,255,255,.55);
+      font-weight:900;
+    }
+    .fullSearch input{
+      width: 320px;
+      max-width: 46vw;
+      background: transparent;
+      border:0;
+      outline:0;
+      color:#fff;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .fullSearch input::placeholder{color: rgba(255,255,255,.35)}
+    .fullGrid{
+      padding:14px 18px 6px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:14px;
+    }
+    .fullBottom{
+      padding:12px 18px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
 
     /* ---------- Pricing (3 planos) ---------- */
@@ -781,34 +894,6 @@
     .modalSide .modalBtns{display:flex; gap:10px; margin-top:12px}
     .modalSide .modalBtns .btn{width:100%}
 
-    /* ---------- Toasts ---------- */
-    .toasts{
-      position:fixed; right:18px; bottom:18px; z-index:2500;
-      display:flex; flex-direction:column; gap:10px;
-      pointer-events:none;
-    }
-    .toast{
-      width:min(340px, calc(100vw - 36px));
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(12,12,12,.92);
-      box-shadow: var(--shadowSoft);
-      padding:12px 12px;
-      display:flex; gap:10px; align-items:flex-start;
-      animation: floatIn .35s ease both;
-      pointer-events:none;
-    }
-    .toast .ic{
-      width:34px; height:34px; border-radius:12px;
-      background: rgba(0,255,65,.12);
-      border:1px solid rgba(0,255,65,.20);
-      color:var(--neon);
-      display:grid; place-items:center;
-      flex:0 0 auto;
-    }
-    .toast b{color:#fff}
-    .toast p{margin:2px 0 0; color:var(--muted2); font-size:12px; line-height:1.45}
-
     /* ---------- Footer ---------- */
     footer{
       padding:44px 0;
@@ -818,6 +903,9 @@
     }
 
     /* ---------- Responsive ---------- */
+    @media (max-width: 1100px){
+      .fullGrid{grid-template-columns: repeat(3, 1fr)}
+    }
     @media (max-width: 980px){
       .heroGrid{grid-template-columns: 1fr; gap:18px}
       .heroCardMedia{height: 300px}
@@ -830,6 +918,15 @@
       .pricingWrap{grid-template-columns: 1fr}
       .modalBody{grid-template-columns: 1fr}
       .socialGrid{grid-template-columns: 1fr}
+      .fullSearch{flex-wrap:wrap}
+      .fullSearch input{width:100%; max-width:100%}
+    }
+    @media (max-width: 820px){
+      .fullGrid{grid-template-columns: repeat(2, 1fr)}
+    }
+    @media (max-width: 520px){
+      .fullGrid{grid-template-columns: 1fr}
+      .catalogMoreBtn{min-width: 100%}
     }
   </style>
 </head>
@@ -847,7 +944,7 @@
     </div>
     <div class="nav-cta">
       <a class="btn" href="#catalogo">Ver catálogo</a>
-      <a class="btn primary" href="#planos">Comprar</a>
+      <a class="btn primary" href="#planos">Desbloquear</a>
     </div>
   </div>
 </header>
@@ -859,12 +956,12 @@
       <div class="pill"><span class="dot"></span> Sistema ativo • experiência premium</div>
       <h1 class="heroTitle">Sua biblioteca, <span class="accent">sem complicação</span>.</h1>
       <p class="heroSub">
-        Uma experiência rápida e elegante para pesquisar, organizar e acessar sua coleção com uma interface moderna.
-        Tudo otimizado para ser leve, direto e premium.
+        Uma experiência rápida e elegante para explorar títulos, ver detalhes e avançar para o desbloqueio.
+        Interface premium, leve e direta.
       </p>
 
       <div class="heroActions">
-        <a class="btn primary" href="#planos">Quero começar</a>
+        <a class="btn primary" href="#planos">Desbloquear</a>
         <a class="btn" href="#catalogo">Ver catálogo</a>
       </div>
     </div>
@@ -887,8 +984,8 @@
             <div class="heroCardDesc" id="featuredDesc">Navegue por categorias e abra detalhes em um clique.</div>
           </div>
           <div class="heroCardBtns">
-            <button class="btn small ghost" id="btnFeatDetails">Ver detalhes</button>
-            <button class="btn small primary" id="btnFeatOpenCatalog">Abrir catálogo</button>
+            <button class="btn small ghost" id="btnFeatDetails" type="button">Ver detalhes</button>
+            <button class="btn small primary" id="btnFeatOpenCatalog" type="button">Abrir catálogo</button>
           </div>
         </div>
       </div>
@@ -898,7 +995,7 @@
   <div class="container marqueeWrap reveal">
     <div class="marqueeTitle">
       <span>Principais títulos • vitrine premium</span>
-      <span class="muted2">Passe o mouse para pausar</span>
+      <span class="muted2">Role para explorar</span>
     </div>
     <div class="marquee">
       <div class="marqueeTrack" id="marqueeTrack"></div>
@@ -912,30 +1009,31 @@
     <div class="card pad reveal">
       <h2 class="cardTitle">Como funciona</h2>
       <p class="cardText">
-        Um fluxo simples: você entra, explora por categorias e abre detalhes em segundos.
-        Tudo com uma interface premium, rápida e organizada.
+        Você escolhe uma categoria, abre os detalhes e avança para o desbloqueio.
+        Simples, rápido e com visual premium.
       </p>
 
       <div class="howGrid">
         <div class="how">
-          <div class="k">1) Acesse</div>
-          <div class="s">Entre no painel e navegue pelo catálogo.</div>
+          <div class="k">1) Explore</div>
+          <div class="s">Navegue por categorias.</div>
         </div>
         <div class="how">
-          <div class="k">2) Explore</div>
-          <div class="s">Filtre por categorias e encontre títulos rapidamente.</div>
+          <div class="k">2) Veja detalhes</div>
+          <div class="s">Abra o modal do jogo.</div>
         </div>
         <div class="how">
           <div class="k">3) Desbloqueie</div>
-          <div class="s">Abra detalhes e avance para desbloquear.</div>
+          <div class="s">Avance para continuar.</div>
         </div>
       </div>
     </div>
 
     <div class="card reveal" style="position:relative">
       <div class="videoWrap">
+        <!-- vídeo genérico por enquanto -->
         <iframe
-          src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
+          src="https://www.youtube.com/embed/dQw4w9WgcQ?rel=0&modestbranding=1"
           title="Demonstração"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
@@ -953,7 +1051,7 @@
       <div>
         <h2>Catálogo</h2>
         <p>
-          Navegue por categorias. A vitrine exibe uma seleção rotativa com transição suave — clique para abrir detalhes.
+          Selecione uma categoria e explore a vitrine. Para ver tudo, abra o catálogo completo.
         </p>
       </div>
       <div class="catalogActions">
@@ -968,45 +1066,46 @@
             <span>Categorias</span>
             <span class="muted2">Filtro</span>
           </div>
-
           <div class="cats" id="cats"></div>
         </aside>
 
         <main>
-  <div class="showcaseRow" id="showcase"></div>
+          <div class="showcaseRow" id="showcase"></div>
 
-  <!-- CTA mais claro e central (abre catálogo completo) -->
-  <div class="catalogMoreRow">
-    <button class="btn ghost catalogMoreBtn" id="btnMoreCatalog" type="button">
-      <span class="catalogMoreIcon">⌕</span>
-      Ver catálogo completo
-    </button>
-    <div class="catalogMoreHint">Explore a biblioteca completa, com busca e paginação.</div>
-  </div>
+          <!-- CTA claro: abre catálogo completo -->
+          <div class="catalogMoreRow">
+            <button class="btn ghost catalogMoreBtn" id="btnMoreCatalog" type="button">
+              <span class="catalogMoreIcon">⌕</span>
+              Ver catálogo completo
+            </button>
+            <div class="catalogMoreHint">
+              Abra a biblioteca completa com busca e paginação. (A vitrine continua alternando automaticamente acima.)
+            </div>
+          </div>
 
-  <!-- CATÁLOGO COMPLETO (colapsado por padrão) -->
-  <section class="fullCatalog" id="fullCatalog" aria-hidden="true">
-    <div class="fullTop">
-      <div>
-        <div class="fullTitle">Catálogo completo</div>
-        <div class="fullSub">Pesquise pelo nome e abra detalhes com 1 clique.</div>
-      </div>
+          <!-- CATÁLOGO COMPLETO (colapsado por padrão) -->
+          <section class="fullCatalog" id="fullCatalog" aria-hidden="true">
+            <div class="fullTop">
+              <div>
+                <div class="fullTitle">Catálogo completo</div>
+                <div class="fullSub">Pesquise pelo nome e clique para abrir detalhes.</div>
+              </div>
 
-      <div class="fullSearch">
-        <span class="fullSearchIcon">⌕</span>
-        <input id="fullSearchInput" type="text" placeholder="Buscar (ex: GTA, FIFA, Elden...)" autocomplete="off"/>
-        <button class="btn small ghost" id="btnFullClose" type="button">Fechar</button>
-      </div>
-    </div>
+              <div class="fullSearch">
+                <span class="fullSearchIcon">⌕</span>
+                <input id="fullSearchInput" type="text" placeholder="Buscar (ex: GTA, FIFA, Elden...)" autocomplete="off"/>
+                <button class="btn small ghost" id="btnFullClose" type="button">Fechar</button>
+              </div>
+            </div>
 
-    <div class="fullGrid" id="fullGrid"></div>
+            <div class="fullGrid" id="fullGrid"></div>
 
-    <div class="fullBottom">
-      <button class="btn" id="btnLoadMore" type="button">Carregar mais</button>
-      <div class="muted2" id="fullCount" style="font-size:12px"></div>
-    </div>
-  </section>
-</main>
+            <div class="fullBottom">
+              <button class="btn" id="btnLoadMore" type="button">Carregar mais</button>
+              <div class="muted2" id="fullCount" style="font-size:12px"></div>
+            </div>
+          </section>
+        </main>
       </div>
     </div>
   </div>
@@ -1018,7 +1117,7 @@
     <div class="reveal">
       <h2 style="margin:0; font-size:28px; font-weight:950; letter-spacing:-1px; color:#fff; text-transform:uppercase">Planos</h2>
       <p class="muted" style="margin:10px 0 0; line-height:1.6; max-width:70ch">
-        Escolha o nível de acesso ideal. Todos os planos ativam o ecossistema Overise com interface premium.
+        Selecione um plano para desbloquear. (Sem link de VSL por enquanto.)
       </p>
     </div>
 
@@ -1040,7 +1139,7 @@
           <tr><td>Suporte</td><td>Base</td></tr>
         </table>
         <div class="buyRow">
-          <button class="btn" onclick="window.open('SEU_LINK_BASICO','_blank')">Selecionar</button>
+          <button class="btn" type="button" onclick="alert('Plano Básico: link será configurado depois.')">Desbloquear</button>
         </div>
         <div class="secure">🔒 Pagamento seguro • Ativação imediata</div>
       </div>
@@ -1062,7 +1161,7 @@
           <tr><td>Suporte</td><td class="good">Guia + comunidade</td></tr>
         </table>
         <div class="buyRow">
-          <button class="btn primary" onclick="window.open('SEU_LINK_AVANCADO','_blank')">Selecionar</button>
+          <button class="btn primary" type="button" onclick="alert('Plano Avançado: link será configurado depois.')">Desbloquear</button>
         </div>
         <div class="secure">🔒 Pagamento seguro • Ativação imediata • Suporte</div>
       </div>
@@ -1084,7 +1183,7 @@
           <tr><td>Experiência</td><td class="good">Premium+</td></tr>
         </table>
         <div class="buyRow">
-          <button class="btn" onclick="window.open('SEU_LINK_PERMANENTE','_blank')">Selecionar</button>
+          <button class="btn" type="button" onclick="alert('Plano Permanente: link será configurado depois.')">Desbloquear</button>
         </div>
         <div class="secure">🔒 Pagamento seguro • Acesso definitivo</div>
       </div>
@@ -1107,7 +1206,7 @@
             <div class="stars">★★★★★</div>
           </div>
         </div>
-        <div class="txt">“Interface bonita, rápida e fácil de usar. Achei os jogos em segundos.”</div>
+        <div class="txt">“Interface bonita, rápida e fácil de usar.”</div>
       </div>
 
       <div class="quote">
@@ -1118,7 +1217,7 @@
             <div class="stars">★★★★★</div>
           </div>
         </div>
-        <div class="txt">“A organização por categorias ficou perfeita. Muito acima do padrão.”</div>
+        <div class="txt">“A organização por categorias ficou perfeita.”</div>
       </div>
 
       <div class="quote">
@@ -1129,7 +1228,7 @@
             <div class="stars">★★★★★</div>
           </div>
         </div>
-        <div class="txt">“Visual premium de launcher. Parece produto grande.”</div>
+        <div class="txt">“Visual premium. Parece produto grande.”</div>
       </div>
     </div>
   </div>
@@ -1150,7 +1249,7 @@
           <span class="chev">+</span>
         </button>
         <div class="a">
-          Você recebe acesso ao ecossistema Overise com interface premium, vitrine por categorias e recursos conforme o plano.
+          Acesso à experiência premium e desbloqueio via planos.
         </div>
       </div>
       <div class="qa">
@@ -1159,7 +1258,7 @@
           <span class="chev">+</span>
         </button>
         <div class="a">
-          O catálogo é carregado localmente e a vitrine alterna automaticamente 3 títulos por vez.
+          A vitrine mostra 3 jogos por vez e o catálogo completo abre com busca e paginação.
         </div>
       </div>
       <div class="qa">
@@ -1168,7 +1267,7 @@
           <span class="chev">+</span>
         </button>
         <div class="a">
-          Sim. Clique em qualquer título para abrir o modal com detalhes e o botão de desbloqueio.
+          Sim. Clique em qualquer título para abrir o modal com o botão de desbloqueio.
         </div>
       </div>
     </div>
@@ -1207,8 +1306,6 @@
     </div>
   </div>
 </div>
-
-<div class="toasts" id="toasts"></div>
 
 <script>
   /** ==========================
@@ -1271,6 +1368,13 @@
   const showcase = document.getElementById("showcase");
   const btnMoreCatalog = document.getElementById("btnMoreCatalog");
 
+  const fullCatalog = document.getElementById("fullCatalog");
+  const fullGrid = document.getElementById("fullGrid");
+  const fullSearchInput = document.getElementById("fullSearchInput");
+  const btnLoadMore = document.getElementById("btnLoadMore");
+  const btnFullClose = document.getElementById("btnFullClose");
+  const fullCount = document.getElementById("fullCount");
+
   const backdrop = document.getElementById("backdrop");
   const modalClose = document.getElementById("modalClose");
   const modalImg = document.getElementById("modalImg");
@@ -1278,8 +1382,6 @@
   const modalDesc = document.getElementById("modalDesc");
   const modalCat = document.getElementById("modalCat");
   const modalUnlock = document.getElementById("modalUnlock");
-
-  const toasts = document.getElementById("toasts");
 
   /** ==========================
    *  UTILS
@@ -1328,21 +1430,6 @@
     return list;
   }
 
-  function toast(msg){
-    const el = document.createElement("div");
-    el.className = "toast";
-    el.innerHTML = `
-      <div class="ic">✓</div>
-      <div>
-        <b>Sistema</b>
-        <p>${escapeHtml(msg)}</p>
-      </div>
-    `;
-    toasts.appendChild(el);
-    setTimeout(()=>{ el.style.opacity = "0"; el.style.transform = "translateY(8px)"; }, 2800);
-    setTimeout(()=>{ el.remove(); }, 3400);
-  }
-
   /** ==========================
    *  REVEAL
    * ========================== */
@@ -1389,7 +1476,6 @@
     resetShowcasePool(true);
     renderShowcase(true);
     startShowcaseAuto();
-    startToasts();
   }
 
   /** ==========================
@@ -1435,7 +1521,7 @@
 
     setImgWithFallback(featuredImg, [getCardCover(g), FALLBACK_IMG]);
     featuredName.textContent = g.name;
-    featuredDesc.textContent = "Navegue por categorias, abra detalhes e encontre títulos em segundos.";
+    featuredDesc.textContent = "Abra detalhes e avance para desbloquear.";
 
     btnFeatDetails.onclick = () => openModal(g);
     btnFeatOpenCatalog.onclick = () => document.getElementById("catalogo").scrollIntoView({behavior:"smooth"});
@@ -1516,6 +1602,10 @@
         resetShowcasePool(true);
         renderShowcase(true);
         restartShowcaseAuto();
+
+        if(fullOpen){
+          renderFull(true);
+        }
       });
     });
   }
@@ -1607,7 +1697,7 @@
 
   function startShowcaseAuto(){
     clearInterval(showcaseTimer);
-    // MAIS LENTO + mais “premium”
+    // mais lento + mais fluido
     showcaseTimer = setInterval(()=>renderShowcase(true), 7500);
   }
   function restartShowcaseAuto(){
@@ -1615,10 +1705,118 @@
     startShowcaseAuto();
   }
 
-  // Botão "Ver mais jogos" (manual)
-  btnMoreCatalog.addEventListener("click", ()=>{
-    renderShowcase(true);
-    restartShowcaseAuto();
+  /** ==========================
+   *  FULL CATALOG (abre/fecha + busca + paginação)
+   * ========================== */
+  let fullOpen = false;
+  let fullQuery = "";
+  let fullPage = 0;
+  const FULL_PAGE_SIZE = 24;
+
+  function getFullPool(){
+    const raw = getCategoryPoolRaw();
+    if(!fullQuery) return raw;
+
+    const q = fullQuery.toUpperCase().trim();
+    return raw.filter(g => (g.name || "").toUpperCase().includes(q));
+  }
+
+  function renderFull(reset=false){
+    const pool = getFullPool();
+
+    if(reset){
+      fullPage = 0;
+      fullGrid.innerHTML = "";
+    }
+
+    const start = fullPage * FULL_PAGE_SIZE;
+    const slice = pool.slice(start, start + FULL_PAGE_SIZE);
+
+    if(reset && pool.length === 0){
+      fullGrid.innerHTML = `
+        <div class="game" style="grid-column: 1 / -1; padding:18px; cursor:default">
+          <div class="gameInfo">
+            <div class="gameName">Nada encontrado</div>
+            <div class="tiny">Tente outro termo ou categoria.</div>
+          </div>
+        </div>
+      `;
+      btnLoadMore.style.display = "none";
+      fullCount.textContent = "";
+      return;
+    }
+
+    fullGrid.insertAdjacentHTML("beforeend", slice.map(g=>{
+      const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
+      const mainCat = String(cats[0] || "OUTROS");
+
+      return `
+        <div class="game swapAnim" data-name="${escapeHtml(g.name)}">
+          <div class="gameImg">
+            <img src="${getCardCover(g)}" alt="${escapeHtml(g.name)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'"/>
+            <div class="gameGrad"></div>
+          </div>
+          <div class="gameInfo">
+            <div class="gameName">${escapeHtml(g.name)}</div>
+            <div class="tagRow">
+              <span class="tag ok">Disponível</span>
+              <span class="tag">${escapeHtml(mainCat)}</span>
+            </div>
+            <div class="gameCta">
+              <span class="tiny">Clique para detalhes</span>
+              <button class="ghostBtn" type="button">Desbloquear</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join(""));
+
+    fullGrid.querySelectorAll(".game").forEach(el=>{
+      el.addEventListener("click", ()=>{
+        const name = el.getAttribute("data-name");
+        const g = GAMES.find(x=>x.name === name) || GAMES.find(x=>x.name.toUpperCase() === (name||"").toUpperCase());
+        if(g) openModal(g);
+      });
+    });
+
+    const shown = Math.min((fullPage+1)*FULL_PAGE_SIZE, pool.length);
+    fullCount.textContent = `${shown} de ${pool.length} exibidos`;
+    btnLoadMore.style.display = (shown < pool.length) ? "inline-flex" : "none";
+  }
+
+  function openFullCatalog(){
+    if(fullOpen) return;
+    fullOpen = true;
+    fullCatalog.classList.add("open");
+    fullCatalog.setAttribute("aria-hidden", "false");
+    renderFull(true);
+
+    setTimeout(()=>{
+      fullCatalog.scrollIntoView({behavior:"smooth", block:"start"});
+    }, 120);
+  }
+
+  function closeFullCatalog(){
+    fullOpen = false;
+    fullCatalog.classList.remove("open");
+    fullCatalog.setAttribute("aria-hidden", "true");
+  }
+
+  btnMoreCatalog.addEventListener("click", openFullCatalog);
+  btnFullClose.addEventListener("click", closeFullCatalog);
+
+  let searchT = null;
+  fullSearchInput.addEventListener("input", ()=>{
+    clearTimeout(searchT);
+    searchT = setTimeout(()=>{
+      fullQuery = fullSearchInput.value || "";
+      renderFull(true);
+    }, 160);
+  });
+
+  btnLoadMore.addEventListener("click", ()=>{
+    fullPage += 1;
+    renderFull(false);
   });
 
   /** ==========================
@@ -1626,8 +1824,6 @@
    * ========================== */
   function openModal(game){
     modalTitle.textContent = game.name;
-
-    // hero premium + fallback
     setImgWithFallback(modalImg, getModalHeroCandidates(game));
 
     const cats = (game.categories && game.categories.length) ? game.categories : ["OUTROS"];
@@ -1648,37 +1844,17 @@
   backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
   document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
 
-  // Sem VSL agora: deixa neutro (não redireciona)
+  // Sem VSL agora: deixa neutro
   modalUnlock.addEventListener("click", ()=>{
     closeModal();
-    toast("Desbloqueio disponível na próxima etapa.");
+    alert("Desbloqueio disponível na próxima etapa.");
   });
-
-  /** ==========================
-   *  TOASTS
-   * ========================== */
-  const EVENTS = [
-    "Biblioteca indexada com sucesso.",
-    "Cache local atualizado.",
-    "Vitrine sincronizada.",
-    "Categorias carregadas.",
-    "Interface otimizada em tempo real."
-  ];
-
-  function startToasts(){
-    setInterval(()=>{
-      if(!GAMES.length) return;
-      toast(EVENTS[Math.floor(Math.random()*EVENTS.length)]);
-    }, 5200);
-  }
 
   /** ==========================
    *  INIT
    * ========================== */
-  loadGames().catch(()=>toast("Erro ao carregar o catálogo local."));
+  loadGames().catch(()=>alert("Erro ao carregar o catálogo local."));
 </script>
 
 </body>
 </html>
-```
-
