@@ -25,8 +25,6 @@
       --r2:26px;
       --max: 1180px;
       --font: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-
-      --marqueeDur: 88s; /* MAIS LENTO (premium) */
     }
 
     *{box-sizing:border-box}
@@ -53,10 +51,20 @@
       padding:10px 14px; border-radius:999px;
       background: rgba(255,255,255,.05);
       border:1px solid var(--border);
-      font-weight:700; letter-spacing:.6px; text-transform:uppercase; font-size:12px;
+      font-weight:800; letter-spacing:.6px; text-transform:uppercase; font-size:12px;
       backdrop-filter: blur(10px);
+      white-space:nowrap;
     }
     .dot{width:8px; height:8px; border-radius:50%; background:var(--neon); box-shadow: 0 0 14px rgba(0,255,65,.55)}
+
+    /* Full-bleed helper (pra carrossel 100% da largura) */
+    .fullBleed{
+      width:100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      padding-left: 20px;
+      padding-right: 20px;
+    }
 
     /* ---------- Micro Animations ---------- */
     @keyframes floatIn {
@@ -97,21 +105,24 @@
       padding:14px 0;
       gap:16px;
     }
+
+    /* FIX marca quebrando: tudo inline + nowrap */
     .logo{
-      display:inline-flex; align-items:center;
-      font-weight:900; letter-spacing:-1px; text-transform:uppercase;
+      display:inline-flex; align-items:center; gap:0;
+      font-weight:950; letter-spacing:-1px; text-transform:uppercase;
       font-size:18px; color:#fff;
       white-space:nowrap;
-      flex: 0 0 auto;            /* TRAVA o logo para não quebrar */
-      line-height: 1;
+      flex: 0 0 auto;
     }
-    .logo span{color:var(--neon)}
+    .logo .brandAccent{color:var(--neon); display:inline-block; white-space:nowrap}
+
     .navlinks{
       display:flex; align-items:center; gap:14px;
-      font-weight:700; color:var(--muted2);
+      font-weight:800; color:var(--muted2);
       flex: 1 1 auto;
       justify-content:center;
       min-width: 0;
+      flex-wrap:wrap;
     }
     .navlinks a{
       color:inherit; text-decoration:none; padding:10px 12px; border-radius:12px;
@@ -131,7 +142,7 @@
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.05);
       color:#fff;
-      font-weight:900; letter-spacing:.5px; text-transform:uppercase;
+      font-weight:950; letter-spacing:.5px; text-transform:uppercase;
       cursor:pointer; text-decoration:none;
       transition:.22s ease;
       overflow:hidden;
@@ -153,7 +164,7 @@
     }
     .btn.primary::after{display:none}
     .btn.primary:hover{box-shadow: 0 18px 60px rgba(0,255,65,.15)}
-    .nav-cta{display:flex; gap:10px; align-items:center; flex:0 0 auto}
+    .nav-cta{display:flex; gap:10px; align-items:center; flex: 0 0 auto}
     .btn.small{padding:10px 14px; border-radius:12px; font-size:12px}
     .btn.ghost{background: rgba(0,0,0,.32)}
 
@@ -176,14 +187,33 @@
     }
     .heroTitle .accent{color:var(--neon)}
     .heroSub{
-      max-width: 46ch;
+      max-width: 52ch;
       font-size:16px;
       line-height:1.7;
       color:var(--muted);
       margin-bottom:26px;
     }
-    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:6px}
+    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px}
+    .heroStats{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      margin-top:10px;
+    }
+    .stat{
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:14px;
+      box-shadow: var(--shadowSoft);
+      transition:.25s ease;
+      min-width:0;
+    }
+    .stat:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.25)}
+    .stat b{display:block; font-size:16px; color:#fff}
+    .stat span{font-size:12px; color:var(--muted2)}
 
+    /* FIX “destaque” bugado: altura mínima e overlay consistente + flex sem quebrar */
     .heroCard{
       border-radius: var(--r2);
       border:1px solid rgba(255,255,255,.10);
@@ -193,6 +223,7 @@
       position:relative;
       isolation:isolate;
       animation: fadeLeft .8s ease both;
+      min-height: 320px;
     }
     .heroCard::before{
       content:"";
@@ -210,27 +241,30 @@
     .heroCardMedia img{
       width:100%; height:100%;
       object-fit:cover;
-      filter:saturate(1.08) contrast(1.08);
+      filter:saturate(1.10) contrast(1.10);
       transform: scale(1.03);
     }
     .heroCardOverlay{
       position:absolute; inset:0;
       background:
-        radial-gradient(800px 320px at 78% 45%, rgba(0,0,0,.10), rgba(0,0,0,.78)),
-        linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.20));
+        radial-gradient(800px 320px at 78% 45%, rgba(0,0,0,.12), rgba(0,0,0,.78)),
+        linear-gradient(to top, rgba(0,0,0,.92), rgba(0,0,0,.16));
     }
     .heroCardInfo{
       position:absolute; left:18px; right:18px; bottom:18px;
-      display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+      display:flex; align-items:flex-end; justify-content:space-between; gap:14px;
     }
-    .heroCardText{max-width: 60%}
+    .heroCardText{
+      max-width: 62%;
+      min-width: 0;
+    }
     .badgeRow{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
     .chip{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 10px;
       border-radius:999px;
       font-size:11px;
-      font-weight:900;
+      font-weight:950;
       text-transform:uppercase;
       letter-spacing:.5px;
       background: rgba(0,0,0,.35);
@@ -252,15 +286,18 @@
       letter-spacing:-1px;
       text-transform:uppercase;
       text-shadow: 0 10px 40px rgba(0,0,0,.95);
-      line-height: 1.05;
+      line-height:1.05;
+      word-break: keep-all;
     }
     .heroCardDesc{
-      margin-top:6px;
-      color: rgba(255,255,255,.80);
+      margin-top:8px;
+      color: rgba(255,255,255,.82);
       font-size:13px;
+      line-height:1.35;
       text-shadow: 0 10px 30px rgba(0,0,0,.9);
+      max-width: 55ch;
     }
-    .heroCardBtns{display:flex; gap:10px}
+    .heroCardBtns{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
 
     .featNav{
       position:absolute; top:14px;
@@ -276,29 +313,9 @@
     .featPrev{right:64px}
     .featNext{right:14px}
 
-    /* ---------- Hero stats (3 cards) ---------- */
-    .heroStats{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-      margin-top:18px;
-      max-width: 700px;
-    }
-    .stat{
-      background: rgba(255,255,255,.04);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:14px;
-      box-shadow: var(--shadowSoft);
-      transition:.25s ease;
-    }
-    .stat:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.25)}
-    .stat b{display:block; font-size:14px; color:#fff; line-height:1.25}
-    .stat span{font-size:12px; color:var(--muted2)}
-
-    /* ---------- Full-width Marquee (vitrine) ---------- */
+    /* ---------- Infinite AAA Marquee (FULL WIDTH) ---------- */
     .marqueeWrap{
-      margin-top:72px;
+      margin-top:64px;
       padding-top:22px;
       border-top: 1px solid rgba(255,255,255,.06);
     }
@@ -306,34 +323,28 @@
       display:flex; align-items:center; justify-content:space-between;
       gap:14px; margin-bottom:14px;
       color:var(--muted2);
-      font-weight:800; text-transform:uppercase; letter-spacing:1px; font-size:12px;
-    }
-
-    .marqueeFull{
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      margin-right: calc(50% - 50vw);
-      padding: 0 0 8px;
+      font-weight:900; text-transform:uppercase; letter-spacing:1px; font-size:12px;
+      padding: 0 10px;
     }
     .marquee{
       width:100%;
       overflow:hidden;
-      border-radius: 0;
-      border-top:1px solid rgba(255,255,255,.06);
-      border-bottom:1px solid rgba(255,255,255,.06);
-      background: rgba(255,255,255,.02);
-      box-shadow: none;
-      mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      box-shadow: var(--shadowSoft);
+      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     }
     .marqueeTrack{
       display:flex; gap:14px;
       width:max-content;
-      padding:14px 22px;
-      animation: marquee var(--marqueeDur) linear infinite;
+      padding:14px;
+      animation: marquee 72s linear infinite; /* MAIS LENTO */
+      will-change: transform;
     }
     .marquee:hover .marqueeTrack{animation-play-state: paused}
     .miniCard{
-      width: 260px;
+      width: 280px;
       border-radius: 16px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.10);
@@ -342,6 +353,7 @@
       position:relative;
       transform: translateZ(0);
       transition:.25s ease;
+      cursor:pointer;
     }
     .miniCard:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.25)}
     .miniCard img{
@@ -351,17 +363,17 @@
       display:block;
       transform:scale(1.03);
       transition:.4s ease;
-      filter:saturate(1.05);
+      filter:saturate(1.08) contrast(1.06);
     }
     .miniCard:hover img{transform:scale(1.07)}
     .miniOverlay{
       position:absolute; inset:0;
-      background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,.05));
+      background: linear-gradient(to top, rgba(0,0,0,.86), rgba(0,0,0,.06));
       pointer-events:none;
     }
     .miniLabel{
       position:absolute; left:12px; right:12px; bottom:10px;
-      color:#fff; font-weight:900; font-size:12px;
+      color:#fff; font-weight:950; font-size:12px;
       letter-spacing:.4px; text-transform:uppercase;
       text-shadow: 0 10px 30px rgba(0,0,0,.95);
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
@@ -415,7 +427,7 @@
       pointer-events:none;
     }
 
-    /* ---------- Catalog ---------- */
+    /* ---------- Catálogo ---------- */
     #catalogo.section{padding:86px 0}
 
     .catalogHeader{
@@ -432,6 +444,8 @@
     }
     .catalogHeader p{margin:8px 0 0; color:var(--muted); max-width:56ch; line-height:1.6}
     .catalogActions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+
+    .catalogCollapsed{display:block; margin-top:18px; animation: floatIn .5s ease both}
 
     .catalogShell{
       display:grid;
@@ -467,7 +481,7 @@
       border-radius:14px;
       border:1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.22);
-      font-weight:900;
+      font-weight:950;
       font-size:12px;
       letter-spacing:.4px;
       color:#d7d7d7;
@@ -493,7 +507,7 @@
       cursor:pointer;
       transform: translateZ(0);
       transition:.25s ease;
-      min-width: 0;
+      min-width:0;
     }
     .game:hover{transform: translateY(-4px); border-color: rgba(0,255,65,.22)}
     .gameImg{
@@ -508,18 +522,18 @@
       display:block;
       transform: scale(1.03);
       transition:.45s ease;
-      filter: saturate(1.06) contrast(1.06);
+      filter: saturate(1.08) contrast(1.08);
     }
     .game:hover .gameImg img{transform: scale(1.07)}
     .gameGrad{
       position:absolute; inset:0;
-      background: linear-gradient(to top, rgba(0,0,0,.86), rgba(0,0,0,.05));
+      background: linear-gradient(to top, rgba(0,0,0,.86), rgba(0,0,0,.06));
       pointer-events:none;
     }
     .gameInfo{
       padding:12px 12px 14px;
       display:flex; flex-direction:column; gap:10px;
-      min-width: 0;
+      min-width:0;
     }
     .gameName{
       font-weight:950;
@@ -566,185 +580,244 @@
     }
     .ghostBtn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
     .swapAnim{
-      animation: swapFadeLeft .85s cubic-bezier(.22,.9,.22,1) both;
+      animation: swapFadeLeft .90s cubic-bezier(.22,.9,.22,1) both; /* MAIS SUAVE */
       will-change: transform, opacity;
     }
 
+    /* CTA "Catálogo completo" (alinhado e claro) */
     .catalogMoreRow{
       margin-top:14px;
       display:flex;
       align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      gap:10px;
-      padding:14px;
-      border-radius: 20px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.18);
+      justify-content:flex-start;
+      gap:14px;
+      flex-wrap:wrap;
     }
     .catalogMoreBtn{
-      min-width: 260px;
-      border-radius: 999px;
+      padding:12px 16px;
+      border-radius:14px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-weight:950;
+    }
+    .catalogMoreIcon{
+      width:28px; height:28px;
+      border-radius:10px;
+      background: rgba(0,255,65,.12);
+      border:1px solid rgba(0,255,65,.22);
+      color:var(--neon);
+      display:grid; place-items:center;
+      flex:0 0 auto;
+      font-weight:950;
     }
     .catalogMoreHint{
       color: var(--muted2);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .4px;
-      text-transform: uppercase;
-      text-align:center;
-    }
-    .catalogMoreIcon{
-      font-weight: 950;
-      transform: translateY(-1px);
+      font-size:12px;
+      line-height:1.4;
     }
 
-    /* ---------- Full Catalog (colapsado) ---------- */
+    /* ---------- Catálogo completo (overlay dentro da seção) ---------- */
     .fullCatalog{
       margin-top:16px;
       border-radius: var(--r2);
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
       box-shadow: var(--shadowSoft);
-      overflow:hidden;
+      padding:16px;
       display:none;
+      overflow:hidden;
     }
-    .fullCatalog.show{display:block; animation: floatIn .35s ease both}
+    .fullCatalog.show{display:block; animation: floatIn .45s ease both}
     .fullTop{
-      padding:18px 18px 12px;
       display:flex;
-      align-items:flex-start;
+      align-items:center;
       justify-content:space-between;
       gap:14px;
-      border-bottom:1px solid rgba(255,255,255,.06);
       flex-wrap:wrap;
+      margin-bottom:14px;
     }
     .fullTitle{
       font-weight:950;
-      font-size:18px;
-      letter-spacing:-.6px;
-      color:#fff;
+      letter-spacing:-.8px;
       text-transform:uppercase;
-      margin:0;
+      color:#fff;
+      font-size:18px;
+      margin-bottom:2px;
     }
     .fullSub{
-      margin-top:6px;
       color: var(--muted2);
-      font-size: 13px;
-      line-height: 1.4;
+      font-size:12px;
+      line-height:1.4;
     }
     .fullSearch{
       display:flex;
       align-items:center;
       gap:10px;
       padding:10px 12px;
-      border-radius: 16px;
+      border-radius:16px;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.20);
-      min-width: min(520px, 100%);
-      flex: 1 1 520px;
+      background: rgba(0,0,0,.24);
+      flex: 1 1 420px;
+      min-width: 280px;
     }
-    .fullSearchIcon{color: var(--muted2); font-weight: 950}
-    .fullSearch input{
+    .fullSearchIcon{
+      width:28px; height:28px;
+      border-radius:10px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      display:grid; place-items:center;
+      color:#cfcfcf;
+      flex:0 0 auto;
+    }
+    #fullSearchInput{
       width:100%;
       border:0;
-      outline:none;
-      background:transparent;
+      outline:0;
+      background: transparent;
       color:#fff;
       font-weight:800;
       letter-spacing:.2px;
+      font-size:13px;
       min-width: 0;
     }
+    #fullSearchInput::placeholder{color: rgba(255,255,255,.42)}
     .fullGrid{
-      padding:14px 14px 6px;
       display:grid;
       grid-template-columns: repeat(4, 1fr);
       gap:12px;
     }
-    .fullGrid .game .gameInfo{padding:10px 10px 12px}
+    .fullCard{
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+      overflow:hidden;
+      cursor:pointer;
+      transition:.25s ease;
+      min-width:0;
+    }
+    .fullCard:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.22)}
+    .fullCardImg{
+      aspect-ratio: 16 / 9;
+      background:#000;
+      position:relative;
+      overflow:hidden;
+    }
+    .fullCardImg img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      transform:scale(1.03);
+      filter:saturate(1.08) contrast(1.06);
+      transition:.35s ease;
+    }
+    .fullCard:hover .fullCardImg img{transform:scale(1.07)}
+    .fullCardGrad{
+      position:absolute; inset:0;
+      background: linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,.06));
+      pointer-events:none;
+    }
+    .fullCardInfo{
+      padding:10px 10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      min-width:0;
+    }
+    .fullCardName{
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+      font-size:11px;
+      color:#fff;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      flex:1 1 auto;
+      min-width:0;
+    }
+    .fullCardBtn{
+      padding:9px 10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+      color:#fff;
+      font-weight:950;
+      text-transform:uppercase;
+      font-size:10px;
+      cursor:pointer;
+      white-space:nowrap;
+    }
     .fullBottom{
-      padding:12px 14px 16px;
+      margin-top:14px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      border-top:1px solid rgba(255,255,255,.06);
       flex-wrap:wrap;
     }
+    .emptyState{
+      grid-column: 1 / -1;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      padding:18px;
+    }
+    .emptyState b{display:block; color:#fff; text-transform:uppercase; letter-spacing:.4px}
+    .emptyState span{display:block; margin-top:6px; color:var(--muted2); font-size:12px}
 
-    /* ---------- About + Guarantee ---------- */
-    .twoCol{
+    /* ---------- Reembolso (posição estratégica antes dos planos) ---------- */
+    .refundGrid{
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.2fr .8fr;
       gap:16px;
       align-items:stretch;
       margin-top:18px;
     }
-    .aboutCard{
-      border-radius: var(--r2);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadowSoft);
-      padding:22px;
-      position:relative;
-      overflow:hidden;
-    }
-    .aboutCard::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(820px 320px at 20% 10%, rgba(0,255,65,.12), transparent 55%);
-      pointer-events:none;
-    }
-    .aboutTitle{
-      margin:0 0 8px;
-      font-size:22px;
-      font-weight:950;
-      letter-spacing:-.8px;
-      text-transform:uppercase;
-      color:#fff;
-    }
-    .aboutText{
-      margin:0;
-      color: var(--muted);
-      line-height:1.75;
-      font-size:14px;
-      max-width: 70ch;
-    }
-    .aboutList{
-      margin-top:14px;
-      display:grid;
-      gap:10px;
-    }
-    .aboutItem{
-      padding:12px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.18);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:.4px;
-      font-size:12px;
-      color:#dcdcdc;
-    }
-    .aboutItem b{color:#fff}
-    .badgeGuarantee{
+    .refundBadge{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      padding:10px 14px;
+      padding:10px 12px;
       border-radius:999px;
       border:1px solid rgba(0,255,65,.30);
       background: rgba(0,255,65,.10);
       color: var(--neon);
       font-weight:950;
-      letter-spacing:.5px;
       text-transform:uppercase;
+      letter-spacing:.6px;
       font-size:12px;
-      width: fit-content;
+      white-space:nowrap;
+    }
+    .refundBox{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadowSoft);
+      padding:22px;
+    }
+    .refundBox h3{
+      margin:10px 0 8px;
+      font-size:20px;
+      font-weight:950;
+      letter-spacing:-.6px;
+      text-transform:uppercase;
+      color:#fff;
+    }
+    .refundBox p{
+      margin:0;
+      color: var(--muted);
+      line-height:1.7;
+      font-size:14px;
+      max-width: 70ch;
+    }
+
+    /* ---------- Sobre nós ---------- */
+    .aboutGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+      margin-top:18px;
+      align-items:stretch;
     }
 
     /* ---------- Pricing (3 planos) ---------- */
@@ -794,6 +867,7 @@
       font-size:40px;
       letter-spacing:-2px;
       color:var(--neon);
+      white-space:nowrap;
     }
     .priceSmall{color:var(--muted2); font-weight:800}
     .priceWas{
@@ -819,7 +893,7 @@
       padding:14px 12px;
       border-bottom: 1px solid rgba(255,255,255,.06);
       color:#d9d9d9;
-      font-weight:700;
+      font-weight:800;
       font-size:13px;
     }
     .table tr:last-child td{border-bottom:0}
@@ -854,7 +928,6 @@
       border:1px solid rgba(255,255,255,.10);
       display:grid; place-items:center;
       font-weight:950; color:#fff;
-      flex: 0 0 auto;
     }
     .stars{color:#ffd34d; font-weight:950; letter-spacing:1px; font-size:12px}
     .txt{color:var(--muted); line-height:1.65; font-size:13px; font-style:italic}
@@ -877,7 +950,7 @@
       color:#fff;
       cursor:pointer;
       display:flex; align-items:center; justify-content:space-between; gap:10px;
-      font-weight:900; letter-spacing:.4px; text-transform:uppercase;
+      font-weight:950; letter-spacing:.4px; text-transform:uppercase;
     }
     .chev{
       width:26px; height:26px; border-radius:8px;
@@ -886,7 +959,7 @@
       color:var(--neon);
       transition:.25s ease;
       background: rgba(0,0,0,.20);
-      flex: 0 0 auto;
+      flex:0 0 auto;
     }
     .a{
       max-height:0;
@@ -897,7 +970,7 @@
       line-height:1.65;
       font-size:14px;
     }
-    .qa.open .a{max-height:260px; padding-bottom:16px}
+    .qa.open .a{max-height:240px; padding-bottom:16px}
     .qa.open .chev{transform: rotate(45deg)}
 
     /* ---------- Modal ---------- */
@@ -997,7 +1070,7 @@
       padding:11px 0;
       border-bottom:1px solid rgba(255,255,255,.06);
       color:#d9d9d9;
-      font-weight:800;
+      font-weight:850;
       font-size:13px;
     }
     .modalSide .row:last-child{border-bottom:0}
@@ -1041,18 +1114,9 @@
       font-size:12px;
     }
 
-    /* ---------- Reduced motion ---------- */
-    @media (prefers-reduced-motion: reduce){
-      .marqueeTrack{animation:none}
-      .swapAnim{animation:none}
-      .reveal{transition:none}
-    }
-
     /* ---------- Responsive ---------- */
-    @media (max-width: 1100px){
-      .fullGrid{grid-template-columns: repeat(3, 1fr)}
-    }
     @media (max-width: 980px){
+      .nav{justify-content:space-between}
       .navlinks{display:none}
       .heroGrid{grid-template-columns: 1fr; gap:18px}
       .heroCardMedia{height: 300px}
@@ -1067,8 +1131,10 @@
       .pricingWrap{grid-template-columns: 1fr}
       .modalBody{grid-template-columns: 1fr}
       .socialGrid{grid-template-columns: 1fr}
-      .twoCol{grid-template-columns: 1fr}
+      .refundGrid{grid-template-columns: 1fr}
+      .aboutGrid{grid-template-columns: 1fr}
     }
+
     @media (max-width: 520px){
       .fullGrid{grid-template-columns: 1fr}
     }
@@ -1079,7 +1145,10 @@
 
 <header>
   <div class="container nav">
-    <div class="logo">OVER<span>ISE</span></div>
+    <div class="logo">
+      OVER<span class="brandAccent">ISE</span>
+    </div>
+
     <div class="navlinks">
       <a href="#como">Como funciona</a>
       <a href="#catalogo">Catálogo</a>
@@ -1087,6 +1156,7 @@
       <a href="#planos">Planos</a>
       <a href="#faq">FAQ</a>
     </div>
+
     <div class="nav-cta">
       <a class="btn" href="#catalogo">Ver catálogo</a>
       <a class="btn primary" href="#planos">Comprar</a>
@@ -1121,7 +1191,7 @@
         </div>
         <div class="stat">
           <b>Busca inteligente</b>
-          <span>Atalhos (GTA, RDR2, GOW…)</span>
+          <span>Atalhos (GTA, RDR2…)</span>
         </div>
       </div>
     </div>
@@ -1138,10 +1208,10 @@
           <div class="heroCardText">
             <div class="badgeRow">
               <span class="chip green">Em destaque</span>
-              <span class="chip">Vitrine</span>
+              <span class="chip">AAA • pagos</span>
             </div>
             <div class="heroCardName" id="featuredName">—</div>
-            <div class="heroCardDesc" id="featuredDesc">Apenas jogos AAA/famosos na vitrine.</div>
+            <div class="heroCardDesc" id="featuredDesc">Somente títulos AAA/pagos selecionados da sua lista.</div>
           </div>
           <div class="heroCardBtns">
             <button class="btn small ghost" id="btnFeatDetails" type="button">Ver detalhes</button>
@@ -1152,17 +1222,14 @@
     </div>
   </div>
 
-  <!-- VITRINE EM LARGURA TOTAL -->
-  <div class="marqueeWrap reveal">
-    <div class="container marqueeTitle">
+  <!-- MARQUEE FULL WIDTH -->
+  <div class="marqueeWrap reveal fullBleed">
+    <div class="marqueeTitle">
       <span>Jogos em alta • vitrine premium</span>
       <span class="muted2">Passe o mouse para pausar</span>
     </div>
-
-    <div class="marqueeFull">
-      <div class="marquee">
-        <div class="marqueeTrack" id="marqueeTrack"></div>
-      </div>
+    <div class="marquee">
+      <div class="marqueeTrack" id="marqueeTrack"></div>
     </div>
   </div>
 </section>
@@ -1222,48 +1289,53 @@
       </div>
     </div>
 
-    <div class="catalogShell">
-      <aside class="side">
-        <div class="sideTitle">
-          <span>Categorias</span>
-          <span class="muted2">Filtro</span>
-        </div>
-        <div class="cats" id="cats"></div>
-      </aside>
-
-      <main>
-        <div class="showcaseRow" id="showcase"></div>
-
-        <div class="catalogMoreRow">
-          <button class="btn ghost catalogMoreBtn" id="btnMoreCatalog" type="button">
-            <span class="catalogMoreIcon">⌕</span>
-            Ver catálogo completo
-          </button>
-          <div class="catalogMoreHint">Busca + paginação • Abra detalhes com 1 clique</div>
-        </div>
-
-        <section class="fullCatalog" id="fullCatalog" aria-hidden="true">
-          <div class="fullTop">
-            <div>
-              <div class="fullTitle">Catálogo completo</div>
-              <div class="fullSub">Pesquise por nome ou abreviações (ex: gta, rdr2, gow, tlou…)</div>
-            </div>
-
-            <div class="fullSearch">
-              <span class="fullSearchIcon">⌕</span>
-              <input id="fullSearchInput" type="text" placeholder="Buscar (ex: GTA, RDR2, GOW, FIFA...)" autocomplete="off"/>
-              <button class="btn small ghost" id="btnFullClose" type="button">Fechar</button>
-            </div>
+    <div class="catalogCollapsed" id="catalogArea">
+      <div class="catalogShell">
+        <aside class="side">
+          <div class="sideTitle">
+            <span>Categorias</span>
+            <span class="muted2">Filtro</span>
           </div>
 
-          <div class="fullGrid" id="fullGrid"></div>
+          <div class="cats" id="cats"></div>
+        </aside>
 
-          <div class="fullBottom">
-            <button class="btn" id="btnLoadMore" type="button">Carregar mais</button>
-            <div class="muted2" id="fullCount" style="font-size:12px"></div>
+        <main>
+          <div class="showcaseRow" id="showcase"></div>
+
+          <!-- CTA claro: abre catálogo completo (não troca só os 3) -->
+          <div class="catalogMoreRow">
+            <button class="btn ghost catalogMoreBtn" id="btnMoreCatalog" type="button">
+              <span class="catalogMoreIcon">⌕</span>
+              Ver catálogo completo
+            </button>
+            <div class="catalogMoreHint">Abra a biblioteca completa com busca e paginação.</div>
           </div>
-        </section>
-      </main>
+
+          <!-- Catálogo completo -->
+          <section class="fullCatalog" id="fullCatalog" aria-hidden="true">
+            <div class="fullTop">
+              <div>
+                <div class="fullTitle">Catálogo completo</div>
+                <div class="fullSub">Pesquise pelo nome (aceita abreviações como GTA, RDR2, TLOU) e clique para abrir detalhes.</div>
+              </div>
+
+              <div class="fullSearch">
+                <span class="fullSearchIcon">⌕</span>
+                <input id="fullSearchInput" type="text" placeholder="Buscar (ex: GTA, RDR2, Elden...)" autocomplete="off"/>
+                <button class="btn small ghost" id="btnFullClose" type="button">Fechar</button>
+              </div>
+            </div>
+
+            <div class="fullGrid" id="fullGrid"></div>
+
+            <div class="fullBottom">
+              <button class="btn" id="btnLoadMore" type="button">Carregar mais</button>
+              <div class="muted2" id="fullCount" style="font-size:12px"></div>
+            </div>
+          </section>
+        </main>
+      </div>
     </div>
   </div>
 </section>
@@ -1271,34 +1343,44 @@
 <!-- SOBRE NÓS -->
 <section id="sobre" class="section tight">
   <div class="container reveal">
-    <div class="twoCol">
-      <div class="aboutCard">
-        <h2 class="aboutTitle">Sobre a Overise</h2>
-        <p class="aboutText">
-          A <b style="color:#fff">Overise</b> nasceu para entregar uma experiência premium e direta:
-          organização, velocidade e uma vitrine limpa para você encontrar seus títulos em segundos.
-          Sem bagunça, sem excesso — só o essencial, com acabamento de produto grande.
-        </p>
+    <h2 style="margin:0; font-size:28px; font-weight:950; letter-spacing:-1px; color:#fff; text-transform:uppercase">Sobre nós</h2>
+    <p class="muted" style="margin:10px 0 0; line-height:1.6; max-width:78ch">
+      A <b style="color:#fff">Overise</b> nasceu para entregar uma experiência premium: organizada, rápida e elegante — do jeito que
+      uma biblioteca de jogos deveria ser. Nosso foco é simplicidade, performance e uma vitrine que valoriza títulos AAA.
+    </p>
 
-        <div class="aboutList">
-          <div class="aboutItem"><span><b>Interface</b> premium</span><span style="color:var(--neon)">✓</span></div>
-          <div class="aboutItem"><span><b>Catálogo</b> organizado</span><span style="color:var(--neon)">✓</span></div>
-          <div class="aboutItem"><span><b>Busca</b> rápida</span><span style="color:var(--neon)">✓</span></div>
-        </div>
+    <div class="aboutGrid">
+      <div class="card pad" style="min-height:150px">
+        <h3 class="cardTitle" style="margin-bottom:8px">Missão</h3>
+        <p class="cardText">Deixar o acesso ao catálogo claro e fluido, com visual moderno e navegação em poucos cliques.</p>
       </div>
+      <div class="card pad" style="min-height:150px">
+        <h3 class="cardTitle" style="margin-bottom:8px">Padrão Overise</h3>
+        <p class="cardText">Interface com acabamento premium, vitrine rotativa suave e busca inteligente (incluindo abreviações).</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-      <div class="aboutCard">
-        <div class="badgeGuarantee">🔒 Reembolso em até 30 dias</div>
-        <h2 class="aboutTitle" style="margin-top:12px">Garantia sem risco</h2>
-        <p class="aboutText">
-          Você tem <b style="color:#fff">30 dias</b> para testar a experiência Overise.
-          Se não fizer sentido para você, é só solicitar dentro do prazo e fazemos o reembolso conforme as regras do produto.
+<!-- REEMBOLSO 30 DIAS (estratégico: antes dos planos) -->
+<section class="section tight">
+  <div class="container reveal">
+    <div class="refundGrid">
+      <div class="refundBox">
+        <div class="refundBadge">✓ Reembolso em até 30 dias</div>
+        <h3>Compra sem risco</h3>
+        <p>
+          Se por qualquer motivo você não curtir a experiência, você pode solicitar reembolso em até <b style="color:#fff">30 dias</b>.
+          Transparente, simples e direto — padrão Overise.
         </p>
-
-        <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap">
-          <a class="btn primary" href="#planos">Ver planos</a>
-          <a class="btn" href="#faq">Tirar dúvidas</a>
-        </div>
+      </div>
+      <div class="refundBox">
+        <div class="refundBadge">⚡ Acesso rápido</div>
+        <h3>Ativação imediata</h3>
+        <p>
+          Escolha o plano, conclua a etapa e siga para o desbloqueio.
+          Tudo pensado para manter o fluxo curto e premium.
+        </p>
       </div>
     </div>
   </div>
@@ -1451,16 +1533,16 @@
           <span class="chev">+</span>
         </button>
         <div class="a">
-          O catálogo é carregado localmente. Você pode navegar por categorias e abrir o catálogo completo para buscar e paginar.
+          O catálogo é carregado localmente. A vitrine mostra 3 títulos por vez e o catálogo completo abre com busca e paginação.
         </div>
       </div>
       <div class="qa">
         <button class="q" type="button">
-          Posso buscar por abreviações (GTA, RDR2, GOW)?
+          Posso buscar por abreviações tipo “GTA”?
           <span class="chev">+</span>
         </button>
         <div class="a">
-          Sim. A busca aceita abreviações e também termos parciais.
+          Sim. A busca reconhece abreviações comuns (GTA, RDR2, TLOU, etc.) e também encontra por partes do nome.
         </div>
       </div>
       <div class="qa">
@@ -1469,7 +1551,7 @@
           <span class="chev">+</span>
         </button>
         <div class="a">
-          Sim — reembolso em até 30 dias, dentro das condições do produto.
+          Sim. Você pode solicitar reembolso em até 30 dias, conforme a política informada na página.
         </div>
       </div>
     </div>
@@ -1529,59 +1611,56 @@
   const FALLBACK_IMG =
     "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='920' height='520'><rect width='100%25' height='100%25' fill='%23111'/><text x='50%25' y='50%25' fill='%23333' font-family='Inter,Arial' font-size='28' text-anchor='middle'>SEM CAPA</text></svg>";
 
-  /* HERO: AAA/FAMOSOS (prioriza os que você pediu) */
-  const FEATURED_NAMES = [
-    "BALDUR'S GATE 3",
-    "GOD OF WAR RAGNAROK",
-    "THE LAST OF US",
-    "GRAND THEFT AUTO V",
-    "RED DEAD REDEMPTION 2",
-    "FORZA HORIZON 5",
+  // AAA/PAGOS: só o que existir no seu JSON vai entrar (se não existir, é ignorado)
+  const AAA_ALLOWLIST = [
+    "Baldur's Gate 3",
+    "Cyberpunk 2077",
+    "Red Dead Redemption 2",
+    "Grand Theft Auto V",
     "ELDEN RING",
-    "CYBERPUNK 2077",
-    "MARVEL'S SPIDER-MAN",
-    "MINECRAFT DUNGEONS",
-    "EXPEDITION 33"
+    "God of War",
+    "God of War Ragnarök",
+    "The Last of Us",
+    "The Last of Us Part I",
+    "Forza Horizon 5",
+    "Forza Horizon 4",
+    "Hogwarts Legacy",
+    "Starfield",
+    "Resident Evil 4",
+    "Call of Duty",
+    "EA SPORTS FC",
+    "FIFA",
+    "Marvel’s Spider-Man Remastered",
+    "Marvel's Spider-Man Remastered",
+    "Marvel’s Spider-Man Miles Morales",
+    "Marvel's Spider-Man: Miles Morales",
+    "Days Gone",
+    "Horizon Zero Dawn",
+    "Horizon Forbidden West",
+    "Monster Hunter: World",
+    "Assassin's Creed",
+    "Far Cry 6",
+    "Battlefield 2042",
+    "Minecraft Dungeons",
+    "Expedition 33"
   ];
 
-  /* MARQUEE: Top jogados do momento (SteamCharts) + mainstream (sem “coisas aleatórias”) */
-  const MARQUEE_TOP_PLAYED = [
-    "COUNTER-STRIKE 2",
-    "DOTA 2",
-    "PUBG: BATTLEGROUNDS",
-    "RUST",
-    "WARFRAME",
-    "BALDUR'S GATE 3",
-    "APEX LEGENDS",
-    "TOM CLANCY'S RAINBOW SIX SIEGE",
-    "GRAND THEFT AUTO V",
-    "CALL OF DUTY"
-  ];
-
-  /* Abreviações / atalhos (busca) */
-  const ALIASES = {
-    "gta": ["grand theft auto v", "gta v", "gta 5", "gta"],
-    "gta5": ["grand theft auto v", "gta v", "gta 5"],
-    "gta v": ["grand theft auto v", "gta 5"],
-    "rdr2": ["red dead redemption 2", "rdr2"],
-    "gow": ["god of war", "god of war ragnarok"],
-    "gowr": ["god of war ragnarok"],
-    "ragnarok": ["god of war ragnarok"],
-    "tlou": ["the last of us"],
-    "tlou1": ["the last of us"],
-    "cs2": ["counter-strike 2", "cs2"],
-    "dota": ["dota 2"],
-    "pubg": ["pubg", "pubg battlegrounds", "pubg: battlegrounds"],
-    "r6": ["rainbow six", "rainbow six siege", "tom clancy's rainbow six siege"],
-    "siege": ["rainbow six siege", "tom clancy's rainbow six siege"],
-    "cod": ["call of duty"],
-    "bg3": ["baldur's gate 3", "baldurs gate 3"],
-    "forza": ["forza horizon 5", "forza motorsport", "forza"],
-    "elden": ["elden ring"],
-    "cp2077": ["cyberpunk 2077"],
-    "spiderman": ["spider-man", "marvel's spider-man"],
-    "minecraft": ["minecraft dungeons"],
-    "expedition 33": ["expedition 33"]
+  // Abreviações / atalhos de busca
+  const SEARCH_ALIASES = {
+    "gta": "grand theft auto",
+    "gta5": "grand theft auto v",
+    "gta v": "grand theft auto v",
+    "rdr2": "red dead redemption 2",
+    "tlou": "the last of us",
+    "tlou1": "the last of us",
+    "gow": "god of war",
+    "gowr": "god of war ragnarok",
+    "bg3": "baldur s gate 3",
+    "cod": "call of duty",
+    "fc": "ea sports fc",
+    "fifa": "fifa",
+    "fh4": "forza horizon 4",
+    "fh5": "forza horizon 5"
   };
 
   /** ==========================
@@ -1590,20 +1669,22 @@
   let GAMES = [];
   let ACTIVE_CATEGORY = "TODOS";
 
+  let aaaGames = [];          // AAA filtrados do JSON
   let featuredList = [];
   let featuredIndex = 0;
   let featuredTimer = null;
 
+  // vitrine (3 jogos) - pool embaralhado (prioriza AAA)
   let poolKey = "";
   let poolShuffled = [];
   let poolCursor = 0;
   let showcaseTimer = null;
 
-  // Full catalog
+  // catálogo completo
   let fullOpen = false;
-  let fullPageSize = 16;
-  let fullCursor = 0;
   let fullFiltered = [];
+  let fullPage = 0;
+  const FULL_PAGE_SIZE = 16;
 
   /** ==========================
    *  DOM
@@ -1624,10 +1705,10 @@
   const btnMoreCatalog = document.getElementById("btnMoreCatalog");
   const fullCatalog = document.getElementById("fullCatalog");
   const fullGrid = document.getElementById("fullGrid");
-  const fullCount = document.getElementById("fullCount");
   const fullSearchInput = document.getElementById("fullSearchInput");
   const btnFullClose = document.getElementById("btnFullClose");
   const btnLoadMore = document.getElementById("btnLoadMore");
+  const fullCount = document.getElementById("fullCount");
 
   const backdrop = document.getElementById("backdrop");
   const modalClose = document.getElementById("modalClose");
@@ -1651,10 +1732,17 @@
   function normalizeText(s){
     return String(s || "")
       .toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // remove acentos
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/&/g, " and ")
       .replace(/[^a-z0-9 ]+/g, " ")
       .replace(/\s+/g, " ")
       .trim();
+  }
+
+  function applyAlias(query){
+    const q = normalizeText(query);
+    if(!q) return "";
+    return SEARCH_ALIASES[q] ? SEARCH_ALIASES[q] : q;
   }
 
   function shuffle(arr){
@@ -1682,7 +1770,7 @@
     return FALLBACK_IMG;
   }
 
-  function getModalHeroCandidates(game){
+  function getHeroCandidates(game){
     const appid = game.steam_appid;
     const list = [];
     if(appid){
@@ -1706,54 +1794,8 @@
       </div>
     `;
     toasts.appendChild(el);
-    setTimeout(()=>{ el.style.opacity = "0"; el.style.transform = "translateY(8px)"; }, 2800);
-    setTimeout(()=>{ el.remove(); }, 3400);
-  }
-
-  function findGameSmart(query){
-    const q = normalizeText(query);
-    if(!q) return null;
-
-    // alias -> tenta opções
-    const aliasList = ALIASES[q] || [];
-    const candidates = [q, ...aliasList.map(normalizeText)];
-
-    // 1) match exato
-    for(const c of candidates){
-      const g = GAMES.find(x => normalizeText(x.name) === c);
-      if(g) return g;
-    }
-
-    // 2) includes (título contém)
-    for(const c of candidates){
-      const g = GAMES.find(x => normalizeText(x.name).includes(c));
-      if(g) return g;
-    }
-
-    // 3) tokens (todos tokens precisam aparecer)
-    const tokens = q.split(" ").filter(Boolean);
-    if(tokens.length){
-      const g = GAMES.find(x => {
-        const n = normalizeText(x.name);
-        return tokens.every(t => n.includes(t));
-      });
-      if(g) return g;
-    }
-
-    return null;
-  }
-
-  function findManyByNames(names){
-    const out = [];
-    const used = new Set();
-    for(const nm of names){
-      const g = findGameSmart(nm);
-      if(g && !used.has(g.name)){
-        out.push(g);
-        used.add(g.name);
-      }
-    }
-    return out;
+    setTimeout(()=>{ el.style.opacity = "0"; el.style.transform = "translateY(8px)"; }, 2600);
+    setTimeout(()=>{ el.remove(); }, 3200);
   }
 
   /** ==========================
@@ -1796,42 +1838,79 @@
       categories: Array.isArray(g.categories) ? g.categories : []
     })).filter(g => g.name);
 
-    buildFeatured();
-    buildMarquee();
-    buildCategories();
+    // AAA a partir do seu JSON (match flexível)
+    aaaGames = buildAAAFromList(AAA_ALLOWLIST);
 
-    resetShowcasePool(true);
+    buildFeatured();          // usa AAA
+    buildMarquee();           // usa AAA
+    buildCategories();
+    resetShowcasePool(true);  // vitrine 3 (prioriza AAA)
     renderShowcase(true);
     startShowcaseAuto();
+
+    // catálogo completo (inicial)
+    resetFullCatalog();
     startToasts();
   }
 
-  /** ==========================
-   *  FEATURED (AAA only)
-   * ========================== */
-  function buildFeatured(){
-    // pega apenas os que existirem no JSON
-    featuredList = findManyByNames(FEATURED_NAMES);
+  function findGameFlexible(name){
+    const target = normalizeText(name);
+    if(!target) return null;
 
-    // fallback (se seu JSON não tiver algum nome): usa top played mainstream
-    if(featuredList.length < 5){
-      const extra = findManyByNames(MARQUEE_TOP_PLAYED);
-      for(const g of extra){
-        if(featuredList.length >= 8) break;
-        if(!featuredList.some(x => x.name === g.name)) featuredList.push(g);
+    // match direto (igual)
+    let g = GAMES.find(x => normalizeText(x.name) === target);
+    if(g) return g;
+
+    // match contém
+    g = GAMES.find(x => normalizeText(x.name).includes(target));
+    if(g) return g;
+
+    // match por tokens principais
+    const tokens = target.split(" ").filter(Boolean);
+    g = GAMES.find(x => {
+      const n = normalizeText(x.name);
+      return tokens.every(t => n.includes(t));
+    });
+    return g || null;
+  }
+
+  function buildAAAFromList(list){
+    const out = [];
+    const seen = new Set();
+    for(const nm of list){
+      const g = findGameFlexible(nm);
+      if(g){
+        const key = normalizeText(g.name);
+        if(!seen.has(key)){
+          seen.add(key);
+          out.push(g);
+        }
       }
     }
-
-    // último fallback: pega primeiros jogos, mas tenta evitar “coisas estranhas”
-    if(featuredList.length < 4){
-      featuredList = GAMES.slice(0, 8);
+    // se ainda ficou pequeno, fallback: pega os que tiverem steam_appid e parecem AAA (bem leve)
+    if(out.length < 8){
+      const fallback = GAMES.filter(x => x.steam_appid).slice(0, 12);
+      for(const g of fallback){
+        const key = normalizeText(g.name);
+        if(!seen.has(key)){
+          seen.add(key);
+          out.push(g);
+        }
+      }
     }
+    return out;
+  }
 
+  /** ==========================
+   *  FEATURED (AAA)
+   * ========================== */
+  function buildFeatured(){
+    featuredList = (aaaGames.length ? aaaGames : GAMES.slice(0, 10)).slice(0, 10);
     featuredIndex = 0;
     renderFeatured();
 
     clearInterval(featuredTimer);
-    featuredTimer = setInterval(()=>nextFeatured(), 6500); // MAIS LENTO
+    featuredTimer = setInterval(()=>nextFeatured(), 9000); // mais lento
   }
 
   function renderFeatured(){
@@ -1841,11 +1920,12 @@
     const card = document.getElementById("featuredHeroCard");
     card.style.animation = "none";
     void card.offsetWidth;
-    card.style.animation = "fadeLeft .6s ease both";
+    card.style.animation = "fadeLeft .65s ease both";
 
-    setImgWithFallback(featuredImg, [getCardCover(g), FALLBACK_IMG]);
+    // HERO usa library_hero primeiro (melhor “banner”)
+    setImgWithFallback(featuredImg, getHeroCandidates(g));
     featuredName.textContent = g.name;
-    featuredDesc.textContent = "Apenas jogos famosos/AAA na vitrine.";
+    featuredDesc.textContent = "Somente títulos AAA/pagos selecionados da sua lista — vitrine premium.";
 
     btnFeatDetails.onclick = () => openModal(g);
     btnFeatOpenCatalog.onclick = () => document.getElementById("catalogo").scrollIntoView({behavior:"smooth"});
@@ -1863,23 +1943,21 @@
   featNext.addEventListener("click", ()=>{
     clearInterval(featuredTimer);
     nextFeatured();
-    featuredTimer = setInterval(()=>nextFeatured(), 6500);
+    featuredTimer = setInterval(()=>nextFeatured(), 9000);
   });
   featPrev.addEventListener("click", ()=>{
     clearInterval(featuredTimer);
     prevFeatured();
-    featuredTimer = setInterval(()=>nextFeatured(), 6500);
+    featuredTimer = setInterval(()=>nextFeatured(), 9000);
   });
 
   /** ==========================
-   *  MARQUEE (Top played mainstream)
+   *  MARQUEE (AAA + full width)
    * ========================== */
   function buildMarquee(){
-    const list = findManyByNames(MARQUEE_TOP_PLAYED);
-
-    // garante volume e loop suave
-    const base = list.length ? list : featuredList;
-    const doubled = [...base, ...base, ...base]; // mais itens = mais “cheio”
+    const base = (aaaGames.length ? aaaGames : featuredList).slice(0, 12);
+    // dobra e triplica pra ocupar mais e ficar “cheio”
+    const doubled = [...base, ...base, ...base];
 
     marqueeTrack.innerHTML = doubled.map(g => `
       <div class="miniCard" title="${escapeHtml(g.name)}" data-name="${escapeHtml(g.name)}">
@@ -1892,7 +1970,7 @@
     marqueeTrack.querySelectorAll(".miniCard").forEach(card=>{
       card.addEventListener("click", ()=>{
         const name = card.getAttribute("data-name");
-        const g = GAMES.find(x => x.name === name) || findGameSmart(name);
+        const g = GAMES.find(x => x.name === name) || findGameFlexible(name);
         if(g) openModal(g);
       });
     });
@@ -1926,23 +2004,33 @@
       el.addEventListener("click", ()=>{
         ACTIVE_CATEGORY = el.getAttribute("data-cat") || "TODOS";
         buildCategories();
-
         resetShowcasePool(true);
         renderShowcase(true);
         restartShowcaseAuto();
-
-        if(fullOpen){
-          applyFullFilter(true);
-        }
       });
     });
   }
 
   /** ==========================
-   *  SHOWCASE (3 cards rotativo)
+   *  SHOWCASE (3) - prioriza AAA
    * ========================== */
+  function gameHasCategory(game, cat){
+    const cats = (game.categories && game.categories.length) ? game.categories.map(x=>String(x).toUpperCase()) : ["OUTROS"];
+    return cats.includes(cat);
+  }
+
   function getCategoryPoolRaw(){
-    if(ACTIVE_CATEGORY === "TODOS") return GAMES;
+    // Primeiro: tenta AAA (pra não cair jogo “nada a ver”)
+    let baseAAA = aaaGames.length ? aaaGames : [];
+    if(ACTIVE_CATEGORY === "TODOS"){
+      if(baseAAA.length >= 6) return baseAAA;
+      return GAMES;
+    }
+
+    const filteredAAA = baseAAA.filter(g=>gameHasCategory(g, ACTIVE_CATEGORY));
+    if(filteredAAA.length >= 3) return filteredAAA;
+
+    // fallback para todos
     return GAMES.filter(g=>{
       const cats = (g.categories && g.categories.length) ? g.categories.map(x=>String(x).toUpperCase()) : ["OUTROS"];
       return cats.includes(ACTIVE_CATEGORY);
@@ -1981,7 +2069,7 @@
       showcase.innerHTML = `
         <div class="game" style="grid-column: 1 / -1; padding:18px; cursor:default">
           <div class="gameInfo">
-            <div class="gameName">Nenhum jogo encontrado</div>
+            <div class="gameName">Nada encontrado</div>
             <div class="tiny">Tente outra categoria.</div>
           </div>
         </div>
@@ -2017,7 +2105,7 @@
     showcase.querySelectorAll(".game").forEach(el=>{
       el.addEventListener("click", ()=>{
         const name = el.getAttribute("data-name");
-        const g = GAMES.find(x=>x.name === name) || findGameSmart(name);
+        const g = GAMES.find(x=>x.name === name) || findGameFlexible(name);
         if(g) openModal(g);
       });
     });
@@ -2025,7 +2113,7 @@
 
   function startShowcaseAuto(){
     clearInterval(showcaseTimer);
-    showcaseTimer = setInterval(()=>renderShowcase(true), 7500);
+    showcaseTimer = setInterval(()=>renderShowcase(true), 8500); // mais lento e premium
   }
   function restartShowcaseAuto(){
     clearInterval(showcaseTimer);
@@ -2260,3 +2348,4 @@
 
 </body>
 </html>
+
