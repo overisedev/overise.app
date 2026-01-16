@@ -1599,17 +1599,26 @@
    * ========================== */
   const JSON_PATH = "./games_741_steam.json";
 
+  // Steam assets (tentativas em cascata)
   const STEAM_HEADER = (appid) =>
     `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg`;
 
   const STEAM_LIBRARY_HERO = (appid) =>
     `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${appid}/library_hero.jpg`;
 
+  const STEAM_LIBRARY_600x900 = (appid) =>
+    `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${appid}/library_600x900.jpg`;
+
   const STEAM_CAPSULE = (appid) =>
     `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${appid}/capsule_616x353.jpg`;
 
+  // Fallbacks locais (suba a pasta /assets junto do index.html)
+  const FALLBACK_COVER = "./assets/cover-fallback.jpg"; // 600x900
+  const FALLBACK_HERO  = "./assets/hero-fallback.jpg";  // 16:9
+
+  // Último fallback (se tudo falhar)
   const FALLBACK_IMG =
-    "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='920' height='520'><rect width='100%25' height='100%25' fill='%23111'/><text x='50%25' y='50%25' fill='%23333' font-family='Inter,Arial' font-size='28' text-anchor='middle'>SEM CAPA</text></svg>";
+    "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='920' height='520'><rect width='100%25' height='100%25' fill='%23111'/><text x='50%25' y='50%25' fill='%23333' font-family='Inter,Arial' font-size='28' text-anchor='middle'>OVERISE</text></svg>";
 
   // AAA/PAGOS: só o que existir no seu JSON vai entrar (se não existir, é ignorado)
   const AAA_ALLOWLIST = [
@@ -1759,20 +1768,79 @@
     return a;
   }
 
-  function setImgWithFallback(imgEl, urls){
-    let i = 0;
-    const tryNext = () => {
-      if(i >= urls.length) return;
-      imgEl.src = urls[i++];
-    };
-    imgEl.onerror = tryNext;
-    tryNext();
+  function uniq(list){
+    const out=[];
+    const seen=new Set();
+    for(const u of list){
+      const s=String(u||"").trim();
+      if(!s) continue;
+      if(seen.has(s)) continue;
+      seen.add(s);
+      out.push(s);
+    }
+    return out;
   }
 
-  function getCardCover(game){
-    if(game.cover && typeof game.cover === "string" && game.cover.trim().length) return game.cover;
-    if(game.steam_appid) return STEAM_HEADER(game.steam_appid);
-    return FALLBACK_IMG;
+  // Aplica fallback em cascata para imagens renderizadas via innerHTML
+  function initImgFallback(root){
+    if(!root) return;
+    root.querySelectorAll('img[data-cands]').forEach(img=>{
+      if(img.dataset.fallbackInit === '1') return;
+      img.dataset.fallbackInit = '1';
+
+      let urls=[];
+      try { urls = JSON.parse(img.dataset.cands || '[]'); }
+      catch(e){ urls=[]; }
+
+      if(!Array.isArray(urls) || !urls.length) return;
+
+      let i = 0;
+      img.onerror = () => {
+        i++;
+        if(i < urls.length) img.src = urls[i];
+      };
+
+      // primeira tentativa
+      img.src = urls[0];
+    });
+  }
+
+  function setImgWithFallback(imgEl, urls){
+    let i = 0;
+    const seen = new Set();
+    const next = () => {
+      while(i < urls.length && seen.has(urls[i])) i++;
+      if(i >= urls.length) return;
+      const u = urls[i++];
+      seen.add(u);
+      imgEl.src = u;
+    };
+    imgEl.onerror = next;
+    next();
+  }
+
+  function getCardCandidates(game){
+    const appid = game.steam_appid;
+    const list = [];
+
+    // 1) se o seu JSON já tiver uma URL própria de cover
+    if(game.cover && typeof game.cover === 'string' && game.cover.trim().length) list.push(game.cover);
+
+    // 2) Steam (ordem pensada para cards 16:9)
+    if(appid){
+      list.push(STEAM_CAPSULE(appid));
+      list.push(STEAM_HEADER(appid));
+      list.push(STEAM_LIBRARY_600x900(appid));
+      list.push(STEAM_LIBRARY_HERO(appid));
+    }
+
+    // 3) fallback premium local
+    list.push(FALLBACK_COVER);
+
+    // 4) último fallback
+    list.push(FALLBACK_IMG);
+
+    return uniq(list);
   }
 
   function getHeroCandidates(game){
@@ -1780,17 +1848,20 @@
     const list = [];
     if(appid){
       list.push(STEAM_LIBRARY_HERO(appid));
-      list.push(STEAM_CAPSULE(appid));
       list.push(STEAM_HEADER(appid));
+      list.push(STEAM_CAPSULE(appid));
+      list.push(STEAM_LIBRARY_600x900(appid));
     }
-    if(game.cover && typeof game.cover === "string" && game.cover.trim().length) list.push(game.cover);
+    if(game.cover && typeof game.cover === 'string' && game.cover.trim().length) list.push(game.cover);
+
+    // fallback 16:9 premium
+    list.push(FALLBACK_HERO);
     list.push(FALLBACK_IMG);
-    return list;
+    return uniq(list);
   }
 
   // Modal deve priorizar library_hero (HD).
   function getModalHeroCandidates(game){
-    // Reusa a lógica do hero, garantindo que library_hero seja a 1a tentativa
     return getHeroCandidates(game);
   }
 
@@ -1987,11 +2058,13 @@
 
     marqueeTrack.innerHTML = doubled.map(g => `
       <div class="miniCard" title="${escapeHtml(g.name)}" data-name="${escapeHtml(g.name)}">
-        <img src="${getCardCover(g)}" alt="${escapeHtml(g.name)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'"/>
+        ${(() => { const c = getCardCandidates(g); return `<img data-cands="${escapeHtml(JSON.stringify(c))}" src="${c[0]}" alt="${escapeHtml(g.name)}" loading="lazy"/>`; })()}
         <div class="miniOverlay"></div>
         <div class="miniLabel">${escapeHtml(g.name)}</div>
       </div>
     `).join("");
+
+    initImgFallback(marqueeTrack);
 
     marqueeTrack.querySelectorAll(".miniCard").forEach(card=>{
       card.addEventListener("click", ()=>{
@@ -2110,7 +2183,7 @@
       return `
         <div class="game ${animate ? "swapAnim":""}" data-name="${escapeHtml(g.name)}">
           <div class="gameImg">
-            <img src="${getCardCover(g)}" alt="${escapeHtml(g.name)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'"/>
+            ${(() => { const c = getCardCandidates(g); return `<img data-cands="${escapeHtml(JSON.stringify(c))}" src="${c[0]}" alt="${escapeHtml(g.name)}" loading="lazy"/>`; })()}
             <div class="gameGrad"></div>
           </div>
           <div class="gameInfo">
@@ -2127,6 +2200,8 @@
         </div>
       `;
     }).join("");
+
+    initImgFallback(showcase);
 
     showcase.querySelectorAll(".game").forEach(el=>{
       el.addEventListener("click", ()=>{
@@ -2242,6 +2317,8 @@
     if(reset){
       fullCursor = 0;
       fullGrid.innerHTML = "";
+
+    initImgFallback(fullGrid);
     }
 
     renderFullNextPage();
@@ -2272,7 +2349,7 @@
       return `
         <div class="game" data-name="${escapeHtml(g.name)}">
           <div class="gameImg">
-            <img src="${getCardCover(g)}" alt="${escapeHtml(g.name)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'"/>
+            ${(() => { const c = getCardCandidates(g); return `<img data-cands="${escapeHtml(JSON.stringify(c))}" src="${c[0]}" alt="${escapeHtml(g.name)}" loading="lazy"/>`; })()}
             <div class="gameGrad"></div>
           </div>
           <div class="gameInfo">
@@ -2389,3 +2466,4 @@
 
 </body>
 </html>
+
