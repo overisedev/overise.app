@@ -25,6 +25,8 @@
       --r2:26px;
       --max: 1180px;
       --font: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+      --marqueeDur: 88s; /* MAIS LENTO (premium) */
     }
 
     *{box-sizing:border-box}
@@ -93,32 +95,23 @@
     .nav{
       display:flex; align-items:center; justify-content:space-between;
       padding:14px 0;
-      gap:18px;
+      gap:16px;
     }
-
-    /* FIX: marca não quebra nem cria espaçamento estranho entre "OVER" e "ISE" */
     .logo{
-      display:inline-flex;
-      align-items:baseline;
-      gap:0;
-      font-weight:900;
-      letter-spacing:-1px;
-      text-transform:uppercase;
-      font-size:18px;
-      color:#fff;
+      display:inline-flex; align-items:center;
+      font-weight:900; letter-spacing:-1px; text-transform:uppercase;
+      font-size:18px; color:#fff;
       white-space:nowrap;
-      line-height:1;
-      flex:0 0 auto;
+      flex: 0 0 auto;            /* TRAVA o logo para não quebrar */
+      line-height: 1;
     }
-    .logoBase{color:#fff}
-    .logoAccent{color:var(--neon)}
-
+    .logo span{color:var(--neon)}
     .navlinks{
       display:flex; align-items:center; gap:14px;
       font-weight:700; color:var(--muted2);
-      flex:1 1 auto;
+      flex: 1 1 auto;
       justify-content:center;
-      min-width:0;
+      min-width: 0;
     }
     .navlinks a{
       color:inherit; text-decoration:none; padding:10px 12px; border-radius:12px;
@@ -189,23 +182,7 @@
       color:var(--muted);
       margin-bottom:26px;
     }
-    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px}
-    .heroStats{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-      margin-top:10px;
-    }
-    .stat{
-      background: rgba(255,255,255,.04);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:14px;
-      box-shadow: var(--shadowSoft);
-      transition:.25s ease;
-    }
-    .stat:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.25)}
-    .stat b{display:block; font-size:14px; color:#fff; line-height:1.25}
+    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:6px}
 
     .heroCard{
       border-radius: var(--r2);
@@ -261,6 +238,7 @@
       color:#fff;
       text-shadow: 0 10px 30px rgba(0,0,0,.9);
       backdrop-filter: blur(10px);
+      white-space:nowrap;
     }
     .chip.green{
       border-color: rgba(0,255,65,.35);
@@ -274,6 +252,7 @@
       letter-spacing:-1px;
       text-transform:uppercase;
       text-shadow: 0 10px 40px rgba(0,0,0,.95);
+      line-height: 1.05;
     }
     .heroCardDesc{
       margin-top:6px;
@@ -297,36 +276,64 @@
     .featPrev{right:64px}
     .featNext{right:14px}
 
-    /* ---------- Infinite AAA Marquee (FULL WIDTH) ---------- */
+    /* ---------- Hero stats (3 cards) ---------- */
+    .heroStats{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      margin-top:18px;
+      max-width: 700px;
+    }
+    .stat{
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:14px;
+      box-shadow: var(--shadowSoft);
+      transition:.25s ease;
+    }
+    .stat:hover{transform: translateY(-3px); border-color: rgba(0,255,65,.25)}
+    .stat b{display:block; font-size:14px; color:#fff; line-height:1.25}
+    .stat span{font-size:12px; color:var(--muted2)}
+
+    /* ---------- Full-width Marquee (vitrine) ---------- */
     .marqueeWrap{
-      margin-top:56px;
-      padding-top:18px;
+      margin-top:72px;
+      padding-top:22px;
       border-top: 1px solid rgba(255,255,255,.06);
     }
     .marqueeTitle{
       display:flex; align-items:center; justify-content:space-between;
-      gap:14px; margin-bottom:12px;
+      gap:14px; margin-bottom:14px;
       color:var(--muted2);
       font-weight:800; text-transform:uppercase; letter-spacing:1px; font-size:12px;
+    }
+
+    .marqueeFull{
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      padding: 0 0 8px;
     }
     .marquee{
       width:100%;
       overflow:hidden;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      box-shadow: var(--shadowSoft);
-      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      border-radius: 0;
+      border-top:1px solid rgba(255,255,255,.06);
+      border-bottom:1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.02);
+      box-shadow: none;
+      mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
     }
     .marqueeTrack{
       display:flex; gap:14px;
       width:max-content;
-      padding:14px;
-      animation: marquee 46s linear infinite;
+      padding:14px 22px;
+      animation: marquee var(--marqueeDur) linear infinite;
     }
     .marquee:hover .marqueeTrack{animation-play-state: paused}
     .miniCard{
-      width: 240px;
+      width: 260px;
       border-radius: 16px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.10);
@@ -358,20 +365,6 @@
       letter-spacing:.4px; text-transform:uppercase;
       text-shadow: 0 10px 30px rgba(0,0,0,.95);
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-
-    /* full width wrapper */
-    .marqueeFull{
-      width:100vw;
-      margin-left: calc(50% - 50vw);
-    }
-    .marqueeFull .marquee{
-      border-left:0; border-right:0;
-      border-radius:0;
-    }
-    .marqueeFull .marqueeTrack{
-      padding-left:18px;
-      padding-right:18px;
     }
 
     /* ---------- Demo (video) ---------- */
@@ -413,99 +406,14 @@
     .how .s{color:var(--muted2); font-size:12px; margin-top:6px; line-height:1.5}
 
     .videoWrap{height:100%; min-height: 340px; background:#000}
-    .videoWrap iframe{width:100%; height:100%; display:block; border:0}
+    .videoWrap iframe,
+    .videoWrap video{width:100%; height:100%; display:block; border:0}
     .videoOverlay{
       position:absolute; inset:0;
       background: radial-gradient(900px 360px at 30% 20%, rgba(0,255,65,.10), transparent 55%),
                   linear-gradient(to top, rgba(0,0,0,.75), transparent 55%);
       pointer-events:none;
     }
-
-    /* ---------- SOBRE NÓS + GARANTIA ---------- */
-    .twoCols{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:18px;
-      align-items:stretch;
-      margin-top:18px;
-    }
-    .kpiGrid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap:12px;
-      margin-top:14px;
-    }
-    .kpi{
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      padding:14px;
-      box-shadow: var(--shadowSoft);
-    }
-    .kpi b{display:block; color:#fff; font-weight:950; letter-spacing:-.4px}
-    .kpi span{display:block; color:var(--muted2); font-size:12px; margin-top:6px; line-height:1.45}
-
-    .guaranteeCard{
-      border-radius: var(--r2);
-      border:1px solid rgba(0,255,65,.22);
-      background: radial-gradient(900px 360px at 18% 18%, rgba(0,255,65,.10), transparent 58%),
-                  rgba(255,255,255,.04);
-      box-shadow: 0 18px 60px rgba(0,255,65,.08);
-      padding:22px;
-      position:relative;
-      overflow:hidden;
-    }
-    .guaranteeTop{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
-      margin-bottom:10px;
-    }
-    .guaranteeBadge{
-      font-size:11px; font-weight:950; letter-spacing:.5px; text-transform:uppercase;
-      padding:8px 10px; border-radius:999px;
-      background: rgba(0,255,65,.14);
-      border:1px solid rgba(0,255,65,.35);
-      color: var(--neon);
-      white-space:nowrap;
-    }
-    .guaranteeTitle{
-      margin:0;
-      font-weight:950;
-      font-size:18px;
-      letter-spacing:-.6px;
-      text-transform:uppercase;
-      color:#fff;
-    }
-    .guaranteeText{
-      margin:8px 0 0;
-      color:var(--muted);
-      line-height:1.7;
-      font-size:14px;
-      max-width:70ch;
-    }
-    .guaranteeList{
-      margin:14px 0 0;
-      padding:0;
-      list-style:none;
-      display:grid;
-      gap:10px;
-    }
-    .guaranteeList li{
-      display:flex; gap:10px; align-items:flex-start;
-      color:#d9d9d9;
-      font-weight:700;
-      font-size:13px;
-      line-height:1.5;
-    }
-    .check{
-      width:26px; height:26px; border-radius:10px;
-      background: rgba(0,255,65,.12);
-      border:1px solid rgba(0,255,65,.22);
-      color:var(--neon);
-      display:grid; place-items:center;
-      flex:0 0 auto;
-      margin-top:1px;
-    }
-    .guaranteeActions{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
 
     /* ---------- Catalog ---------- */
     #catalogo.section{padding:86px 0}
@@ -565,6 +473,7 @@
       color:#d7d7d7;
       transition:.2s ease;
       text-transform:uppercase;
+      white-space:nowrap;
     }
     .cat:hover{transform: translateY(-1px); border-color: rgba(0,255,65,.25)}
     .cat.active{background: rgba(0,255,65,.90); color:#000; border-color: rgba(0,255,65,.55)}
@@ -584,6 +493,7 @@
       cursor:pointer;
       transform: translateZ(0);
       transition:.25s ease;
+      min-width: 0;
     }
     .game:hover{transform: translateY(-4px); border-color: rgba(0,255,65,.22)}
     .gameImg{
@@ -609,6 +519,7 @@
     .gameInfo{
       padding:12px 12px 14px;
       display:flex; flex-direction:column; gap:10px;
+      min-width: 0;
     }
     .gameName{
       font-weight:950;
@@ -630,6 +541,7 @@
       border:1px solid rgba(255,255,255,.10);
       color:#fff;
       text-shadow: 0 10px 30px rgba(0,0,0,.95);
+      white-space:nowrap;
     }
     .tag.ok{border-color: rgba(0,255,65,.30)}
     .gameCta{
@@ -638,7 +550,6 @@
     .tiny{
       font-size:11px; color:var(--muted2);
       letter-spacing:.4px;
-      white-space:nowrap;
     }
     .ghostBtn{
       padding:10px 12px;
@@ -651,70 +562,76 @@
       font-size:11px;
       cursor:pointer;
       transition:.2s ease;
+      white-space:nowrap;
     }
     .ghostBtn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
     .swapAnim{
-      animation: swapFadeLeft 1.05s cubic-bezier(.22,.9,.22,1) both;
+      animation: swapFadeLeft .85s cubic-bezier(.22,.9,.22,1) both;
       will-change: transform, opacity;
     }
 
-    /* CTA de catálogo completo (mais claro) */
     .catalogMoreRow{
       margin-top:14px;
       display:flex;
-      flex-direction:column;
       align-items:center;
-      gap:8px;
+      justify-content:center;
+      flex-direction:column;
+      gap:10px;
+      padding:14px;
+      border-radius: 20px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
     }
     .catalogMoreBtn{
-      width: min(520px, 100%);
-      justify-content:center;
-      padding:14px 18px;
-      border-radius:16px;
+      min-width: 260px;
+      border-radius: 999px;
     }
     .catalogMoreHint{
-      color:var(--muted2);
-      font-size:12px;
-      letter-spacing:.4px;
+      color: var(--muted2);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .4px;
+      text-transform: uppercase;
       text-align:center;
     }
     .catalogMoreIcon{
-      font-weight:950;
-      font-size:14px;
-      opacity:.9;
+      font-weight: 950;
+      transform: translateY(-1px);
     }
 
-    /* CATÁLOGO COMPLETO */
+    /* ---------- Full Catalog (colapsado) ---------- */
     .fullCatalog{
       margin-top:16px;
       border-radius: var(--r2);
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
       box-shadow: var(--shadowSoft);
-      padding:18px;
+      overflow:hidden;
       display:none;
     }
-    .fullCatalog.open{display:block}
+    .fullCatalog.show{display:block; animation: floatIn .35s ease both}
     .fullTop{
-      display:grid;
-      grid-template-columns: 1fr auto;
+      padding:18px 18px 12px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
       gap:14px;
-      align-items:center;
-      margin-bottom:14px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      flex-wrap:wrap;
     }
     .fullTitle{
       font-weight:950;
       font-size:18px;
-      text-transform:uppercase;
       letter-spacing:-.6px;
       color:#fff;
+      text-transform:uppercase;
       margin:0;
     }
     .fullSub{
-      color:var(--muted2);
-      font-size:12px;
       margin-top:6px;
-      line-height:1.45;
+      color: var(--muted2);
+      font-size: 13px;
+      line-height: 1.4;
     }
     .fullSearch{
       display:flex;
@@ -723,31 +640,111 @@
       padding:10px 12px;
       border-radius: 16px;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
+      background: rgba(0,0,0,.20);
       min-width: min(520px, 100%);
+      flex: 1 1 520px;
     }
-    .fullSearchIcon{opacity:.75}
+    .fullSearchIcon{color: var(--muted2); font-weight: 950}
     .fullSearch input{
-      background:transparent;
+      width:100%;
       border:0;
       outline:none;
+      background:transparent;
       color:#fff;
       font-weight:800;
-      width: 320px;
-      max-width: 48vw;
+      letter-spacing:.2px;
+      min-width: 0;
     }
     .fullGrid{
+      padding:14px 14px 6px;
       display:grid;
       grid-template-columns: repeat(4, 1fr);
       gap:12px;
     }
+    .fullGrid .game .gameInfo{padding:10px 10px 12px}
     .fullBottom{
-      margin-top:14px;
+      padding:12px 14px 16px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
+      border-top:1px solid rgba(255,255,255,.06);
       flex-wrap:wrap;
+    }
+
+    /* ---------- About + Guarantee ---------- */
+    .twoCol{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+      align-items:stretch;
+      margin-top:18px;
+    }
+    .aboutCard{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadowSoft);
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+    }
+    .aboutCard::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(820px 320px at 20% 10%, rgba(0,255,65,.12), transparent 55%);
+      pointer-events:none;
+    }
+    .aboutTitle{
+      margin:0 0 8px;
+      font-size:22px;
+      font-weight:950;
+      letter-spacing:-.8px;
+      text-transform:uppercase;
+      color:#fff;
+    }
+    .aboutText{
+      margin:0;
+      color: var(--muted);
+      line-height:1.75;
+      font-size:14px;
+      max-width: 70ch;
+    }
+    .aboutList{
+      margin-top:14px;
+      display:grid;
+      gap:10px;
+    }
+    .aboutItem{
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+      font-size:12px;
+      color:#dcdcdc;
+    }
+    .aboutItem b{color:#fff}
+    .badgeGuarantee{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(0,255,65,.30);
+      background: rgba(0,255,65,.10);
+      color: var(--neon);
+      font-weight:950;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      font-size:12px;
+      width: fit-content;
     }
 
     /* ---------- Pricing (3 planos) ---------- */
@@ -807,6 +804,7 @@
       text-transform:uppercase;
       font-size:12px;
       margin-left:8px;
+      white-space:nowrap;
     }
     .table{
       width:100%;
@@ -856,6 +854,7 @@
       border:1px solid rgba(255,255,255,.10);
       display:grid; place-items:center;
       font-weight:950; color:#fff;
+      flex: 0 0 auto;
     }
     .stars{color:#ffd34d; font-weight:950; letter-spacing:1px; font-size:12px}
     .txt{color:var(--muted); line-height:1.65; font-size:13px; font-style:italic}
@@ -887,6 +886,7 @@
       color:var(--neon);
       transition:.25s ease;
       background: rgba(0,0,0,.20);
+      flex: 0 0 auto;
     }
     .a{
       max-height:0;
@@ -897,10 +897,10 @@
       line-height:1.65;
       font-size:14px;
     }
-    .qa.open .a{max-height:240px; padding-bottom:16px}
+    .qa.open .a{max-height:260px; padding-bottom:16px}
     .qa.open .chev{transform: rotate(45deg)}
 
-    /* ---------- Modal (banner com mais “presença”) ---------- */
+    /* ---------- Modal ---------- */
     .backdrop{
       position:fixed; inset:0;
       background: rgba(0,0,0,.68);
@@ -1005,6 +1005,34 @@
     .modalSide .modalBtns{display:flex; gap:10px; margin-top:12px}
     .modalSide .modalBtns .btn{width:100%}
 
+    /* ---------- Toasts ---------- */
+    .toasts{
+      position:fixed; right:18px; bottom:18px; z-index:2500;
+      display:flex; flex-direction:column; gap:10px;
+      pointer-events:none;
+    }
+    .toast{
+      width:min(340px, calc(100vw - 36px));
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(12,12,12,.92);
+      box-shadow: var(--shadowSoft);
+      padding:12px 12px;
+      display:flex; gap:10px; align-items:flex-start;
+      animation: floatIn .35s ease both;
+      pointer-events:none;
+    }
+    .toast .ic{
+      width:34px; height:34px; border-radius:12px;
+      background: rgba(0,255,65,.12);
+      border:1px solid rgba(0,255,65,.20);
+      color:var(--neon);
+      display:grid; place-items:center;
+      flex:0 0 auto;
+    }
+    .toast b{color:#fff}
+    .toast p{margin:2px 0 0; color:var(--muted2); font-size:12px; line-height:1.45}
+
     /* ---------- Footer ---------- */
     footer{
       padding:44px 0;
@@ -1013,27 +1041,36 @@
       font-size:12px;
     }
 
+    /* ---------- Reduced motion ---------- */
+    @media (prefers-reduced-motion: reduce){
+      .marqueeTrack{animation:none}
+      .swapAnim{animation:none}
+      .reveal{transition:none}
+    }
+
     /* ---------- Responsive ---------- */
+    @media (max-width: 1100px){
+      .fullGrid{grid-template-columns: repeat(3, 1fr)}
+    }
     @media (max-width: 980px){
+      .navlinks{display:none}
       .heroGrid{grid-template-columns: 1fr; gap:18px}
       .heroCardMedia{height: 300px}
       .heroCardText{max-width: 100%}
       .heroStats{grid-template-columns: 1fr}
       .demoGrid{grid-template-columns: 1fr}
       .howGrid{grid-template-columns: 1fr}
-      .twoCols{grid-template-columns: 1fr}
-      .kpiGrid{grid-template-columns: 1fr}
       .catalogShell{grid-template-columns: 1fr}
       .side{position:relative; top:auto}
       .showcaseRow{grid-template-columns: 1fr}
-      .fullTop{grid-template-columns: 1fr}
-      .fullSearch{min-width:100%}
-      .fullSearch input{width:100%; max-width:100%}
-      .fullGrid{grid-template-columns: 1fr}
+      .fullGrid{grid-template-columns: repeat(2, 1fr)}
       .pricingWrap{grid-template-columns: 1fr}
       .modalBody{grid-template-columns: 1fr}
       .socialGrid{grid-template-columns: 1fr}
-      .navlinks{display:none}
+      .twoCol{grid-template-columns: 1fr}
+    }
+    @media (max-width: 520px){
+      .fullGrid{grid-template-columns: 1fr}
     }
   </style>
 </head>
@@ -1042,10 +1079,7 @@
 
 <header>
   <div class="container nav">
-    <div class="logo" aria-label="Overise">
-      <span class="logoBase">OVER</span><span class="logoAccent">ISE</span>
-    </div>
-
+    <div class="logo">OVER<span>ISE</span></div>
     <div class="navlinks">
       <a href="#como">Como funciona</a>
       <a href="#catalogo">Catálogo</a>
@@ -1053,7 +1087,6 @@
       <a href="#planos">Planos</a>
       <a href="#faq">FAQ</a>
     </div>
-
     <div class="nav-cta">
       <a class="btn" href="#catalogo">Ver catálogo</a>
       <a class="btn primary" href="#planos">Comprar</a>
@@ -1077,11 +1110,19 @@
         <a class="btn" href="#catalogo">Ver catálogo</a>
       </div>
 
-      <!-- textos desnecessários removidos: ficou só o essencial -->
       <div class="heroStats">
-        <div class="stat"><b>Carregamento rápido</b></div>
-        <div class="stat"><b>Organização por categorias</b></div>
-        <div class="stat"><b>Busca inteligente</b></div>
+        <div class="stat">
+          <b>Carregamento rápido</b>
+          <span>Catálogo local</span>
+        </div>
+        <div class="stat">
+          <b>Organização por categorias</b>
+          <span>Experiência premium</span>
+        </div>
+        <div class="stat">
+          <b>Busca inteligente</b>
+          <span>Atalhos (GTA, RDR2, GOW…)</span>
+        </div>
       </div>
     </div>
 
@@ -1100,7 +1141,7 @@
               <span class="chip">Vitrine</span>
             </div>
             <div class="heroCardName" id="featuredName">—</div>
-            <div class="heroCardDesc" id="featuredDesc">Navegue por categorias e abra detalhes com 1 clique.</div>
+            <div class="heroCardDesc" id="featuredDesc">Apenas jogos AAA/famosos na vitrine.</div>
           </div>
           <div class="heroCardBtns">
             <button class="btn small ghost" id="btnFeatDetails" type="button">Ver detalhes</button>
@@ -1111,14 +1152,17 @@
     </div>
   </div>
 
-  <!-- CARROSSEL FULL WIDTH -->
-  <div class="marqueeWrap reveal marqueeFull">
+  <!-- VITRINE EM LARGURA TOTAL -->
+  <div class="marqueeWrap reveal">
     <div class="container marqueeTitle">
-      <span>Principais títulos • vitrine premium</span>
+      <span>Jogos em alta • vitrine premium</span>
       <span class="muted2">Passe o mouse para pausar</span>
     </div>
-    <div class="marquee">
-      <div class="marqueeTrack" id="marqueeTrack"></div>
+
+    <div class="marqueeFull">
+      <div class="marquee">
+        <div class="marqueeTrack" id="marqueeTrack"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1136,11 +1180,11 @@
       <div class="howGrid">
         <div class="how">
           <div class="k">1) Acesse</div>
-          <div class="s">Entre e navegue pelo catálogo.</div>
+          <div class="s">Entre no painel e navegue pelo catálogo.</div>
         </div>
         <div class="how">
           <div class="k">2) Explore</div>
-          <div class="s">Filtre por categorias e encontre rápido.</div>
+          <div class="s">Filtre por categorias e encontre títulos rapidamente.</div>
         </div>
         <div class="how">
           <div class="k">3) Desbloqueie</div>
@@ -1151,7 +1195,6 @@
 
     <div class="card reveal" style="position:relative">
       <div class="videoWrap">
-        <!-- vídeo genérico (sem VSL agora) -->
         <iframe
           src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
           title="Demonstração"
@@ -1171,7 +1214,7 @@
       <div>
         <h2>Catálogo</h2>
         <p>
-          Navegue por categorias. A vitrine exibe 3 títulos rotativos com transição suave — clique para abrir detalhes.
+          Navegue por categorias. A vitrine exibe uma seleção rotativa com transição suave — clique para abrir detalhes.
         </p>
       </div>
       <div class="catalogActions">
@@ -1191,26 +1234,24 @@
       <main>
         <div class="showcaseRow" id="showcase"></div>
 
-        <!-- CTA claro (ABRE catálogo completo) -->
         <div class="catalogMoreRow">
           <button class="btn ghost catalogMoreBtn" id="btnMoreCatalog" type="button">
             <span class="catalogMoreIcon">⌕</span>
             Ver catálogo completo
           </button>
-          <div class="catalogMoreHint">Abra a biblioteca completa, com busca e paginação.</div>
+          <div class="catalogMoreHint">Busca + paginação • Abra detalhes com 1 clique</div>
         </div>
 
-        <!-- CATÁLOGO COMPLETO -->
         <section class="fullCatalog" id="fullCatalog" aria-hidden="true">
           <div class="fullTop">
             <div>
               <div class="fullTitle">Catálogo completo</div>
-              <div class="fullSub">Pesquise pelo nome (ex: “gta”, “rdr2”, “tlou”) e clique para abrir detalhes.</div>
+              <div class="fullSub">Pesquise por nome ou abreviações (ex: gta, rdr2, gow, tlou…)</div>
             </div>
 
             <div class="fullSearch">
               <span class="fullSearchIcon">⌕</span>
-              <input id="fullSearchInput" type="text" placeholder="Buscar (ex: GTA, FIFA, Elden...)" autocomplete="off"/>
+              <input id="fullSearchInput" type="text" placeholder="Buscar (ex: GTA, RDR2, GOW, FIFA...)" autocomplete="off"/>
               <button class="btn small ghost" id="btnFullClose" type="button">Fechar</button>
             </div>
           </div>
@@ -1227,63 +1268,36 @@
   </div>
 </section>
 
-<!-- SOBRE NÓS + GARANTIA (posicionamento estratégico antes dos planos) -->
+<!-- SOBRE NÓS -->
 <section id="sobre" class="section tight">
   <div class="container reveal">
-    <h2 style="margin:0; font-size:28px; font-weight:950; letter-spacing:-1px; color:#fff; text-transform:uppercase">Sobre nós</h2>
-    <p class="muted" style="margin:10px 0 0; line-height:1.6; max-width:78ch">
-      A <b style="color:#fff">Overise</b> nasceu para entregar uma experiência limpa, rápida e premium de biblioteca:
-      organização por categorias, vitrine inteligente e detalhes em 1 clique — tudo pensado para reduzir fricção e aumentar clareza.
-    </p>
-
-    <div class="twoCols">
-      <div class="card pad">
-        <h3 class="cardTitle" style="margin-bottom:8px">O que a Overise prioriza</h3>
-        <p class="cardText">
-          Interface premium, performance e navegação intuitiva. A ideia é o usuário bater o olho, entender,
-          explorar rápido e chegar na etapa de desbloqueio sem confusão.
+    <div class="twoCol">
+      <div class="aboutCard">
+        <h2 class="aboutTitle">Sobre a Overise</h2>
+        <p class="aboutText">
+          A <b style="color:#fff">Overise</b> nasceu para entregar uma experiência premium e direta:
+          organização, velocidade e uma vitrine limpa para você encontrar seus títulos em segundos.
+          Sem bagunça, sem excesso — só o essencial, com acabamento de produto grande.
         </p>
 
-        <div class="kpiGrid">
-          <div class="kpi">
-            <b>Clareza</b>
-            <span>Menos ruído, mais foco na ação.</span>
-          </div>
-          <div class="kpi">
-            <b>Performance</b>
-            <span>Rápido e leve no carregamento.</span>
-          </div>
-          <div class="kpi">
-            <b>Experiência</b>
-            <span>Visual consistente e elegante.</span>
-          </div>
-          <div class="kpi">
-            <b>Confiança</b>
-            <span>Transparência + garantia de reembolso.</span>
-          </div>
+        <div class="aboutList">
+          <div class="aboutItem"><span><b>Interface</b> premium</span><span style="color:var(--neon)">✓</span></div>
+          <div class="aboutItem"><span><b>Catálogo</b> organizado</span><span style="color:var(--neon)">✓</span></div>
+          <div class="aboutItem"><span><b>Busca</b> rápida</span><span style="color:var(--neon)">✓</span></div>
         </div>
       </div>
 
-      <div class="guaranteeCard">
-        <div class="guaranteeTop">
-          <div>
-            <h3 class="guaranteeTitle">Garantia de reembolso em até 30 dias</h3>
-            <p class="guaranteeText">
-              Teste com tranquilidade. Se não fizer sentido para você, solicitou, reembolsou — simples e direto.
-            </p>
-          </div>
-          <div class="guaranteeBadge">30 dias</div>
-        </div>
+      <div class="aboutCard">
+        <div class="badgeGuarantee">🔒 Reembolso em até 30 dias</div>
+        <h2 class="aboutTitle" style="margin-top:12px">Garantia sem risco</h2>
+        <p class="aboutText">
+          Você tem <b style="color:#fff">30 dias</b> para testar a experiência Overise.
+          Se não fizer sentido para você, é só solicitar dentro do prazo e fazemos o reembolso conforme as regras do produto.
+        </p>
 
-        <ul class="guaranteeList">
-          <li><span class="check">✓</span>Processo claro e sem burocracia.</li>
-          <li><span class="check">✓</span>Você mantém o controle da sua decisão.</li>
-          <li><span class="check">✓</span>Compra com segurança e confiança.</li>
-        </ul>
-
-        <div class="guaranteeActions">
+        <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap">
           <a class="btn primary" href="#planos">Ver planos</a>
-          <a class="btn" href="#catalogo">Explorar catálogo</a>
+          <a class="btn" href="#faq">Tirar dúvidas</a>
         </div>
       </div>
     </div>
@@ -1318,9 +1332,9 @@
           <tr><td>Suporte</td><td>Base</td></tr>
         </table>
         <div class="buyRow">
-          <button class="btn" type="button">Selecionar</button>
+          <button class="btn" onclick="window.open('SEU_LINK_BASICO','_blank')">Selecionar</button>
         </div>
-        <div class="secure">🔒 Pagamento seguro • Garantia de 30 dias</div>
+        <div class="secure">🔒 Pagamento seguro • Ativação imediata</div>
       </div>
 
       <!-- AVANÇADO -->
@@ -1340,9 +1354,9 @@
           <tr><td>Suporte</td><td class="good">Guia + comunidade</td></tr>
         </table>
         <div class="buyRow">
-          <button class="btn primary" type="button">Selecionar</button>
+          <button class="btn primary" onclick="window.open('SEU_LINK_AVANCADO','_blank')">Selecionar</button>
         </div>
-        <div class="secure">🔒 Pagamento seguro • Garantia de 30 dias</div>
+        <div class="secure">🔒 Pagamento seguro • Ativação imediata • Suporte</div>
       </div>
 
       <!-- PERMANENTE -->
@@ -1362,9 +1376,9 @@
           <tr><td>Experiência</td><td class="good">Premium+</td></tr>
         </table>
         <div class="buyRow">
-          <button class="btn" type="button">Selecionar</button>
+          <button class="btn" onclick="window.open('SEU_LINK_PERMANENTE','_blank')">Selecionar</button>
         </div>
-        <div class="secure">🔒 Pagamento seguro • Garantia de 30 dias</div>
+        <div class="secure">🔒 Pagamento seguro • Acesso definitivo</div>
       </div>
     </div>
   </div>
@@ -1437,25 +1451,25 @@
           <span class="chev">+</span>
         </button>
         <div class="a">
-          A vitrine mostra 3 títulos por vez (aleatórios por categoria). Você também pode abrir o catálogo completo com busca e paginação.
+          O catálogo é carregado localmente. Você pode navegar por categorias e abrir o catálogo completo para buscar e paginar.
         </div>
       </div>
       <div class="qa">
         <button class="q" type="button">
-          Garantia de 30 dias funciona como?
+          Posso buscar por abreviações (GTA, RDR2, GOW)?
           <span class="chev">+</span>
         </button>
         <div class="a">
-          Você pode solicitar reembolso em até 30 dias após a compra, conforme a política do produto. Compra sem medo.
+          Sim. A busca aceita abreviações e também termos parciais.
         </div>
       </div>
       <div class="qa">
         <button class="q" type="button">
-          Posso ver detalhes antes de desbloquear?
+          Existe garantia?
           <span class="chev">+</span>
         </button>
         <div class="a">
-          Sim. Clique em qualquer título para abrir o modal com detalhes e o botão “Desbloquear”.
+          Sim — reembolso em até 30 dias, dentro das condições do produto.
         </div>
       </div>
     </div>
@@ -1495,6 +1509,8 @@
   </div>
 </div>
 
+<div class="toasts" id="toasts"></div>
+
 <script>
   /** ==========================
    *  CONFIG
@@ -1513,15 +1529,60 @@
   const FALLBACK_IMG =
     "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='920' height='520'><rect width='100%25' height='100%25' fill='%23111'/><text x='50%25' y='50%25' fill='%23333' font-family='Inter,Arial' font-size='28' text-anchor='middle'>SEM CAPA</text></svg>";
 
+  /* HERO: AAA/FAMOSOS (prioriza os que você pediu) */
   const FEATURED_NAMES = [
+    "BALDUR'S GATE 3",
+    "GOD OF WAR RAGNAROK",
+    "THE LAST OF US",
     "GRAND THEFT AUTO V",
     "RED DEAD REDEMPTION 2",
-    "CYBERPUNK 2077",
-    "GOD OF WAR",
-    "THE LAST OF US",
+    "FORZA HORIZON 5",
     "ELDEN RING",
-    "SPIDER-MAN"
+    "CYBERPUNK 2077",
+    "MARVEL'S SPIDER-MAN",
+    "MINECRAFT DUNGEONS",
+    "EXPEDITION 33"
   ];
+
+  /* MARQUEE: Top jogados do momento (SteamCharts) + mainstream (sem “coisas aleatórias”) */
+  const MARQUEE_TOP_PLAYED = [
+    "COUNTER-STRIKE 2",
+    "DOTA 2",
+    "PUBG: BATTLEGROUNDS",
+    "RUST",
+    "WARFRAME",
+    "BALDUR'S GATE 3",
+    "APEX LEGENDS",
+    "TOM CLANCY'S RAINBOW SIX SIEGE",
+    "GRAND THEFT AUTO V",
+    "CALL OF DUTY"
+  ];
+
+  /* Abreviações / atalhos (busca) */
+  const ALIASES = {
+    "gta": ["grand theft auto v", "gta v", "gta 5", "gta"],
+    "gta5": ["grand theft auto v", "gta v", "gta 5"],
+    "gta v": ["grand theft auto v", "gta 5"],
+    "rdr2": ["red dead redemption 2", "rdr2"],
+    "gow": ["god of war", "god of war ragnarok"],
+    "gowr": ["god of war ragnarok"],
+    "ragnarok": ["god of war ragnarok"],
+    "tlou": ["the last of us"],
+    "tlou1": ["the last of us"],
+    "cs2": ["counter-strike 2", "cs2"],
+    "dota": ["dota 2"],
+    "pubg": ["pubg", "pubg battlegrounds", "pubg: battlegrounds"],
+    "r6": ["rainbow six", "rainbow six siege", "tom clancy's rainbow six siege"],
+    "siege": ["rainbow six siege", "tom clancy's rainbow six siege"],
+    "cod": ["call of duty"],
+    "bg3": ["baldur's gate 3", "baldurs gate 3"],
+    "forza": ["forza horizon 5", "forza motorsport", "forza"],
+    "elden": ["elden ring"],
+    "cp2077": ["cyberpunk 2077"],
+    "spiderman": ["spider-man", "marvel's spider-man"],
+    "minecraft": ["minecraft dungeons"],
+    "expedition 33": ["expedition 33"]
+  };
 
   /** ==========================
    *  STATE
@@ -1533,16 +1594,16 @@
   let featuredIndex = 0;
   let featuredTimer = null;
 
-  // vitrine aleatória por categoria (pool embaralhado)
   let poolKey = "";
   let poolShuffled = [];
   let poolCursor = 0;
   let showcaseTimer = null;
 
-  // catálogo completo
+  // Full catalog
   let fullOpen = false;
-  let fullPage = 0;
-  const FULL_PAGE_SIZE = 24;
+  let fullPageSize = 16;
+  let fullCursor = 0;
+  let fullFiltered = [];
 
   /** ==========================
    *  DOM
@@ -1562,11 +1623,11 @@
 
   const btnMoreCatalog = document.getElementById("btnMoreCatalog");
   const fullCatalog = document.getElementById("fullCatalog");
+  const fullGrid = document.getElementById("fullGrid");
+  const fullCount = document.getElementById("fullCount");
   const fullSearchInput = document.getElementById("fullSearchInput");
   const btnFullClose = document.getElementById("btnFullClose");
-  const fullGrid = document.getElementById("fullGrid");
   const btnLoadMore = document.getElementById("btnLoadMore");
-  const fullCount = document.getElementById("fullCount");
 
   const backdrop = document.getElementById("backdrop");
   const modalClose = document.getElementById("modalClose");
@@ -1576,6 +1637,8 @@
   const modalCat = document.getElementById("modalCat");
   const modalUnlock = document.getElementById("modalUnlock");
 
+  const toasts = document.getElementById("toasts");
+
   /** ==========================
    *  UTILS
    * ========================== */
@@ -1583,6 +1646,15 @@
     return String(s).replace(/[&<>"']/g, m => ({
       "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#39;"
     }[m]));
+  }
+
+  function normalizeText(s){
+    return String(s || "")
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // remove acentos
+      .replace(/[^a-z0-9 ]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
   }
 
   function shuffle(arr){
@@ -1623,46 +1695,65 @@
     return list;
   }
 
-  // normalização (para busca por abreviações, acentos, símbolos, etc.)
-  function normalize(s){
-    return String(s || "")
-      .toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
-      .replace(/[^a-z0-9 ]+/g," ")
-      .replace(/\s+/g," ")
-      .trim();
+  function toast(msg){
+    const el = document.createElement("div");
+    el.className = "toast";
+    el.innerHTML = `
+      <div class="ic">✓</div>
+      <div>
+        <b>Sistema</b>
+        <p>${escapeHtml(msg)}</p>
+      </div>
+    `;
+    toasts.appendChild(el);
+    setTimeout(()=>{ el.style.opacity = "0"; el.style.transform = "translateY(8px)"; }, 2800);
+    setTimeout(()=>{ el.remove(); }, 3400);
   }
 
-  function makeAcronym(name){
-    const parts = normalize(name).split(" ").filter(Boolean);
-    const keep = parts.filter(p => p.length >= 3 || /^[0-9]+$/.test(p));
-    const ac = keep.map(p => p[0]).join("");
-    return ac;
+  function findGameSmart(query){
+    const q = normalizeText(query);
+    if(!q) return null;
+
+    // alias -> tenta opções
+    const aliasList = ALIASES[q] || [];
+    const candidates = [q, ...aliasList.map(normalizeText)];
+
+    // 1) match exato
+    for(const c of candidates){
+      const g = GAMES.find(x => normalizeText(x.name) === c);
+      if(g) return g;
+    }
+
+    // 2) includes (título contém)
+    for(const c of candidates){
+      const g = GAMES.find(x => normalizeText(x.name).includes(c));
+      if(g) return g;
+    }
+
+    // 3) tokens (todos tokens precisam aparecer)
+    const tokens = q.split(" ").filter(Boolean);
+    if(tokens.length){
+      const g = GAMES.find(x => {
+        const n = normalizeText(x.name);
+        return tokens.every(t => n.includes(t));
+      });
+      if(g) return g;
+    }
+
+    return null;
   }
 
-  function buildAliases(nameNorm){
-    const aliases = [];
-    if(nameNorm.includes("grand theft auto")) aliases.push("gta");
-    if(nameNorm.includes("red dead redemption 2")) aliases.push("rdr2","rdr 2");
-    if(nameNorm.includes("red dead redemption")) aliases.push("rdr");
-    if(nameNorm.includes("the last of us")) aliases.push("tlou","t lou");
-    if(nameNorm.includes("god of war")) aliases.push("gow");
-    if(nameNorm.includes("counter strike")) aliases.push("cs","csgo","cs go");
-    if(nameNorm.includes("call of duty")) aliases.push("cod");
-    if(nameNorm.includes("cyberpunk 2077")) aliases.push("cp2077","cyberpunk");
-    if(nameNorm.includes("fifa")) aliases.push("fifa");
-    if(nameNorm.includes("efootball")) aliases.push("pes");
-    if(nameNorm.includes("need for speed")) aliases.push("nfs");
-    if(nameNorm.includes("forza horizon")) aliases.push("fh");
-    if(nameNorm.includes("red dead")) aliases.push("reddead");
-    return aliases;
-  }
-
-  function makeSearchBlob(game){
-    const n = normalize(game.name);
-    const ac = makeAcronym(game.name);
-    const aliases = buildAliases(n).join(" ");
-    return `${n} ${ac} ${aliases}`.trim();
+  function findManyByNames(names){
+    const out = [];
+    const used = new Set();
+    for(const nm of names){
+      const g = findGameSmart(nm);
+      if(g && !used.has(g.name)){
+        out.push(g);
+        used.add(g.name);
+      }
+    }
+    return out;
   }
 
   /** ==========================
@@ -1702,42 +1793,36 @@
       name: g.name || g.title || "",
       cover: g.cover || "",
       steam_appid: (g.steam_appid ?? g.appid ?? null),
-      categories: Array.isArray(g.categories) ? g.categories : [],
-      _search: "" // preenchido depois
+      categories: Array.isArray(g.categories) ? g.categories : []
     })).filter(g => g.name);
 
-    // cria blob de busca
-    for(const g of GAMES) g._search = makeSearchBlob(g);
-
     buildFeatured();
-    buildMarquee();     // full width + mais jogos
+    buildMarquee();
     buildCategories();
+
     resetShowcasePool(true);
     renderShowcase(true);
     startShowcaseAuto();
+    startToasts();
   }
 
   /** ==========================
-   *  FEATURED
+   *  FEATURED (AAA only)
    * ========================== */
-  function findGameByFamousName(name){
-    const n = String(name||"").toUpperCase().trim();
-    let g = GAMES.find(x => x.name.toUpperCase() === n);
-    if(g) return g;
-    g = GAMES.find(x => x.name.toUpperCase().includes(n));
-    if(g) return g;
-
-    const n2 = n.replace(/[^A-Z0-9 ]+/g,"").trim();
-    g = GAMES.find(x => x.name.toUpperCase().replace(/[^A-Z0-9 ]+/g,"").includes(n2));
-    return g || null;
-  }
-
   function buildFeatured(){
-    featuredList = [];
-    for(const nm of FEATURED_NAMES){
-      const g = findGameByFamousName(nm);
-      if(g) featuredList.push(g);
+    // pega apenas os que existirem no JSON
+    featuredList = findManyByNames(FEATURED_NAMES);
+
+    // fallback (se seu JSON não tiver algum nome): usa top played mainstream
+    if(featuredList.length < 5){
+      const extra = findManyByNames(MARQUEE_TOP_PLAYED);
+      for(const g of extra){
+        if(featuredList.length >= 8) break;
+        if(!featuredList.some(x => x.name === g.name)) featuredList.push(g);
+      }
     }
+
+    // último fallback: pega primeiros jogos, mas tenta evitar “coisas estranhas”
     if(featuredList.length < 4){
       featuredList = GAMES.slice(0, 8);
     }
@@ -1746,7 +1831,7 @@
     renderFeatured();
 
     clearInterval(featuredTimer);
-    featuredTimer = setInterval(()=>nextFeatured(), 5200);
+    featuredTimer = setInterval(()=>nextFeatured(), 6500); // MAIS LENTO
   }
 
   function renderFeatured(){
@@ -1760,7 +1845,7 @@
 
     setImgWithFallback(featuredImg, [getCardCover(g), FALLBACK_IMG]);
     featuredName.textContent = g.name;
-    featuredDesc.textContent = "Navegue por categorias, abra detalhes e encontre títulos em segundos.";
+    featuredDesc.textContent = "Apenas jogos famosos/AAA na vitrine.";
 
     btnFeatDetails.onclick = () => openModal(g);
     btnFeatOpenCatalog.onclick = () => document.getElementById("catalogo").scrollIntoView({behavior:"smooth"});
@@ -1778,29 +1863,23 @@
   featNext.addEventListener("click", ()=>{
     clearInterval(featuredTimer);
     nextFeatured();
-    featuredTimer = setInterval(()=>nextFeatured(), 5200);
+    featuredTimer = setInterval(()=>nextFeatured(), 6500);
   });
   featPrev.addEventListener("click", ()=>{
     clearInterval(featuredTimer);
     prevFeatured();
-    featuredTimer = setInterval(()=>nextFeatured(), 5200);
+    featuredTimer = setInterval(()=>nextFeatured(), 6500);
   });
 
   /** ==========================
-   *  MARQUEE (mais jogos + cheio)
+   *  MARQUEE (Top played mainstream)
    * ========================== */
   function buildMarquee(){
-    const base = featuredList.length ? featuredList.slice() : [];
-    const need = 28; // quantos diferentes no carrossel
+    const list = findManyByNames(MARQUEE_TOP_PLAYED);
 
-    const pool = shuffle(GAMES);
-    for(const g of pool){
-      if(base.length >= need) break;
-      if(!base.some(x => x.name === g.name)) base.push(g);
-    }
-
-    // 3x pra “encher” e rodar infinito bem suave
-    const doubled = [...base, ...base, ...base];
+    // garante volume e loop suave
+    const base = list.length ? list : featuredList;
+    const doubled = [...base, ...base, ...base]; // mais itens = mais “cheio”
 
     marqueeTrack.innerHTML = doubled.map(g => `
       <div class="miniCard" title="${escapeHtml(g.name)}" data-name="${escapeHtml(g.name)}">
@@ -1813,7 +1892,7 @@
     marqueeTrack.querySelectorAll(".miniCard").forEach(card=>{
       card.addEventListener("click", ()=>{
         const name = card.getAttribute("data-name");
-        const g = GAMES.find(x => x.name === name);
+        const g = GAMES.find(x => x.name === name) || findGameSmart(name);
         if(g) openModal(g);
       });
     });
@@ -1826,12 +1905,18 @@
     const set = new Set();
     for(const g of GAMES){
       const cats = (g.categories && g.categories.length) ? g.categories : ["OUTROS"];
-      for(const c of cats) set.add(String(c).toUpperCase());
+      for(const c of cats){
+        set.add(String(c).toUpperCase());
+      }
     }
 
     const preferred = ["AÇÃO","RPG","MUNDO ABERTO","TERROR","SIMULADOR","INDIE","COOPERATIVO","CORRIDA","SOBREVIVÊNCIA","ESTRATÉGIA","ESPORTES","VR","OUTROS"];
     const all = [...set].sort((a,b)=>a.localeCompare(b));
-    const ordered = ["TODOS", ...preferred.filter(x=>set.has(x)), ...all.filter(x=>x!=="TODOS" && !preferred.includes(x))];
+    const ordered = [
+      "TODOS",
+      ...preferred.filter(x=>set.has(x)),
+      ...all.filter(x=>x!=="TODOS" && !preferred.includes(x))
+    ];
 
     catsEl.innerHTML = ordered.map(c=>`
       <div class="cat ${c===ACTIVE_CATEGORY ? "active":""}" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</div>
@@ -1841,21 +1926,20 @@
       el.addEventListener("click", ()=>{
         ACTIVE_CATEGORY = el.getAttribute("data-cat") || "TODOS";
         buildCategories();
+
         resetShowcasePool(true);
         renderShowcase(true);
         restartShowcaseAuto();
 
-        // se catálogo completo estiver aberto, atualiza a grid também
         if(fullOpen){
-          resetFullCatalog(true);
-          renderFullCatalog(true);
+          applyFullFilter(true);
         }
       });
     });
   }
 
   /** ==========================
-   *  SHOWCASE (vitrine 3 aleatória)
+   *  SHOWCASE (3 cards rotativo)
    * ========================== */
   function getCategoryPoolRaw(){
     if(ACTIVE_CATEGORY === "TODOS") return GAMES;
@@ -1923,7 +2007,7 @@
             </div>
             <div class="gameCta">
               <span class="tiny">Clique para detalhes</span>
-              <button class="ghostBtn" type="button" tabindex="-1">Desbloquear</button>
+              <button class="ghostBtn" type="button">Desbloquear</button>
             </div>
           </div>
         </div>
@@ -1933,7 +2017,7 @@
     showcase.querySelectorAll(".game").forEach(el=>{
       el.addEventListener("click", ()=>{
         const name = el.getAttribute("data-name");
-        const g = GAMES.find(x=>x.name === name);
+        const g = GAMES.find(x=>x.name === name) || findGameSmart(name);
         if(g) openModal(g);
       });
     });
@@ -1941,7 +2025,7 @@
 
   function startShowcaseAuto(){
     clearInterval(showcaseTimer);
-    showcaseTimer = setInterval(()=>renderShowcase(true), 7800); // mais lento e fluido
+    showcaseTimer = setInterval(()=>renderShowcase(true), 7500);
   }
   function restartShowcaseAuto(){
     clearInterval(showcaseTimer);
@@ -1949,65 +2033,107 @@
   }
 
   /** ==========================
-   *  CATÁLOGO COMPLETO (busca + paginação)
+   *  FULL CATALOG
    * ========================== */
-  function toggleFullCatalog(open){
-    fullOpen = (open !== undefined) ? !!open : !fullOpen;
-    fullCatalog.classList.toggle("open", fullOpen);
-    fullCatalog.setAttribute("aria-hidden", String(!fullOpen));
+  function openFullCatalog(){
+    fullOpen = true;
+    fullCatalog.classList.add("show");
+    fullCatalog.setAttribute("aria-hidden", "false");
+    fullSearchInput.focus({preventScroll:true});
 
-    if(fullOpen){
-      resetFullCatalog(true);
-      renderFullCatalog(true);
-      setTimeout(()=>fullSearchInput.focus(), 50);
-      fullCatalog.scrollIntoView({behavior:"smooth", block:"start"});
-    }
+    applyFullFilter(true);
+
+    // rola para a área do catálogo completo
+    setTimeout(()=> fullCatalog.scrollIntoView({behavior:"smooth", block:"start"}), 80);
   }
 
-  function resetFullCatalog(force=false){
-    if(force){
-      fullPage = 0;
+  function closeFullCatalog(){
+    fullOpen = false;
+    fullCatalog.classList.remove("show");
+    fullCatalog.setAttribute("aria-hidden", "true");
+  }
+
+  function getFullBasePool(){
+    // respeita categoria ativa
+    return getCategoryPoolRaw();
+  }
+
+  function expandQueryToCandidates(q){
+    const nq = normalizeText(q);
+    if(!nq) return [];
+    const arr = [nq];
+
+    if(ALIASES[nq]){
+      for(const x of ALIASES[nq]) arr.push(normalizeText(x));
+    }
+
+    // se digitou algo tipo "gta v" sem estar no alias
+    if(ALIASES[nq.replace(/\s+/g,"")]){
+      for(const x of ALIASES[nq.replace(/\s+/g,"")]) arr.push(normalizeText(x));
+    }
+
+    return [...new Set(arr)].filter(Boolean);
+  }
+
+  function matchByQuery(gameName, query){
+    const n = normalizeText(gameName);
+    const candidates = expandQueryToCandidates(query);
+    if(!candidates.length) return true;
+
+    // match por includes em qualquer candidato
+    for(const c of candidates){
+      if(n.includes(c)) return true;
+    }
+
+    // match por tokens do query original
+    const tokens = normalizeText(query).split(" ").filter(Boolean);
+    if(tokens.length){
+      return tokens.every(t => n.includes(t));
+    }
+
+    return false;
+  }
+
+  function applyFullFilter(reset=true){
+    const base = getFullBasePool();
+    const q = fullSearchInput.value || "";
+    fullFiltered = base.filter(g => matchByQuery(g.name, q));
+
+    // ordena levemente: matches mais fortes primeiro (começa com)
+    const nq = normalizeText(q);
+    if(nq){
+      fullFiltered.sort((a,b)=>{
+        const an = normalizeText(a.name);
+        const bn = normalizeText(b.name);
+        const aStarts = an.startsWith(nq) ? 1 : 0;
+        const bStarts = bn.startsWith(nq) ? 1 : 0;
+        return bStarts - aStarts;
+      });
+    }
+
+    if(reset){
+      fullCursor = 0;
       fullGrid.innerHTML = "";
     }
+
+    renderFullNextPage();
+    updateFullCount();
   }
 
-  function getFullFiltered(){
-    const q = normalize(fullSearchInput.value);
-    const list = getCategoryPoolRaw();
+  function renderFullNextPage(){
+    const slice = fullFiltered.slice(fullCursor, fullCursor + fullPageSize);
+    fullCursor += slice.length;
 
-    if(!q) return list;
-
-    // busca por abreviações (gta, rdr2...) + nome + sigla
-    return list.filter(g => g._search.includes(q));
-  }
-
-  function renderFullCatalog(reset=false){
-    if(reset) resetFullCatalog(true);
-
-    const all = getFullFiltered();
-    const total = all.length;
-
-    const start = fullPage * FULL_PAGE_SIZE;
-    const end = start + FULL_PAGE_SIZE;
-    const slice = all.slice(start, end);
-
-    if(reset && total === 0){
+    if(!slice.length && fullGrid.innerHTML.trim().length === 0){
       fullGrid.innerHTML = `
         <div class="game" style="grid-column: 1 / -1; padding:18px; cursor:default">
           <div class="gameInfo">
             <div class="gameName">Nada encontrado</div>
-            <div class="tiny">Tente outra busca ou categoria.</div>
+            <div class="tiny">Tente outro termo ou categoria.</div>
           </div>
         </div>
       `;
       btnLoadMore.style.display = "none";
-      fullCount.textContent = "";
-      return;
-    }
-
-    if(slice.length === 0){
-      btnLoadMore.style.display = "none";
-      fullCount.textContent = total ? `Mostrando ${Math.min(total, end)} de ${total}` : "";
       return;
     }
 
@@ -2029,44 +2155,52 @@
             </div>
             <div class="gameCta">
               <span class="tiny">Clique para detalhes</span>
-              <button class="ghostBtn" type="button" tabindex="-1">Desbloquear</button>
+              <button class="ghostBtn" type="button">Ver</button>
             </div>
           </div>
         </div>
       `;
     }).join("");
 
-    // append
-    const wrap = document.createElement("div");
-    wrap.innerHTML = html;
-    const cards = [...wrap.children];
-    for(const c of cards) fullGrid.appendChild(c);
+    // se tinha "Nada encontrado", limpa e renderiza normal quando voltar resultados
+    if(fullGrid.querySelector(".gameName")?.textContent?.toLowerCase().includes("nada encontrado")){
+      fullGrid.innerHTML = "";
+    }
 
-    // bind clicks
+    fullGrid.insertAdjacentHTML("beforeend", html);
+
     fullGrid.querySelectorAll(".game").forEach(el=>{
-      if(el._bound) return;
-      el._bound = true;
+      if(el.dataset.bound === "1") return;
+      el.dataset.bound = "1";
       el.addEventListener("click", ()=>{
         const name = el.getAttribute("data-name");
-        const g = GAMES.find(x=>x.name === name);
+        const g = GAMES.find(x=>x.name === name) || findGameSmart(name);
         if(g) openModal(g);
       });
     });
 
-    const shown = Math.min(total, end);
-    fullCount.textContent = `Mostrando ${shown} de ${total}`;
-    btnLoadMore.style.display = (shown < total) ? "inline-flex" : "none";
+    // botão carregar mais
+    btnLoadMore.style.display = (fullCursor < fullFiltered.length) ? "inline-flex" : "none";
   }
 
-  btnMoreCatalog.addEventListener("click", ()=>toggleFullCatalog(true));
-  btnFullClose.addEventListener("click", ()=>toggleFullCatalog(false));
-  btnLoadMore.addEventListener("click", ()=>{
-    fullPage += 1;
-    renderFullCatalog(false);
+  function updateFullCount(){
+    fullCount.textContent = `${Math.min(fullCursor, fullFiltered.length)} de ${fullFiltered.length} exibidos`;
+  }
+
+  // eventos full catalog
+  btnMoreCatalog.addEventListener("click", ()=>{
+    openFullCatalog();
   });
+  btnFullClose.addEventListener("click", closeFullCatalog);
+  btnLoadMore.addEventListener("click", ()=>{
+    renderFullNextPage();
+    updateFullCount();
+  });
+
+  let searchDebounce = null;
   fullSearchInput.addEventListener("input", ()=>{
-    fullPage = 0;
-    renderFullCatalog(true);
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(()=>applyFullFilter(true), 120);
   });
 
   /** ==========================
@@ -2080,6 +2214,7 @@
     modalCat.textContent = String(cats[0] || "OUTROS");
 
     modalDesc.textContent = "Visualize os detalhes do título e avance para desbloquear.";
+
     backdrop.classList.add("show");
     document.body.style.overflow = "hidden";
   }
@@ -2093,15 +2228,34 @@
   backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
   document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
 
-  // sem VSL agora: não redireciona
+  // Sem VSL agora: deixa neutro (não redireciona)
   modalUnlock.addEventListener("click", ()=>{
     closeModal();
+    toast("Desbloqueio disponível na próxima etapa.");
   });
+
+  /** ==========================
+   *  TOASTS
+   * ========================== */
+  const EVENTS = [
+    "Biblioteca indexada com sucesso.",
+    "Cache local atualizado.",
+    "Vitrine sincronizada.",
+    "Categorias carregadas.",
+    "Interface otimizada em tempo real."
+  ];
+
+  function startToasts(){
+    setInterval(()=>{
+      if(!GAMES.length) return;
+      toast(EVENTS[Math.floor(Math.random()*EVENTS.length)]);
+    }, 6200);
+  }
 
   /** ==========================
    *  INIT
    * ========================== */
-  loadGames().catch(()=>console.log("Erro ao carregar o catálogo local."));
+  loadGames().catch(()=>toast("Erro ao carregar o catálogo local."));
 </script>
 
 </body>
