@@ -2168,8 +2168,12 @@
   }
 
   function getFullBasePool(){
-    // respeita categoria ativa
-    return getCategoryPoolRaw();
+    // Catálogo completo deve usar a base TOTAL (não apenas AAA).
+    if(ACTIVE_CATEGORY === "TODOS") return GAMES;
+    return GAMES.filter(g=>{
+      const cats = (g.categories && g.categories.length) ? g.categories.map(x=>String(x).toUpperCase()) : ["OUTROS"];
+      return cats.includes(ACTIVE_CATEGORY);
+    });
   }
 
 
@@ -2308,7 +2312,8 @@
   }
 
   function updateFullCount(){
-    fullCount.textContent = `${Math.min(fullCursor, fullFiltered.length)} de ${fullFiltered.length} exibidos`;
+    // Não exibimos o total do catálogo (apenas quantos estão visíveis na tela).
+    fullCount.textContent = `${Math.min(fullCursor, fullFiltered.length)} exibidos`;
   }
 
   // eventos full catalog
