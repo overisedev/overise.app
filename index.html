@@ -1599,6 +1599,28 @@
    * ========================== */
   const JSON_PATH = "./games_741_steam.json";
 
+  // ==== DEBUG (remova depois) ====
+  const __dbg = { lines: [] };
+  function dbg(msg){
+    try{
+      __dbg.lines.push(String(msg));
+      const el = document.getElementById('debugLog');
+      if(el) el.textContent = __dbg.lines.slice(-18).join('\n');
+    }catch(_){}
+  }
+  window.addEventListener('error', (e)=> dbg('JS ERROR: ' + (e.message || e.error || e.type)));
+  window.addEventListener('unhandledrejection', (e)=> dbg('PROMISE REJECTION: ' + (e.reason?.message || e.reason || 'unknown')));
+  document.addEventListener('click', ()=>{}, {capture:true});
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const c = document.getElementById('debugClose');
+    if(c) c.onclick = ()=>{ const p=document.getElementById('debugPanel'); if(p) p.remove(); };
+    dbg('JS carregou. URL=' + location.href);
+    dbg('Origin=' + location.origin);
+    dbg('JSON_PATH=' + JSON_PATH);
+  });
+  // ==============================
+
+
   const STEAM_HEADER = (appid) =>
     `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg`;
 
@@ -1830,14 +1852,20 @@
     let lastErr = null;
     for(const path of paths){
       try{
+        dbg(`fetch: tentando ${path}`);
         const r = await fetch(path, {cache:'no-store'});
+        dbg(`fetch: ${path} -> ${r.status}`);
         if(!r.ok) throw new Error(`HTTP ${r.status} em ${path}`);
-        return await r.json();
+        const json = await r.json();
+        dbg(`fetch: OK (${Array.isArray(json) ? json.length : 'obj'})`);
+        return json;
       }catch(err){
         lastErr = err;
+        dbg(`fetch: falhou ${path} (${err?.message || err})`);
       }
     }
     console.error('Falha ao carregar o catálogo JSON. Tentativas:', paths, lastErr);
+    dbg('fetch: falhou em todas as tentativas.');
     throw lastErr || new Error('Falha ao carregar o catálogo JSON');
   }
 
@@ -2358,19 +2386,17 @@
   /** ==========================
    *  INIT
    * ========================== */
-  // IMPORTANT: fetch() do JSON pode falhar se você abrir este HTML via file:// (duplo clique).
-  // Rode via servidor (recomendado):
-  // - VSCode: extensão Live Server
-  // - Ou no terminal:  python -m http.server 8080   e abra http://localhost:8080
-  if(location.protocol === 'file:'){
-    toast('Abra este site via servidor (ex: Live Server). file:// bloqueia o carregamento do catálogo.');
-  }
-
-  loadGames().catch((err)=>{
-    console.error(err);
-    toast('Erro ao carregar o catálogo local. Verifique se o JSON está na mesma pasta e se você abriu via servidor.');
-  });
+  loadGames().catch(()=>toast("Erro ao carregar o catálogo local."));
 </script>
+
+  <!-- DEBUG PANEL (remova depois) -->
+  <div id="debugPanel" style="position:fixed;left:12px;bottom:12px;z-index:99999;max-width:min(520px,calc(100vw - 24px));background:rgba(0,0,0,.78);border:1px solid rgba(255,255,255,.12);backdrop-filter: blur(10px);color:#e7e7e7;font:12px/1.4 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;border-radius:14px;padding:10px 12px;box-shadow:0 18px 60px rgba(0,0,0,.6)">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <b>Overise Debug</b>
+      <button id="debugClose" style="all:unset;cursor:pointer;padding:2px 8px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06)">fechar</button>
+    </div>
+    <div id="debugLog" style="margin-top:8px;white-space:pre-wrap;color:#a0a0a0">carregando…</div>
+  </div>
 
 </body>
 </html>
