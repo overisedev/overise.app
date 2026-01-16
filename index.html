@@ -1826,9 +1826,24 @@
   /** ==========================
    *  LOAD JSON
    * ========================== */
+  async function fetchGamesJson(paths){
+    let lastErr = null;
+    for(const path of paths){
+      try{
+        const r = await fetch(path, {cache:'no-store'});
+        if(!r.ok) throw new Error(`HTTP ${r.status} em ${path}`);
+        return await r.json();
+      }catch(err){
+        lastErr = err;
+      }
+    }
+    console.error('Falha ao carregar o catálogo JSON. Tentativas:', paths, lastErr);
+    throw lastErr || new Error('Falha ao carregar o catálogo JSON');
+  }
+
+
   async function loadGames(){
-    const r = await fetch(JSON_PATH);
-    const data = await r.json();
+    const data = await fetchGamesJson([JSON_PATH, './games_741_steam (1).json', './games_741_steam.json']);
 
     const arr = Array.isArray(data) ? data : (data.games || []);
     GAMES = arr.map(g => ({
@@ -2262,7 +2277,7 @@
       el.dataset.bound = "1";
       el.addEventListener("click", ()=>{
         const name = el.getAttribute("data-name");
-        const g = GAMES.find(x=>x.name === name) || findGameSmart(name);
+        const g = GAMES.find(x=>x.name === name) || findGameFlexible(name);
         if(g) openModal(g);
       });
     });
