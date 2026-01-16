@@ -2172,22 +2172,32 @@
     return getCategoryPoolRaw();
   }
 
+
   function expandQueryToCandidates(q){
     const nq = normalizeText(q);
     if(!nq) return [];
+
     const arr = [nq];
 
-    if(ALIASES[nq]){
-      for(const x of ALIASES[nq]) arr.push(normalizeText(x));
-    }
+    // Aliases podem ser string (um termo) ou array (vários termos)
+    const pushAlias = (key) => {
+      const v = ALIASES[key];
+      if(!v) return;
+      if(Array.isArray(v)){
+        for(const x of v) arr.push(normalizeText(x));
+      }else{
+        arr.push(normalizeText(String(v)));
+      }
+    };
 
-    // se digitou algo tipo "gta v" sem estar no alias
-    if(ALIASES[nq.replace(/\s+/g,"")]){
-      for(const x of ALIASES[nq.replace(/\s+/g,"")]) arr.push(normalizeText(x));
-    }
+    pushAlias(nq);
+
+    // se digitou algo tipo "gta v" sem estar no alias (sem espaços)
+    pushAlias(nq.replace(/\s+/g,""));
 
     return [...new Set(arr)].filter(Boolean);
   }
+
 
   function matchByQuery(gameName, query){
     const n = normalizeText(gameName);
@@ -2374,4 +2384,3 @@
 
 </body>
 </html>
-
