@@ -46,7 +46,7 @@
             padding: 14px 18px;
             font-size: 15px;
             line-height: 1.4;
-            max-width: 75%; /* Aumentei um pouco para caber melhor o video */
+            max-width: 75%;
         }
 
         .bubble-bot {
@@ -120,10 +120,12 @@
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        // INSIRA SEU ID AQUI
+        
+        // --- INSIRA SEU ID DO PIXEL AQUI EMBAIXO ---
         fbq('init', 'SEU_PIXEL_ID'); 
         fbq('track', 'PageView');
     </script>
+    <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" async defer></script>
 </head>
 <body>
 
@@ -171,7 +173,7 @@
         const chatContent = document.getElementById('chat-content');
         const optionsContainer = document.getElementById('options-container');
 
-        // ================= ROTEIRO COM YOUTUBE =================
+        // ================= ROTEIRO ATUALIZADO =================
         const script = [
             // CURIOSIDADE / FILTRO
             {
@@ -240,7 +242,7 @@
                 next: 'the_solution'
             },
 
-            // --- SOLUÇÃO + YOUTUBE PLAYER ---
+            // --- SOLUÇÃO + SEU VÍDEO ---
             {
                 id: 'the_solution',
                 type: 'bot',
@@ -253,18 +255,17 @@
                 delay: 2500
             },
             
-            // AQUI É O VÍDEO DO YOUTUBE
+            // AQUI ESTÁ SEU VÍDEO (ID: Dh7c9MmprZg)
             {
                 type: 'youtube',
-                // COLOQUE APENAS O ID DO VÍDEO AQUI (ex: dQw4w9WgXcQ)
-                videoId: 'SEU_ID_DO_YOUTUBE_AQUI', 
+                videoId: 'Dh7c9MmprZg', 
                 delay: 1000
             },
 
             {
                 type: 'bot',
                 text: 'Viu? O App usa a estrutura oficial da Steam global. Baixou, jogou.',
-                delay: 5000, // Tempo pro usuário ver um pouco do vídeo
+                delay: 5000, 
                 options: [
                     { text: 'Que top! E o preço? 🤑', next: 'price_reveal' }
                 ]
@@ -347,19 +348,19 @@
             chatContent.appendChild(wrapper);
         }
 
-        // NOVO: PLAYER DO YOUTUBE
+        // PLAYER DO YOUTUBE
         function addYouTubeMsg(videoId) {
             const wrapper = document.createElement('div');
             wrapper.className = 'msg-enter flex items-end mb-3 gap-2';
             
-            // Iframe otimizado para parecer nativo
+            // Iframe otimizado
             wrapper.innerHTML = `
                 <img src="./assets/img/logo_overise.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Overise&background=10b981&color=fff&size=128'" class="w-7 h-7 rounded-full select-none object-cover">
                 <div class="youtube-container">
                     <iframe 
                         width="100%" 
                         height="100%" 
-                        src="https://www.youtube.com/embed/$Dh7c9MmprZg?modestbranding=1&rel=0&iv_load_policy=3&controls=1" 
+                        src="https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&iv_load_policy=3&controls=1" 
                         title="YouTube video player" 
                         frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -416,7 +417,6 @@
         }
 
         function scrollToBottom() {
-            // Pequeno delay para garantir que o iframe renderizou
             setTimeout(() => {
                 chatContent.scrollTo({ top: chatContent.scrollHeight, behavior: 'smooth' });
             }, 100);
