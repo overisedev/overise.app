@@ -1,1674 +1,426 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OVERISE | Software</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-
-  <style>
-    :root{
-      --bg:#050505;
-      --panel:#0b0b0b;
-      --panel2:#0f0f0f;
-      --border:rgba(255,255,255,.08);
-      --text:#eaeaea;
-      --muted:#a2a2a2;
-      --muted2:#7d7d7d;
-      --neon:#00FF41;
-      --shadow: 0 18px 60px rgba(0,0,0,.60);
-      --shadowSoft: 0 12px 40px rgba(0,0,0,.45);
-      --r:18px;
-      --r2:26px;
-      --max: 1180px;
-      --font: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:var(--font);
-      color:var(--text);
-      background:
-        radial-gradient(1200px 600px at 30% -10%, rgba(0,255,65,.10), transparent 55%),
-        radial-gradient(900px 500px at 110% 10%, rgba(0,255,65,.06), transparent 55%),
-        var(--bg);
-      overflow-x:hidden;
-    }
-
-    a{color:inherit}
-
-    .container{width:min(var(--max), calc(100% - 40px)); margin:0 auto}
-    .section{padding:110px 0}
-    .section.tight{padding:80px 0}
-    .section.top{padding-top:140px}
-
-    .muted{color:var(--muted)}
-    .muted2{color:var(--muted2)}
-
-    .pill{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 14px; border-radius:999px;
-      background: rgba(255,255,255,.05);
-      border:1px solid var(--border);
-      font-weight:900; letter-spacing:.6px; text-transform:uppercase; font-size:12px;
-      backdrop-filter: blur(10px);
-      white-space:nowrap;
-    }
-
-    .dot{width:8px; height:8px; border-radius:50%; background:var(--neon); box-shadow: 0 0 14px rgba(0,255,65,.55)}
-
-    /* micro */
-    @keyframes fadeLeft{from{opacity:0; transform:translateX(22px)}to{opacity:1; transform:translateX(0)}}
-    @keyframes floatIn{from{opacity:0; transform:translateY(14px)}to{opacity:1; transform:translateY(0)}}
-    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    @keyframes sheen{0%{transform:translateX(-120%)}60%{transform:translateX(120%)}100%{transform:translateX(120%)}}
-
-    .reveal{opacity:0; transform: translateY(14px); transition:.8s ease}
-    .reveal.show{opacity:1; transform: translateY(0)}
-
-    /* header (sem links fixos) */
-    header{
-      position:fixed; inset:0 0 auto 0; z-index:1000;
-      background: rgba(5,5,5,.72);
-      border-bottom:1px solid rgba(255,255,255,.06);
-      backdrop-filter: blur(14px);
-    }
-    .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 0;
-      gap:16px;
-    }
-    .logo{
-      display:inline-flex; align-items:center;
-      font-weight:950; letter-spacing:-1px; text-transform:uppercase;
-      font-size:18px; color:#fff;
-      white-space:nowrap;
-      user-select:none;
-    }
-    .logo .brandAccent{color:var(--neon)}
-
-    .navActions{display:flex; align-items:center; gap:12px}
-
-    .btn{
-      appearance:none; border:1px solid var(--border); background: rgba(255,255,255,.06);
-      color:#fff; border-radius:999px; padding:12px 16px;
-      font-weight:900; letter-spacing:.6px; text-transform:uppercase;
-      cursor:pointer; transition:.25s ease;
-      display:inline-flex; align-items:center; gap:10px;
-      position:relative; overflow:hidden;
-    }
-    .btn:hover{transform: translateY(-1px); box-shadow: 0 16px 40px rgba(0,0,0,.35)}
-    .btn:active{transform: translateY(0px) scale(.99)}
-
-    .btnPrimary{
-      background: linear-gradient(135deg, rgba(0,255,65,.95), rgba(0,255,65,.72));
-      border-color: rgba(0,255,65,.55);
-      color:#041507;
-      box-shadow: 0 18px 60px rgba(0,255,65,.13);
-    }
-    .btnPrimary::after{
-      content:""; position:absolute; inset:-40% -60%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.20), transparent);
-      transform: translateX(-120%);
-      animation: sheen 4.2s ease-in-out infinite;
-    }
-
-    /* hero */
-    .heroGrid{
-      display:grid; grid-template-columns: 1.05fr .95fr;
-      gap:28px; align-items:center;
-    }
-    @media (max-width: 980px){ .heroGrid{grid-template-columns:1fr; gap:22px} }
-
-    .h1{font-size: clamp(34px, 4.2vw, 54px); line-height:1.02; margin:18px 0 10px; letter-spacing:-1px; font-weight:950}
-    .lead{font-size:16px; line-height:1.55; color:var(--muted); max-width: 56ch}
-
-    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-top:22px}
-
-    .heroCard{
-      border:1px solid var(--border);
-      border-radius: var(--r2);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-      min-height: 360px;
-    }
-    .heroCard::before{
-      content:""; position:absolute; inset:0;
-      background: radial-gradient(900px 400px at 30% -20%, rgba(0,255,65,.16), transparent 55%);
-      pointer-events:none;
-    }
-    .heroMedia{
-      height: 250px;
-      background: #0a0a0a;
-      position:relative;
-    }
-    .heroMedia img{width:100%; height:100%; object-fit:cover; display:block; filter: saturate(1.05) contrast(1.06)}
-    .heroMedia::after{content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.70));}
-    .heroMeta{
-      padding:16px 18px 18px;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
-    }
-    .heroMeta h3{margin:0; font-size:14px; letter-spacing:.4px; text-transform:uppercase}
-    .heroMeta p{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.45}
-
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:999px;
-      background: rgba(0,255,65,.10);
-      border:1px solid rgba(0,255,65,.35);
-      color:#bfffd0;
-      font-weight:900; letter-spacing:.6px; text-transform:uppercase; font-size:11px;
-      white-space:nowrap;
-    }
-
-    /* marquee full bleed */
-    .fullBleed{width:100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding:0 20px}
-    .marqueeWrap{
-      border-top:1px solid rgba(255,255,255,.06);
-      border-bottom:1px solid rgba(255,255,255,.06);
-      background: rgba(255,255,255,.02);
-      overflow:hidden;
-      padding:18px 0;
-    }
-    .marquee{
-      display:flex; gap:14px; align-items:center;
-      width:max-content;
-      animation: marquee 34s linear infinite;
-      will-change:transform;
-    }
-    .mCard{
-      width: 240px; height: 135px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.08);
-      background: #0b0b0b;
-      overflow:hidden;
-      position:relative;
-      transform: translateZ(0);
-    }
-    .mCard img{width:100%; height:100%; object-fit:cover; display:block; filter: saturate(1.05) contrast(1.05)}
-    .mCard::after{content:""; position:absolute; inset:0; background: linear-gradient(90deg, rgba(0,0,0,.35), rgba(0,0,0,.08) 50%, rgba(0,0,0,.35));}
-
-    /* gamified sections */
-    .questGrid{
-      display:grid; grid-template-columns: 1fr 1fr;
-      gap:18px;
-      align-items:stretch;
-    }
-    @media (max-width: 980px){ .questGrid{grid-template-columns:1fr} }
-
-    .panel{
-      border:1px solid var(--border);
-      border-radius: var(--r2);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      box-shadow: var(--shadowSoft);
-      overflow:hidden;
-      position:relative;
-    }
-    .panel .pHead{padding:18px 18px 10px}
-    .panel h2{margin:0; font-size:22px; letter-spacing:-.5px}
-    .panel p{margin:8px 0 0; color:var(--muted); line-height:1.6}
-
-    .modePick{display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:16px 18px 18px}
-    @media (max-width: 560px){ .modePick{grid-template-columns:1fr} }
-
-    .modeCard{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 18px;
-      background: rgba(0,0,0,.30);
-      padding:14px 14px;
-      cursor:pointer;
-      transition:.25s ease;
-      position:relative;
-      min-height: 132px;
-    }
-    .modeCard:hover{transform: translateY(-3px); box-shadow: 0 18px 48px rgba(0,0,0,.45)}
-    .modeCard.active{border-color: rgba(0,255,65,.45); box-shadow: 0 18px 52px rgba(0,255,65,.10)}
-
-    .modeTop{display:flex; align-items:center; justify-content:space-between; gap:10px}
-    .modeTitle{display:flex; align-items:center; gap:10px}
-    .badge{
-      display:inline-flex; align-items:center; justify-content:center;
-      width:34px; height:34px; border-radius:12px;
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      font-weight:950;
-    }
-    .modeCard.active .badge{background: rgba(0,255,65,.12); border-color: rgba(0,255,65,.35)}
-
-    .modeCard h3{margin:0; font-size:14px; letter-spacing:.4px; text-transform:uppercase}
-    .modeCard ul{margin:10px 0 0; padding:0 0 0 18px; color:var(--muted); font-size:13px; line-height:1.5}
-
-    /* progress quest */
-    .questBody{padding:0 18px 18px}
-    .progressWrap{border:1px solid rgba(255,255,255,.10); border-radius: 18px; background: rgba(0,0,0,.28); padding:14px}
-    .progressTop{display:flex; align-items:center; justify-content:space-between; gap:12px}
-    .progressTop strong{font-weight:950; letter-spacing:.4px}
-    .bar{height:10px; border-radius:999px; background: rgba(255,255,255,.08); overflow:hidden; margin-top:12px}
-    .bar > i{display:block; height:100%; width:0%; background: linear-gradient(90deg, rgba(0,255,65,.85), rgba(0,255,65,.35)); border-radius:999px; transition: .5s ease}
-
-    .steps{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px}
-    @media (max-width: 560px){ .steps{grid-template-columns:1fr} }
-
-    .step{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 16px;
-      background: rgba(255,255,255,.03);
-      padding:12px;
-      display:flex; gap:10px; align-items:flex-start;
-      cursor:pointer;
-      transition:.25s ease;
-    }
-    .step:hover{transform: translateY(-2px)}
-    .tick{
-      width:22px; height:22px; border-radius:8px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.25);
-      flex:0 0 auto;
-      position:relative;
-    }
-    .step.done .tick{border-color: rgba(0,255,65,.45); background: rgba(0,255,65,.10)}
-    .step.done .tick::after{
-      content:""; position:absolute; inset:0;
-      background: radial-gradient(circle at 40% 40%, rgba(0,255,65,.55), transparent 60%);
-    }
-    .step h4{margin:0; font-size:13px; letter-spacing:.3px; text-transform:uppercase}
-    .step p{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.5}
-
-    /* demo (VSL + mock) */
-    .demoGrid{display:grid; grid-template-columns: 1fr 1fr; gap:18px; align-items:stretch}
-    @media (max-width: 980px){ .demoGrid{grid-template-columns:1fr} }
-
-    .tabs{display:flex; gap:10px; padding:16px 18px 0}
-    .tabBtn{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      color:#fff;
-      border-radius: 999px;
-      padding:10px 12px;
-      font-weight:900;
-      letter-spacing:.6px;
-      text-transform:uppercase;
-      font-size:12px;
-      cursor:pointer;
-      transition:.25s ease;
-    }
-    .tabBtn.active{border-color: rgba(0,255,65,.45); background: rgba(0,255,65,.10)}
-
-    .demoBody{padding:12px 18px 18px}
-    .frame{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 22px;
-      overflow:hidden;
-      background: #0a0a0a;
-      position:relative;
-      min-height: 320px;
-    }
-    .frame iframe{width:100%; height:100%; border:0; display:block}
-
-    .mock{
-      position:absolute; inset:0;
-      display:flex; flex-direction:column;
-    }
-    .mockTop{
-      padding:14px 16px;
-      display:flex; align-items:center; justify-content:space-between;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-    }
-    .mockTop span{font-weight:950; letter-spacing:.4px; text-transform:uppercase; font-size:12px}
-    .mockBody{flex:1; display:grid; grid-template-columns: 1fr 1fr; gap:12px; padding:14px}
-    @media (max-width: 560px){ .mockBody{grid-template-columns:1fr} }
-    .mini{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 18px;
-      background: rgba(0,0,0,.28);
-      overflow:hidden;
-    }
-    .mini .img{height:120px; background:#0b0b0b; position:relative}
-    .mini .img img{width:100%; height:100%; object-fit:cover; display:block}
-    .mini .img::after{content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.70));}
-    .mini .meta{padding:12px}
-    .mini .meta b{display:block; font-size:12px; letter-spacing:.4px; text-transform:uppercase}
-    .mini .meta small{display:block; margin-top:6px; color:var(--muted); line-height:1.45}
-
-    .notice{
-      margin-top:10px;
-      font-size:13px;
-      color:var(--muted);
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-    }
-    .notice i{width:10px; height:10px; border-radius:50%; background: rgba(0,255,65,.35); box-shadow: 0 0 12px rgba(0,255,65,.35); margin-top:6px}
-
-    /* about after VSL */
-    .aboutRow{display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; padding:18px}
-    .aboutRow .bigLogo{font-size:26px; font-weight:950; letter-spacing:-1px; text-transform:uppercase; white-space:nowrap}
-    .aboutRow .bigLogo span{color:var(--neon)}
-
-    /* catálogo */
-    .catalogGrid{display:grid; grid-template-columns: 340px 1fr; gap:18px; align-items:start}
-    @media (max-width: 980px){ .catalogGrid{grid-template-columns:1fr} }
-
-    .filters{padding:18px}
-    .filterTitle{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px}
-    .filterTitle strong{font-weight:950; letter-spacing:.4px; text-transform:uppercase; font-size:12px; color:var(--muted)}
-
-    .chips{display:flex; flex-wrap:wrap; gap:10px}
-    .chipBtn{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      color:#fff;
-      border-radius: 999px;
-      padding:10px 12px;
-      font-weight:900;
-      letter-spacing:.6px;
-      text-transform:uppercase;
-      font-size:12px;
-      cursor:pointer;
-      transition:.25s ease;
-    }
-    .chipBtn:hover{transform: translateY(-2px)}
-    .chipBtn.active{border-color: rgba(0,255,65,.45); background: rgba(0,255,65,.10)}
-
-    .showcase{padding:18px}
-    .showHead{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap}
-    .showHead h2{margin:0; font-size:22px; letter-spacing:-.5px}
-
-    .cards3{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:14px}
-    @media (max-width: 980px){ .cards3{grid-template-columns:1fr} }
-
-    .gCard{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 22px;
-      background: rgba(0,0,0,.28);
-      overflow:hidden;
-      cursor:pointer;
-      transition: .25s ease;
-      position:relative;
-      min-height: 260px;
-    }
-    .gCard:hover{transform: translateY(-3px); box-shadow: 0 24px 60px rgba(0,0,0,.55)}
-
-    .gImg{height:160px; background:#0b0b0b; position:relative}
-    .gImg img{width:100%; height:100%; object-fit:cover; display:block}
-    .gImg::after{content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.75));}
-
-    .gMeta{padding:12px 12px 14px}
-    .gName{margin:0; font-size:13px; letter-spacing:.4px; text-transform:uppercase}
-    .gBadges{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
-
-    .tag{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      font-weight:900; letter-spacing:.5px; text-transform:uppercase; font-size:11px;
-      color:#fff;
-      white-space:nowrap;
-    }
-    .tag.ok{border-color: rgba(0,255,65,.35); background: rgba(0,255,65,.09); color:#c8ffd7}
-
-    .gActions{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px}
-    .smallHint{color:var(--muted2); font-size:12px}
-
-    .miniBtn{
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.03);
-      color:#fff;
-      border-radius: 999px;
-      padding:10px 12px;
-      font-weight:950;
-      letter-spacing:.6px;
-      text-transform:uppercase;
-      font-size:12px;
-      cursor:pointer;
-      transition:.25s ease;
-    }
-    .miniBtn:hover{transform: translateY(-2px)}
-
-    /* full catalog panel */
-    .fullCatalog{
-      margin-top:18px;
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: var(--r2);
-      background: rgba(0,0,0,.22);
-      overflow:hidden;
-      display:none;
-      animation: floatIn .6s ease both;
-    }
-    .fullCatalog.open{display:block}
-
-    .fcHead{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:16px 18px; border-bottom:1px solid rgba(255,255,255,.08)}
-    .search{
-      display:flex; align-items:center; gap:10px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      border-radius: 999px;
-      padding:10px 12px;
-      width:min(520px, 100%);
-    }
-    .search input{
-      border:0; outline:0; background:transparent; color:#fff; width:100%;
-      font-size:14px;
-    }
-
-    .grid{
-      padding:18px;
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:14px;
-    }
-    @media (max-width: 1120px){ .grid{grid-template-columns: repeat(3, 1fr)} }
-    @media (max-width: 760px){ .grid{grid-template-columns: repeat(2, 1fr)} }
-
-    .fcFoot{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 18px; border-top:1px solid rgba(255,255,255,.08)}
-
-    /* modal details */
-    .modalOverlay{
-      position:fixed; inset:0; z-index:2000;
-      background: rgba(0,0,0,.70);
-      backdrop-filter: blur(10px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-    }
-    .modalOverlay.open{display:flex}
-
-    .modal{
-      width:min(980px, 100%);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: 26px;
-      background: rgba(10,10,10,.92);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      animation: floatIn .55s ease both;
-    }
-    .modalHero{height: 320px; background:#0b0b0b; position:relative}
-    .modalHero img{width:100%; height:100%; object-fit:cover; display:block}
-    .modalHero::after{content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.82));}
-
-    .modalBody{padding:18px}
-    .modalTop{display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap}
-    .modalTitle{margin:0; font-size:18px; letter-spacing:.4px; text-transform:uppercase}
-
-    .modalClose{
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.03);
-      color:#fff;
-      border-radius: 999px;
-      padding:10px 12px;
-      font-weight:950;
-      letter-spacing:.6px;
-      text-transform:uppercase;
-      font-size:12px;
-      cursor:pointer;
-      transition:.25s ease;
-    }
-    .modalClose:hover{transform: translateY(-2px)}
-
-    .modalInfo{margin-top:12px; display:grid; grid-template-columns: 1fr 1fr; gap:10px}
-    @media (max-width: 760px){ .modalInfo{grid-template-columns:1fr} }
-
-    .infoBox{border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); border-radius: 18px; padding:12px}
-    .infoBox b{display:block; font-size:12px; letter-spacing:.4px; text-transform:uppercase; color:var(--muted)}
-    .infoBox span{display:block; margin-top:6px; color:#fff; font-weight:800}
-
-    .modalActions{margin-top:16px; display:flex; gap:12px; flex-wrap:wrap}
-
-    /* plans (estilo da imagem: carrossel com cards grandes) */
-    .plansWrap{padding:18px}
-    .planTrack{
-      display:flex; gap:18px;
-      overflow:auto;
-      scroll-snap-type: x mandatory;
-      padding-bottom: 8px;
-      -webkit-overflow-scrolling: touch;
-    }
-    .planTrack::-webkit-scrollbar{height:10px}
-    .planTrack::-webkit-scrollbar-thumb{background: rgba(255,255,255,.12); border-radius:999px}
-
-    .plan{
-      flex: 0 0 min(360px, 88%);
-      scroll-snap-align: center;
-      border-radius: 26px;
-      border:1px solid rgba(255,255,255,.12);
-      background: radial-gradient(900px 380px at 50% -10%, rgba(0,255,65,.14), transparent 55%), rgba(0,0,0,.28);
-      padding:22px;
-      position:relative;
-      overflow:hidden;
-      box-shadow: var(--shadowSoft);
-      transition:.25s ease;
-      min-height: 430px;
-    }
-    .plan:hover{transform: translateY(-3px)}
-
-    .plan.featured{border-color: rgba(0,255,65,.45); box-shadow: 0 24px 70px rgba(0,255,65,.12)}
-
-    .planKicker{
-      display:inline-flex; align-items:center; gap:10px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      border-radius:999px;
-      padding:10px 12px;
-      font-weight:950;
-      letter-spacing:.6px;
-      text-transform:uppercase;
-      font-size:12px;
-    }
-    .plan.featured .planKicker{border-color: rgba(0,255,65,.35); background: rgba(0,255,65,.10)}
-
-    .price{margin:16px 0 6px; font-size:34px; font-weight:950; letter-spacing:-1px}
-    .price small{font-size:12px; font-weight:900; letter-spacing:.6px; text-transform:uppercase; color:var(--muted)}
-    .strike{color: rgba(255,255,255,.55); text-decoration: line-through; font-weight:800; font-size:12px; letter-spacing:.4px; text-transform:uppercase}
-
-    .benefits{margin:16px 0 0; padding:0; list-style:none; display:grid; gap:10px}
-    .benefits li{display:flex; gap:10px; align-items:flex-start; color:var(--muted); line-height:1.5; font-size:13px}
-    .check{width:18px; height:18px; border-radius:7px; border:1px solid rgba(0,255,65,.35); background: rgba(0,255,65,.10); box-shadow: 0 0 14px rgba(0,255,65,.12); flex:0 0 auto; margin-top:2px}
-
-    .planCta{margin-top:18px}
-    .planCta .btn{width:100%; justify-content:center}
-
-    .planNav{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 18px 18px}
-    .dots{display:flex; gap:8px; align-items:center}
-    .d{width:7px; height:7px; border-radius:99px; background: rgba(255,255,255,.18)}
-    .d.on{background: rgba(0,255,65,.75); box-shadow: 0 0 10px rgba(0,255,65,.35)}
-
-    .arrow{
-      width:42px; height:42px; border-radius: 14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.04);
-      color:#fff;
-      cursor:pointer;
-      transition:.25s ease;
-    }
-    .arrow:hover{transform: translateY(-2px)}
-
-    /* guarantee after plans */
-    .guar{padding:18px}
-    .shield{width:48px; height:48px; border-radius: 18px; border:1px solid rgba(0,255,65,.35); background: rgba(0,255,65,.10); box-shadow: 0 0 16px rgba(0,255,65,.12); display:flex; align-items:center; justify-content:center; font-weight:950}
-    .guarRow{display:flex; gap:14px; align-items:flex-start}
-
-    footer{padding:44px 0 70px; border-top:1px solid rgba(255,255,255,.06); color:var(--muted2)}
-
-    /* toast */
-    .toast{
-      position:fixed; left:18px; bottom:18px; z-index:3000;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.72);
-      backdrop-filter: blur(10px);
-      border-radius: 18px;
-      padding:12px 12px;
-      min-width: 260px;
-      display:none;
-    }
-    .toast.show{display:block; animation: floatIn .35s ease both}
-    .toast b{display:block; font-size:12px; letter-spacing:.6px; text-transform:uppercase}
-    .toast p{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.45}
-
-    /* no select overlay for empty cover */
-    .coverFallback{background: linear-gradient(135deg, rgba(0,255,65,.14), rgba(255,255,255,.03));}
-  </style>
-</head>
-
-<body>
-  <!-- CONFIG (ajuste aqui os caminhos) -->
-  <script>
-    // JSON local (GitHub Pages: mantenha na raiz junto do index.html)
-    const JSON_PATH = "./games_741_steam.json";
-
-    // Caminho do cliente / checkout (ajuste para o seu link real)
-    const BUY_URL = "#";
-    const CLIENT_URL = "#";
-
-    // Vídeo (VSL) - troque pelo ID do seu YouTube quando quiser
-    const YT_VIDEO_ID = "dQw4w9WgXcQ";
-  </script>
-
-  <header>
-    <div class="container">
-      <div class="nav">
-        <div class="logo" aria-label="OVERISE">
-          OVERI<span class="brandAccent">SE</span>
-        </div>
-
-        <div class="navActions">
-          <button class="btn" id="btnClient" type="button" title="Área do cliente">Cliente</button>
-          <button class="btn btnPrimary" id="btnBuyTop" type="button">Comprar</button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <section class="section top">
-    <div class="container">
-      <div class="heroGrid">
-        <div class="reveal">
-          <span class="pill"><span class="dot"></span> Ecossistema de software</span>
-          <h1 class="h1">SUA BIBLIOTECA, SEM COMPLICAÇÃO</h1>
-          <p class="lead">Um launcher premium para pesquisar, organizar e acessar seus jogos com uma experiência fluida — estilo Steam/Xbox/Netflix, sem fricção.</p>
-
-          <div class="heroActions">
-            <button class="btn btnPrimary" id="btnGoCatalog" type="button">Explorar catálogo</button>
-            <button class="btn" id="btnSeePlans" type="button">Ver planos</button>
-          </div>
-
-          <div class="notice" style="margin-top:18px">
-            <i></i>
-            <div>
-              <b style="display:block; font-size:12px; letter-spacing:.6px; text-transform:uppercase">Experiência tipo launcher</b>
-              <span class="muted" style="font-size:13px; line-height:1.5">UI premium, carregamento local e navegação por categorias. Você interage com a página como se estivesse dentro do software.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="heroCard reveal" aria-label="Destaque rotativo">
-          <div class="heroMedia"><img id="heroImg" alt="Destaque" loading="lazy" /></div>
-          <div class="heroMeta">
-            <div>
-              <h3 id="heroName">Carregando…</h3>
-              <p id="heroDesc" class="muted">Destaque rotativo do catálogo.</p>
-            </div>
-            <span class="chip"><span class="dot"></span> Destaque</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CARROSSEL INFINITO (AAA) -->
-  <section class="fullBleed">
-    <div class="marqueeWrap">
-      <div class="marquee" id="marquee"></div>
-    </div>
-  </section>
-
-  <!-- DEMO + VSL (C) -->
-  <section class="section tight" id="demo">
-    <div class="container">
-      <div class="panel reveal">
-        <div class="pHead">
-          <span class="pill"><span class="dot"></span> Demonstração</span>
-          <h2>Veja o fluxo. Depois, teste na prática.</h2>
-          <p>Alterna entre <b>demo visual</b> e <b>VSL</b>. A ideia é você entender em segundos e interagir na sequência.</p>
-        </div>
-
-        <div class="demoGrid">
-          <div class="panel" style="margin:0; border-radius:22px; border-color: rgba(255,255,255,.10)">
-            <div class="tabs">
-              <button class="tabBtn active" data-tab="mock" type="button">Demo</button>
-              <button class="tabBtn" data-tab="vsl" type="button">VSL</button>
-            </div>
-
-            <div class="demoBody">
-              <div class="frame" id="frameMock">
-                <div class="mock">
-                  <div class="mockTop">
-                    <span>OVERISE • Biblioteca</span>
-                    <span class="muted2">Busca • Categorias • Detalhes</span>
-                  </div>
-                  <div class="mockBody" id="mockCards"></div>
-                </div>
-              </div>
-
-              <div class="frame" id="frameVsl" style="display:none">
-                <iframe id="ytFrame" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-              </div>
-
-              <div class="notice">
-                <i></i>
-                <div>
-                  <b style="display:block; font-size:12px; letter-spacing:.6px; text-transform:uppercase">Dica</b>
-                  <span class="muted">Se o player do YouTube estiver bloqueado em algum navegador, clique em “Assistir no YouTube” dentro do player.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- sobre nós depois da VSL + CTA pro catálogo -->
-          <div class="panel" style="margin:0; border-radius:22px; border-color: rgba(255,255,255,.10)">
-            <div class="aboutRow">
-              <div>
-                <div class="bigLogo">OVERI<span>SE</span></div>
-                <p class="muted" style="margin:8px 0 0; line-height:1.65; max-width:55ch">
-                  O OVERISE é um ecossistema de software pensado para dar uma experiência de launcher premium: pesquisa rápida, organização por categorias e uma interface que parece produto oficial.
-                </p>
-              </div>
-              <div style="display:flex; gap:12px; flex-wrap:wrap">
-                <button class="btn" id="btnClient2" type="button">Cliente</button>
-                <button class="btn btnPrimary" id="btnGoCatalog2" type="button">Ir ao catálogo</button>
-              </div>
-            </div>
-
-            <div class="questBody" style="padding-top:0">
-              <div class="progressWrap">
-                <div class="progressTop">
-                  <strong>Missão do usuário</strong>
-                  <span class="muted2" id="questLabel">0/4 concluído</span>
-                </div>
-                <div class="bar"><i id="questBar"></i></div>
-
-                <div class="steps" id="questSteps">
-                  <div class="step" data-step="0">
-                    <div class="tick"></div>
-                    <div>
-                      <h4>Abrir catálogo</h4>
-                      <p>Explorar por categoria e ver 3 destaques rotativos.</p>
-                    </div>
-                  </div>
-                  <div class="step" data-step="1">
-                    <div class="tick"></div>
-                    <div>
-                      <h4>Buscar um título</h4>
-                      <p>Use atalhos como GTA, RDR2, TLOU.</p>
-                    </div>
-                  </div>
-                  <div class="step" data-step="2">
-                    <div class="tick"></div>
-                    <div>
-                      <h4>Abrir detalhes</h4>
-                      <p>Clique em um jogo e veja o modal premium.</p>
-                    </div>
-                  </div>
-                  <div class="step" data-step="3">
-                    <div class="tick"></div>
-                    <div>
-                      <h4>Escolher o plano</h4>
-                      <p>Finalize em um clique quando fizer sentido.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ONLINE / OFFLINE (gamificado e educativo) -->
-  <section class="section tight" id="modes">
-    <div class="container">
-      <div class="questGrid">
-        <div class="panel reveal">
-          <div class="pHead">
-            <span class="pill"><span class="dot"></span> Escolha seu modo</span>
-            <h2>Você decide como joga.</h2>
-            <p>Ative um modo abaixo para ver o que muda no fluxo do OVERISE. Isso ajusta as recomendações e os detalhes exibidos.</p>
-          </div>
-          <div class="modePick">
-            <div class="modeCard active" data-mode="offline">
-              <div class="modeTop">
-                <div class="modeTitle">
-                  <div class="badge">O</div>
-                  <h3>Modo Offline</h3>
-                </div>
-                <span class="tag ok">Campanha</span>
-              </div>
-              <ul>
-                <li>Foco em single-player e progresso</li>
-                <li>Organização por gênero e estilo</li>
-                <li>Experiência consistente</li>
-              </ul>
-            </div>
-            <div class="modeCard" data-mode="online">
-              <div class="modeTop">
-                <div class="modeTitle">
-                  <div class="badge">M</div>
-                  <h3>Modo Online</h3>
-                </div>
-                <span class="tag ok">Multiplayer*</span>
-              </div>
-              <ul>
-                <li>Prioriza títulos com modo online</li>
-                <li>Indica compatibilidade por jogo</li>
-                <li>Fluxo guiado no detalhe</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel reveal">
-          <div class="pHead">
-            <span class="pill"><span class="dot"></span> Compatibilidade</span>
-            <h2>Online e offline, do jeito certo.</h2>
-            <p class="muted">O OVERISE organiza e guia a experiência conforme o suporte do título e a disponibilidade de modo. Sem texto chato — você vê isso no detalhe do jogo.</p>
-          </div>
-          <div class="questBody">
-            <div class="progressWrap">
-              <div class="progressTop">
-                <strong>Status atual</strong>
-                <span class="muted2" id="modeLabel">Modo Offline ativo</span>
-              </div>
-              <div class="bar"><i id="modeBar" style="width:55%"></i></div>
-              <div style="margin-top:12px; display:grid; gap:10px">
-                <div class="infoBox">
-                  <b>O que você ganha</b>
-                  <span id="modeGain">Mais foco em campanha + descoberta rápida por categoria.</span>
-                </div>
-                <div class="infoBox">
-                  <b>Como você verifica</b>
-                  <span id="modeVerify">Abra um jogo e veja “Modo: Offline/Online” no modal.</span>
-                </div>
-              </div>
-              <p class="muted2" style="margin:12px 2px 0; font-size:12px; line-height:1.55">*Multiplayer depende do suporte do título e do modo disponível exibido no detalhe.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- CATÁLOGO -->
-  <section class="section" id="catalog">
-    <div class="container">
-      <div class="panel reveal">
-        <div class="pHead">
-          <span class="pill"><span class="dot"></span> Catálogo</span>
-          <h2>Explore por categoria — clique para abrir detalhes.</h2>
-          <p class="muted">A vitrine fica sempre aberta e alterna automaticamente com uma transição suave.</p>
-        </div>
-
-        <div class="catalogGrid">
-          <div class="panel" style="margin:0; border-radius:22px; border-color: rgba(255,255,255,.10)">
-            <div class="filters">
-              <div class="filterTitle">
-                <strong>Categorias</strong>
-                <strong>Filtro</strong>
-              </div>
-              <div class="chips" id="catChips"></div>
-            </div>
-          </div>
-
-          <div class="panel" style="margin:0; border-radius:22px; border-color: rgba(255,255,255,.10)">
-            <div class="showcase">
-              <div class="showHead">
-                <div>
-                  <h2>Vitrine</h2>
-                  <p class="muted2" style="margin:6px 0 0">3 jogos por vez • troca automática • fade left</p>
-                </div>
-                <div style="display:flex; gap:12px; flex-wrap:wrap">
-                  <button class="btn" id="btnOpenFull" type="button">Ver catálogo completo</button>
-                  <button class="btn btnPrimary" id="btnBuyMid" type="button">Comprar</button>
-                </div>
-              </div>
-
-              <div class="cards3" id="showcase3"></div>
-
-              <div class="fullCatalog" id="fullCatalog">
-                <div class="fcHead">
-                  <div class="search">
-                    <span style="opacity:.9">🔎</span>
-                    <input id="searchInput" placeholder="Buscar pelo nome (GTA, RDR2, TLOU...)" />
-                  </div>
-                  <button class="miniBtn" id="btnCloseFull" type="button">Fechar</button>
-                </div>
-                <div class="grid" id="fullGrid"></div>
-                <div class="fcFoot">
-                  <button class="miniBtn" id="btnMore" type="button">Carregar mais</button>
-                  <span class="muted2" id="shownLabel">0 exibidos</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- PLANOS (estilo da imagem) -->
-  <section class="section tight" id="plans">
-    <div class="container">
-      <div class="panel reveal">
-        <div class="pHead">
-          <span class="pill"><span class="dot"></span> Planos</span>
-          <h2>Escolha o ritmo. O resto é fluidez.</h2>
-          <p class="muted">Layout estilo carrossel premium. Deslize, compare e finalize quando fizer sentido.</p>
-        </div>
-
-        <div class="plansWrap">
-          <div class="planTrack" id="planTrack" aria-label="Planos">
-            <div class="plan">
-              <span class="planKicker">Starter</span>
-              <div class="price">R$ 9,90 <small>mensal</small></div>
-              <div class="strike">Valor cheio R$ 19,90</div>
-              <ul class="benefits">
-                <li><span class="check"></span> Acesso imediato ao ecossistema</li>
-                <li><span class="check"></span> Organização por categorias + busca</li>
-                <li><span class="check"></span> Suporte padrão</li>
-              </ul>
-              <div class="planCta">
-                <button class="btn" data-buy="1" type="button">Assinar agora</button>
-              </div>
-            </div>
-
-            <div class="plan featured">
-              <span class="planKicker">Melhor custo-benefício</span>
-              <div class="price">R$ 19,90 <small>mensal</small></div>
-              <div class="strike">Valor cheio R$ 39,90</div>
-              <ul class="benefits">
-                <li><span class="check"></span> Prioridade no fluxo + recomendações</li>
-                <li><span class="check"></span> Experiência premium (UI + performance)</li>
-                <li><span class="check"></span> Suporte prioritário</li>
-              </ul>
-              <div class="planCta">
-                <button class="btn btnPrimary" data-buy="2" type="button">Assinar agora</button>
-              </div>
-            </div>
-
-            <div class="plan">
-              <span class="planKicker">Elite</span>
-              <div class="price">R$ 29,90 <small>mensal</small></div>
-              <div class="strike">Valor cheio R$ 59,90</div>
-              <ul class="benefits">
-                <li><span class="check"></span> Máxima prioridade</li>
-                <li><span class="check"></span> Acompanhamento e onboarding</li>
-                <li><span class="check"></span> Suporte avançado</li>
-              </ul>
-              <div class="planCta">
-                <button class="btn" data-buy="3" type="button">Assinar agora</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="planNav">
-          <div class="dots" id="planDots" aria-label="Indicadores"></div>
-          <div style="display:flex; gap:10px">
-            <button class="arrow" id="planPrev" type="button" aria-label="Anterior">◀</button>
-            <button class="arrow" id="planNext" type="button" aria-label="Próximo">▶</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- GARANTIA (depois dos planos) -->
-  <section class="section tight" id="guarantee">
-    <div class="container">
-      <div class="panel reveal">
-        <div class="guar">
-          <div class="guarRow">
-            <div class="shield">🛡️</div>
-            <div>
-              <h2 style="margin:0; font-size:22px; letter-spacing:-.5px">Garantia de 30 dias</h2>
-              <p class="muted" style="margin:8px 0 0; line-height:1.65; max-width:70ch">
-                Se o OVERISE não encaixar no seu fluxo, você pode solicitar reembolso dentro do período de garantia.
-              </p>
-              <div style="margin-top:14px; display:flex; gap:12px; flex-wrap:wrap">
-                <button class="btn" id="btnClient3" type="button">Área do cliente</button>
-                <button class="btn btnPrimary" id="btnBuyBottom" type="button">Comprar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap">
-        <div class="logo">OVERI<span class="brandAccent">SE</span></div>
-        <div class="muted2" style="font-size:12px">© <span id="year"></span> OVERISE • Interface premium • UX inspirada em launchers</div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- MODAL -->
-  <div class="modalOverlay" id="modalOverlay" role="dialog" aria-modal="true" aria-label="Detalhes do jogo">
-    <div class="modal">
-      <div class="modalHero"><img id="modalHeroImg" alt="Banner" loading="lazy" /></div>
-      <div class="modalBody">
-        <div class="modalTop">
-          <div>
-            <h3 class="modalTitle" id="modalTitle">Jogo</h3>
-            <div class="gBadges" id="modalBadges" style="margin-top:10px"></div>
-          </div>
-          <button class="modalClose" id="modalClose" type="button">Fechar</button>
-        </div>
-
-        <div class="modalInfo">
-          <div class="infoBox"><b>Disponibilidade</b><span id="modalAvailability">Disponível</span></div>
-          <div class="infoBox"><b>Modo</b><span id="modalMode">Offline</span></div>
-          <div class="infoBox"><b>Categoria</b><span id="modalCategory">Outros</span></div>
-          <div class="infoBox"><b>Origem</b><span id="modalSource">Steam</span></div>
-        </div>
-
-        <div class="modalActions">
-          <button class="btn" id="modalOffer" type="button">Ver oferta</button>
-          <button class="btn btnPrimary" id="modalBuy" type="button">Comprar</button>
-        </div>
-
-        <p class="muted2" style="margin:14px 2px 0; font-size:12px; line-height:1.55">Clique no jogo abre detalhes — nunca compra direto. A decisão vem depois.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast"><b id="toastTitle">Info</b><p id="toastMsg">Mensagem</p></div>
-
-  <script>
-    /* -------------------- Helpers -------------------- */
-    const $ = (s, root=document) => root.querySelector(s);
-    const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
-
-    const toast = {
-      el: $('#toast'),
-      t: $('#toastTitle'),
-      m: $('#toastMsg'),
-      timer: null,
-      show(title, msg){
-        this.t.textContent = title;
-        this.m.textContent = msg;
-        this.el.classList.add('show');
-        clearTimeout(this.timer);
-        this.timer = setTimeout(()=> this.el.classList.remove('show'), 3200);
-      }
-    };
-
-    function onReveal(){
-      const io = new IntersectionObserver((entries)=>{
-        for(const e of entries){ if(e.isIntersecting) e.target.classList.add('show'); }
-      }, {threshold:.12});
-      $$('.reveal').forEach(el=> io.observe(el));
-    }
-
-    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
-
-    /* -------------------- Data -------------------- */
-    let GAMES = [];
-    let ACTIVE_CATEGORY = 'Todos';
-    let ACTIVE_MODE = 'offline';
-
-    const CATEGORIES = [
-      'Todos','Ação','RPG','Mundo Aberto','Terror','Simulador','Indie','Cooperativo','Corrida','Sobrevivência','Estratégia','VR','Outros'
-    ];
-
-    const SEARCH_ALIASES = {
-      gta: ['grand theft auto', 'grand theft auto v', 'gta v', 'gta 5'],
-      rdr2: ['red dead redemption 2', 'red dead redemption ii', 'rdr 2'],
-      tlou: ['the last of us', 'the last of us part i', 'the last of us part 1'],
-      cod: ['call of duty', 'modern warfare', 'black ops', 'warzone'],
-      gow: ['god of war', 'god of war ragnarok', 'ragnarok'],
-      elden: ['elden ring']
-    };
-
-    // compat com versões antigas
-    const ALIASES = SEARCH_ALIASES;
-    const FULL_PAGE_SIZE = 24;
-    const fullPageSize = FULL_PAGE_SIZE;
-
-    /* -------------------- Images (fallback em cascata + sem assets) -------------------- */
-    const SVG_FALLBACK = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-      <svg xmlns="http://www.w3.org/2000/svg" width="600" height="900">
-        <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#0b0b0b"/>
-            <stop offset="1" stop-color="#101010"/>
-          </linearGradient>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#g)"/>
-        <circle cx="120" cy="140" r="80" fill="rgba(0,255,65,.10)"/>
-        <circle cx="520" cy="760" r="140" fill="rgba(0,255,65,.06)"/>
-        <text x="50%" y="48%" text-anchor="middle" font-family="Inter,Arial" font-weight="900" font-size="44" fill="#ffffff">OVERI</text>
-        <text x="50%" y="54%" text-anchor="middle" font-family="Inter,Arial" font-weight="900" font-size="44" fill="#00FF41">SE</text>
-        <text x="50%" y="61%" text-anchor="middle" font-family="Inter,Arial" font-weight="700" font-size="14" fill="rgba(255,255,255,.70)" letter-spacing="2">CAPA PADRÃO</text>
-      </svg>
-    `);
-
-    function steamCovers(appid){
-      if(!appid) return [SVG_FALLBACK];
-      return [
-        `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/capsule_616x353.jpg`,
-        `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/header.jpg`,
-        `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/library_600x900.jpg`,
-        `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/library_hero.jpg`,
-        SVG_FALLBACK
-      ];
-    }
-
-    function setImgWithFallback(img, urls){
-      const list = urls.slice();
-      const tryNext = ()=>{
-        const u = list.shift();
-        if(!u) return;
-        img.src = u;
-      };
-      img.onerror = ()=>{
-        if(list.length) tryNext();
-        else img.src = SVG_FALLBACK;
-      };
-      tryNext();
-    }
-
-    /* -------------------- Loading -------------------- */
-    async function loadGames(){
-      const res = await fetch(JSON_PATH, {cache:'force-cache'});
-      if(!res.ok) throw new Error(`Falha ao carregar catálogo (${res.status})`);
-      const data = await res.json();
-      // normalizar: aceitar array direto ou {games:[]}
-      const arr = Array.isArray(data) ? data : (data.games || data.items || []);
-      GAMES = arr
-        .map((g)=>({
-          appid: g.appid || g.steam_appid || g.id || null,
-          name: (g.name || g.title || '').toString().trim(),
-          genres: (g.genres || g.tags || g.categories || []).map(x=>String(x).trim()).filter(Boolean),
-          type: (g.type || '').toString(),
-          raw: g
-        }))
-        .filter(g=>g.name);
-
-      if(!GAMES.length) throw new Error('Catálogo vazio (JSON sem itens reconhecíveis).');
-    }
-
-    /* -------------------- Catalog logic -------------------- */
-    function normalizeQuery(q){
-      return (q||'').toString().trim().toLowerCase();
-    }
-
-    function pickPrimaryGenre(genres){
-      const g = (genres||[]).map(x=>x.toLowerCase());
-      const map = {
-        'action':'Ação','ação':'Ação',
-        'rpg':'RPG',
-        'open world':'Mundo Aberto','mundo aberto':'Mundo Aberto',
-        'horror':'Terror','terror':'Terror',
-        'simulation':'Simulador','simulador':'Simulador',
-        'indie':'Indie',
-        'co-op':'Cooperativo','cooperative':'Cooperativo','cooperativo':'Cooperativo',
-        'racing':'Corrida','corrida':'Corrida',
-        'survival':'Sobrevivência','sobrevivência':'Sobrevivência',
-        'strategy':'Estratégia','estratégia':'Estratégia',
-        'vr':'VR'
-      };
-      for(const k of g){ if(map[k]) return map[k]; }
-      return 'Outros';
-    }
-
-    function inCategory(game, cat){
-      if(cat === 'Todos') return true;
-      const pg = pickPrimaryGenre(game.genres);
-      return pg === cat;
-    }
-
-    function scoreMatch(name, q){
-      const n = name.toLowerCase();
-      if(n === q) return 100;
-      if(n.startsWith(q)) return 80;
-      if(n.includes(q)) return 55;
-      return 0;
-    }
-
-    function getAliasTerms(q){
-      const v = ALIASES[q];
-      if(!v) return [];
-      return Array.isArray(v) ? v : [String(v)];
-    }
-
-    function filterGames({query='', category='Todos'} = {}){
-      const q = normalizeQuery(query);
-      let base = GAMES.filter(g=> inCategory(g, category));
-      if(!q) return base;
-
-      const aliasTerms = getAliasTerms(q).map(s=>s.toLowerCase());
-      const tokens = [q, ...aliasTerms];
-
-      const ranked = base.map(g=>{
-        const n = g.name.toLowerCase();
-        let best = 0;
-        for(const t of tokens){ best = Math.max(best, scoreMatch(n, t)); }
-        return {g, best};
-      }).filter(x=>x.best>0);
-
-      ranked.sort((a,b)=> b.best - a.best || a.g.name.localeCompare(b.g.name));
-      return ranked.map(x=>x.g);
-    }
-
-    /* -------------------- UI rendering -------------------- */
-    function renderCategoryChips(){
-      const wrap = $('#catChips');
-      wrap.innerHTML = '';
-      CATEGORIES.forEach(cat=>{
-        const b = document.createElement('button');
-        b.className = 'chipBtn' + (cat===ACTIVE_CATEGORY ? ' active':'');
-        b.type = 'button';
-        b.textContent = cat;
-        b.addEventListener('click', ()=>{
-          ACTIVE_CATEGORY = cat;
-          $$('.chipBtn', wrap).forEach(x=> x.classList.toggle('active', x.textContent===cat));
-          questComplete(0); // explorou catálogo
-          renderShowcase();
-          if($('#fullCatalog').classList.contains('open')){
-            resetFullCatalog();
-            renderFullPage();
-          }
-        });
-        wrap.appendChild(b);
-      });
-    }
-
-    function makeGameCard(game){
-      const el = document.createElement('div');
-      el.className = 'gCard';
-      const pg = pickPrimaryGenre(game.genres);
-      const tags = [ {txt:'Disponível', ok:true}, {txt: pg, ok:false} ];
-
-      el.innerHTML = `
-        <div class="gImg"><img alt="${escapeHtml(game.name)}" loading="lazy" /></div>
-        <div class="gMeta">
-          <h3 class="gName">${escapeHtml(game.name)}</h3>
-          <div class="gBadges">
-            ${tags.map(t=>`<span class="tag ${t.ok?'ok':''}">${escapeHtml(t.txt)}</span>`).join('')}
-          </div>
-          <div class="gActions">
-            <span class="smallHint">Clique para detalhes</span>
-            <button class="miniBtn" type="button">Ver</button>
-          </div>
-        </div>
-      `;
-
-      const img = $('img', el);
-      setImgWithFallback(img, steamCovers(game.appid));
-
-      el.addEventListener('click', (e)=>{
-        // não deixar o button causar double focus
-        e.preventDefault();
-        openModal(game);
-      });
-      return el;
-    }
-
-    let showcaseTimer = null;
-    let showcaseIndex = 0;
-
-    function renderShowcase(){
-      const wrap = $('#showcase3');
-      const pool = filterGames({query:'', category: ACTIVE_CATEGORY});
-      if(!pool.length){ wrap.innerHTML = '<p class="muted" style="padding:18px">Sem itens nesta categoria.</p>'; return; }
-
-      // pegar 3 em sequência, circular
-      const picks = [0,1,2].map(i=> pool[(showcaseIndex+i) % pool.length]);
-      wrap.innerHTML = '';
-      picks.forEach((g,i)=>{
-        const card = makeGameCard(g);
-        card.style.animation = 'fadeLeft .55s ease both';
-        card.style.animationDelay = `${i*0.06}s`;
-        wrap.appendChild(card);
-      });
-
-      clearInterval(showcaseTimer);
-      showcaseTimer = setInterval(()=>{
-        showcaseIndex = (showcaseIndex + 1) % pool.length;
-        renderShowcase();
-      }, 4200);
-    }
-
-    function buildMarquee(){
-      const marquee = $('#marquee');
-      marquee.innerHTML = '';
-
-      // lista curada AAA (nome -> procura no catálogo)
-      const wanted = [
-        'Grand Theft Auto V',
-        'Red Dead Redemption 2',
-        'Cyberpunk 2077',
-        'God of War',
-        'The Last of Us',
-        'Elden Ring',
-        'Marvel\'s Spider-Man',
-        'Forza Horizon',
-        'Call of Duty',
-        'Baldur\'s Gate 3'
-      ];
-
-      const base = [];
-      for(const w of wanted){
-        const q = w.toLowerCase();
-        const g = GAMES.find(x=> x.name.toLowerCase().includes(q));
-        if(g) base.push(g);
-      }
-
-      // fallback se não encontrou
-      if(!base.length) base.push(...GAMES.slice(0, 12));
-
-      const doubled = base.concat(base, base);
-      doubled.forEach(g=>{
-        const c = document.createElement('div');
-        c.className = 'mCard';
-        c.innerHTML = '<img loading="lazy" alt="" />';
-        const img = $('img', c);
-        setImgWithFallback(img, steamCovers(g.appid));
-        c.addEventListener('click', ()=> openModal(g));
-        marquee.appendChild(c);
-      });
-    }
-
-    /* -------------------- Full catalog (pagination) -------------------- */
-    let fullPage = 0;
-    let fullQuery = '';
-    let fullFiltered = [];
-
-    function resetFullCatalog(){
-      fullPage = 0;
-      fullQuery = normalizeQuery($('#searchInput').value);
-      fullFiltered = filterGames({query: fullQuery, category: ACTIVE_CATEGORY});
-      $('#fullGrid').innerHTML = '';
-    }
-
-    function renderFullPage(){
-      const grid = $('#fullGrid');
-      const start = fullPage * fullPageSize;
-      const end = start + fullPageSize;
-      const slice = fullFiltered.slice(start, end);
-      slice.forEach(g=> grid.appendChild(makeGameCard(g)));
-      fullPage++;
-      const shown = Math.min(fullFiltered.length, fullPage*fullPageSize);
-      $('#shownLabel').textContent = `${shown} exibidos`;
-      $('#btnMore').style.display = shown >= fullFiltered.length ? 'none' : 'inline-flex';
-    }
-
-    /* -------------------- Modal -------------------- */
-    const modal = {
-      overlay: $('#modalOverlay'),
-      hero: $('#modalHeroImg'),
-      title: $('#modalTitle'),
-      badges: $('#modalBadges'),
-      availability: $('#modalAvailability'),
-      mode: $('#modalMode'),
-      category: $('#modalCategory'),
-      source: $('#modalSource'),
-      closeBtn: $('#modalClose'),
-      offerBtn: $('#modalOffer'),
-      buyBtn: $('#modalBuy'),
-      game: null
-    };
-
-    function getModalHeroCandidates(appid){
-      if(!appid) return [SVG_FALLBACK];
-      return [
-        `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/library_hero.jpg`,
-        `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/header.jpg`,
-        `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/capsule_616x353.jpg`,
-        SVG_FALLBACK
-      ];
-    }
-
-    function openModal(game){
-      modal.game = game;
-      modal.title.textContent = game.name;
-      modal.badges.innerHTML = '';
-
-      const cat = pickPrimaryGenre(game.genres);
-      const tags = [
-        {txt:'Disponível', ok:true},
-        {txt: cat, ok:false}
-      ];
-      tags.forEach(t=>{
-        const s = document.createElement('span');
-        s.className = 'tag ' + (t.ok?'ok':'');
-        s.textContent = t.txt;
-        modal.badges.appendChild(s);
-      });
-
-      modal.availability.textContent = 'Disponível';
-      modal.category.textContent = cat;
-      modal.source.textContent = 'Steam';
-      modal.mode.textContent = ACTIVE_MODE === 'online' ? 'Online/Multiplayer*' : 'Offline/Campanha';
-
-      setImgWithFallback(modal.hero, getModalHeroCandidates(game.appid));
-
-      modal.overlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
-
-      questComplete(2);
-
-      toast.show('Detalhes', 'Você abriu um jogo. Explore e volte quando quiser.');
-    }
-
-    function closeModal(){
-      modal.overlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    /* -------------------- Demo mock cards -------------------- */
-    function renderMock(){
-      const wrap = $('#mockCards');
-      wrap.innerHTML = '';
-      const picks = GAMES.slice(0, 4);
-      picks.forEach(g=>{
-        const card = document.createElement('div');
-        card.className = 'mini';
-        card.innerHTML = `
-          <div class="img"><img alt="${escapeHtml(g.name)}" loading="lazy" /></div>
-          <div class="meta">
-            <b>${escapeHtml(g.name)}</b>
-            <small>Abra detalhes, veja modo e escolha seu próximo passo.</small>
-          </div>
-        `;
-        setImgWithFallback($('img', card), steamCovers(g.appid));
-        card.addEventListener('click', ()=> openModal(g));
-        wrap.appendChild(card);
-      });
-    }
-
-    function mountYouTube(){
-      const url = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(YT_VIDEO_ID)}?rel=0&modestbranding=1&playsinline=1`;
-      $('#ytFrame').src = url;
-    }
-
-    /* -------------------- Gamification (quest) -------------------- */
-    const quest = { done: [false,false,false,false] };
-
-    function questComplete(i){
-      if(quest.done[i]) return;
-      quest.done[i] = true;
-      const step = $(`.step[data-step="${i}"]`);
-      if(step) step.classList.add('done');
-      const doneCount = quest.done.filter(Boolean).length;
-      $('#questLabel').textContent = `${doneCount}/4 concluído`;
-      $('#questBar').style.width = `${(doneCount/4)*100}%`;
-      if(doneCount === 4){
-        toast.show('Missão concluída', 'Você percorreu o fluxo completo. Agora é só decidir.');
-      }
-    }
-
-    /* -------------------- Plans slider controls -------------------- */
-    function initPlans(){
-      const track = $('#planTrack');
-      const items = $$('.plan', track);
-      const dots = $('#planDots');
-      dots.innerHTML = '';
-      items.forEach((_, idx)=>{
-        const d = document.createElement('div');
-        d.className = 'd' + (idx===0?' on':'');
-        d.addEventListener('click', ()=>{
-          items[idx].scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
-          questComplete(3);
-        });
-        dots.appendChild(d);
-      });
-
-      function updateDots(){
-        const rect = track.getBoundingClientRect();
-        const center = rect.left + rect.width/2;
-        let bestIdx = 0;
-        let bestDist = Infinity;
-        items.forEach((it, idx)=>{
-          const r = it.getBoundingClientRect();
-          const c = r.left + r.width/2;
-          const dist = Math.abs(c - center);
-          if(dist < bestDist){bestDist = dist; bestIdx = idx;}
-        });
-        $$('.d', dots).forEach((x,i)=> x.classList.toggle('on', i===bestIdx));
-      }
-
-      track.addEventListener('scroll', ()=>{
-        updateDots();
-      }, {passive:true});
-
-      $('#planPrev').addEventListener('click', ()=>{
-        const on = $$('.d', dots).findIndex(x=> x.classList.contains('on'));
-        const idx = clamp(on-1, 0, items.length-1);
-        items[idx].scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
-        questComplete(3);
-      });
-      $('#planNext').addEventListener('click', ()=>{
-        const on = $$('.d', dots).findIndex(x=> x.classList.contains('on'));
-        const idx = clamp(on+1, 0, items.length-1);
-        items[idx].scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
-        questComplete(3);
-      });
-
-      $$('[data-buy]').forEach(btn=> btn.addEventListener('click', ()=>{ location.href = BUY_URL; questComplete(3);}));
-    }
-
-    /* -------------------- Mode toggles -------------------- */
-    function initModes(){
-      $$('.modeCard').forEach(card=>{
-        card.addEventListener('click', ()=>{
-          $$('.modeCard').forEach(x=> x.classList.remove('active'));
-          card.classList.add('active');
-          ACTIVE_MODE = card.dataset.mode;
-          const isOnline = ACTIVE_MODE === 'online';
-          $('#modeLabel').textContent = isOnline ? 'Modo Online ativo' : 'Modo Offline ativo';
-          $('#modeBar').style.width = isOnline ? '75%' : '55%';
-          $('#modeGain').textContent = isOnline
-            ? 'Mais foco em títulos com modo online e indicação de compatibilidade no detalhe.'
-            : 'Mais foco em campanha + descoberta rápida por categoria.';
-          $('#modeVerify').textContent = isOnline
-            ? 'Abra um jogo e veja “Modo: Online/Multiplayer*” no modal.'
-            : 'Abra um jogo e veja “Modo: Offline/Campanha” no modal.';
-          toast.show('Modo atualizado', isOnline ? 'Agora a página prioriza jogos com multiplayer quando possível.' : 'Agora a página foca em campanha e progresso.');
-        });
-      });
-    }
-
-    /* -------------------- Navigation actions (sem menu fixo) -------------------- */
-    function scrollToId(id){
-      const el = document.getElementById(id);
-      if(!el) return;
-      el.scrollIntoView({behavior:'smooth', block:'start'});
-    }
-
-    function initActions(){
-      $('#year').textContent = String(new Date().getFullYear());
-
-      const goCatalog = ()=>{ scrollToId('catalog'); questComplete(0); };
-      const seePlans = ()=> scrollToId('plans');
-
-      $('#btnGoCatalog').addEventListener('click', goCatalog);
-      $('#btnGoCatalog2').addEventListener('click', goCatalog);
-      $('#btnSeePlans').addEventListener('click', seePlans);
-
-      $('#btnOpenFull').addEventListener('click', ()=>{
-        $('#fullCatalog').classList.add('open');
-        resetFullCatalog();
-        renderFullPage();
-        questComplete(0);
-        setTimeout(()=> $('#searchInput').focus(), 200);
-      });
-      $('#btnCloseFull').addEventListener('click', ()=> $('#fullCatalog').classList.remove('open'));
-      $('#btnMore').addEventListener('click', ()=> renderFullPage());
-
-      $('#searchInput').addEventListener('input', ()=>{
-        resetFullCatalog();
-        renderFullPage();
-        if(normalizeQuery($('#searchInput').value)) questComplete(1);
-      });
-
-      // client/buy paths
-      const goBuy = ()=> { location.href = BUY_URL; };
-      const goClient = ()=> { location.href = CLIENT_URL; };
-
-      $('#btnBuyTop').addEventListener('click', goBuy);
-      $('#btnBuyMid').addEventListener('click', goBuy);
-      $('#btnBuyBottom').addEventListener('click', goBuy);
-      $('#modalBuy').addEventListener('click', goBuy);
-      $('#modalOffer').addEventListener('click', ()=>{ toast.show('Oferta', 'Abrindo oferta…'); location.href = BUY_URL; });
-
-      $('#btnClient').addEventListener('click', goClient);
-      $('#btnClient2').addEventListener('click', goClient);
-      $('#btnClient3').addEventListener('click', goClient);
-
-      // modal close
-      modal.closeBtn.addEventListener('click', closeModal);
-      modal.overlay.addEventListener('click', (e)=>{ if(e.target === modal.overlay) closeModal(); });
-      window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
-
-      // demo tabs
-      $$('.tabBtn').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          $$('.tabBtn').forEach(x=> x.classList.remove('active'));
-          btn.classList.add('active');
-          const tab = btn.dataset.tab;
-          $('#frameMock').style.display = tab==='mock' ? 'block' : 'none';
-          $('#frameVsl').style.display = tab==='vsl' ? 'block' : 'none';
-        });
-      });
-    }
-
-    /* -------------------- Utilities -------------------- */
-    function escapeHtml(s){
-      return String(s||'').replace(/[&<>"']/g, (c)=>({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-      })[c]);
-    }
-
-    /* -------------------- Boot -------------------- */
-    (async function init(){
-      try{
-        onReveal();
-        initActions();
-        initModes();
-
-        await loadGames();
-
-        // HERO rotativo
-        const heroPool = filterGames({category:'Todos'});
-        let heroIndex = 0;
-        const heroImg = $('#heroImg');
-        const heroName = $('#heroName');
-        const heroDesc = $('#heroDesc');
-
-        function setHero(g){
-          heroName.textContent = g.name;
-          heroDesc.textContent = 'Clique para abrir detalhes.';
-          setImgWithFallback(heroImg, getModalHeroCandidates(g.appid));
-          $('.heroCard').onclick = ()=> openModal(g);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram • Direct</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        /* Estilo Pixel Perfect - Instagram Web Dark */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000000;
+            color: #FAFAFA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100dvh; /* Altura dinâmica para mobile */
+            margin: 0;
+            overflow: hidden;
         }
-        setHero(heroPool[0]);
-        setInterval(()=>{
-          heroIndex = (heroIndex+1) % heroPool.length;
-          setHero(heroPool[heroIndex]);
-        }, 5200);
 
-        buildMarquee();
-        renderCategoryChips();
-        renderShowcase();
-        renderMock();
-        mountYouTube();
-        initPlans();
+        #main-wrapper {
+            width: 100%;
+            max-width: 935px;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #262626;
+            position: relative;
+        }
 
-        toast.show('Pronto', 'Catálogo carregado. Explore por categoria e clique para detalhes.');
-      }catch(err){
-        console.error(err);
-        toast.show('Erro', err.message || 'Falha ao iniciar');
-      }
-    })();
-  </script>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 4px; }
+
+        .msg-enter { animation: fadeIn 0.2s ease-out forwards; opacity: 0; transform: translateY(8px); }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        .bubble-user {
+            background-color: #3797F0;
+            color: white;
+            border-radius: 22px;
+            padding: 14px 18px;
+            font-size: 15px;
+            line-height: 1.4;
+            max-width: 75%; /* Aumentei um pouco para caber melhor o video */
+        }
+
+        .bubble-bot {
+            background-color: #262626;
+            color: #FAFAFA;
+            border-radius: 22px;
+            padding: 14px 18px;
+            font-size: 15px;
+            line-height: 1.4;
+            max-width: 75%;
+            border: 1px solid transparent;
+        }
+
+        /* Container do YouTube */
+        .youtube-container {
+            background-color: #000;
+            border-radius: 22px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 320px; /* Largura máxima do player no chat */
+            aspect-ratio: 16/9; /* Mantém formato wide */
+            border: 1px solid #262626;
+        }
+
+        .input-container {
+            border: 1px solid #262626;
+            border-radius: 22px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            padding: 11px 16px;
+            margin: 20px;
+        }
+
+        .option-btn {
+            background-color: transparent;
+            border: 1px solid #3797F0;
+            color: #3797F0;
+            padding: 10px 24px;
+            border-radius: 18px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+            display: inline-block;
+        }
+        .option-btn:hover {
+            background-color: #3797F0;
+            color: white;
+        }
+
+        .typing-dot {
+            width: 6px; height: 6px; background-color: #8E8E8E; border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1){ animation-delay: -0.32s; }
+        .typing-dot:nth-child(2){ animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        
+        /* Ajuste Mobile Safe Area */
+        .shrink-0.pb-4 { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+    </style>
+    
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        // INSIRA SEU ID AQUI
+        fbq('init', 'SEU_PIXEL_ID'); 
+        fbq('track', 'PageView');
+    </script>
+</head>
+<body>
+
+    <div id="main-wrapper">
+        <div class="h-[75px] border-b border-[#262626] flex items-center justify-between px-5 md:px-9 bg-black shrink-0">
+            <div class="flex items-center gap-4">
+                <div class="relative cursor-pointer">
+                    <img src="./assets/img/logo_overise.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Overise&background=10b981&color=fff&size=128'" class="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover">
+                    <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 rounded-full border-[3px] border-black"></div>
+                </div>
+                <div class="cursor-pointer">
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold text-[15px] md:text-[16px]">Overise Store</span>
+                        <i class="fa-solid fa-certificate text-[12px] text-[#3797F0]"></i>
+                    </div>
+                    <span class="text-[12px] text-[#A8A8A8]">Online agora</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-6 text-[#FAFAFA] text-xl">
+                <i class="fa-solid fa-phone cursor-pointer hover:opacity-70"></i>
+                <i class="fa-solid fa-video cursor-pointer hover:opacity-70"></i>
+                <i class="fa-solid fa-circle-info cursor-pointer hover:opacity-70 text-2xl"></i>
+            </div>
+        </div>
+
+        <div id="chat-content" class="flex-1 overflow-y-auto p-5 space-y-1">
+            <div class="text-center text-[12px] text-[#8E8E8E] font-medium my-6">Hoje 10:45</div>
+        </div>
+
+        <div class="shrink-0 pb-4 bg-black">
+            <div id="options-container" class="px-5 pb-2 flex flex-wrap justify-end gap-2 min-h-[0px]"></div>
+            <div class="input-container mx-5">
+                <i class="fa-regular fa-face-smile text-2xl text-[#FAFAFA] cursor-pointer mr-4 hidden md:block"></i>
+                <input type="text" placeholder="Mensagem..." class="bg-transparent border-none outline-none text-[#FAFAFA] text-[15px] flex-1 placeholder-[#8E8E8E]" disabled>
+                <div class="flex items-center gap-4 ml-2">
+                    <i class="fa-solid fa-microphone text-[20px] text-[#FAFAFA] cursor-pointer"></i>
+                    <i class="fa-regular fa-image text-[20px] text-[#FAFAFA] cursor-pointer"></i>
+                    <i class="fa-regular fa-heart text-[20px] text-[#FAFAFA] cursor-pointer"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatContent = document.getElementById('chat-content');
+        const optionsContainer = document.getElementById('options-container');
+
+        // ================= ROTEIRO COM YOUTUBE =================
+        const script = [
+            // CURIOSIDADE / FILTRO
+            {
+                type: 'bot',
+                text: 'Opa! 👋 Vi que você clicou pra saber como ter acesso àquela biblioteca de jogos.',
+                delay: 800
+            },
+            {
+                type: 'bot',
+                text: 'Antes de liberar, preciso confirmar: Você tem PC ou Notebook pra baixar o aplicativo?',
+                delay: 2000,
+                options: [
+                    { text: 'Tenho sim! 🖥️', next: 'has_pc' },
+                    { text: 'Só tenho celular 📱', next: 'no_pc' }
+                ]
+            },
+
+            // --- SEM PC ---
+            {
+                id: 'no_pc',
+                type: 'bot',
+                text: 'Poxa, o app da Overise é exclusivo pra PC Gamer! 😕 Mas se for comprar um em breve, já pode garantir o acesso hoje.',
+                delay: 1000,
+                options: [
+                    { text: 'Quero ver mesmo assim 👍', next: 'education_start' }
+                ]
+            },
+
+            // --- COM PC ---
+            {
+                id: 'has_pc',
+                type: 'bot',
+                text: 'Show! Vai rodar liso. 🔥',
+                delay: 1000,
+                next: 'education_start'
+            },
+            {
+                id: 'education_start',
+                type: 'bot',
+                text: 'Me diz uma coisa: Você conhece a <b>Steam</b> ou é sua primeira vez?',
+                delay: 1500,
+                options: [
+                    { text: 'Já uso a Steam 👍', next: 'knows_steam' },
+                    { text: 'Não conheço 🤔', next: 'explain_steam' }
+                ]
+            },
+
+            // EDUCAÇÃO
+            {
+                id: 'explain_steam',
+                type: 'bot',
+                text: 'Tranquilo! A Steam é a "Netflix dos Jogos". A loja oficial onde todo mundo baixa games no PC. 🌍',
+                delay: 2000
+            },
+            {
+                type: 'bot',
+                text: 'O problema é que lá cada jogo custa R$ 300,00. É muito caro.',
+                delay: 3000,
+                next: 'the_solution'
+            },
+            {
+                id: 'knows_steam',
+                type: 'bot',
+                text: 'Então você sabe que lá os jogos são caríssimos, né? Tipo R$ 300,00 num lançamento. 💸',
+                delay: 1500,
+                next: 'the_solution'
+            },
+
+            // --- SOLUÇÃO + YOUTUBE PLAYER ---
+            {
+                id: 'the_solution',
+                type: 'bot',
+                text: 'Foi pra isso que criamos o <b>App Overise</b>. Você baixa direto da loja oficial, mas pagando preço de banana. 🍌',
+                delay: 2000
+            },
+            {
+                type: 'bot',
+                text: 'Dá uma olhada nessa demonstração rápida de 20s mostrando como funciona:',
+                delay: 2500
+            },
+            
+            // AQUI É O VÍDEO DO YOUTUBE
+            {
+                type: 'youtube',
+                // COLOQUE APENAS O ID DO VÍDEO AQUI (ex: dQw4w9WgXcQ)
+                videoId: 'SEU_ID_DO_YOUTUBE_AQUI', 
+                delay: 1000
+            },
+
+            {
+                type: 'bot',
+                text: 'Viu? O App usa a estrutura oficial da Steam global. Baixou, jogou.',
+                delay: 5000, // Tempo pro usuário ver um pouco do vídeo
+                options: [
+                    { text: 'Que top! E o preço? 🤑', next: 'price_reveal' }
+                ]
+            },
+
+            // --- PREÇO & CTA ---
+            {
+                id: 'price_reveal',
+                type: 'bot',
+                text: 'Esquece os 300 reais. Nosso plano de entrada custa só <b>R$ 9,90</b>. (Sim, nove e noventa).',
+                delay: 2000
+            },
+            {
+                type: 'bot',
+                text: 'E o melhor: É acesso <b>VITALÍCIO</b>. Pagou uma vez, é seu pra sempre. 🚀',
+                delay: 3000,
+                options: [
+                    { text: 'Quero garantir agora! ✅', action: 'checkout' }
+                ]
+            }
+        ];
+
+        // ================= ENGINE =================
+        window.onload = () => processStep(script[0]);
+
+        function processStep(step) {
+            if (!step) return;
+            optionsContainer.innerHTML = '';
+            showTyping();
+
+            setTimeout(() => {
+                removeTyping();
+                if (step.type === 'bot') addBotMsg(step.text);
+                if (step.type === 'image') addImageMsg(step.src);
+                if (step.type === 'youtube') addYouTubeMsg(step.videoId);
+                scrollToBottom();
+
+                if (step.next && !step.options) {
+                    const nextStep = script.find(s => s.id === step.next);
+                    if (nextStep) processStep(nextStep);
+                } else if (step.options) {
+                    showOptions(step.options);
+                } else {
+                    const nextIndex = script.indexOf(step) + 1;
+                    if (nextIndex < script.length && !script[nextIndex].id) {
+                        processStep(script[nextIndex]);
+                    }
+                }
+            }, step.delay);
+        }
+
+        // --- FUNÇÕES DE VISUALIZAÇÃO ---
+
+        function addBotMsg(text) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'msg-enter flex items-end mb-3 gap-2';
+            wrapper.innerHTML = `
+                <img src="./assets/img/logo_overise.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Overise&background=10b981&color=fff&size=128'" class="w-7 h-7 rounded-full select-none object-cover">
+                <div class="bubble-bot">${text}</div>
+            `;
+            chatContent.appendChild(wrapper);
+        }
+
+        function addUserMsg(text) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'msg-enter flex items-end justify-end mb-3';
+            wrapper.innerHTML = `<div class="bubble-user">${text}</div>`;
+            chatContent.appendChild(wrapper);
+        }
+        
+        function addImageMsg(src) {
+             const wrapper = document.createElement('div');
+            wrapper.className = 'msg-enter flex items-end mb-3 gap-2';
+            wrapper.innerHTML = `
+                <img src="./assets/img/logo_overise.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Overise&background=10b981&color=fff&size=128'" class="w-7 h-7 rounded-full select-none object-cover">
+                <div class="bg-[#262626] p-1 rounded-[22px] max-w-[70%] border border-[#262626]">
+                    <img src="${src}" class="w-full rounded-[18px]">
+                </div>
+            `;
+            chatContent.appendChild(wrapper);
+        }
+
+        // NOVO: PLAYER DO YOUTUBE
+        function addYouTubeMsg(videoId) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'msg-enter flex items-end mb-3 gap-2';
+            
+            // Iframe otimizado para parecer nativo
+            wrapper.innerHTML = `
+                <img src="./assets/img/logo_overise.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Overise&background=10b981&color=fff&size=128'" class="w-7 h-7 rounded-full select-none object-cover">
+                <div class="youtube-container">
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed/$Dh7c9MmprZg?modestbranding=1&rel=0&iv_load_policy=3&controls=1" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            `;
+            chatContent.appendChild(wrapper);
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.id = 'typing-indicator';
+            div.className = 'flex items-end mb-3 gap-2';
+            div.innerHTML = `
+                <img src="./assets/img/logo_overise.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Overise&background=10b981&color=fff&size=128'" class="w-7 h-7 rounded-full select-none object-cover">
+                <div class="bg-[#262626] px-4 py-3 rounded-[22px] flex gap-1 items-center h-[44px]">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            chatContent.appendChild(div);
+            scrollToBottom();
+        }
+
+        function removeTyping() {
+            const el = document.getElementById('typing-indicator');
+            if (el) el.remove();
+        }
+
+        function showOptions(options) {
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn ml-2';
+                btn.innerText = opt.text;
+                btn.onclick = () => {
+                    optionsContainer.innerHTML = '';
+                    addUserMsg(opt.text);
+                    scrollToBottom();
+                    setTimeout(() => {
+                        if (opt.action === 'checkout') {
+                            if(typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout');
+                            window.location.href = 'https://overisestore.com.br/#offer';
+                        } else if (opt.next) {
+                            const nextStep = script.find(s => s.id === opt.next);
+                            if (nextStep) processStep(nextStep);
+                        }
+                    }, 500);
+                };
+                optionsContainer.appendChild(btn);
+            });
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            // Pequeno delay para garantir que o iframe renderizou
+            setTimeout(() => {
+                chatContent.scrollTo({ top: chatContent.scrollHeight, behavior: 'smooth' });
+            }, 100);
+        }
+    </script>
 </body>
 </html>
