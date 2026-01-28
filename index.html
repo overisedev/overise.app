@@ -2,101 +2,110 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Instagram • Direct</title>
+    <!-- Importando Fonte INTER para mais robustez -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <style>
-        /* Estilo Pixel Perfect - Instagram Web Dark */
+        /* Estilo Nativo Instagram Web Dark */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            /* Mudança para fonte Inter */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #000000;
             color: #FAFAFA;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100dvh; /* Altura dinâmica para mobile */
+            display: block; 
+            height: 100dvh;
             margin: 0;
             overflow: hidden;
+            /* Melhorar renderização da fonte no fundo preto */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         #main-wrapper {
             width: 100%;
-            max-width: 935px;
+            max-width: 100%; 
             height: 100%;
             background-color: #000;
             display: flex;
             flex-direction: column;
-            border: 1px solid #262626;
+            border: none; 
             position: relative;
         }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 4px; }
+        ::-webkit-scrollbar { width: 0px; } /* Scroll invisível */
 
+        /* Animações */
         .msg-enter { animation: fadeIn 0.2s ease-out forwards; opacity: 0; transform: translateY(8px); }
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
+        /* Bolhas de Chat */
         .bubble-user {
             background-color: #3797F0;
             color: white;
             border-radius: 22px;
-            padding: 14px 18px;
+            padding: 12px 16px;
             font-size: 15px;
+            font-weight: 500; /* Aumentado peso da fonte */
             line-height: 1.4;
-            max-width: 75%;
+            max-width: 85%; 
         }
 
         .bubble-bot {
             background-color: #262626;
             color: #FAFAFA;
             border-radius: 22px;
-            padding: 14px 18px;
+            padding: 12px 16px;
             font-size: 15px;
+            font-weight: 500; /* Aumentado peso da fonte */
             line-height: 1.4;
-            max-width: 75%;
-            border: 1px solid transparent;
+            max-width: 85%; 
         }
 
         /* Container do YouTube */
         .youtube-container {
             background-color: #000;
-            border-radius: 22px;
+            border-radius: 18px;
             overflow: hidden;
             width: 100%;
-            max-width: 320px; /* Largura máxima do player no chat */
-            aspect-ratio: 16/9; /* Mantém formato wide */
+            max-width: 360px;
+            aspect-ratio: 16/9;
             border: 1px solid #262626;
+            margin-top: 4px;
         }
 
-        .input-container {
-            border: 1px solid #262626;
-            border-radius: 22px;
-            background-color: #000;
-            display: flex;
-            align-items: center;
-            padding: 11px 16px;
-            margin: 20px;
-        }
-
+        /* Botões de Opção VERTICAIS */
         .option-btn {
             background-color: transparent;
-            border: 1px solid #3797F0;
+            border: 1.5px solid #3797F0; /* Borda um pouco mais grossa */
             color: #3797F0;
-            padding: 10px 24px;
-            border-radius: 18px;
+            padding: 14px 24px;
+            border-radius: 9999px; /* Totalmente arredondado (Pílula) */
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
             transition: all 0.2s;
-            margin-top: 8px;
-            display: inline-block;
+            width: 100%; 
+            text-align: center;
+            display: block;
+            letter-spacing: 0.3px; /* Leve espaçamento para leitura */
         }
-        .option-btn:hover {
+        .option-btn:active {
             background-color: #3797F0;
             color: white;
+            opacity: 0.8;
+            transform: scale(0.98); /* Feedback tátil visual */
+        }
+        @media (hover: hover) {
+            .option-btn:hover {
+                background-color: rgba(55, 151, 240, 0.1);
+            }
         }
 
         .typing-dot {
@@ -107,65 +116,92 @@
         .typing-dot:nth-child(2){ animation-delay: -0.16s; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
         
-        /* Ajuste Mobile Safe Area */
         .shrink-0.pb-4 { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
     </style>
     
+    <!-- CÓDIGO DO PIXEL UTMIFY ATUALIZADO -->
     <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        
-        // --- INSIRA SEU ID DO PIXEL AQUI EMBAIXO ---
-        fbq('init', 'SEU_PIXEL_ID'); 
-        fbq('track', 'PageView');
+      window.pixelId = "696defe9ac37ff3a5a89881b";
+      var a = document.createElement("script");
+      a.setAttribute("async", "");
+      a.setAttribute("defer", "");
+      a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+      document.head.appendChild(a);
     </script>
+    <!-- SCRIPT UTM UTMIFY -->
     <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" async defer></script>
 </head>
 <body>
 
     <div id="main-wrapper">
-        <div class="h-[75px] border-b border-[#262626] flex items-center justify-between px-5 md:px-9 bg-black shrink-0">
-            <div class="flex items-center gap-4">
-                <div class="relative cursor-pointer">
-                    <img src="./assets/img/logo_overise.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Overise&background=10b981&color=fff&size=128'" class="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover">
-                    <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 rounded-full border-[3px] border-black"></div>
-                </div>
-                <div class="cursor-pointer">
-                    <div class="flex items-center gap-2">
-                        <span class="font-semibold text-[15px] md:text-[16px]">Overise Store</span>
-                        <i class="fa-solid fa-certificate text-[12px] text-[#3797F0]"></i>
+        
+        <!-- HEADER -->
+        <div class="h-[60px] flex items-center justify-between px-4 bg-black shrink-0 border-b border-[#262626] z-50">
+            <!-- Lado Esquerdo -->
+            <div class="flex items-center gap-6"> 
+                <i class="fa-solid fa-arrow-left text-[22px] text-white cursor-pointer"></i>
+                
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <!-- Foto de Perfil -->
+                    <div class="relative">
+                        <img src="https://i.imgur.com/IYhYbK6.png" class="w-8 h-8 rounded-full object-cover">
+                        <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-[#19D150] rounded-full border-[2px] border-black"></div>
                     </div>
-                    <span class="text-[12px] text-[#A8A8A8]">Online agora</span>
+                    
+                    <!-- Nome e Status -->
+                    <div class="flex flex-col justify-center">
+                        <div class="flex items-center gap-1">
+                            <span class="font-semibold text-[16px] text-white leading-tight">Overise Store</span>
+                            <i class="fa-solid fa-circle-check text-[#3797F0] text-[12px]"></i>
+                        </div>
+                        <span class="text-[12px] text-[#A8A8A8] leading-tight">Online agora</span>
+                    </div>
                 </div>
             </div>
-            <div class="flex items-center gap-6 text-[#FAFAFA] text-xl">
-                <i class="fa-solid fa-phone cursor-pointer hover:opacity-70"></i>
-                <i class="fa-solid fa-video cursor-pointer hover:opacity-70"></i>
-                <i class="fa-solid fa-circle-info cursor-pointer hover:opacity-70 text-2xl"></i>
+
+            <!-- Lado Direito (Ícones) -->
+            <div class="flex items-center gap-6 text-white">
+                <i class="fa-solid fa-phone text-[20px] cursor-pointer"></i>
+                <i class="fa-solid fa-video text-[24px] cursor-pointer"></i>
             </div>
         </div>
 
-        <div id="chat-content" class="flex-1 overflow-y-auto p-5 space-y-1">
-            <div class="text-center text-[12px] text-[#8E8E8E] font-medium my-6">Hoje 10:45</div>
+        <!-- ÁREA DE CHAT -->
+        <div id="chat-content" class="flex-1 overflow-y-auto p-4 space-y-1">
+            
+            <!-- SESSÃO DE PERFIL -->
+            <div class="flex flex-col items-center mt-6 mb-8 text-center animate-fade-in w-full">
+                <!-- Anel de Story (Gradiente) -->
+                <div class="relative mb-3 cursor-pointer">
+                    <!-- Gradiente exato do Instagram -->
+                    <div class="w-[90px] h-[90px] rounded-full p-[2px] bg-gradient-to-tr from-[#FFC800] via-[#FF0069] to-[#D300C5]">
+                        <div class="bg-black p-[3px] rounded-full w-full h-full flex items-center justify-center">
+                            <!-- FOTO PERFIL GRANDE -->
+                            <img src="https://i.imgur.com/IYhYbK6.png" class="w-full h-full rounded-full object-cover">
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="text-xl font-semibold text-white mb-1">Overise Store</h2>
+                <p class="text-sm text-[#A8A8A8] mb-1 font-medium">overise.oficial • Instagram</p>
+                <p class="text-[13px] text-[#A8A8A8] mb-4">1 mil seguidores • 1 publicação</p>
+                
+                <button class="bg-[#363636] text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-[#262626] transition border border-transparent hover:border-[#555]">
+                    Ver perfil
+                </button>
+            </div>
+
+            <!-- DATA E HORA DINÂMICA -->
+            <div id="time-display" class="text-center text-[12px] text-[#A8A8A8] font-medium my-6">
+                <!-- O JS vai preencher aqui: Hoje HH:MM -->
+            </div>
+
         </div>
 
-        <div class="shrink-0 pb-4 bg-black">
-            <div id="options-container" class="px-5 pb-2 flex flex-wrap justify-end gap-2 min-h-[0px]"></div>
-            <div class="input-container mx-5">
-                <i class="fa-regular fa-face-smile text-2xl text-[#FAFAFA] cursor-pointer mr-4 hidden md:block"></i>
-                <input type="text" placeholder="Mensagem..." class="bg-transparent border-none outline-none text-[#FAFAFA] text-[15px] flex-1 placeholder-[#8E8E8E]" disabled>
-                <div class="flex items-center gap-4 ml-2">
-                    <i class="fa-solid fa-microphone text-[20px] text-[#FAFAFA] cursor-pointer"></i>
-                    <i class="fa-regular fa-image text-[20px] text-[#FAFAFA] cursor-pointer"></i>
-                    <i class="fa-regular fa-heart text-[20px] text-[#FAFAFA] cursor-pointer"></i>
-                </div>
-            </div>
+        <!-- ÁREA DE INPUT / BOTÕES (SIMPLIFICADA VERTICAL) -->
+        <div class="shrink-0 pb-4 bg-black border-t border-[#262626] p-4">
+            <!-- Container Vertical para Opções -->
+            <div id="options-container" class="flex flex-col gap-3 w-full"></div>
         </div>
     </div>
 
@@ -173,24 +209,30 @@
         const chatContent = document.getElementById('chat-content');
         const optionsContainer = document.getElementById('options-container');
 
-        // ================= ROTEIRO ATUALIZADO =================
+        // ================= SINCRONIZAÇÃO DE HORA =================
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time-display').innerText = `Hoje ${hours}:${minutes}`;
+        }
+        
+        // ================= ROTEIRO =================
         const script = [
-            // CURIOSIDADE / FILTRO
             {
                 type: 'bot',
                 text: 'Opa! 👋 Vi que você clicou pra saber como ter acesso àquela biblioteca de jogos.',
-                delay: 800
+                delay: 1500 // Tempo para ver o perfil
             },
             {
                 type: 'bot',
                 text: 'Antes de liberar, preciso confirmar: Você tem PC ou Notebook pra baixar o aplicativo?',
-                delay: 2000,
+                delay: 3000,
                 options: [
                     { text: 'Tenho sim! 🖥️', next: 'has_pc' },
                     { text: 'Só tenho celular 📱', next: 'no_pc' }
                 ]
             },
-
             // --- SEM PC ---
             {
                 id: 'no_pc',
@@ -201,7 +243,6 @@
                     { text: 'Quero ver mesmo assim 👍', next: 'education_start' }
                 ]
             },
-
             // --- COM PC ---
             {
                 id: 'has_pc',
@@ -220,8 +261,6 @@
                     { text: 'Não conheço 🤔', next: 'explain_steam' }
                 ]
             },
-
-            // EDUCAÇÃO
             {
                 id: 'explain_steam',
                 type: 'bot',
@@ -241,8 +280,7 @@
                 delay: 1500,
                 next: 'the_solution'
             },
-
-            // --- SOLUÇÃO + SEU VÍDEO ---
+            // --- SOLUÇÃO + VÍDEO ---
             {
                 id: 'the_solution',
                 type: 'bot',
@@ -254,14 +292,12 @@
                 text: 'Dá uma olhada nessa demonstração rápida de 20s mostrando como funciona:',
                 delay: 2500
             },
-            
-            // AQUI ESTÁ SEU VÍDEO (ID: Dh7c9MmprZg)
+            // SEU VÍDEO AQUI
             {
                 type: 'youtube',
                 videoId: 'Dh7c9MmprZg', 
                 delay: 1000
             },
-
             {
                 type: 'bot',
                 text: 'Viu? O App usa a estrutura oficial da Steam global. Baixou, jogou.',
@@ -270,12 +306,11 @@
                     { text: 'Que top! E o preço? 🤑', next: 'price_reveal' }
                 ]
             },
-
             // --- PREÇO & CTA ---
             {
                 id: 'price_reveal',
                 type: 'bot',
-                text: 'Esquece os 300 reais. Nosso plano de entrada custa só <b>R$ 9,90</b>. (Sim, nove e noventa).',
+                text: 'Esquece os 300 reais. Nosso plano de entrada custa só <b>R$ 9,97</b>. (Sim, nove e noventa).',
                 delay: 2000
             },
             {
@@ -289,7 +324,10 @@
         ];
 
         // ================= ENGINE =================
-        window.onload = () => processStep(script[0]);
+        window.onload = () => {
+            updateTime(); // Atualiza a hora ao carregar
+            processStep(script[0]);
+        };
 
         function processStep(step) {
             if (!step) return;
@@ -317,13 +355,11 @@
             }, step.delay);
         }
 
-        // --- FUNÇÕES DE VISUALIZAÇÃO ---
-
         function addBotMsg(text) {
             const wrapper = document.createElement('div');
             wrapper.className = 'msg-enter flex items-end mb-3 gap-2';
             wrapper.innerHTML = `
-                <img src="./assets/img/logo_overise.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Overise&background=10b981&color=fff&size=128'" class="w-7 h-7 rounded-full select-none object-cover">
+                <img src="https://i.imgur.com/IYhYbK6.png" class="w-7 h-7 rounded-full select-none object-cover">
                 <div class="bubble-bot">${text}</div>
             `;
             chatContent.appendChild(wrapper);
@@ -340,7 +376,7 @@
              const wrapper = document.createElement('div');
             wrapper.className = 'msg-enter flex items-end mb-3 gap-2';
             wrapper.innerHTML = `
-                <img src="./assets/img/logo_overise.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Overise&background=10b981&color=fff&size=128'" class="w-7 h-7 rounded-full select-none object-cover">
+                <img src="https://i.imgur.com/IYhYbK6.png" class="w-7 h-7 rounded-full select-none object-cover">
                 <div class="bg-[#262626] p-1 rounded-[22px] max-w-[70%] border border-[#262626]">
                     <img src="${src}" class="w-full rounded-[18px]">
                 </div>
@@ -348,14 +384,11 @@
             chatContent.appendChild(wrapper);
         }
 
-        // PLAYER DO YOUTUBE
         function addYouTubeMsg(videoId) {
             const wrapper = document.createElement('div');
             wrapper.className = 'msg-enter flex items-end mb-3 gap-2';
-            
-            // Iframe otimizado
             wrapper.innerHTML = `
-                <img src="./assets/img/logo_overise.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Overise&background=10b981&color=fff&size=128'" class="w-7 h-7 rounded-full select-none object-cover">
+                <img src="https://i.imgur.com/IYhYbK6.png" class="w-7 h-7 rounded-full select-none object-cover">
                 <div class="youtube-container">
                     <iframe 
                         width="100%" 
@@ -376,8 +409,8 @@
             div.id = 'typing-indicator';
             div.className = 'flex items-end mb-3 gap-2';
             div.innerHTML = `
-                <img src="./assets/img/logo_overise.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Overise&background=10b981&color=fff&size=128'" class="w-7 h-7 rounded-full select-none object-cover">
-                <div class="bg-[#262626] px-4 py-3 rounded-[22px] flex gap-1 items-center h-[44px]">
+                <img src="https://i.imgur.com/IYhYbK6.png" class="w-7 h-7 rounded-full select-none object-cover">
+                <div class="bg-[#262626] px-4 py-3 rounded-[22px] flex gap-1 items-center h-[38px]">
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
@@ -395,7 +428,7 @@
         function showOptions(options) {
             options.forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = 'option-btn ml-2';
+                btn.className = 'option-btn';
                 btn.innerText = opt.text;
                 btn.onclick = () => {
                     optionsContainer.innerHTML = '';
@@ -403,7 +436,6 @@
                     scrollToBottom();
                     setTimeout(() => {
                         if (opt.action === 'checkout') {
-                            if(typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout');
                             window.location.href = 'https://overisestore.com.br/#offer';
                         } else if (opt.next) {
                             const nextStep = script.find(s => s.id === opt.next);
