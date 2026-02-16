@@ -2,456 +2,278 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Instagram • Direct</title>
-    <!-- Importando Fonte INTER para mais robustez -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra Aprovada | Overise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <style>
-        /* Estilo Nativo Instagram Web Dark */
-        body {
-            /* Mudança para fonte Inter */
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #000000;
-            color: #FAFAFA;
-            display: block; 
-            height: 100dvh;
-            margin: 0;
-            overflow: hidden;
-            /* Melhorar renderização da fonte no fundo preto */
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Confetti JS para efeito de celebração -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-        #main-wrapper {
-            width: 100%;
-            max-width: 100%; 
-            height: 100%;
-            background-color: #000;
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #fff;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            border: none; 
-            position: relative;
+            align-items: center;
+            background-image: radial-gradient(circle at 50% 0%, #0f160f 0%, #000000 60%);
         }
 
-        ::-webkit-scrollbar { width: 0px; } /* Scroll invisível */
-
-        /* Animações */
-        .msg-enter { animation: fadeIn 0.2s ease-out forwards; opacity: 0; transform: translateY(8px); }
-        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
-
-        /* Bolhas de Chat */
-        .bubble-user {
-            background-color: #3797F0;
-            color: white;
-            border-radius: 22px;
-            padding: 12px 16px;
-            font-size: 15px;
-            font-weight: 500; /* Aumentado peso da fonte */
-            line-height: 1.4;
-            max-width: 85%; 
+        .success-icon-container {
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 255, 65, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #00FF41;
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.3);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
         }
 
-        .bubble-bot {
-            background-color: #262626;
-            color: #FAFAFA;
-            border-radius: 22px;
-            padding: 12px 16px;
-            font-size: 15px;
-            font-weight: 500; /* Aumentado peso da fonte */
-            line-height: 1.4;
-            max-width: 85%; 
+        .success-icon {
+            font-size: 50px;
+            color: #00FF41;
         }
 
-        /* Container do YouTube */
-        .youtube-container {
-            background-color: #000;
-            border-radius: 18px;
-            overflow: hidden;
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(0, 255, 65, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 65, 0); }
+        }
+
+        .card-access {
+            background: #0f0f0f;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 30px;
             width: 100%;
-            max-width: 360px;
-            aspect-ratio: 16/9;
-            border: 1px solid #262626;
-            margin-top: 4px;
+            max-width: 600px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
         }
-
-        /* Botões de Opção VERTICAIS */
-        .option-btn {
-            background-color: transparent;
-            border: 1.5px solid #3797F0; /* Borda um pouco mais grossa */
-            color: #3797F0;
-            padding: 14px 24px;
-            border-radius: 9999px; /* Totalmente arredondado (Pílula) */
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%; 
-            text-align: center;
-            display: block;
-            letter-spacing: 0.3px; /* Leve espaçamento para leitura */
-        }
-        .option-btn:active {
-            background-color: #3797F0;
-            color: white;
-            opacity: 0.8;
-            transform: scale(0.98); /* Feedback tátil visual */
-        }
-        @media (hover: hover) {
-            .option-btn:hover {
-                background-color: rgba(55, 151, 240, 0.1);
-            }
-        }
-
-        .typing-dot {
-            width: 6px; height: 6px; background-color: #8E8E8E; border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out both;
-        }
-        .typing-dot:nth-child(1){ animation-delay: -0.32s; }
-        .typing-dot:nth-child(2){ animation-delay: -0.16s; }
-        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
         
-        .shrink-0.pb-4 { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+        .card-access::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, #00FF41, #004d13);
+        }
+
+        .btn-access {
+            width: 100%;
+            padding: 16px;
+            background: #00FF41;
+            color: #000;
+            font-weight: 800;
+            text-transform: uppercase;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+        
+        .btn-access:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.4);
+            background: #00cc33;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #222;
+        }
+        .step-item:last-child { border-bottom: none; }
+        
+        .step-num {
+            background: #222;
+            color: #fff;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: bold;
+            flex-shrink: 0;
+            border: 1px solid #444;
+        }
+
+        .important-box {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            color: #ffaa00;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            line-height: 1.5;
+        }
+
+        /* Loading Bar Fake */
+        .loading-container {
+            width: 100%;
+            background: #222;
+            height: 6px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .loading-bar {
+            height: 100%;
+            background: #00FF41;
+            width: 0%;
+            transition: width 1.5s ease-in-out;
+        }
     </style>
-    
-    <!-- CÓDIGO DO PIXEL UTMIFY ATUALIZADO -->
+
+    <!-- PIXEL / RASTREAMENTO -->
     <script>
-      window.pixelId = "696defe9ac37ff3a5a89881b";
-      var a = document.createElement("script");
-      a.setAttribute("async", "");
-      a.setAttribute("defer", "");
-      a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-      document.head.appendChild(a);
+        // Lembre-se de configurar o pixel de "Purchase" no head da sua plataforma de checkout também
+        console.log("Página de Obrigado Carregada");
     </script>
-    <!-- SCRIPT UTM UTMIFY -->
-    <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" async defer></script>
 </head>
-<body>
+<body class="p-6">
 
-    <div id="main-wrapper">
+    <!-- ÍCONE DE SUCESSO -->
+    <div class="mt-10 success-icon-container">
+        <i class="fa-solid fa-check success-icon"></i>
+    </div>
+
+    <div class="text-center">
+        <h1 class="text-3xl md:text-4xl font-black text-white mb-2 uppercase tracking-tighter">Pagamento Aprovado!</h1>
+        <p class="text-gray-400">Sua licença vitalícia foi gerada com sucesso.</p>
+    </div>
+
+    <!-- CARD DE ACESSO -->
+    <div class="card-access">
         
-        <!-- HEADER -->
-        <div class="h-[60px] flex items-center justify-between px-4 bg-black shrink-0 border-b border-[#262626] z-50">
-            <!-- Lado Esquerdo -->
-            <div class="flex items-center gap-6"> 
-                <i class="fa-solid fa-arrow-left text-[22px] text-white cursor-pointer"></i>
-                
-                <div class="flex items-center gap-3 cursor-pointer">
-                    <!-- Foto de Perfil -->
-                    <div class="relative">
-                        <img src="https://i.imgur.com/IYhYbK6.png" class="w-8 h-8 rounded-full object-cover">
-                        <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-[#19D150] rounded-full border-[2px] border-black"></div>
-                    </div>
-                    
-                    <!-- Nome e Status -->
-                    <div class="flex flex-col justify-center">
-                        <div class="flex items-center gap-1">
-                            <span class="font-semibold text-[16px] text-white leading-tight">Overise Store</span>
-                            <i class="fa-solid fa-circle-check text-[#3797F0] text-[12px]"></i>
-                        </div>
-                        <span class="text-[12px] text-[#A8A8A8] leading-tight">Online agora</span>
-                    </div>
+        <!-- Barra de Progresso Visual -->
+        <div class="flex justify-between text-xs text-green-400 mb-1 font-bold">
+            <span>GERANDO ACESSO...</span>
+            <span id="progress-text">0%</span>
+        </div>
+        <div class="loading-container">
+            <div class="loading-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="access-content" style="opacity: 0.5; transition: opacity 0.5s;">
+            <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-key text-[#00FF41]"></i> Dados de Acesso
+            </h2>
+
+            <div class="step-item">
+                <div class="step-num">1</div>
+                <div>
+                    <h3 class="font-bold text-white">Verifique seu E-mail</h3>
+                    <p class="text-sm text-gray-400">
+                        Enviamos o login e senha para o seu e-mail cadastrado.
+                    </p>
                 </div>
             </div>
 
-            <!-- Lado Direito (Ícones) -->
-            <div class="flex items-center gap-6 text-white">
-                <i class="fa-solid fa-phone text-[20px] cursor-pointer"></i>
-                <i class="fa-solid fa-video text-[24px] cursor-pointer"></i>
+            <div class="step-item">
+                <div class="step-num">2</div>
+                <div>
+                    <h3 class="font-bold text-white">Quem enviou?</h3>
+                    <p class="text-sm text-gray-400">
+                        O e-mail chegará em nome de <strong class="text-white">"ggCheckout"</strong> ou "Overise".
+                    </p>
+                </div>
             </div>
-        </div>
 
-        <!-- ÁREA DE CHAT -->
-        <div id="chat-content" class="flex-1 overflow-y-auto p-4 space-y-1">
+            <div class="important-box">
+                <i class="fa-solid fa-triangle-exclamation text-xl shrink-0"></i>
+                <div>
+                    <strong>Atenção:</strong> Verifique sua caixa de <b>SPAM</b> ou <b>Lixo Eletrônico</b>. O e-mail pode ter caído lá.
+                </div>
+            </div>
+
+            <!-- BOTÃO DE ACESSO -->
+            <a href="https://overisedev.github.io/membro-vitalicio/" class="btn-access">
+                ACESSAR ÁREA DE MEMBROS <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </a>
             
-            <!-- SESSÃO DE PERFIL -->
-            <div class="flex flex-col items-center mt-6 mb-8 text-center animate-fade-in w-full">
-                <!-- Anel de Story (Gradiente) -->
-                <div class="relative mb-3 cursor-pointer">
-                    <!-- Gradiente exato do Instagram -->
-                    <div class="w-[90px] h-[90px] rounded-full p-[2px] bg-gradient-to-tr from-[#FFC800] via-[#FF0069] to-[#D300C5]">
-                        <div class="bg-black p-[3px] rounded-full w-full h-full flex items-center justify-center">
-                            <!-- FOTO PERFIL GRANDE -->
-                            <img src="https://i.imgur.com/IYhYbK6.png" class="w-full h-full rounded-full object-cover">
-                        </div>
-                    </div>
-                </div>
-                
-                <h2 class="text-xl font-semibold text-white mb-1">Overise Store</h2>
-                <p class="text-sm text-[#A8A8A8] mb-1 font-medium">overise.oficial • Instagram</p>
-                <p class="text-[13px] text-[#A8A8A8] mb-4">1 mil seguidores • 1 publicação</p>
-                
-                <button class="bg-[#363636] text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-[#262626] transition border border-transparent hover:border-[#555]">
-                    Ver perfil
-                </button>
-            </div>
-
-            <!-- DATA E HORA DINÂMICA -->
-            <div id="time-display" class="text-center text-[12px] text-[#A8A8A8] font-medium my-6">
-                <!-- O JS vai preencher aqui: Hoje HH:MM -->
-            </div>
-
-        </div>
-
-        <!-- ÁREA DE INPUT / BOTÕES (SIMPLIFICADA VERTICAL) -->
-        <div class="shrink-0 pb-4 bg-black border-t border-[#262626] p-4">
-            <!-- Container Vertical para Opções -->
-            <div id="options-container" class="flex flex-col gap-3 w-full"></div>
+            <p class="text-xs text-center text-gray-500 mt-3">
+                Seu login é o e-mail usado na compra.
+            </p>
         </div>
     </div>
 
+    <!-- COMUNIDADE -->
+    <div class="max-w-xl mt-8 text-center border border-[#222] p-6 rounded-xl bg-[#0a0a0a]">
+        <h3 class="text-lg font-bold text-white mb-2">Não jogue sozinho! 🎮</h3>
+        <p class="text-sm text-gray-400 mb-4">Entre no nosso grupo VIP no WhatsApp para receber novidades, atualizações de jogos e suporte rápido.</p>
+        
+        <!-- LINK DO GRUPO (ALTERE AQUI) -->
+        <button onclick="window.open('SEU_LINK_DO_WHATSAPP_GROUP', '_blank')" class="bg-[#25D366] text-black font-bold py-3 px-6 rounded-lg hover:opacity-90 transition flex items-center justify-center gap-2 w-full md:w-auto mx-auto border-none cursor-pointer">
+            <i class="fa-brands fa-whatsapp text-xl"></i> ENTRAR NO GRUPO VIP
+        </button>
+    </div>
+
+    <!-- RODAPÉ SUPORTE -->
+    <p class="mt-10 text-xs text-gray-600 mb-10">
+        Teve algum problema? <a href="https://wa.me/5521999653187" class="text-gray-400 underline hover:text-white">Fale com o suporte</a>
+    </p>
+
     <script>
-        const chatContent = document.getElementById('chat-content');
-        const optionsContainer = document.getElementById('options-container');
+        // Simulação de Carregamento de Licença
+        window.onload = function() {
+            // Dispara confetes
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-        // ================= SINCRONIZAÇÃO DE HORA =================
-        function updateTime() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('time-display').innerText = `Hoje ${hours}:${minutes}`;
-        }
-        
-        // ================= ROTEIRO =================
-        const script = [
-            {
-                type: 'bot',
-                text: 'Opa! 👋 Vi que você clicou pra saber como ter acesso àquela biblioteca de jogos.',
-                delay: 1500 // Tempo para ver o perfil
-            },
-            {
-                type: 'bot',
-                text: 'Antes de liberar, preciso confirmar: Você tem PC ou Notebook pra baixar o aplicativo?',
-                delay: 3000,
-                options: [
-                    { text: 'Tenho sim! 🖥️', next: 'has_pc' },
-                    { text: 'Só tenho celular 📱', next: 'no_pc' }
-                ]
-            },
-            // --- SEM PC ---
-            {
-                id: 'no_pc',
-                type: 'bot',
-                text: 'Poxa, o app da Overise é exclusivo pra PC Gamer! 😕 Mas se for comprar um em breve, já pode garantir o acesso hoje.',
-                delay: 1000,
-                options: [
-                    { text: 'Quero ver mesmo assim 👍', next: 'education_start' }
-                ]
-            },
-            // --- COM PC ---
-            {
-                id: 'has_pc',
-                type: 'bot',
-                text: 'Show! Vai rodar liso. 🔥',
-                delay: 1000,
-                next: 'education_start'
-            },
-            {
-                id: 'education_start',
-                type: 'bot',
-                text: 'Me diz uma coisa: Você conhece a <b>Steam</b> ou é sua primeira vez?',
-                delay: 1500,
-                options: [
-                    { text: 'Já uso a Steam 👍', next: 'knows_steam' },
-                    { text: 'Não conheço 🤔', next: 'explain_steam' }
-                ]
-            },
-            {
-                id: 'explain_steam',
-                type: 'bot',
-                text: 'Tranquilo! A Steam é a "Netflix dos Jogos". A loja oficial onde todo mundo baixa games no PC. 🌍',
-                delay: 2000
-            },
-            {
-                type: 'bot',
-                text: 'O problema é que lá cada jogo custa R$ 300,00. É muito caro.',
-                delay: 3000,
-                next: 'the_solution'
-            },
-            {
-                id: 'knows_steam',
-                type: 'bot',
-                text: 'Então você sabe que lá os jogos são caríssimos, né? Tipo R$ 300,00 num lançamento. 💸',
-                delay: 1500,
-                next: 'the_solution'
-            },
-            // --- SOLUÇÃO + VÍDEO ---
-            {
-                id: 'the_solution',
-                type: 'bot',
-                text: 'Foi pra isso que criamos o <b>App Overise</b>. Você baixa direto da loja oficial, mas pagando preço de banana. 🍌',
-                delay: 2000
-            },
-            {
-                type: 'bot',
-                text: 'Dá uma olhada nessa demonstração rápida de 20s mostrando como funciona:',
-                delay: 2500
-            },
-            // SEU VÍDEO AQUI
-            {
-                type: 'youtube',
-                videoId: 'Dh7c9MmprZg', 
-                delay: 1000
-            },
-            {
-                type: 'bot',
-                text: 'Viu? O App usa a estrutura oficial da Steam global. Baixou, jogou.',
-                delay: 5000, 
-                options: [
-                    { text: 'Que top! E o preço? 🤑', next: 'price_reveal' }
-                ]
-            },
-            // --- PREÇO & CTA ---
-            {
-                id: 'price_reveal',
-                type: 'bot',
-                text: 'Esquece os 300 reais. Nosso plano de entrada custa só <b>R$ 9,97</b>. (Sim, nove e noventa).',
-                delay: 2000
-            },
-            {
-                type: 'bot',
-                text: 'E o melhor: É acesso <b>VITALÍCIO</b>. Pagou uma vez, é seu pra sempre. 🚀',
-                delay: 3000,
-                options: [
-                    { text: 'Quero garantir agora! ✅', action: 'checkout' }
-                ]
+            function random(min, max) {
+              return Math.random() * (max - min) + min;
             }
-        ];
 
-        // ================= ENGINE =================
-        window.onload = () => {
-            updateTime(); // Atualiza a hora ao carregar
-            processStep(script[0]);
-        };
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
 
-        function processStep(step) {
-            if (!step) return;
-            optionsContainer.innerHTML = '';
-            showTyping();
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              var particleCount = 50 * (timeLeft / duration);
+              
+              // Efeito Matrix (Verde)
+              confetti(Object.assign({}, defaults, { 
+                  particleCount, 
+                  origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 },
+                  colors: ['#00FF41', '#ffffff'] 
+              }));
+              confetti(Object.assign({}, defaults, { 
+                  particleCount, 
+                  origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 },
+                  colors: ['#00FF41', '#ffffff']
+              }));
+            }, 250);
+
+            // Animação da barra de progresso
+            const bar = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const content = document.getElementById('access-content');
 
             setTimeout(() => {
-                removeTyping();
-                if (step.type === 'bot') addBotMsg(step.text);
-                if (step.type === 'image') addImageMsg(step.src);
-                if (step.type === 'youtube') addYouTubeMsg(step.videoId);
-                scrollToBottom();
-
-                if (step.next && !step.options) {
-                    const nextStep = script.find(s => s.id === step.next);
-                    if (nextStep) processStep(nextStep);
-                } else if (step.options) {
-                    showOptions(step.options);
-                } else {
-                    const nextIndex = script.indexOf(step) + 1;
-                    if (nextIndex < script.length && !script[nextIndex].id) {
-                        processStep(script[nextIndex]);
-                    }
-                }
-            }, step.delay);
-        }
-
-        function addBotMsg(text) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'msg-enter flex items-end mb-3 gap-2';
-            wrapper.innerHTML = `
-                <img src="https://i.imgur.com/IYhYbK6.png" class="w-7 h-7 rounded-full select-none object-cover">
-                <div class="bubble-bot">${text}</div>
-            `;
-            chatContent.appendChild(wrapper);
-        }
-
-        function addUserMsg(text) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'msg-enter flex items-end justify-end mb-3';
-            wrapper.innerHTML = `<div class="bubble-user">${text}</div>`;
-            chatContent.appendChild(wrapper);
-        }
-        
-        function addImageMsg(src) {
-             const wrapper = document.createElement('div');
-            wrapper.className = 'msg-enter flex items-end mb-3 gap-2';
-            wrapper.innerHTML = `
-                <img src="https://i.imgur.com/IYhYbK6.png" class="w-7 h-7 rounded-full select-none object-cover">
-                <div class="bg-[#262626] p-1 rounded-[22px] max-w-[70%] border border-[#262626]">
-                    <img src="${src}" class="w-full rounded-[18px]">
-                </div>
-            `;
-            chatContent.appendChild(wrapper);
-        }
-
-        function addYouTubeMsg(videoId) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'msg-enter flex items-end mb-3 gap-2';
-            wrapper.innerHTML = `
-                <img src="https://i.imgur.com/IYhYbK6.png" class="w-7 h-7 rounded-full select-none object-cover">
-                <div class="youtube-container">
-                    <iframe 
-                        width="100%" 
-                        height="100%" 
-                        src="https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&iv_load_policy=3&controls=1" 
-                        title="YouTube video player" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-            `;
-            chatContent.appendChild(wrapper);
-        }
-
-        function showTyping() {
-            const div = document.createElement('div');
-            div.id = 'typing-indicator';
-            div.className = 'flex items-end mb-3 gap-2';
-            div.innerHTML = `
-                <img src="https://i.imgur.com/IYhYbK6.png" class="w-7 h-7 rounded-full select-none object-cover">
-                <div class="bg-[#262626] px-4 py-3 rounded-[22px] flex gap-1 items-center h-[38px]">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-            `;
-            chatContent.appendChild(div);
-            scrollToBottom();
-        }
-
-        function removeTyping() {
-            const el = document.getElementById('typing-indicator');
-            if (el) el.remove();
-        }
-
-        function showOptions(options) {
-            options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt.text;
-                btn.onclick = () => {
-                    optionsContainer.innerHTML = '';
-                    addUserMsg(opt.text);
-                    scrollToBottom();
-                    setTimeout(() => {
-                        if (opt.action === 'checkout') {
-                            window.location.href = 'https://pv.overisestore.com.br/';
-                        } else if (opt.next) {
-                            const nextStep = script.find(s => s.id === opt.next);
-                            if (nextStep) processStep(nextStep);
-                        }
-                    }, 500);
-                };
-                optionsContainer.appendChild(btn);
-            });
-            scrollToBottom();
-        }
-
-        function scrollToBottom() {
-            setTimeout(() => {
-                chatContent.scrollTo({ top: chatContent.scrollHeight, behavior: 'smooth' });
-            }, 100);
+                bar.style.width = "100%";
+                text.innerText = "100% - CONCLUÍDO";
+                content.style.opacity = "1";
+            }, 800);
         }
     </script>
 </body>
