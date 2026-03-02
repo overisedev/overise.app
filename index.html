@@ -15,8 +15,8 @@
   --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
   --white:#ffffff;--off:#f5f6f8;--light:#ebedf0;
   --light-card:#ffffff;--light-border:rgba(0,0,0,.08);
-  --text:#dfe1e5;--muted:#9ba1ab;--dim:#636b76;
-  --on-light:#1a1d22;--on-light-muted:#5a5f68;
+  --text:#e8eaee;--muted:#a8aeb8;--dim:#727a85;
+  --on-light:#131518;--on-light-muted:#4a5060;
   --red:#ff4444;--red-dim:rgba(255,68,68,.06);
   --fh:'Barlow Condensed',sans-serif;
   --fb:'DM Sans',sans-serif;
@@ -42,6 +42,7 @@ img{display:block;max-width:100%}
 .sub strong{font-weight:600}
 .sub.on-dark strong{color:var(--white)}.sub.on-light strong{color:var(--on-light)}
 .sub.center{margin-left:auto;margin-right:auto}
+.tag.dark{color:#1a8a0e}
 
 /* ── Buttons ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--fh);font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;transition:all .2s;cursor:pointer;border:none}
@@ -98,7 +99,8 @@ nav a:hover{color:var(--white)}
 
 /* VSL */
 .vsl-wrap{max-width:780px;margin:36px auto 0;border-radius:10px;overflow:hidden;box-shadow:0 0 60px rgba(57,255,20,.04),0 32px 64px rgba(0,0,0,.5);border:1px solid rgba(57,255,20,.1);position:relative}
-.vsl-hint{font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:10px;text-align:center}
+.vsl-hint{font-family:var(--fh);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-top:14px;text-align:center;animation:hintPulse 2.5s ease-in-out infinite}
+@keyframes hintPulse{0%,100%{opacity:1}50%{opacity:.5}}
 
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:32px;margin-bottom:24px}
 .hero-trust{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
@@ -135,10 +137,10 @@ nav a:hover{color:var(--white)}
 .step-desc{font-size:14px;color:var(--on-light-muted);line-height:1.7}
 .step-result{background:var(--accent2);border-radius:10px;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:900px;margin:24px auto 0}
 .step-result-left{display:flex;align-items:center;gap:14px}
-.step-result-ico{width:40px;height:40px;background:rgba(255,255,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.step-result-ico{width:40px;height:40px;background:rgba(0,0,0,.15);border-radius:8px;display:flex;align-items:center;justify-content:center}
 .step-result-ico svg{width:20px;height:20px;fill:#fff}
-.step-result-txt{font-family:var(--fh);font-size:20px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.02em}
-.step-result-sub{font-size:13px;color:rgba(255,255,255,.7);margin-top:2px}
+.step-result-txt{font-family:var(--fh);font-size:22px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:.02em;text-shadow:0 1px 2px rgba(0,0,0,.15)}
+.step-result-sub{font-size:14px;color:rgba(255,255,255,.85);margin-top:2px;font-weight:500}
 
 /* ══════════════════════════════════
    JOGOS GRID — DARK
@@ -162,6 +164,22 @@ nav a:hover{color:var(--white)}
 .app-tag{background:var(--light);border:1px solid var(--light-border);border-radius:4px;padding:6px 14px;font-family:var(--fh);font-size:11px;font-weight:700;color:var(--on-light-muted);letter-spacing:.06em;text-transform:uppercase}
 .app-preview{background:var(--light);border:1px solid var(--light-border);border-radius:10px;overflow:hidden;display:grid;grid-template-columns:repeat(2,1fr);gap:4px;padding:8px}
 .app-preview img{border-radius:6px;width:100%;aspect-ratio:16/10;object-fit:cover}
+
+/* Download simulator */
+.dl-sim{background:#1b2838;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.06);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.dl-header{display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.05)}
+.dl-cover{width:80px;height:38px;border-radius:4px;object-fit:cover;flex-shrink:0}
+.dl-info{flex:1;min-width:0}
+.dl-game-name{font-family:var(--fh);font-size:14px;font-weight:700;color:#c6d4df;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dl-status{font-size:11px;color:#67c0f4;margin-top:2px}
+.dl-speed{text-align:right}
+.dl-speed-label{font-family:var(--fh);font-size:8px;font-weight:700;color:#56606b;letter-spacing:.1em;text-transform:uppercase}
+.dl-speed-val{font-family:var(--fh);font-size:16px;font-weight:900;color:#67c0f4}
+.dl-progress-text{color:var(--accent)}
+.dl-bar-track{height:3px;background:#0e1a26;position:relative}
+.dl-bar-fill{height:100%;background:linear-gradient(90deg,#67c0f4,var(--accent));width:0%;transition:width .3s ease;border-radius:0 2px 2px 0}
+.dl-chart{height:80px;padding:8px 18px 12px;display:flex;align-items:flex-end;gap:2px}
+.dl-chart-bar{flex:1;background:linear-gradient(to top,#1a4a6e,#67c0f4);border-radius:1px 1px 0 0;transition:height .3s ease;min-height:2px;opacity:.8}
 
 /* ══════════════════════════════════
    BENEFÍCIOS EMOCIONAIS — DARK
@@ -345,12 +363,17 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
 @media(max-width:768px){
   nav,header .btn-sm{display:none}
   .hero-h1{font-size:clamp(30px,9vw,52px)}
+  .vsl-wrap{margin:28px -12px 0;border-radius:8px;max-width:calc(100% + 24px)}
+  .vsl-hint{font-size:14px;margin-top:16px}
   .hero-btns{flex-direction:column;align-items:stretch}
   .hero-btns .btn-xl{font-size:15px;padding:15px 20px}
   .steps,.emo-grid{grid-template-columns:1fr}
-  .proof-masonry{grid-template-columns:1fr 1fr}
+  .proof-masonry{grid-template-columns:1fr 1fr;gap:8px}
+  .proof-shot{border-radius:6px}
   .games-grid{grid-template-columns:repeat(3,1fr)}
   .app-layout,.vs-grid,.benefits-wrap,.footer-inner{grid-template-columns:1fr}
+  .dl-header{flex-wrap:wrap;gap:10px;padding:12px 14px}
+  .dl-cover{width:60px;height:28px}
   .stats-bar{grid-template-columns:1fr 1fr}
   .verify-grid{grid-template-columns:1fr 1fr}
   .step-result{flex-direction:column;text-align:center;padding:20px}
@@ -492,7 +515,27 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
         </div>
         <a href="#pricing" class="btn btn-accent-dark btn-lg">Desbloquear Agora →</a>
       </div>
-      <div class="app-preview" id="app-preview"></div>
+      <div class="dl-sim">
+        <div class="dl-header">
+          <img class="dl-cover" id="dl-cover" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg" alt=""/>
+          <div class="dl-info">
+            <div class="dl-game-name" id="dl-game-name">ELDEN RING</div>
+            <div class="dl-status" id="dl-status">Baixando dados</div>
+          </div>
+          <div class="dl-speed">
+            <div class="dl-speed-label">REDE</div>
+            <div class="dl-speed-val" id="dl-speed">0 MB/s</div>
+          </div>
+          <div class="dl-speed">
+            <div class="dl-speed-label">PROGRESSO</div>
+            <div class="dl-speed-val dl-progress-text" id="dl-progress-text">0%</div>
+          </div>
+        </div>
+        <div class="dl-bar-track">
+          <div class="dl-bar-fill" id="dl-bar-fill"></div>
+        </div>
+        <div class="dl-chart" id="dl-chart"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -812,11 +855,79 @@ gamesData.forEach(g=>{
   gg.innerHTML+=`<div class="game-tile"><img src="${g.img}" alt="${g.n}" loading="lazy"/><div class="game-tile-ov"></div><div class="game-tile-info"><div class="game-tile-name">${g.n}</div></div></div>`;
 });
 
-/* ── APP PREVIEW ── */
-const ap=document.getElementById('app-preview');
-gamesData.slice(0,4).forEach(g=>{
-  ap.innerHTML+=`<img src="${g.img}" alt="${g.n}" loading="lazy"/>`;
-});
+/* ── APP PREVIEW — Download Simulator ── */
+const dlChart=document.getElementById('dl-chart');
+const dlBar=document.getElementById('dl-bar-fill');
+const dlSpeed=document.getElementById('dl-speed');
+const dlProgress=document.getElementById('dl-progress-text');
+const dlStatus=document.getElementById('dl-status');
+const dlGameName=document.getElementById('dl-game-name');
+const dlCover=document.getElementById('dl-cover');
+
+// Init chart bars
+for(let i=0;i<40;i++){
+  const bar=document.createElement('div');
+  bar.className='dl-chart-bar';
+  bar.style.height='2px';
+  dlChart.appendChild(bar);
+}
+const chartBars=dlChart.querySelectorAll('.dl-chart-bar');
+
+const dlGames=[
+  {n:'ELDEN RING',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg',size:'67,0 GB'},
+  {n:'GOD OF WAR',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg',size:'62,3 GB'},
+  {n:'GTA V',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg',size:'94,5 GB'},
+  {n:'CYBERPUNK 2077',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg',size:'70,2 GB'},
+  {n:'RDR2',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg',size:'116,8 GB'},
+];
+
+let dlGameIdx=0;
+let dlPercent=0;
+let chartData=new Array(40).fill(0);
+
+function animateDl(){
+  const game=dlGames[dlGameIdx];
+  
+  // Simulate speed variation
+  const baseSpeed=380+Math.random()*80;
+  const speed=baseSpeed+Math.sin(dlPercent/5)*30;
+  
+  dlSpeed.textContent=speed.toFixed(1)+' MB/s';
+  dlPercent+=0.08+Math.random()*0.06;
+  
+  if(dlPercent>=100){
+    dlPercent=0;
+    dlGameIdx=(dlGameIdx+1)%dlGames.length;
+    const next=dlGames[dlGameIdx];
+    dlGameName.textContent=next.n;
+    dlCover.src=next.img;
+    chartData=new Array(40).fill(0);
+  }
+  
+  dlProgress.textContent=Math.min(dlPercent,99).toFixed(0)+'%';
+  dlBar.style.width=Math.min(dlPercent,100)+'%';
+  
+  const downloaded=(dlPercent/100*parseFloat(game.size)).toFixed(1);
+  dlStatus.textContent='Baixando dados — '+downloaded+' / '+game.size;
+  
+  // Update chart
+  chartData.shift();
+  chartData.push(speed);
+  const maxSpeed=Math.max(...chartData,1);
+  chartBars.forEach((bar,i)=>{
+    const h=chartData[i]>0?Math.max((chartData[i]/maxSpeed)*60,2):2;
+    bar.style.height=h+'px';
+  });
+  
+  requestAnimationFrame(animateDl);
+}
+
+// Start when section is visible
+const dlObs=new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting){animateDl();dlObs.disconnect();}
+},{threshold:0.3});
+const dlSim=document.querySelector('.dl-sim');
+if(dlSim)dlObs.observe(dlSim);
 
 /* ── EMOTIONAL BENEFITS with game images ── */
 const emoData=[
