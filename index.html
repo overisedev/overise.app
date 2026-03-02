@@ -9,6 +9,8 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
+  color-scheme:dark;
+  -webkit-text-size-adjust:100%;
   --accent:#39ff14;--accent2:#2dd40e;--accent-dim:rgba(57,255,20,.07);--accent-glow:rgba(57,255,20,.18);
   --bg:#0b0e11;--bg2:#0f1216;
   --card:#161a20;--card2:#1c2128;
@@ -60,8 +62,8 @@ img{display:block;max-width:100%}
 .btn-full{width:100%}
 
 /* ── Reveal ── */
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal{opacity:0;-webkit-transform:translateY(18px);transform:translateY(18px);-webkit-transition:opacity .55s ease,-webkit-transform .55s ease;transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;-webkit-transform:translateY(0);transform:translateY(0)}
 .rd1{transition-delay:.08s}.rd2{transition-delay:.16s}.rd3{transition-delay:.24s}
 
 /* ══════════════════════════════════
@@ -111,9 +113,10 @@ nav a:hover{color:var(--white)}
 /* ══════════════════════════════════
    MARQUEE — dark with game images
 ══════════════════════════════════ */
-.marquee{overflow:hidden;padding:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg);width:100%}
-.marquee-track{display:flex;width:max-content;animation:marq 80s linear infinite;will-change:transform}
-@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee{overflow:hidden;padding:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg);width:100%;-webkit-overflow-scrolling:touch}
+.marquee-track{display:-webkit-flex;display:flex;width:-webkit-max-content;width:max-content;-webkit-animation:marq 80s linear infinite;animation:marq 80s linear infinite;-webkit-transform:translateZ(0);transform:translateZ(0)}
+@-webkit-keyframes marq{from{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(-50%);transform:translateX(-50%)}}
+@keyframes marq{from{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(-50%);transform:translateX(-50%)}}
 .mi{flex-shrink:0;width:180px;aspect-ratio:46/21;position:relative;overflow:hidden;border-right:1px solid var(--border)}
 .mi img{width:100%;height:100%;object-fit:cover;display:block;opacity:.5;transition:opacity .3s}
 .mi:hover img{opacity:.8}
@@ -357,12 +360,15 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
 .pay-chip{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:3px 10px;font-family:var(--fh);font-size:9px;font-weight:700;color:var(--dim);letter-spacing:.08em}
 
 /* NOTIF */
-.buy-notif{position:fixed;bottom:18px;left:18px;z-index:299;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px 14px;box-shadow:0 4px 20px rgba(0,0,0,.5);transform:translateX(-130%);transition:transform .4s cubic-bezier(.23,1,.32,1);max-width:250px;pointer-events:none}
-.buy-notif.show{transform:translateX(0)}
-.bn-ava{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid rgba(57,255,20,.15)}
-.bn-name{font-family:var(--fh);font-size:11px;font-weight:700;color:#fff;display:block}
-.bn-msg{font-size:11px;color:var(--muted)}
-.bn-time{font-size:10px;color:var(--dim);margin-top:1px}
+.buy-notif{position:fixed;bottom:18px;left:18px;z-index:299;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;box-shadow:0 8px 32px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);-webkit-transform:translateX(-130%);transform:translateX(-130%);-webkit-transition:-webkit-transform .4s cubic-bezier(.23,1,.32,1);transition:transform .4s cubic-bezier(.23,1,.32,1);max-width:280px;pointer-events:none;display:flex;align-items:flex-start;gap:10px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.buy-notif.show{-webkit-transform:translateX(0);transform:translateX(0)}
+.bn-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-dim);border:1px solid rgba(57,255,20,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.bn-body{flex:1;min-width:0}
+.bn-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.bn-app{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.bn-time{font-size:10px;color:var(--dim)}
+.bn-name{font-family:var(--fh);font-size:12px;font-weight:700;color:#fff;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bn-msg{font-size:11px;color:var(--muted);margin-top:1px;line-height:1.35}
 
 @media(max-width:768px){
   nav,header .btn-sm{display:none}
@@ -922,7 +928,12 @@ fbq('init', '1171879494851614');
 </div>
 
 <div class="buy-notif" id="buy-notif">
-  <div><strong class="bn-name" id="bn-name"></strong><div class="bn-msg" id="bn-msg"></div><div class="bn-time" id="bn-time"></div></div>
+  <div class="bn-icon">🔓</div>
+  <div class="bn-body">
+    <div class="bn-header"><span class="bn-app">Overise</span><span class="bn-time" id="bn-time"></span></div>
+    <strong class="bn-name" id="bn-name"></strong>
+    <div class="bn-msg" id="bn-msg"></div>
+  </div>
 </div>
 
 <script>
@@ -1154,15 +1165,17 @@ document.querySelectorAll('.proof-shot').forEach(img=>{
 });
 
 /* ── NOTIF ── */
-const names=['Lucas','Adrielly','Maicon','Gabriel','Fernanda','Thiago','Ana','Pedro','Camila','Rafael','Juliana','Diego','Larissa','Bruno','Isabela'];
-const msgs=['desbloqueou a biblioteca','ativou a licença','já está jogando','garantiu o acesso'];
+const names=['Lucas M.','Maicon R.','Gabriel S.','Thiago L.','Pedro H.','Rafael C.','Diego F.','Bruno A.','Matheus P.','Caio V.','Felipe N.','Gustavo B.','Leonardo T.','João P.','Vinicius K.'];
+const cities=['São Paulo','Curitiba','Belo Horizonte','Porto Alegre','Recife','Fortaleza','Salvador','Rio de Janeiro','Brasília','Manaus','Goiânia','Campinas','Florianópolis','Belém'];
+const msgs=['desbloqueou a biblioteca completa','ativou a licença vitalícia','já está baixando jogos','garantiu o acesso agora'];
 const notif=document.getElementById('buy-notif'),bnName=document.getElementById('bn-name'),bnMsg=document.getElementById('bn-msg'),bnTime=document.getElementById('bn-time');
 setTimeout(()=>{
   const n=names[Math.floor(Math.random()*names.length)];
+  const c=cities[Math.floor(Math.random()*cities.length)];
   const m=msgs[Math.floor(Math.random()*msgs.length)];
-  bnName.textContent=n;bnMsg.textContent=m;bnTime.textContent='agora mesmo';
+  bnName.textContent=n+' — '+c;bnMsg.textContent=m;bnTime.textContent='agora';
   notif.classList.add('show');
-  setTimeout(()=>notif.classList.remove('show'),4500);
+  setTimeout(()=>notif.classList.remove('show'),5000);
 },8000);
 </script>
 </body>
