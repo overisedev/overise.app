@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Overise — +1000 Jogos na Sua Biblioteca</title>
+<title>Overise — Desbloqueie +1000 Jogos na Steam por R$9,97</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -247,6 +247,14 @@ nav a:hover{color:var(--white)}
 
 /* Stats */
 .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
+
+/* Security */
+.sec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px}
+.sec-card{background:var(--light);border:1px solid var(--light-border);border-radius:10px;padding:28px 20px;text-align:center;transition:all .25s}
+.sec-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.08)}
+.sec-ico{font-size:28px;margin-bottom:12px}
+.sec-title{font-family:var(--fh);font-size:16px;font-weight:800;color:var(--on-light);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.sec-desc{font-size:13px;color:var(--on-light-muted);line-height:1.6}
 .stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px 16px;text-align:center;position:relative;overflow:hidden}
 .stat::before{content:'';position:absolute;top:0;left:30%;right:30%;height:2px;background:var(--accent);border-radius:0 0 2px 2px}
 .stat-num{font-family:var(--fh);font-size:36px;font-weight:900;color:var(--accent);line-height:1}
@@ -347,12 +355,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
 .footer-pay{display:flex;gap:6px}
 .pay-chip{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:3px 10px;font-family:var(--fh);font-size:9px;font-weight:700;color:var(--dim);letter-spacing:.08em}
 
-/* STICKY */
-.sticky-cta{position:fixed;bottom:18px;right:18px;z-index:200;display:flex;align-items:center;gap:8px;background:var(--accent);color:#0b0e11;font-family:var(--fh);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:13px 22px;border-radius:6px;box-shadow:0 0 24px var(--accent-glow),0 4px 16px rgba(0,0,0,.4);cursor:pointer;border:none;transition:all .2s}
-.sticky-cta:hover{transform:translateY(-2px);box-shadow:0 0 36px var(--accent-glow)}
-
 /* NOTIF */
-.buy-notif{position:fixed;bottom:18px;left:18px;z-index:299;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px 14px;display:flex;align-items:center;gap:9px;box-shadow:0 4px 20px rgba(0,0,0,.5);transform:translateX(-130%);transition:transform .4s cubic-bezier(.23,1,.32,1);max-width:250px;pointer-events:none}
+.buy-notif{position:fixed;bottom:18px;left:18px;z-index:299;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px 14px;box-shadow:0 4px 20px rgba(0,0,0,.5);transform:translateX(-130%);transition:transform .4s cubic-bezier(.23,1,.32,1);max-width:250px;pointer-events:none}
 .buy-notif.show{transform:translateX(0)}
 .bn-ava{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid rgba(57,255,20,.15)}
 .bn-name{font-family:var(--fh);font-size:11px;font-weight:700;color:#fff;display:block}
@@ -401,6 +405,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
   
   /* Stats */
   .stats-bar{grid-template-columns:1fr 1fr;gap:8px}
+  .sec-grid{grid-template-columns:1fr 1fr;gap:8px}
   .stat{padding:18px 12px}
   .stat-num{font-size:28px}
   
@@ -432,11 +437,44 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
   .cmp-val{font-size:36px}
 }
 </style>
+
+<!-- UTMIFY -->
+<script
+  src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+  data-utmify-prevent-xcod-sck
+  data-utmify-prevent-subids
+  async
+  defer
+></script>
+<script>
+  window.pixelId = "69a55eb68a402b8bd85dfd93";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script>
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1171879494851614');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1171879494851614&ev=PageView&noscript=1"/></noscript>
+
 </head>
 <body>
 
 <!-- URGENCY -->
-<div class="urgency">Acesso imediato — <strong>+1000 jogos por R$9,97/mês</strong> <span>· garantia 7 dias · cancele quando quiser</span></div>
+<div class="urgency">Acesso imediato — <strong>+1000 jogos por R$9,97 · taxa única</strong> <span>· licença vitalícia · 7 dias de garantia</span></div>
 
 <!-- HEADER -->
 <header>
@@ -458,14 +496,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
 <!-- ══════════════════════════════════════════════════ -->
 <section id="hero">
   <div class="container">
-    <div class="hero-badge reveal">Acesso imediato · direto na sua Steam</div>
+    <div class="hero-badge reveal">Taxa única R$9,97 · licença vitalícia</div>
     <h1 class="hero-h1 reveal rd1">
-      Pare de pagar<br>
-      <span class="strike">R$300</span> por jogo.<br>
-      <em>Tenha todos.</em>
+      Desbloqueie sua Steam.<br>
+      <em>+1000 jogos por R$9,97.</em><br>
+      <span style="font-size:.35em;font-weight:600;color:var(--muted);letter-spacing:.02em;text-transform:none">Taxa única. Licença vitalícia. Sem mensalidade.</span>
     </h1>
     <p class="hero-sub reveal rd1">
-      Seus amigos já estão jogando <strong>Elden Ring, GTA, God of War</strong> e mais de mil títulos. Você vai continuar só na wishlist esperando promoção?
+      Ative o desbloqueador, escolha o jogo e baixe direto pela Steam. <strong>100% seguro, anti-ban e invisível.</strong> Pague uma vez, use pra sempre.
     </p>
 
     <!-- VSL -->
@@ -478,7 +516,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
     <div class="vsl-hint">Clique no vídeo para ativar o som</div>
 
     <div class="hero-btns reveal rd2">
-      <a href="#pricing" class="btn btn-accent btn-xl">Quero minha biblioteca completa</a>
+      <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent btn-xl">Desbloquear minha Steam</a>
       <a href="#how" class="btn btn-ghost btn-xl">Ver como funciona</a>
     </div>
     <div class="hero-trust reveal rd3">
@@ -504,18 +542,18 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
     <div class="steps reveal rd1">
       <div class="step">
         <div class="step-num">01</div>
-        <div class="step-title">Baixa o Launcher</div>
-        <div class="step-desc">Chega no e-mail após o pagamento. Instalação simples — igual qualquer programa.</div>
+        <div class="step-title">Garanta sua licença</div>
+        <div class="step-desc">Pague R$9,97 uma vez. Receba o desbloqueador por e-mail em minutos.</div>
       </div>
       <div class="step">
         <div class="step-num">02</div>
-        <div class="step-title">Ativa sua licença</div>
-        <div class="step-desc">Cola a chave, clica em ativar. O sistema desbloqueia tudo automaticamente.</div>
+        <div class="step-title">Ative no seu PC</div>
+        <div class="step-desc">Instale, insira a chave. O sistema é 100% seguro, anti-ban e invisível.</div>
       </div>
       <div class="step">
         <div class="step-num">03</div>
-        <div class="step-title">Escolhe e joga</div>
-        <div class="step-desc">Abre a biblioteca. +1000 jogos esperando. Escolhe, instala, joga.</div>
+        <div class="step-title">Escolha e jogue</div>
+        <div class="step-desc">+1000 jogos desbloqueados. Baixe pela Steam, em velocidade máxima.</div>
       </div>
     </div>
     <div class="step-result reveal rd2">
@@ -523,10 +561,10 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
         <div class="step-result-ico"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 3c1.66 0 3 1.34 3 3v2H9V6c0-1.66 1.34-3 3-3zm0 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg></div>
         <div>
           <div class="step-result-txt">Biblioteca pronta em 5 minutos</div>
-          <div class="step-result-sub">Elden Ring · GTA · God of War · Cyberpunk · +1000 títulos</div>
+          <div class="step-result-sub">Licença vitalícia · +1000 jogos · R$9,97 taxa única</div>
         </div>
       </div>
-      <a href="#pricing" class="btn btn-accent btn-lg" style="background:#fff;color:var(--accent2);box-shadow:none">Desbloquear →</a>
+      <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent btn-lg" style="background:#fff;color:var(--accent2);box-shadow:none">Desbloquear →</a>
     </div>
   </div>
 </section>
@@ -542,7 +580,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
     </div>
     <div class="games-grid reveal rd1" id="games-grid"></div>
     <div style="margin-top:32px" class="reveal rd2">
-      <a href="#pricing" class="btn btn-accent btn-lg">Desbloquear Todos →</a>
+      <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent btn-lg">Ver Todos os Jogos →</a>
       <p style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--dim);margin-top:10px;letter-spacing:.08em">+1000 TÍTULOS · NOVOS JOGOS TODA SEMANA</p>
     </div>
   </div>
@@ -556,14 +594,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
     <div class="app-layout reveal">
       <div class="app-info">
         <div class="tag dark">Overise App</div>
-        <div class="app-title">Baixa jogos<br><em>em segundos.</em></div>
-        <p class="app-desc">O Launcher cuida de tudo. Sem configuração manual, sem tutorial de 40 minutos. Abre, escolhe o jogo, instala. Fim.</p>
+        <div class="app-title">Baixe pela Steam.<br><em>Velocidade máxima.</em></div>
+        <p class="app-desc">O desbloqueador cuida de tudo. Puxa arquivos limpos e oficiais da Steam, em velocidade máxima, e instala de forma automática. Sem configuração manual.</p>
         <div class="app-tags">
           <div class="app-tag">Download rápido</div>
           <div class="app-tag">+1000 jogos</div>
           <div class="app-tag">Online liberado</div>
         </div>
-        <a href="#pricing" class="btn btn-accent-dark btn-lg">Desbloquear Agora →</a>
+        <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent-dark btn-lg">Garantir Licença →</a>
       </div>
       <div class="dl-sim">
         <div class="dl-header">
@@ -624,8 +662,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
         <div class="v-empty">Digite o nome de um jogo para buscar</div>
       </div>
       <div class="verify-cta-row" id="verify-cta-row">
-        <a href="#pricing" class="btn btn-accent-dark btn-lg">Desbloquear por R$ 9,97</a>
-        <div class="verify-cta-sub">Esse jogo + +1000 outros inclusos no plano.</div>
+        <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent-dark btn-lg" onclick="if(typeof fbq==='function'){fbq('track','InitiateCheckout',{value:9.97,currency:'BRL'});}">Garantir por R$ 9,97</a>
+        <div class="verify-cta-sub">Esse jogo + +1000 outros inclusos na licença.</div>
       </div>
     </div>
   </div>
@@ -699,36 +737,71 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
 </section>
 
 <!-- ══════════════════════════════════════════════════ -->
+<!-- SEGURANÇA — WHITE                                 -->
+<!-- ══════════════════════════════════════════════════ -->
+<section class="sec-white">
+  <div class="container text-center">
+    <div class="reveal">
+      <div class="tag dark">Segurança em primeiro lugar</div>
+      <h2 class="h2 on-light">100% seguro.<br><em>Anti-ban. Invisível.</em></h2>
+      <p class="sub on-light center">O desbloqueador Overise foi desenvolvido para proteger você. Sua conta Steam oficial não é afetada.</p>
+    </div>
+    <div class="sec-grid reveal rd1">
+      <div class="sec-card">
+        <div class="sec-ico">🛡️</div>
+        <div class="sec-title">Anti-Ban</div>
+        <div class="sec-desc">Sistema invisível que não afeta sua conta oficial da Steam. Jogue sem risco de BAN.</div>
+      </div>
+      <div class="sec-card">
+        <div class="sec-ico">🔒</div>
+        <div class="sec-title">Sem vírus</div>
+        <div class="sec-desc">Arquivos limpos e oficiais. Sem .exe suspeito, sem torrent. Seu antivírus fica em silêncio.</div>
+      </div>
+      <div class="sec-card">
+        <div class="sec-ico">⚡</div>
+        <div class="sec-title">Download oficial</div>
+        <div class="sec-desc">Puxa os arquivos direto da Steam, em velocidade máxima da sua internet.</div>
+      </div>
+      <div class="sec-card">
+        <div class="sec-ico">🔄</div>
+        <div class="sec-title">Sempre atualizado</div>
+        <div class="sec-desc">Atualizações automáticas anti-ban. Sem crack que quebra, sem configuração manual.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ -->
 <!-- PRICING — DARK                                    -->
 <!-- ══════════════════════════════════════════════════ -->
 <section id="pricing" class="sec-dark">
   <div class="container text-center">
     <div class="reveal">
-      <div class="tag g">Quanto custa?</div>
-      <h2 class="h2 on-dark">+1000 jogos por<br><em>menos que um lanche.</em></h2>
-      <p class="sub on-dark center">Enquanto 1 jogo na Steam custa R$299, aqui você tem todos. Por mês.</p>
+      <div class="tag g">Taxa única</div>
+      <h2 class="h2 on-dark">Quanto custa ter acesso a<br><em>+1000 jogos famosos?</em></h2>
+      <p class="sub on-dark center">Enquanto 1 jogo na Steam custa R$299, aqui você desbloqueia todos. Uma vez. Pra sempre.</p>
     </div>
     <div class="pricing-card reveal rd1">
-      <div class="pricing-badge">Acesso Total</div>
+      <div class="pricing-badge">Taxa Única · Vitalício</div>
       <div class="pricing-name">Overise</div>
-      <div class="pricing-tag">Biblioteca completa desbloqueada</div>
+      <div class="pricing-tag">Licença vitalícia · pague uma vez</div>
       <div class="pricing-cmp">
-        <div class="pc-item"><div class="pc-lbl">1 jogo Steam</div><div class="pc-val old">R$299</div></div>
+        <div class="pc-item"><div class="pc-lbl">1 jogo na Steam</div><div class="pc-val old">R$299</div></div>
         <div class="pc-vs">VS</div>
         <div class="pc-item"><div class="pc-lbl">Overise</div><div class="pc-val new">R$9,97</div></div>
       </div>
       <hr class="pd"/>
       <div class="pricing-feats">
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Jogue o que seus amigos jogam</strong> — entre no lobby, entre na conversa</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Sexta à noite sem wishlist</strong> — qualquer jogo, na hora, sem pensar no preço</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>PC limpo e seguro</strong> — nunca mais baixe arquivo suspeito</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Online desbloqueado</strong> nos títulos compatíveis</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Sempre atualizado</strong> — sem crack que quebra</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Suporte humano WhatsApp</strong> — gente real, resposta rápida</div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>+1000 jogos</strong> desbloqueados</div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Modo Online</strong> desbloqueado</div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Atualizações automáticas</strong></div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Download por Steam</strong></div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Suporte WhatsApp</strong></div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Política de Reuso</strong> — jogos</div></div>
       </div>
-      <a href="#" class="pricing-cta">Desbloquear por R$ 9,97</a>
-      <div class="pricing-sec">PIX · CARTÃO · BOLETO · PAGAMENTO SEGURO</div>
-      <div class="pricing-micro"><span>Acesso imediato</span> · <span>Cancele quando quiser</span> · <span>7 dias de garantia</span></div>
+      <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="pricing-cta" onclick="if(typeof fbq==='function'){fbq('track','InitiateCheckout',{value:9.97,currency:'BRL'});}">Garantir por R$ 9,97</a>
+      <div class="pricing-sec">PIX · CARTÃO · BOLETO · PAGUE UMA VEZ</div>
+      <div class="pricing-micro"><span>Acesso imediato</span> · <span>Licença vitalícia</span> · <span>7 dias de garantia</span></div>
     </div>
   </div>
 </section>
@@ -740,7 +813,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
   <div class="container">
     <div class="benefits-wrap">
       <div class="reveal">
-        <div class="tag dark">Tudo isso por R$9,97</div>
+        <div class="tag dark">Tudo isso por R$9,97 · paga uma vez</div>
         <h2 class="h2 on-light" style="font-size:clamp(28px,4vw,48px)">O que você<br><em>desbloqueia</em></h2>
         <div class="benefits-list" id="benefits-list"></div>
       </div>
@@ -754,7 +827,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
           <div class="cmp-card good">
             <div class="cmp-lbl">Overise — tudo</div>
             <div class="cmp-val">R$9,97</div>
-            <div class="cmp-sub">+1000 jogos · por mês</div>
+            <div class="cmp-sub">+1000 jogos · pra sempre</div>
           </div>
           <a href="#pricing" class="btn btn-accent-dark btn-full btn-lg">Garantir Meu Acesso →</a>
         </div>
@@ -773,12 +846,12 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
         <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
       </div>
       <h3>Garantia incondicional<br>de <em>7 dias.</em></h3>
-      <p>Teste por 7 dias com acesso completo. Se não gostar, devolvemos 100% do valor. Sem formulário, sem enrolação.</p>
-      <a href="#pricing" class="btn btn-accent btn-lg" style="margin-bottom:18px">Começar com Garantia Total →</a>
+      <p>Licencie o desbloqueador, teste com acesso completo por 7 dias. Se a experiência não for como esperava, devolvemos 100% do valor. Simples, sem enrolação.</p>
+      <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent btn-lg" style="margin-bottom:18px">Começar com Garantia Total →</a>
       <div class="g-tags">
         <div class="g-tag"><span class="chk">✔</span> Suporte ativo</div>
         <div class="g-tag"><span class="chk">✔</span> Devolução em 24h</div>
-        <div class="g-tag"><span class="chk">✔</span> Sem fidelidade</div>
+        <div class="g-tag"><span class="chk">✔</span> Licença vitalícia</div>
       </div>
     </div>
   </div>
@@ -804,9 +877,9 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
   <div class="final-inner reveal">
     <div class="tag g">Pronto pra jogar?</div>
     <h2 class="h2 on-dark" style="font-size:clamp(34px,6vw,72px);margin-bottom:16px">Sua wishlist pode<br><em>acabar hoje.</em></h2>
-    <p class="sub on-dark center" style="margin-bottom:32px">Elden Ring, GTA, God of War, Cyberpunk — desbloqueados em 5 minutos. Por R$9,97.</p>
-    <a href="#pricing" class="btn btn-accent btn-xl">Desbloquear por R$ 9,97</a>
-    <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--dim);margin-top:16px;letter-spacing:.08em">7 DIAS DE GARANTIA · CANCELE QUANDO QUISER · ACESSO IMEDIATO</div>
+    <p class="sub on-dark center" style="margin-bottom:32px">Elden Ring, GTA, God of War, Cyberpunk — desbloqueados em 5 minutos. R$9,97, taxa única, licença vitalícia.</p>
+    <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent btn-xl" onclick="if(typeof fbq==='function'){fbq('track','InitiateCheckout',{value:9.97,currency:'BRL'});}">Garantir por R$ 9,97</a>
+    <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--dim);margin-top:16px;letter-spacing:.08em">7 DIAS DE GARANTIA · LICENÇA VITALÍCIA · ACESSO IMEDIATO</div>
   </div>
 </section>
 
@@ -816,7 +889,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
     <div class="footer-inner">
       <div>
         <div class="footer-logo">OVER<span>ISE</span></div>
-        <p class="footer-desc">O Launcher que desbloqueia +1000 jogos na sua biblioteca. R$9,97/mês.</p>
+        <p class="footer-desc">O desbloqueador de Steam que libera +1000 jogos. R$9,97 taxa única.</p>
       </div>
       <div class="footer-col">
         <h5>Produto</h5>
@@ -849,12 +922,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
   <img id="proof-lightbox-img" src="" alt=""/>
 </div>
 
-<button class="sticky-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
-  Desbloquear por R$ 9,97
-</button>
-
 <div class="buy-notif" id="buy-notif">
-  <img class="bn-ava" id="bn-ava" src="" alt=""/>
   <div><strong class="bn-name" id="bn-name"></strong><div class="bn-msg" id="bn-msg"></div><div class="bn-time" id="bn-time"></div></div>
 </div>
 
@@ -977,8 +1045,8 @@ const emoData=[
   {title:'Joga com seus amigos de novo',desc:'Chega de ficar de fora porque não tem o jogo. Agora quando o grupo combina, você entra junto.',img:gamesData[1].img},
   {title:'Sexta à noite = jogo novo',desc:'Em vez de assistir gameplay no YouTube, você instala e joga. Qualquer jogo. Na hora.',img:gamesData[3].img},
   {title:'Dorme sem medo de vírus',desc:'Sem torrent, sem .exe suspeito. Instala limpo, joga tranquilo, PC inteiro.',img:gamesData[4].img},
-  {title:'Para de se sentir excluído',desc:'R$250 num jogo não cabe no orçamento da maioria. Mas R$9,97 cabe. E vem com mil opções.',img:gamesData[2].img},
-  {title:'Experimenta sem culpa',desc:'Quer testar um jogo que talvez nem goste? Instala. Não curtiu, troca. Sem desperdiçar R$300.',img:gamesData[6].img}
+  {title:'Para de se sentir excluído',desc:'R$250 num jogo não cabe no orçamento. R$9,97 taxa única cabe. E vem com +1000 jogos pra sempre.',img:gamesData[2].img},
+  {title:'Experimenta sem culpa',desc:'Quer testar um jogo? Instala. Não curtiu, troca. Sua licença dá acesso a todos.',img:gamesData[6].img}
 ];
 const eg=document.getElementById('emo-grid');
 emoData.forEach(e=>{
@@ -1061,10 +1129,10 @@ const faqs=[
   {q:'É seguro? Posso confiar?',a:'Sim. Instalação 100% limpa. Sem crack, sem arquivo suspeito, sem vírus. Mais de 5.000 clientes ativos comprovam.'},
   {q:'Como funciona o acesso?',a:'Você recebe o Launcher por e-mail após o pagamento. Instala no PC, insere sua licença, e a biblioteca completa é liberada em minutos.'},
   {q:'Precisa de conta na Steam?',a:'Sim. Você usa sua conta normal da Steam. Os jogos aparecem disponíveis na sua biblioteca.'},
-  {q:'Posso cancelar a qualquer momento?',a:'Sim. Cancele quando quiser. Se for nos primeiros 7 dias, devolvemos 100% do valor.'},
+  {q:'Posso cancelar a qualquer momento?',a:'Não há o que cancelar — a licença é vitalícia e o pagamento é único. Se nos primeiros 7 dias você não gostar, devolvemos 100% do valor.'},
   {q:'Funciona online?',a:'Sim. Os títulos compatíveis com modo online funcionam normalmente.'},
-  {q:'O que acontece se eu cancelar?',a:'Você mantém acesso até o fim do período pago. Depois, os jogos ficam inativos até renovar.'},
-  {q:'Aceita PIX, cartão e boleto?',a:'Sim, todos. PIX libera o acesso em segundos.'},
+  {q:'A licença expira?',a:'A licença é vitalícia. Uma vez pago, o acesso é seu pra sempre. Inclui atualizações e suporte.'},
+  {q:'Aceita PIX, cartão e boleto?',a:'Sim, todos. PIX libera o acesso em segundos. É taxa única — sem cobrança recorrente.'},
   {q:'Tem suporte?',a:'Sim. WhatsApp com gente real. Não é bot — é uma pessoa que te responde rápido.'}
 ];
 const fl=document.getElementById('faq-list');
@@ -1088,17 +1156,15 @@ document.querySelectorAll('.proof-shot').forEach(img=>{
 
 /* ── NOTIF ── */
 const names=['Lucas','Adrielly','Maicon','Gabriel','Fernanda','Thiago','Ana','Pedro','Camila','Rafael','Juliana','Diego','Larissa','Bruno','Isabela'];
-const msgs=['desbloqueou a biblioteca','ativou o plano','já está jogando','acabou de assinar'];
-const notif=document.getElementById('buy-notif'),bnName=document.getElementById('bn-name'),bnMsg=document.getElementById('bn-msg'),bnTime=document.getElementById('bn-time'),bnAva=document.getElementById('bn-ava');
-function showNotif(){
+const msgs=['desbloqueou a biblioteca','ativou a licença','já está jogando','garantiu o acesso'];
+const notif=document.getElementById('buy-notif'),bnName=document.getElementById('bn-name'),bnMsg=document.getElementById('bn-msg'),bnTime=document.getElementById('bn-time');
+setTimeout(()=>{
   const n=names[Math.floor(Math.random()*names.length)];
   const m=msgs[Math.floor(Math.random()*msgs.length)];
   bnName.textContent=n;bnMsg.textContent=m;bnTime.textContent='agora mesmo';
-  bnAva.src=`https://ui-avatars.com/api/?name=${n}&background=39ff14&color=0b0e11&size=56&bold=true&font-size=0.4`;
   notif.classList.add('show');
   setTimeout(()=>notif.classList.remove('show'),4500);
-}
-setTimeout(()=>{showNotif();setInterval(showNotif,18000);},8000);
+},8000);
 </script>
 </body>
 </html>
