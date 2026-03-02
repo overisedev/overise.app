@@ -84,7 +84,8 @@ nav a:hover{color:var(--white)}
 /* ══════════════════════════════════
    HERO — DARK
 ══════════════════════════════════ */
-#hero{background:var(--bg);padding:72px 24px 64px;position:relative;overflow:hidden;text-align:center}
+#hero{background:var(--bg);padding:72px 0 64px;position:relative;overflow:hidden;text-align:center}
+#hero .container{display:flex;flex-direction:column;align-items:center}
 #hero::before{content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:900px;height:500px;background:radial-gradient(ellipse,rgba(57,255,20,.035) 0%,transparent 65%);pointer-events:none}
 
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--accent-dim);border:1px solid rgba(57,255,20,.15);border-radius:4px;padding:6px 14px;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
@@ -98,7 +99,7 @@ nav a:hover{color:var(--white)}
 .hero-sub strong{color:var(--white);font-weight:600}
 
 /* VSL */
-.vsl-wrap{max-width:780px;margin:36px auto 0;border-radius:10px;overflow:hidden;box-shadow:0 0 60px rgba(57,255,20,.04),0 32px 64px rgba(0,0,0,.5);border:1px solid rgba(57,255,20,.1);position:relative}
+.vsl-wrap{max-width:900px;margin:36px auto 0;border-radius:10px;overflow:hidden;box-shadow:0 0 60px rgba(57,255,20,.04),0 32px 64px rgba(0,0,0,.5);border:1px solid rgba(57,255,20,.1);position:relative}
 .vsl-hint{font-family:var(--fh);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-top:14px;text-align:center;animation:hintPulse 2.5s ease-in-out infinite}
 @keyframes hintPulse{0%,100%{opacity:1}50%{opacity:.5}}
 
@@ -367,10 +368,10 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
   nav,header .btn-sm{display:none}
   
   /* Hero mobile */
-  #hero{padding:48px 16px 48px}
+  #hero{padding:48px 0 48px}
   .hero-h1{font-size:clamp(28px,8.5vw,48px)}
   .hero-sub{font-size:15px}
-  .vsl-wrap{margin:24px -4px 0;max-width:calc(100% + 8px);border-radius:8px}
+  .vsl-wrap{margin:24px 0 0;max-width:100%;border-radius:8px}
   .vsl-hint{font-size:13px;margin-top:12px}
   .hero-btns{flex-direction:column;align-items:stretch;margin-top:24px}
   .hero-btns .btn-xl{font-size:15px;padding:15px 20px}
@@ -455,7 +456,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
   document.head.appendChild(a);
 </script>
 
-<!-- Meta Pixel -->
+<!-- Meta Pixel (só InitiateCheckout — PageView/ViewContent via Utmify) -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -466,9 +467,7 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1171879494851614');
-fbq('track', 'PageView');
 </script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1171879494851614&ev=PageView&noscript=1"/></noscript>
 
 </head>
 <body>
