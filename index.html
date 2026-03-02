@@ -113,10 +113,8 @@ nav a:hover{color:var(--white)}
 /* ══════════════════════════════════
    MARQUEE — dark with game images
 ══════════════════════════════════ */
-.marquee{overflow:hidden;padding:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg);width:100%;-webkit-overflow-scrolling:touch}
-.marquee-track{display:-webkit-flex;display:flex;width:-webkit-max-content;width:max-content;-webkit-animation:marq 80s linear infinite;animation:marq 80s linear infinite;-webkit-transform:translateZ(0);transform:translateZ(0)}
-@-webkit-keyframes marq{from{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(-50%);transform:translateX(-50%)}}
-@keyframes marq{from{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(-50%);transform:translateX(-50%)}}
+.marquee{overflow:hidden;padding:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg);width:100%}
+.marquee-track{display:flex;width:max-content}
 .mi{flex-shrink:0;width:180px;aspect-ratio:46/21;position:relative;overflow:hidden;border-right:1px solid var(--border)}
 .mi img{width:100%;height:100%;object-fit:cover;display:block;opacity:.5;transition:opacity .3s}
 .mi:hover img{opacity:.8}
@@ -279,10 +277,10 @@ nav a:hover{color:var(--white)}
 .pc-val.new{color:var(--accent);font-size:56px}
 .pc-vs{font-family:var(--fh);font-size:13px;color:var(--dim);letter-spacing:.1em}
 hr.pd{border:none;border-top:1px solid var(--border);margin:18px 0}
-.pricing-feats{text-align:left;display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
-.pfeat{display:flex;gap:10px;align-items:flex-start}
-.pfeat-chk{width:18px;height:18px;border-radius:4px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:9px;color:#0b0e11;flex-shrink:0;margin-top:2px;font-weight:900}
-.pfeat-txt{font-size:13px;color:var(--text);line-height:1.55}
+.pricing-feats{text-align:left;display:flex;flex-direction:column;gap:14px;margin-bottom:24px}
+.pfeat{display:flex;gap:12px;align-items:flex-start}
+.pfeat-chk{width:22px;height:22px;border-radius:5px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;color:#0b0e11;flex-shrink:0;margin-top:1px;font-weight:900}
+.pfeat-txt{font-size:14px;color:var(--muted);line-height:1.5}
 .pfeat-txt strong{color:var(--white);font-weight:700}
 .pricing-cta{width:100%;padding:16px;font-family:var(--fh);font-size:18px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#0b0e11;border-radius:6px;cursor:pointer;border:none;margin-bottom:10px;transition:all .2s;box-shadow:0 0 20px var(--accent-glow);display:block;text-align:center}
 .pricing-cta:hover{background:#4dff33;transform:translateY(-1px);box-shadow:0 4px 28px var(--accent-glow)}
@@ -521,7 +519,7 @@ fbq('init', '1171879494851614');
     <div class="vsl-hint">Clique no vídeo para ativar o som</div>
 
     <div class="hero-btns reveal rd2">
-      <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent btn-xl">Desbloquear minha Steam</a>
+      <a href="#pricing" class="btn btn-accent btn-xl">Desbloquear minha Steam</a>
       <a href="#how" class="btn btn-ghost btn-xl">Ver como funciona</a>
     </div>
     <div class="hero-trust reveal rd3">
@@ -569,7 +567,7 @@ fbq('init', '1171879494851614');
           <div class="step-result-sub">Licença vitalícia · +1000 jogos · R$9,97 taxa única</div>
         </div>
       </div>
-      <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent btn-lg" style="background:#fff;color:var(--accent2);box-shadow:none">Desbloquear →</a>
+      <a href="#pricing" class="btn btn-accent btn-lg" style="background:#fff;color:var(--accent2);box-shadow:none">Desbloquear →</a>
     </div>
   </div>
 </section>
@@ -585,7 +583,7 @@ fbq('init', '1171879494851614');
     </div>
     <div class="games-grid reveal rd1" id="games-grid"></div>
     <div style="margin-top:32px" class="reveal rd2">
-      <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent btn-lg">Ver Todos os Jogos →</a>
+      <a href="#pricing" class="btn btn-accent btn-lg">Ver Todos os Jogos →</a>
       <p style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--dim);margin-top:10px;letter-spacing:.08em">+1000 TÍTULOS · NOVOS JOGOS TODA SEMANA</p>
     </div>
   </div>
@@ -606,7 +604,7 @@ fbq('init', '1171879494851614');
           <div class="app-tag">+1000 jogos</div>
           <div class="app-tag">Online liberado</div>
         </div>
-        <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent-dark btn-lg">Garantir Licença →</a>
+        <a href="#pricing" class="btn btn-accent-dark btn-lg">Garantir Licença →</a>
       </div>
       <div class="dl-sim">
         <div class="dl-header">
@@ -667,7 +665,7 @@ fbq('init', '1171879494851614');
         <div class="v-empty">Digite o nome de um jogo para buscar</div>
       </div>
       <div class="verify-cta-row" id="verify-cta-row">
-        <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent-dark btn-lg" onclick="if(typeof fbq==='function'){fbq('track','InitiateCheckout',{value:9.97,currency:'BRL'});}">Garantir por R$ 9,97</a>
+        <a href="#pricing" class="btn btn-accent-dark btn-lg">Garantir por R$ 9,97</a>
         <div class="verify-cta-sub">Esse jogo + +1000 outros inclusos na licença.</div>
       </div>
     </div>
@@ -797,12 +795,12 @@ fbq('init', '1171879494851614');
       </div>
       <hr class="pd"/>
       <div class="pricing-feats">
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>+1000 jogos</strong> desbloqueados</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Modo Online</strong> desbloqueado</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Atualizações automáticas</strong></div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Download por Steam</strong></div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Suporte WhatsApp</strong></div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Política de Reuso</strong> — jogos</div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Jogue o que seus amigos jogam</strong> — sem esperar promoção, sem pensar no preço</div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Sexta à noite sem lista de desejos</strong> — qualquer jogo, na hora, sem pensar no preço</div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>PC limpo e seguro</strong> — nunca mais baixe arquivo suspeito</div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Online desbloqueado</strong> nos títulos compatíveis</div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Sempre atualizado</strong> — sem crack que quebra</div></div>
+        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Suporte humano WhatsApp</strong> — gente real, resposta rápida</div></div>
       </div>
       <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="pricing-cta" onclick="if(typeof fbq==='function'){fbq('track','InitiateCheckout',{value:9.97,currency:'BRL'});}">Garantir por R$ 9,97</a>
       <div class="pricing-sec">PIX · CARTÃO · BOLETO · PAGUE UMA VEZ</div>
@@ -852,7 +850,7 @@ fbq('init', '1171879494851614');
       </div>
       <h3>Garantia incondicional<br>de <em>7 dias.</em></h3>
       <p>Licencie o desbloqueador, teste com acesso completo por 7 dias. Se a experiência não for como esperava, devolvemos 100% do valor. Simples, sem enrolação.</p>
-      <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent btn-lg" style="margin-bottom:18px">Começar com Garantia Total →</a>
+      <a href="#pricing" class="btn btn-accent btn-lg" style="margin-bottom:18px">Começar com Garantia Total →</a>
       <div class="g-tags">
         <div class="g-tag"><span class="chk">✔</span> Suporte ativo</div>
         <div class="g-tag"><span class="chk">✔</span> Devolução em 24h</div>
@@ -881,9 +879,9 @@ fbq('init', '1171879494851614');
 <section id="final-cta">
   <div class="final-inner reveal">
     <div class="tag g">Pronto pra jogar?</div>
-    <h2 class="h2 on-dark" style="font-size:clamp(34px,6vw,72px);margin-bottom:16px">Sua wishlist pode<br><em>acabar hoje.</em></h2>
+    <h2 class="h2 on-dark" style="font-size:clamp(34px,6vw,72px);margin-bottom:16px">Sua lista de desejos pode<br><em>acabar hoje.</em></h2>
     <p class="sub on-dark center" style="margin-bottom:32px">Elden Ring, GTA, God of War, Cyberpunk — desbloqueados em 5 minutos. R$9,97, taxa única, licença vitalícia.</p>
-    <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="btn btn-accent btn-xl" onclick="if(typeof fbq==='function'){fbq('track','InitiateCheckout',{value:9.97,currency:'BRL'});}">Garantir por R$ 9,97</a>
+    <a href="#pricing" class="btn btn-accent btn-xl">Garantir por R$ 9,97</a>
     <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--dim);margin-top:16px;letter-spacing:.08em">7 DIAS DE GARANTIA · LICENÇA VITALÍCIA · ACESSO IMEDIATO</div>
   </div>
 </section>
@@ -960,7 +958,7 @@ const gamesData=[
   {n:'It Takes Two',p:'R$199',img:'https://cdn.cloudflare.steamstatic.com/steam/apps/1426210/header.jpg'}
 ];
 
-/* ── MARQUEE with game images ── */
+/* ── MARQUEE with game images (JS-driven for iOS Safari) ── */
 const mt=document.getElementById('marquee-track');
 let mhtml='';
 const marqueeGames=[...gamesData,...gamesData,...gamesData,...gamesData];
@@ -968,6 +966,21 @@ marqueeGames.forEach(g=>{
   mhtml+=`<div class="mi"><img src="${g.img}" alt="${g.n}" loading="lazy"/><div class="mi-name">${g.n}</div></div>`;
 });
 mt.innerHTML=mhtml;
+(function initMarquee(){
+  let pos=0;
+  const speed=0.5;
+  let halfW=0;
+  function measure(){halfW=mt.scrollWidth/2;}
+  measure();
+  window.addEventListener('resize',measure);
+  function tick(){
+    pos-=speed;
+    if(Math.abs(pos)>=halfW)pos=0;
+    mt.style.transform='translateX('+pos+'px)';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
 
 /* ── GAMES GRID ── */
 const gg=document.getElementById('games-grid');
@@ -1051,7 +1064,7 @@ if(dlSim)dlObs.observe(dlSim);
 
 /* ── EMOTIONAL BENEFITS with game images ── */
 const emoData=[
-  {title:'Acaba a ansiedade da wishlist',desc:'Sabe aquele jogo que você adiciona, olha o preço, e fecha a aba frustrado? Nunca mais. Ele já é seu.',img:gamesData[0].img},
+  {title:'Acaba a ansiedade da lista de desejos',desc:'Sabe aquele jogo que você adiciona, olha o preço, e fecha a aba frustrado? Nunca mais. Ele já é seu.',img:gamesData[0].img},
   {title:'Joga com seus amigos de novo',desc:'Chega de ficar de fora porque não tem o jogo. Agora quando o grupo combina, você entra junto.',img:gamesData[1].img},
   {title:'Sexta à noite = jogo novo',desc:'Em vez de assistir gameplay no YouTube, você instala e joga. Qualquer jogo. Na hora.',img:gamesData[3].img},
   {title:'Dorme sem medo de vírus',desc:'Sem torrent, sem .exe suspeito. Instala limpo, joga tranquilo, PC inteiro.',img:gamesData[4].img},
