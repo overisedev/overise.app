@@ -524,10 +524,10 @@ fbq('track', 'PageView');
 function fireICAndRedirect(e){
   e.preventDefault();
   var url=e.currentTarget.href;
-  try{
+  if(typeof fbq==='function'){
     fbq('track','InitiateCheckout',{value:9.97,currency:'BRL'});
-  }catch(err){}
-  setTimeout(function(){window.location.href=url;},500);
+  }
+  setTimeout(function(){window.location.href=url;},800);
 }
 </script>
 
