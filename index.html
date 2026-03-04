@@ -519,16 +519,51 @@ fbq('track', 'PageView');
   document.head.appendChild(a);
 </script>
 
-<!-- InitiateCheckout handler -->
+<!-- InitiateCheckout handler + UTM passthrough -->
 <script>
-function fireICAndRedirect(e){
-  e.preventDefault();
-  var url=e.currentTarget.href;
-  if(typeof fbq==='function'){
-    fbq('track','InitiateCheckout',{value:9.97,currency:'BRL'});
+(function(){
+  // Captura todos os parâmetros UTM da URL atual
+  var params = new URLSearchParams(window.location.search);
+  var utmKeys = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod'];
+  var utmParams = new URLSearchParams();
+
+  utmKeys.forEach(function(key){
+    if(params.has(key)){
+      utmParams.set(key, params.get(key));
+    }
+  });
+
+  // Também captura qualquer parâmetro que comece com "utm_"
+  params.forEach(function(value, key){
+    if(key.toLowerCase().indexOf('utm_') === 0 || key.toLowerCase().indexOf('fbclid') === 0){
+      utmParams.set(key, value);
+    }
+  });
+
+  var utmString = utmParams.toString();
+
+  // Atualiza todos os links do checkout com os UTMs
+  if(utmString){
+    document.addEventListener('DOMContentLoaded', function(){
+      var links = document.querySelectorAll('a[href*="ggcheckout.com"]');
+      links.forEach(function(link){
+        var href = link.getAttribute('href');
+        var separator = href.indexOf('?') !== -1 ? '&' : '?';
+        link.setAttribute('href', href + separator + utmString);
+      });
+    });
   }
-  setTimeout(function(){window.location.href=url;},800);
-}
+
+  // Função de InitiateCheckout + redirect
+  window.fireICAndRedirect = function(e){
+    e.preventDefault();
+    var url = e.currentTarget.href;
+    if(typeof fbq === 'function'){
+      fbq('track','InitiateCheckout',{value:9.97,currency:'BRL'});
+    }
+    setTimeout(function(){ window.location.href = url; }, 800);
+  };
+})();
 </script>
 
 </head>
