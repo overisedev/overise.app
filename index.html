@@ -522,7 +522,7 @@ fbq('track', 'PageView');
 <!-- InitiateCheckout handler + UTM passthrough robusto -->
 <script>
 (function(){
-  // === 1. Captura UTMs da URL e salva no sessionStorage ===
+  // === 1. Captura UTMs da URL ===
   var params = new URLSearchParams(window.location.search);
   var utmKeys = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod'];
   var utmParams = new URLSearchParams();
@@ -531,50 +531,60 @@ fbq('track', 'PageView');
     if(params.has(key)) utmParams.set(key, params.get(key));
   });
   params.forEach(function(value, key){
-    if(key.toLowerCase().indexOf('utm_') === 0 || key.toLowerCase().indexOf('fbclid') === 0){
+    var k = key.toLowerCase();
+    if(k.indexOf('utm_') === 0 || k === 'fbclid'){
       utmParams.set(key, value);
     }
   });
 
   var utmString = utmParams.toString();
 
-  // Se tem UTMs novos, salva no sessionStorage
+  // === 2. Salva UTMs em cookie + sessionStorage ===
   if(utmString){
+    // Cookie (expira em 30 min, funciona em modo privado)
+    document.cookie = 'overise_utms=' + encodeURIComponent(utmString) + ';path=/;max-age=1800;SameSite=Lax';
+    // SessionStorage como backup
     try { sessionStorage.setItem('overise_utms', utmString); } catch(e){}
   }
 
-  // === 2. Função que retorna os UTMs (da URL ou do sessionStorage) ===
+  // === 3. Recupera UTMs de qualquer fonte disponível ===
   function getUtms(){
+    // Prioridade: URL atual > cookie > sessionStorage
     if(utmString) return utmString;
+    // Tenta cookie
+    var match = document.cookie.match(/overise_utms=([^;]+)/);
+    if(match) return decodeURIComponent(match[1]);
+    // Tenta sessionStorage
     try { return sessionStorage.getItem('overise_utms') || ''; } catch(e){ return ''; }
   }
 
-  // === 3. Função que adiciona UTMs a uma URL de checkout ===
+  // === 4. Adiciona UTMs a uma URL ===
   function appendUtms(url){
     var u = getUtms();
     if(!u) return url;
-    var sep = url.indexOf('?') !== -1 ? '&' : '?';
-    // Evita duplicar UTMs se já estiverem na URL
     if(url.indexOf('utm_source') !== -1) return url;
+    var sep = url.indexOf('?') !== -1 ? '&' : '?';
     return url + sep + u;
   }
 
-  // === 4. Atualiza links do checkout no DOM ===
+  // === 5. Atualiza links do checkout no DOM ===
   function updateCheckoutLinks(){
     var links = document.querySelectorAll('a[href*="ggcheckout.com"]');
-    links.forEach(function(link){
-      link.setAttribute('href', appendUtms(link.getAttribute('href')));
-    });
+    for(var i = 0; i < links.length; i++){
+      links[i].setAttribute('href', appendUtms(links[i].getAttribute('href')));
+    }
   }
 
-  // Aplica quando o DOM carrega
+  // Aplica imediatamente e também no DOMContentLoaded
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', updateCheckoutLinks);
   } else {
     updateCheckoutLinks();
   }
+  // Também aplica depois de 1 segundo como segurança extra
+  setTimeout(updateCheckoutLinks, 1000);
 
-  // === 5. Função de InitiateCheckout + redirect com UTMs ===
+  // === 6. InitiateCheckout + redirect com UTMs ===
   window.fireICAndRedirect = function(e){
     e.preventDefault();
     var url = appendUtms(e.currentTarget.href);
