@@ -24,7 +24,8 @@
   --fb:'DM Sans',sans-serif;
   --fw:'Barlow',sans-serif;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
+[id]{scroll-margin-top:56px}
 body{font-family:var(--fb);font-weight:400;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
 a{text-decoration:none;color:inherit}
@@ -284,7 +285,7 @@ nav a:hover{color:var(--white)}
    PROVA SOCIAL — MASONRY
 ══════════════════════════════════ */
 .proof-masonry{column-count:3;column-gap:12px;margin-top:44px}
-.proof-shot{width:100%;border-radius:8px;display:block;border:1px solid var(--border);transition:all .3s;cursor:pointer;margin-bottom:12px;break-inside:avoid}
+.proof-shot{width:100%;min-height:180px;border-radius:8px;display:block;border:1px solid var(--border);transition:all .3s;cursor:pointer;margin-bottom:12px;break-inside:avoid}
 .proof-shot:hover{transform:translateY(-2px);border-color:rgba(57,255,20,.15);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 
 /* Lightbox */
@@ -403,15 +404,19 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
 .pay-chip{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:3px 10px;font-family:var(--fh);font-size:9px;font-weight:700;color:var(--dim);letter-spacing:.08em}
 
 /* NOTIF */
-.buy-notif{position:fixed;bottom:18px;left:18px;z-index:299;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;box-shadow:0 8px 32px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);-webkit-transform:translateX(-130%);transform:translateX(-130%);-webkit-transition:-webkit-transform .4s cubic-bezier(.23,1,.32,1);transition:transform .4s cubic-bezier(.23,1,.32,1);max-width:280px;pointer-events:none;display:flex;align-items:flex-start;gap:10px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
-.buy-notif.show{-webkit-transform:translateX(0);transform:translateX(0)}
-.bn-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-dim);border:1px solid rgba(57,255,20,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.buy-notif{position:fixed;bottom:18px;left:18px;z-index:299;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px 10px;box-shadow:0 8px 32px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);-webkit-transform:translateY(140%);transform:translateY(140%);opacity:0;-webkit-transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;max-width:300px;pointer-events:none;display:flex;align-items:flex-start;gap:10px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);overflow:hidden}
+.buy-notif.show{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}
+.buy-notif.hide{-webkit-transform:translateY(140%);transform:translateY(140%);opacity:0;-webkit-transition:transform .4s ease-in,opacity .3s ease;transition:transform .4s ease-in,opacity .3s ease}
+.bn-icon{width:36px;height:36px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bn-icon svg{width:18px;height:18px}
 .bn-body{flex:1;min-width:0}
-.bn-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.bn-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
 .bn-app{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 .bn-time{font-size:10px;color:var(--dim)}
 .bn-name{font-family:var(--fh);font-size:12px;font-weight:700;color:#fff;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bn-msg{font-size:11px;color:var(--muted);margin-top:1px;line-height:1.35}
+.bn-msg{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.35}
+.bn-bar{position:absolute;bottom:0;left:0;height:2px;background:var(--accent);border-radius:0 2px 0 0;animation:bn-shrink 5s linear forwards}
+@keyframes bn-shrink{from{width:100%}to{width:0%}}
 
 @media(max-width:768px){
   nav,header .btn-sm{display:none}
@@ -492,6 +497,71 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
   /* Benefits */
   .cmp-val{font-size:36px}
 }
+
+/* ── PLAN CARDS ── */
+.plans-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px;align-items:start}
+
+.pln{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:32px 28px;text-align:center;position:relative;display:flex;flex-direction:column;transition:border-color .3s,transform .3s,box-shadow .3s}
+.pln:hover{border-color:rgba(255,255,255,.12);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+
+/* ── Destaque Avançado ── */
+.pln--dest{border:2px solid var(--accent);box-shadow:0 0 60px rgba(57,255,20,.07),0 24px 64px rgba(0,0,0,.5);padding:40px 28px 32px}
+.pln--dest:hover{border-color:var(--accent);box-shadow:0 0 60px rgba(57,255,20,.12),0 24px 64px rgba(0,0,0,.6)}
+.pln--vit{border:1px solid rgba(255,107,53,.2)}
+.pln--vit:hover{border-color:rgba(255,107,53,.4)}
+
+/* ── Tag ── */
+.pln-tag{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);font-family:var(--fh);font-size:10px;font-weight:800;letter-spacing:.16em;padding:6px 22px;background:var(--accent);color:#0b0e11;border-radius:50px;white-space:nowrap}
+.pln-tag--vit{background:#ff6b35;color:#fff}
+
+/* ── Head ── */
+.pln-head{margin-bottom:20px}
+.pln-name{font-family:var(--fh);font-size:28px;font-weight:900;text-transform:uppercase;color:var(--white);letter-spacing:.02em;line-height:1}
+.pln--dest .pln-name{font-size:32px}
+.pln-for{font-size:14px;color:var(--dim);margin-top:4px}
+
+/* ── Price ── */
+.pln-price-wrap{margin-bottom:24px}
+.pln-old{font-size:13px;color:var(--dim)}.pln-old s{color:var(--red);opacity:.5;text-decoration:line-through}
+.pln-price{font-family:var(--fh);font-weight:900;font-size:22px;color:var(--accent);line-height:1;margin:6px 0 4px}
+.pln-price span{font-size:56px}
+.pln--dest .pln-price span{font-size:64px}
+.pln-freq{font-family:var(--fh);font-size:11px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+
+/* ── Button ── */
+.pln-btn{display:block;width:100%;padding:16px;font-family:var(--fh);font-size:16px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:10px;text-align:center;text-decoration:none;cursor:pointer;transition:all .25s;margin-top:24px;border:none}
+.pln-btn{background:var(--accent);color:#0b0e11;box-shadow:0 0 16px rgba(57,255,20,.12)}
+.pln-btn:hover{background:#4dff33;transform:translateY(-2px);box-shadow:0 4px 24px rgba(57,255,20,.2)}
+.pln-btn--dest{font-size:18px;padding:18px;box-shadow:0 0 32px var(--accent-glow)}
+.pln-btn--dest:hover{box-shadow:0 8px 40px var(--accent-glow)}
+.pln-btn--vit{background:#ff6b35;color:#fff;box-shadow:0 0 16px rgba(255,107,53,.15)}
+.pln-btn--vit:hover{background:#ff8050;box-shadow:0 4px 24px rgba(255,107,53,.25)}
+
+/* ── Features ── */
+.pln-feats{list-style:none;padding:0;margin:0 auto;display:flex;flex-direction:column;gap:12px;flex-grow:1;max-width:280px;text-align:left}
+.pln-feats li{font-family:var(--fb);font-size:14px;font-weight:500;display:flex;align-items:flex-start;gap:10px;line-height:1.4}
+.pln-feats li strong{font-weight:700;color:var(--white)}
+.pln-feats li.yes{color:var(--text)}
+.pln-feats li.yes::before{content:"";width:20px;height:20px;flex-shrink:0;background:var(--accent);border-radius:6px;display:inline-block;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230b0e11' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:11px}
+.pln-feats li.no{color:var(--dim);opacity:.3}
+.pln-feats li.no::before{content:"";width:20px;height:20px;flex-shrink:0;background:rgba(255,255,255,.06);border-radius:6px;display:inline-block;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23727a85' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:10px}
+
+@media(max-width:900px){
+  .plans-row{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto;gap:24px}
+  .pln{padding:28px 22px}
+  .pln--dest{padding:36px 22px 28px}
+  .pln-price span{font-size:48px !important}
+  .pln--dest .pln-price span{font-size:56px !important}
+  .pln-feats li{font-size:13px}
+  .pln-btn{padding:14px;font-size:15px}
+  .pln-btn--dest{padding:16px;font-size:17px}
+}
+
+/* ── FLOATING CTA ── */
+.floating-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;padding:12px 16px;background:rgba(11,14,17,.96);backdrop-filter:blur(16px);border-top:1px solid var(--border)}
+.floating-cta-btn{display:block;width:100%;padding:14px;font-family:var(--fh);font-size:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:#0b0e11;border-radius:6px;text-align:center;text-decoration:none;box-shadow:0 0 20px var(--accent-glow)}
+@media(max-width:768px){.floating-cta.visible{display:block}}
+
 </style>
 
 <!-- Meta Pixel — ÚNICO carregamento do SDK -->
@@ -806,7 +876,7 @@ fbq('track', 'PageView');
         <div class="v-empty">Digite o nome de um jogo para buscar</div>
       </div>
       <div class="verify-cta-row" id="verify-cta-row">
-        <a href="#pricing" class="btn btn-accent-dark btn-lg">Garantir por R$ 9,97</a>
+        <a href="#pricing" class="btn btn-accent-dark btn-lg">Ver planos a partir de R$9,97</a>
         <div class="verify-cta-sub">Esse jogo + +1000 outros inclusos na licença.</div>
       </div>
     </div>
@@ -897,7 +967,7 @@ fbq('track', 'PageView');
         <div class="sec-desc">Sistema invisível que não afeta sua conta oficial da Steam. Jogue sem risco de BAN.</div>
       </div>
       <div class="sec-card">
-        <div class="sec-ico">🔒</div>
+        <div class="sec-ico">🔐</div>
         <div class="sec-title">Sem vírus</div>
         <div class="sec-desc">Arquivos limpos e oficiais. Sem .exe suspeito, sem torrent. Seu antivírus fica em silêncio.</div>
       </div>
@@ -921,33 +991,96 @@ fbq('track', 'PageView');
 <section id="pricing" class="sec-dark">
   <div class="container text-center">
     <div class="reveal">
-      <div class="tag g">Taxa única</div>
-      <h2 class="h2 on-dark">Quanto custa ter acesso a<br><em>+1000 jogos famosos?</em></h2>
-      <p class="sub on-dark center">Enquanto 1 jogo na Steam custa R$299, aqui você desbloqueia todos. Uma vez. Pra sempre.</p>
+      <div class="tag g">Escolha seu plano</div>
+      <h2 class="h2 on-dark">Desbloqueie sua Steam.<br><em>Escolha o acesso ideal.</em></h2>
+      <p class="sub on-dark center">Enquanto 1 jogo na Steam custa R$299, aqui você desbloqueia todos por uma taxa única.</p>
     </div>
-    <div class="pricing-card reveal rd1">
-      <div class="pricing-badge">Taxa Única · Vitalício</div>
-      <div class="pricing-name">Overise</div>
-      <div class="pricing-tag">Licença vitalícia · pague uma vez</div>
-      <div class="pricing-cmp">
-        <div class="pc-item"><div class="pc-lbl">1 jogo na Steam</div><div class="pc-val old">R$299</div></div>
-        <div class="pc-vs">VS</div>
-        <div class="pc-item"><div class="pc-lbl">Overise</div><div class="pc-val new">R$9,97</div></div>
+
+    <div class="plans-row reveal rd1">
+
+      <!-- BÁSICO -->
+      <div class="pln">
+        <div class="pln-head">
+          <div class="pln-name">Básico</div>
+          <div class="pln-for">Para experimentar</div>
+        </div>
+        <div class="pln-price-wrap">
+          <div class="pln-old">de <s>R$29,97</s></div>
+          <div class="pln-price">R$<span>9</span>,97</div>
+          <div class="pln-freq">pagamento único</div>
+        </div>
+        <ul class="pln-feats">
+          <li class="yes">+500 jogos desbloqueados</li>
+          <li class="yes">Entrega instantânea</li>
+          <li class="yes">Atualizações por 6 meses</li>
+          <li class="yes">Anti-ban e seguro</li>
+          <li class="yes">Suporte por email</li>
+          <li class="yes">Garantia de 7 dias</li>
+          <li class="no">Online desbloqueado</li>
+          <li class="no">Jogos Rockstar / Ubisoft</li>
+        </ul>
+        <a href="https://www.ggcheckout.com/checkout/v4/6Ed9FJE8HXebnxREUKCQ" class="pln-btn" onclick="fireICAndRedirect(event)">Assinar Básico</a>
       </div>
-      <hr class="pd"/>
-      <div class="pricing-feats">
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Jogue o que seus amigos jogam</strong> — sem esperar promoção, sem pensar no preço</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Sexta à noite sem lista de desejos</strong> — qualquer jogo, na hora, sem pensar no preço</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>PC limpo e seguro</strong> — nunca mais baixe arquivo suspeito</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Online desbloqueado</strong> nos títulos compatíveis</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Sempre atualizado</strong> — sem crack que quebra</div></div>
-        <div class="pfeat"><div class="pfeat-chk">✓</div><div class="pfeat-txt"><strong>Suporte humano WhatsApp</strong> — gente real, resposta rápida</div></div>
+
+      <!-- AVANÇADO -->
+      <div class="pln pln--dest">
+        <div class="pln-tag">MAIS ESCOLHIDO</div>
+        <div class="pln-head">
+          <div class="pln-name">Avançado</div>
+          <div class="pln-for">O favorito dos jogadores</div>
+        </div>
+        <div class="pln-price-wrap">
+          <div class="pln-old">de <s>R$59,97</s></div>
+          <div class="pln-price">R$<span>19</span>,97</div>
+          <div class="pln-freq">pagamento único</div>
+        </div>
+        <ul class="pln-feats">
+          <li class="yes"><strong>+1000 jogos desbloqueados</strong></li>
+          <li class="yes">Entrega instantânea</li>
+          <li class="yes">Atualizações por 1 ano</li>
+          <li class="yes">Anti-ban e seguro</li>
+          <li class="yes">Online desbloqueado</li>
+          <li class="yes">Jogos Rockstar / Ubisoft</li>
+          <li class="yes">Suporte WhatsApp</li>
+          <li class="yes">Garantia de 7 dias</li>
+        </ul>
+        <a href="https://www.ggcheckout.com/checkout/v4/BvIb4ex53LM73mU3DJsX" class="pln-btn pln-btn--dest" onclick="fireICAndRedirect(event)">Assinar Avançado</a>
       </div>
-      <a href="https://www.ggcheckout.com/checkout/v5/6Ed9FJE8HXebnxREUKCQ" class="pricing-cta" onclick="fireICAndRedirect(event)">Garantir por R$ 9,97</a>
-      <div class="pricing-sec">PIX · CARTÃO · BOLETO · PAGUE UMA VEZ</div>
-      <div class="pricing-micro"><span>Acesso imediato</span> · <span>Licença vitalícia</span> · <span>7 dias de garantia</span></div>
+
+      <!-- VITALÍCIO -->
+      <div class="pln pln--vit">
+        <div class="pln-tag pln-tag--vit">MELHOR CUSTO-BENEFÍCIO</div>
+        <div class="pln-head">
+          <div class="pln-name">Vitalício</div>
+          <div class="pln-for">Acesso total, pra sempre</div>
+        </div>
+        <div class="pln-price-wrap">
+          <div class="pln-old">de <s>R$149,97</s></div>
+          <div class="pln-price">R$<span>49</span>,97</div>
+          <div class="pln-freq">pagamento único</div>
+        </div>
+        <ul class="pln-feats">
+          <li class="yes"><strong>+1000 jogos desbloqueados</strong></li>
+          <li class="yes">Entrega instantânea</li>
+          <li class="yes"><strong>Atualizações vitalícias</strong></li>
+          <li class="yes">Anti-ban e seguro</li>
+          <li class="yes">Online desbloqueado</li>
+          <li class="yes">Jogos Rockstar / Ubisoft</li>
+          <li class="yes"><strong>Suporte WhatsApp prioritário</strong></li>
+          <li class="yes">Acesso a lançamentos</li>
+        </ul>
+        <a href="https://www.ggcheckout.com/checkout/v4/pdDOCAlm20ZQxjUiglc3" class="pln-btn pln-btn--vit" onclick="fireICAndRedirect(event)">Assinar Vitalício</a>
+      </div>
+
+    </div>
+
+    <div style="margin-top:28px;text-align:center" class="reveal rd2">
+      <div class="pricing-sec">PIX · CARTÃO · BOLETO · PAGAMENTO ÚNICO</div>
+      <div class="pricing-micro"><span>Acesso imediato</span> · <span>Garantia de 7 dias</span></div>
     </div>
   </div>
+</section>
+
 </section>
 
 <!-- ══════════════════════════════════════════════════ -->
@@ -1022,7 +1155,7 @@ fbq('track', 'PageView');
     <div class="tag g">Pronto pra jogar?</div>
     <h2 class="h2 on-dark" style="font-size:clamp(34px,6vw,72px);margin-bottom:16px">Sua lista de desejos pode<br><em>acabar hoje.</em></h2>
     <p class="sub on-dark center" style="margin-bottom:32px">Elden Ring, GTA, God of War, Cyberpunk — desbloqueados em 5 minutos. R$9,97, taxa única, licença vitalícia.</p>
-    <a href="#pricing" class="btn btn-accent btn-xl">Garantir por R$ 9,97</a>
+    <a href="#pricing" class="btn btn-accent btn-xl">Ver planos a partir de R$9,97</a>
     <div style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--dim);margin-top:16px;letter-spacing:.08em">7 DIAS DE GARANTIA · LICENÇA VITALÍCIA · ACESSO IMEDIATO</div>
   </div>
 </section>
@@ -1067,12 +1200,13 @@ fbq('track', 'PageView');
 </div>
 
 <div class="buy-notif" id="buy-notif">
-  <div class="bn-icon">🔓</div>
+  <div class="bn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#0b0e11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
   <div class="bn-body">
     <div class="bn-header"><span class="bn-app">Overise</span><span class="bn-time" id="bn-time"></span></div>
     <strong class="bn-name" id="bn-name"></strong>
     <div class="bn-msg" id="bn-msg"></div>
   </div>
+  <div class="bn-bar" id="bn-bar"></div>
 </div>
 
 <script>
@@ -1322,14 +1456,15 @@ document.querySelectorAll('.proof-shot').forEach(img=>{
 const names=['Lucas M.','Maicon R.','Gabriel S.','Thiago L.','Pedro H.','Rafael C.','Diego F.','Bruno A.','Matheus P.','Caio V.','Felipe N.','Gustavo B.','Leonardo T.','João P.','Vinicius K.'];
 const cities=['São Paulo','Curitiba','Belo Horizonte','Porto Alegre','Recife','Fortaleza','Salvador','Rio de Janeiro','Brasília','Manaus','Goiânia','Campinas','Florianópolis','Belém'];
 const msgs=['desbloqueou a biblioteca completa','ativou a licença vitalícia','já está baixando jogos','garantiu o acesso agora'];
-const notif=document.getElementById('buy-notif'),bnName=document.getElementById('bn-name'),bnMsg=document.getElementById('bn-msg'),bnTime=document.getElementById('bn-time');
+const notif=document.getElementById('buy-notif'),bnName=document.getElementById('bn-name'),bnMsg=document.getElementById('bn-msg'),bnTime=document.getElementById('bn-time'),bnBar=document.getElementById('bn-bar');
 setTimeout(()=>{
   const n=names[Math.floor(Math.random()*names.length)];
   const c=cities[Math.floor(Math.random()*cities.length)];
   const m=msgs[Math.floor(Math.random()*msgs.length)];
   bnName.textContent=n+' — '+c;bnMsg.textContent=m;bnTime.textContent='agora';
-  notif.classList.add('show');
-  setTimeout(()=>notif.classList.remove('show'),5000);
+  bnBar.style.animation='none';void bnBar.offsetWidth;bnBar.style.animation='bn-shrink 5s linear forwards';
+  notif.classList.remove('hide');notif.classList.add('show');
+  setTimeout(()=>{notif.classList.remove('show');notif.classList.add('hide');},5000);
 },8000);
 
 /* ── SOUND OVERLAY ── */
@@ -1350,6 +1485,48 @@ if(soundOverlay){
 /* ── STAGGER ANIMATIONS ── */
 document.querySelectorAll('.stat').forEach((el,i)=>{el.style.animationDelay=(i*0.15)+'s';});
 document.querySelectorAll('.step').forEach((el,i)=>{el.style.transitionDelay=(i*0.1)+'s';});
+
+/* ── SCROLL FIX: compensa header sticky em TODOS os links âncora ── */
+(function(){
+  var offset = 56;
+  var overshoot = 500;
+
+  function getTargetY(el){
+    return el.getBoundingClientRect().top + window.pageYOffset - offset;
+  }
+
+  document.addEventListener('click', function(e){
+    var link = e.target.closest('a[href^="#"]');
+    if(!link) return;
+    if(link.getAttribute('onclick')) return;
+    var href = link.getAttribute('href');
+    if(!href || href === '#' || href.length < 2) return;
+    var target = document.getElementById(href.substring(1));
+    if(!target) return;
+    e.preventDefault();
+
+    var finalY = getTargetY(target);
+    var jumpY = Math.max(0, finalY - overshoot);
+
+    /* Salto instantâneo para ~500px acima do alvo (força render de lazy images) */
+    window.scrollTo(0, jumpY);
+
+    /* Após layout estabilizar, scroll suave até posição exata */
+    requestAnimationFrame(function(){
+      setTimeout(function(){
+        window.scrollTo({top: getTargetY(target), behavior: 'smooth'});
+      }, 120);
+    });
+
+    if(history.pushState) history.pushState(null, null, href);
+  });
+})();
 </script>
+
+<!-- Floating CTA for mobile -->
+<div class="floating-cta" id="floating-cta">
+  <a href="#pricing" class="floating-cta-btn">Garantir acesso a partir de R$9,97 →</a>
+</div>
+
 </body>
 </html>
