@@ -24,8 +24,7 @@
   --fb:'DM Sans',sans-serif;
   --fw:'Barlow',sans-serif;
 }
-html{scroll-behavior:auto}
-[id]{scroll-margin-top:56px}
+html{}
 body{font-family:var(--fb);font-weight:400;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
 a{text-decoration:none;color:inherit}
@@ -285,7 +284,7 @@ nav a:hover{color:var(--white)}
    PROVA SOCIAL — MASONRY
 ══════════════════════════════════ */
 .proof-masonry{column-count:3;column-gap:12px;margin-top:44px}
-.proof-shot{width:100%;min-height:180px;border-radius:8px;display:block;border:1px solid var(--border);transition:all .3s;cursor:pointer;margin-bottom:12px;break-inside:avoid}
+.proof-shot{width:100%;border-radius:8px;display:block;border:1px solid var(--border);transition:all .3s;cursor:pointer;margin-bottom:12px;break-inside:avoid}
 .proof-shot:hover{transform:translateY(-2px);border-color:rgba(57,255,20,.15);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 
 /* Lightbox */
@@ -404,19 +403,15 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
 .pay-chip{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:3px 10px;font-family:var(--fh);font-size:9px;font-weight:700;color:var(--dim);letter-spacing:.08em}
 
 /* NOTIF */
-.buy-notif{position:fixed;bottom:18px;left:18px;z-index:299;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px 10px;box-shadow:0 8px 32px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);-webkit-transform:translateY(140%);transform:translateY(140%);opacity:0;-webkit-transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;max-width:300px;pointer-events:none;display:flex;align-items:flex-start;gap:10px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);overflow:hidden}
-.buy-notif.show{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}
-.buy-notif.hide{-webkit-transform:translateY(140%);transform:translateY(140%);opacity:0;-webkit-transition:transform .4s ease-in,opacity .3s ease;transition:transform .4s ease-in,opacity .3s ease}
-.bn-icon{width:36px;height:36px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.bn-icon svg{width:18px;height:18px}
+.buy-notif{position:fixed;bottom:18px;left:18px;z-index:299;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;box-shadow:0 8px 32px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);-webkit-transform:translateX(-130%);transform:translateX(-130%);-webkit-transition:-webkit-transform .4s cubic-bezier(.23,1,.32,1);transition:transform .4s cubic-bezier(.23,1,.32,1);max-width:280px;pointer-events:none;display:flex;align-items:flex-start;gap:10px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.buy-notif.show{-webkit-transform:translateX(0);transform:translateX(0)}
+.bn-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-dim);border:1px solid rgba(57,255,20,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
 .bn-body{flex:1;min-width:0}
-.bn-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.bn-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
 .bn-app{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 .bn-time{font-size:10px;color:var(--dim)}
 .bn-name{font-family:var(--fh);font-size:12px;font-weight:700;color:#fff;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bn-msg{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.35}
-.bn-bar{position:absolute;bottom:0;left:0;height:2px;background:var(--accent);border-radius:0 2px 0 0;animation:bn-shrink 5s linear forwards}
-@keyframes bn-shrink{from{width:100%}to{width:0%}}
+.bn-msg{font-size:11px;color:var(--muted);margin-top:1px;line-height:1.35}
 
 @media(max-width:768px){
   nav,header .btn-sm{display:none}
@@ -547,14 +542,10 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 0 18
 .pln-feats li.no::before{content:"";width:20px;height:20px;flex-shrink:0;background:rgba(255,255,255,.06);border-radius:6px;display:inline-block;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23727a85' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:10px}
 
 @media(max-width:900px){
-  .plans-row{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto;gap:24px}
-  .pln{padding:28px 22px}
-  .pln--dest{padding:36px 22px 28px}
+  .plans-row{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto;gap:20px}
+  .pln--dest{order:-1}
   .pln-price span{font-size:48px !important}
   .pln--dest .pln-price span{font-size:56px !important}
-  .pln-feats li{font-size:13px}
-  .pln-btn{padding:14px;font-size:15px}
-  .pln-btn--dest{padding:16px;font-size:17px}
 }
 
 /* ── FLOATING CTA ── */
@@ -609,12 +600,16 @@ fbq('track', 'PageView');
 
   var utmString = utmParams.toString();
 
-  // === 2. Salva UTMs em cookie + sessionStorage ===
+  // === 2. Salva UTMs em cookie + sessionStorage (ÚLTIMO CLIQUE) ===
   if(utmString){
-    // Cookie (expira em 30 min, funciona em modo privado)
+    // Visitante chegou COM UTMs (via anúncio): salva/sobrescreve
     document.cookie = 'overise_utms=' + encodeURIComponent(utmString) + ';path=/;max-age=1800;SameSite=Lax';
-    // SessionStorage como backup
     try { sessionStorage.setItem('overise_utms', utmString); } catch(e){}
+  } else {
+    // Visitante chegou SEM UTMs (acesso direto/orgânico): limpa cookie antigo
+    // Isso garante atribuição de último clique — só atribui se o último acesso veio de anúncio
+    document.cookie = 'overise_utms=;path=/;max-age=0;SameSite=Lax';
+    try { sessionStorage.removeItem('overise_utms'); } catch(e){}
   }
 
   // === 3. Recupera UTMs de qualquer fonte disponível ===
@@ -967,7 +962,7 @@ fbq('track', 'PageView');
         <div class="sec-desc">Sistema invisível que não afeta sua conta oficial da Steam. Jogue sem risco de BAN.</div>
       </div>
       <div class="sec-card">
-        <div class="sec-ico">🔐</div>
+        <div class="sec-ico">🔒</div>
         <div class="sec-title">Sem vírus</div>
         <div class="sec-desc">Arquivos limpos e oficiais. Sem .exe suspeito, sem torrent. Seu antivírus fica em silêncio.</div>
       </div>
@@ -1200,13 +1195,12 @@ fbq('track', 'PageView');
 </div>
 
 <div class="buy-notif" id="buy-notif">
-  <div class="bn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#0b0e11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+  <div class="bn-icon">🔓</div>
   <div class="bn-body">
     <div class="bn-header"><span class="bn-app">Overise</span><span class="bn-time" id="bn-time"></span></div>
     <strong class="bn-name" id="bn-name"></strong>
     <div class="bn-msg" id="bn-msg"></div>
   </div>
-  <div class="bn-bar" id="bn-bar"></div>
 </div>
 
 <script>
@@ -1456,15 +1450,14 @@ document.querySelectorAll('.proof-shot').forEach(img=>{
 const names=['Lucas M.','Maicon R.','Gabriel S.','Thiago L.','Pedro H.','Rafael C.','Diego F.','Bruno A.','Matheus P.','Caio V.','Felipe N.','Gustavo B.','Leonardo T.','João P.','Vinicius K.'];
 const cities=['São Paulo','Curitiba','Belo Horizonte','Porto Alegre','Recife','Fortaleza','Salvador','Rio de Janeiro','Brasília','Manaus','Goiânia','Campinas','Florianópolis','Belém'];
 const msgs=['desbloqueou a biblioteca completa','ativou a licença vitalícia','já está baixando jogos','garantiu o acesso agora'];
-const notif=document.getElementById('buy-notif'),bnName=document.getElementById('bn-name'),bnMsg=document.getElementById('bn-msg'),bnTime=document.getElementById('bn-time'),bnBar=document.getElementById('bn-bar');
+const notif=document.getElementById('buy-notif'),bnName=document.getElementById('bn-name'),bnMsg=document.getElementById('bn-msg'),bnTime=document.getElementById('bn-time');
 setTimeout(()=>{
   const n=names[Math.floor(Math.random()*names.length)];
   const c=cities[Math.floor(Math.random()*cities.length)];
   const m=msgs[Math.floor(Math.random()*msgs.length)];
   bnName.textContent=n+' — '+c;bnMsg.textContent=m;bnTime.textContent='agora';
-  bnBar.style.animation='none';void bnBar.offsetWidth;bnBar.style.animation='bn-shrink 5s linear forwards';
-  notif.classList.remove('hide');notif.classList.add('show');
-  setTimeout(()=>{notif.classList.remove('show');notif.classList.add('hide');},5000);
+  notif.classList.add('show');
+  setTimeout(()=>notif.classList.remove('show'),5000);
 },8000);
 
 /* ── SOUND OVERLAY ── */
@@ -1488,37 +1481,17 @@ document.querySelectorAll('.step').forEach((el,i)=>{el.style.transitionDelay=(i*
 
 /* ── SCROLL FIX: compensa header sticky em TODOS os links âncora ── */
 (function(){
-  var offset = 56;
-  var overshoot = 500;
-
-  function getTargetY(el){
-    return el.getBoundingClientRect().top + window.pageYOffset - offset;
-  }
-
+  var offset = 80;
   document.addEventListener('click', function(e){
     var link = e.target.closest('a[href^="#"]');
     if(!link) return;
-    if(link.getAttribute('onclick')) return;
     var href = link.getAttribute('href');
     if(!href || href === '#' || href.length < 2) return;
     var target = document.getElementById(href.substring(1));
     if(!target) return;
     e.preventDefault();
-
-    var finalY = getTargetY(target);
-    var jumpY = Math.max(0, finalY - overshoot);
-
-    /* Salto instantâneo para ~500px acima do alvo (força render de lazy images) */
-    window.scrollTo(0, jumpY);
-
-    /* Após layout estabilizar, scroll suave até posição exata */
-    requestAnimationFrame(function(){
-      setTimeout(function(){
-        window.scrollTo({top: getTargetY(target), behavior: 'smooth'});
-      }, 120);
-    });
-
-    if(history.pushState) history.pushState(null, null, href);
+    var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({top: top, behavior: 'smooth'});
   });
 })();
 </script>
