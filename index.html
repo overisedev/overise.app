@@ -14,7 +14,9 @@
 <!-- Meta Pixel -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','1171879494851614');fbq('track','PageView');
+fbq('set','autoConfig',false,'1171879494851614');
+fbq('init','1171879494851614');
+fbq('track','PageView');
 </script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}:root{--accent:#39ff14;--accent2:#2dd40e;--accent-dim:rgba(57,255,20,.07);--accent-glow:rgba(57,255,20,.18);--bg:#000;--card:#161a20;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);--white:#fff;--text:#e8eaee;--muted:#a8aeb8;--dim:#727a85;--red:#ff4444;--fh:'Barlow Condensed',sans-serif;--fb:'DM Sans',sans-serif;--neon:#39ff14}
@@ -234,24 +236,6 @@ FG.forEach(function(g){var i=new Image();i.src=g.img});
 (function(){var E=[{t:'Acaba a ansiedade da lista de desejos',d:'Sabe aquele jogo que você adiciona, olha o preço, e fecha a aba frustrado? Nunca mais.',i:'1245620'},{t:'Joga com seus amigos de novo',d:'Chega de ficar de fora. Agora quando o grupo combina, você entra junto.',i:'271590'},{t:'Sexta à noite = jogo novo',d:'Em vez de assistir gameplay no YouTube, você instala e joga. Na hora.',i:'1091500'},{t:'Dorme tranquilo',d:'Instalação limpa, sem arquivo estranho. Joga sossegado, PC inteiro.',i:'1174180'},{t:'Para de se sentir excluído',d:'R$250 num jogo não cabe no orçamento. R$19,97 taxa única cabe.',i:'1593500'},{t:'Experimenta sem culpa',d:'Quer testar um jogo? Instala. Não curtiu, troca.',i:'1086940'}];document.getElementById('eg').innerHTML=E.map(function(e){return'<div class="emo-card"><img class="emo-card-img" src="https://cdn.cloudflare.steamstatic.com/steam/apps/'+e.i+'/header.jpg" alt="" loading="lazy"><div class="emo-title">'+e.t+'</div><div class="emo-desc">'+e.d+'</div></div>'}).join('')})();
 (function(){var F=[{q:'É seguro? Posso confiar?',a:'Sim. Instalação 100% limpa. Sem arquivo suspeito. Mais de 5.000 clientes ativos comprovam.'},{q:'Como funciona o acesso?',a:'Você recebe o software Overise por e-mail após o pagamento. Instala no PC, insere sua licença, e o catálogo completo fica disponível em minutos.'},{q:'Precisa de conta na Steam?',a:'Sim. Você usa sua conta normal da Steam. Os jogos ficam acessíveis pela sua biblioteca.'},{q:'Funciona online?',a:'Sim. Os títulos compatíveis com modo online funcionam normalmente.'},{q:'A licença expira?',a:'A licença é vitalícia. Uma vez pago, o acesso é seu pra sempre. Inclui atualizações e suporte.'},{q:'Aceita PIX, cartão e boleto?',a:'Sim, todos. PIX libera o acesso em segundos. Taxa única, sem cobrança recorrente.'},{q:'Tem suporte?',a:'Sim. WhatsApp com gente real. Não é bot — é uma pessoa que te responde rápido.'}];var fl=document.getElementById('fl');fl.innerHTML=F.map(function(f){return'<div class="faq-item reveal"><button class="faq-q" onclick="tFaq(this)">'+f.q+'<span class="faq-chev">▼</span></button><div class="faq-a">'+f.a+'</div></div>'}).join('');fl.querySelectorAll('.reveal').forEach(function(el){io.observe(el)})})();
 function tFaq(b){var a=b.nextElementSibling,o=b.classList.contains('open');document.querySelectorAll('.faq-q.open').forEach(function(q){q.classList.remove('open');q.nextElementSibling.classList.remove('open')});if(!o){b.classList.add('open');a.classList.add('open')}}
-function checkout(url,val){
-if(!url){url='https://www.ggcheckout.com/checkout/v4/BvIb4ex53LM73mU3DJsX';val=19.97}
-// Collect UTMs from URL + Utmify storage + cookies + sessionStorage
-var utms=new URLSearchParams();
-var keys=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod','fbclid','gclid'];
-// From current URL
-var cur=new URLSearchParams(window.location.search);
-keys.forEach(function(k){var v=cur.get(k);if(v)utms.set(k,v)});
-// From Utmify localStorage
-try{var ud=localStorage.getItem('__utmify_session_data');if(ud){var p=JSON.parse(ud);keys.forEach(function(k){if(p[k]&&!utms.has(k))utms.set(k,p[k])})}}catch(e){}
-// From Utmify sessionStorage
-try{var ss=sessionStorage.getItem('__utmify_session_data');if(ss){var q=JSON.parse(ss);keys.forEach(function(k){if(q[k]&&!utms.has(k))utms.set(k,q[k])})}}catch(e){}
-// From cookie
-try{var m=document.cookie.match(/utmify_session=([^;]+)/);if(m){var c=JSON.parse(decodeURIComponent(m[1]));keys.forEach(function(k){if(c[k]&&!utms.has(k))utms.set(k,c[k])})}}catch(e){}
-var qs=utms.toString();
-if(qs)url+=(url.includes('?')?'&':'?')+qs;
-setTimeout(function(){window.location.href=url},800);
-}
 // Fix scroll - force all reveals visible, wait for reflow, then scroll
 document.querySelectorAll('a[href^="#"]').forEach(function(a){
 a.addEventListener('click',function(e){
